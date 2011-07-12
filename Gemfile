@@ -11,6 +11,14 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "mongoid", "~> 2.0"
 gem "bson_ext", "~> 1.3"
 
+gem "oauth", ">= 0.4.4"
+gem "oauth-plugin", ">= 0.4.0.pre1"
+
+
+group :test, :development do
+  gem "rspec-rails", "~> 2.6"
+end
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

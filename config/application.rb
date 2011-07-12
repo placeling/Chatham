@@ -7,6 +7,8 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 
+require 'oauth/rack/oauth_filter'
+
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -43,5 +45,14 @@ module Chatham
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.middleware.use OAuth::Rack::OAuthFilter
+    config.generators do |g|
+      g.orm             :mongoid
+      g.test_framework  :rspec
+      g.template_engine :erb
+    end
+
+
   end
 end
