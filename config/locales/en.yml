@@ -11,6 +11,11 @@ en:
     update: "Update"
     are_you_sure: "Are you sure?"
     edit: "Edit"
+    register: "Register"
+    show: "Show"
+    back: "Back"
+    name: "Name"
+
 
   admin:
     required_failed: "This requires admin privileges"
@@ -38,6 +43,24 @@ en:
     updated_client_info: "Updated the client information successfully"
     destroyed_client_application: "Destroyed the client application registration"
     wrong_app_id: "Wrong application id"
+    register_new_app: "Register a new application"
+    edit_application: "Edit your application"
+    main_app_url: "Main Application URL"
+    callback_url: "Callback URL"
+    support_url: "Support URL"
+    authorize_access: "authorize access"
+    auth_access_account: "Authorize access to your account"
+    would_you_authorize: "Would you like to authorize %{app_name} (%{app_url}) to access your account?"
+    allowed_this_request: "You have allowed this request"
+    rejected_this_request: "You have disallowed this request"
+    oauth_details: "OAuth details for %{app_name}"
+    consumer_key: "Consumer Key:"
+    consumer_secret: "Consumer Secret:"
+    request_token_url: "Request Token URL"
+    access_token_url: "Access Token URL"
+    authorize_url: "Authorize URL"
+    we_support_hmac: "We support hmac-sha1 (recommended) as well as plain text in ssl mode."
+
 
 
 
