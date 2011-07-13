@@ -1,5 +1,5 @@
 Chatham::Application.routes.draw do
-  get "user/profile"
+  get "users/profile"
 
   devise_for :users
 
@@ -19,6 +19,8 @@ Chatham::Application.routes.draw do
 
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
 
+
+  match 'users/list' => "users#list", :as => "users_list"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -71,7 +73,7 @@ Chatham::Application.routes.draw do
   root :to => "home#index"
 
 
-  match "/:username" => "user#profile"
+  match "/:username" => "users#profile"
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

@@ -8,8 +8,14 @@ class ApplicationController < ActionController::Base
       flash[:message] = t 'admin.required_failed'
       redirect_to "/"
     end
+  end
 
-
+  def admin_user?
+    if current_user
+      return current_user.is_admin?
+    else
+      return false
+    end
   end
 
 end

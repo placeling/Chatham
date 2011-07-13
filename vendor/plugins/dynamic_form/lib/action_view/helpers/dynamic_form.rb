@@ -153,32 +153,32 @@ module ActionView
       #   altogether. (Default: "There were problems with the following fields:").
       #
       # To specify the display for one object, you simply provide its name as a parameter.
-      # For example, for the <tt>@user</tt> model:
+      # For example, for the <tt>@users</tt> model:
       #
-      #   error_messages_for 'user'
+      #   error_messages_for 'users'
       #
       # You can also supply an object:
       #
-      #   error_messages_for @user
+      #   error_messages_for @users
       #
       # This will use the last part of the model name in the presentation. For instance, if
-      # this is a MyKlass::User object, this will use "user" as the name in the String. This
+      # this is a MyKlass::User object, this will use "users" as the name in the String. This
       # is taken from MyKlass::User.model_name.human, which can be overridden.
       #
       # To specify more than one object, you simply list them; optionally, you can add an extra <tt>:object_name</tt> parameter, which
       # will be the name used in the header message:
       #
-      #   error_messages_for 'user_common', 'user', :object_name => 'user'
+      #   error_messages_for 'user_common', 'users', :object_name => 'users'
       #
       # You can also use a number of objects, which will have the same naming semantics
       # as a single object.
       #
-      #   error_messages_for @user, @post
+      #   error_messages_for @users, @post
       #
       # If the objects cannot be located as instance variables, you can add an extra <tt>:object</tt> parameter which gives the actual
       # object (or array of objects to use):
       #
-      #   error_messages_for 'user', :object => @question.user
+      #   error_messages_for 'users', :object => @question.users
       #
       # NOTE: This is a pre-packaged presentation of the errors with embedded strings and a certain HTML structure. If what
       # you need is significantly different from the default presentation, it makes plenty of sense to access the <tt>object.errors</tt>

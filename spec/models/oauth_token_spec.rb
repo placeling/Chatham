@@ -66,7 +66,7 @@ describe RequestToken do
           @token.authorized_at.should_not be_nil
         end
 
-        it "should have user set" do
+        it "should have users set" do
           @token.user.should == users(:quentin)
         end
 
@@ -93,7 +93,7 @@ describe RequestToken do
             @token.should be_invalidated
           end
 
-          it "should set user on access token" do
+          it "should set users on access token" do
             @access.user.should == users(:quentin)
           end
 
@@ -166,7 +166,7 @@ describe RequestToken do
           @token.authorized_at.should_not be_nil
         end
 
-        it "should have user set" do
+        it "should have users set" do
           @token.user.should == users(:quentin)
         end
 
@@ -185,7 +185,7 @@ describe RequestToken do
             @token.should be_invalidated
           end
 
-          it "should set user on access token" do
+          it "should set users on access token" do
             @access.user.should == users(:quentin)
           end
 
@@ -256,7 +256,7 @@ describe RequestToken do
           @token.authorized_at.should_not be_nil
         end
 
-        it "should have user set" do
+        it "should have users set" do
           @token.user.should == users(:quentin)
         end
 
@@ -274,7 +274,7 @@ describe RequestToken do
             @token.should be_invalidated
           end
 
-          it "should set user on access token" do
+          it "should set users on access token" do
             @access.user.should == users(:quentin)
           end
 

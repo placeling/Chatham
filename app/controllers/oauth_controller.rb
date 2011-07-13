@@ -9,12 +9,12 @@ class OauthController < ApplicationController
   #   params[:authorize] == '1'
   # end
 
-  # should authenticate and return a user if valid password.
+  # should authenticate and return a users if valid password.
   # This example should work with most Authlogic or Devise. Uncomment it
   # def authenticate_user(username,password)
-  #   user = User.find_by_email params[:username]
-  #   if user && user.valid_password?(params[:password])
-  #     user
+  #   users = User.find_by_email params[:username]
+  #   if users && users.valid_password?(params[:password])
+  #     users
   #   else
   #     nil
   #   end
