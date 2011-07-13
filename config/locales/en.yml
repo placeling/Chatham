@@ -7,6 +7,10 @@ en:
     applications_list: "Oauth Applications"
     users_list: "Users List"
 
+  basic:
+    update: "Update"
+    are_you_sure: "Are you sure?"
+    edit: "Edit"
 
   admin:
     required_failed: "This requires admin privileges"
@@ -19,6 +23,22 @@ en:
     didnt_receive_confirmation: "Didn't receive confirmation instructions?"
     didnt_receive_unlock: "Didn't receive unlock instructions?"
     sign_in_provider: "Sign in with %{provider}"
+    resend_unlock: "Resend unlock instructions"
+    leave_blank: "leave blank if you don't want to change it"
+    need_current_password: "we need your current password to confirm your changes"
+    cancel_my_account: "Cancel my account"
+    unhappy: "Unhappy?"
+    send_reset_instructions: "Send me reset password instructions"
+    confirm_new_password: "Confirm new password"
+    change_my_password: "Change my password"
+    new_password: "New password"
+
+  oauth:
+    registered_successfully: "Registered the information successfully"
+    updated_client_info: "Updated the client information successfully"
+    destroyed_client_application: "Destroyed the client application registration"
+    wrong_app_id: "Wrong application id"
+
 
 
 
