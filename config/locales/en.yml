@@ -6,6 +6,7 @@ en:
     admin_links: "Admin Links"
     applications_list: "Oauth Applications"
     users_list: "Users List"
+    product_name: "Placeling"
 
   basic:
     update: "Update"

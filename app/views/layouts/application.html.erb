@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chatham</title>
-  <%= stylesheet_link_tag :all %>
+  <title><%= t('home.product_name') %></title>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
-</head>
-<body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+<%= render(:partial =>"layouts/header_imports") %>
+  </head>
+  <body>
 
-<%= yield %>
+    <div id="wrap" class="container_24">
+        <%= render :partial => 'layouts/header' %>
+        <% if notice %>
+            <div class="grid_24">
+                <div class="info notice" style="margin-bottom:0px;">
+                    <p><%= notice %></p>
+                </div>
+            </div>
+        <% end %>
+
+        <% if alert %>
+            <div class="grid_24">
+                <div class="info alert" style="margin-bottom:0px;">
+                    <p><%= alert %></p>
+                </div>
+            </div>
+        <% end %>
+
+        <%= yield %>
+
+     <%= render :partial => 'layouts/footer' %>
+
+    </div>
+
+<%= render(:partial =>"layouts/footer_imports") %>
 
 </body>
 </html>

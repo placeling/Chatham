@@ -1,0 +1,59 @@
+<div class="grid_24">
+
+  <div id="userpanel">
+
+    <ul id="user" class="dropdown">
+        <li class="topnav">
+            <!-- User Name -->
+            <% if current_user %>
+                <a href="#" class="top icon user"><%= current_user.username %></a>
+            <% end %>
+
+            <!-- User Dropdown Content: Start -->
+            <ul class="subnav">
+                {More Links}
+                <li><a href="#" class="icon settings">Settings</a></li>
+                <li><a href="#" class="icon chatbubbles">Messages</a></li>
+                <li><a href="#" class="icon lock">Log out</a></li>
+            </ul>
+            <!-- User Dropdown Content: End -->
+        </li>
+    </ul>
+
+  </div>
+
+  <div id="header">
+
+    <!-- Logo: Start -->
+    <a href="#" id="logo"><%= t('home.product_name') %> - Admin Panel</a>
+    <!-- Logo: End -->
+
+    <!-- Navigation: Start -->
+    <ul id="navigation" class="dropdown">
+        <li><a class="dashboard" href="#">{Menu Item}</a></li>
+        <li><a class="gallery" href="#">{Menu Item}</a></li>
+        <li><a class="users" href="#">{Menu Item}</a></li>
+    </ul>
+    <!-- Navigation: End -->
+
+
+  </div>
+
+  <div id="breadcrumb">
+
+
+    <!-- Breadcrumb: Start -->
+    <ul class="left">
+        <li class="icon dashboard"><a href="#">{Index}</a></li>
+        <li class="icon point_right"><a href="#">{Subsection}</a></li>
+        <li class="icon point_right active"><a href="#">{Active Section}</a></li>
+    </ul>
+    <!-- Breadcrumb: End -->
+
+
+
+    {Icon Menu}
+
+  </div>
+
+</div>
