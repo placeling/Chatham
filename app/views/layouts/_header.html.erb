@@ -1,47 +1,54 @@
 <div class="grid_24">
 
-  <div id="userpanel">
-
-    <ul id="user" class="dropdown">
-        <li class="topnav">
-            <!-- User Name -->
-            <% if current_user %>
+  <% if current_user %>
+      <div id="userpanel">
+        <ul id="user" class="dropdown">
+            <li class="topnav">
+                <!-- User Name -->
                 <a href="#" class="top icon user"><%= current_user.username %></a>
-            <% end %>
+                <!-- User Dropdown Content: Start -->
+                <ul class="subnav">
+                    <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"icon lock" %></li>
+                </ul>
+                <!-- User Dropdown Content: End -->
+            </li>
+        </ul>
 
-            <!-- User Dropdown Content: Start -->
-            <ul class="subnav">
-                {More Links}
-                <li><a href="#" class="icon settings">Settings</a></li>
-                <li><a href="#" class="icon chatbubbles">Messages</a></li>
-                <li><a href="#" class="icon lock">Log out</a></li>
+        <% if admin_user? %>
+            <ul id="admin_links" class="dropdown right">
+                <li class="topnav">
+                    <a href="#" class="top icon pen"><%= t("home.admin_links") %></a>
+
+                    <!-- Style (Themes) Switcher Content: Start -->
+                    <ul class="subnav">
+                        <%= render(:partial =>"home/admin_links") %>
+                    </ul>
+                    <!-- Style (Themes) Switcher Content: End -->
+                </li>
             </ul>
-            <!-- User Dropdown Content: End -->
-        </li>
-    </ul>
-
-  </div>
+        <% end %>
+      </div>
+  <% end %>
 
   <div id="header">
 
     <!-- Logo: Start -->
-    <a href="#" id="logo"><%= t('home.product_name') %> - Admin Panel</a>
+    <a href="/" id="logo"><%= t('home.product_name') %></a>
     <!-- Logo: End -->
 
     <!-- Navigation: Start -->
     <ul id="navigation" class="dropdown">
-        <li><a class="dashboard" href="#">{Menu Item}</a></li>
-        <li><a class="gallery" href="#">{Menu Item}</a></li>
-        <li><a class="users" href="#">{Menu Item}</a></li>
+        <% if current_user %>
+            <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></li>
+        <% else %>
+            <li><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></li>
+        <% end %>
     </ul>
     <!-- Navigation: End -->
-
-
   </div>
 
+
   <div id="breadcrumb">
-
-
     <!-- Breadcrumb: Start -->
     <ul class="left">
         <li class="icon dashboard"><a href="#">{Index}</a></li>

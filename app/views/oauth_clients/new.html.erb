@@ -1,5 +1,16 @@
-<h1><%= t('oauth.register_new_app') %></h1>
-<% form_for :client_application, :url => { :action => :create } do |f| %>
-   <%= render :partial => "form", :locals => { :f => f } %>
-   <%= submit_tag t('basic.register') %>
-<% end %>
+<div class="grid_24">
+
+     <div class="box_top">
+
+         <h2 class="icon list"><%= t('oauth.register_new_app') %></h2>
+
+         <h3 class="right"><a href="#contents">Top</a></h3>
+     </div>
+
+     <div class="box_content padding">
+         <% form_for :client_application, :url => { :action => :create } do |f| %>
+           <%= render :partial => "form", :locals => { :f => f } %>
+           <%= submit_tag t('basic.register') %>
+        <% end %>
+     </div>
+ </div>

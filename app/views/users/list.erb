@@ -1,6 +1,31 @@
 
 
-<% @users.each do |user| %>
-    <%= link_to user.username, "/#{user.username}" %><br/>
+<div class="grid_24">
 
-<% end %>
+    <div class="box_top">
+
+        <h2 class="icon list"><%= t "basic.users" %></h2>
+
+        <h3 class="right"><a href="#contents">Top</a></h3>
+    </div>
+
+    <div class="box_content padding">
+        <table class="sorting">
+          <thead>
+            <tr>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @users.each do |user| %>
+            <tr>
+                <td><%= link_to user.username, profile_path(:username => user.username) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+
+
+</div>
+

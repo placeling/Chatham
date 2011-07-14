@@ -16,6 +16,7 @@ en:
     show: "Show"
     back: "Back"
     name: "Name"
+    users: "Users"
 
 
   admin:
@@ -25,6 +26,7 @@ en:
   user:
     sign_in: "Sign In"
     sign_up: "Sign Up"
+    log_out: "Log Out"
     forgot_password: "Forgot your password?"
     didnt_receive_confirmation: "Didn't receive confirmation instructions?"
     didnt_receive_unlock: "Didn't receive unlock instructions?"
@@ -55,12 +57,15 @@ en:
     allowed_this_request: "You have allowed this request"
     rejected_this_request: "You have disallowed this request"
     oauth_details: "OAuth details for %{app_name}"
-    consumer_key: "Consumer Key:"
-    consumer_secret: "Consumer Secret:"
+    consumer_key: "Consumer Key"
+    consumer_secret: "Consumer Secret"
     request_token_url: "Request Token URL"
     access_token_url: "Access Token URL"
     authorize_url: "Authorize URL"
     we_support_hmac: "We support hmac-sha1 (recommended) as well as plain text in ssl mode."
+    client_applications: "OAuth Client Applications"
+    application: "Application"
+    issued: "Issued"
 
 
 

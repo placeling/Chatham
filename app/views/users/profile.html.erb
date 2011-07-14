@@ -1,6 +1,15 @@
-<h1><%= @user.username %></h1>
 
-<% if admin_user? %>
-    <%= render (:partial =>"admin_links") %>
-<% end %>
+<div class="grid_24">
+
+    <div class="box_top">
+
+        <h2 class="icon list"><%= @user.username %></h2>
+
+        <h3 class="right"><a href="#contents">Top</a></h3>
+    </div>
+
+    <div class="box_content padding">
+        This is <%= @user.username %>'s profile page
+    </div>
+</div>
 
