@@ -59,9 +59,9 @@ class GooglePlaces
         elsif hash.status == "INVALID_REQUEST"
           raise "Bad Google Places Request - INVALID REQUEST"
         end
+      else
+        raise "Google Places API returned non-200 result"
       end
-    else
-      raise "Google Places API returned non-200 result"
     end
 
 end

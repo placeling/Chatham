@@ -1,0 +1,26 @@
+<div class="grid_24">
+
+     <div class="box_top">
+
+         <h2 class="icon list"><%= @place.name %></h2>
+
+         <h3 class="right"><a href="#contents"><%= t'basic.top' %></a></h3>
+     </div>
+
+     <div class="box_content padding">
+        <p>
+          <strong>X:</strong>
+          <code><%= @place.location.x  %></code>
+        </p>
+        <p>
+          <strong>Y:</strong>
+          <code><%= @place.location.y  %></code>
+        </p>
+
+        <%= link_to t("basic.edit"), edit_place_path(@place) %> |
+        <%= link_to t("basic.back"), places_path %>
+     </div>
+ </div>
+
+
+

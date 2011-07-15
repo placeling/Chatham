@@ -4,12 +4,6 @@ Chatham::Application.routes.draw do
 
   get "home/index"
 
-  resources :users
-  resources :places
-  resources :perspectives
-
-  resources :oauth_clients
-
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
 
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
@@ -23,7 +17,9 @@ Chatham::Application.routes.draw do
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
 
 
-  match 'users/list' => "users#list", :as => "users_list"
+  match '/users/list' => "users#list", :as => "users_list"
+  match '/places/nearby_places',  :to => 'places#nearby_places',  :as => :nearby_places
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -50,6 +46,10 @@ Chatham::Application.routes.draw do
   #     end
   #   end
 
+  resources :users
+  resources :places
+  resources :perspectives
+  resources :oauth_clients
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
