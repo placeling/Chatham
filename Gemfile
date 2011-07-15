@@ -19,6 +19,11 @@ gem "oauth-plugin", ">= 0.4.0.pre1"
 gem "devise", "~> 1.4.2"
 
 
+gem "system_timer"
+gem "database_cleaner"
+gem "httparty"
+gem "hashie"
+
 group :test, :development do
   gem "rspec-rails", "~> 2.6"
 end
