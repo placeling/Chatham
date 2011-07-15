@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'google_places'
-require 'pp'
 
 describe GooglePlaces do
   before(:each) do
