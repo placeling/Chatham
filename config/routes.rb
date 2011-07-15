@@ -1,9 +1,12 @@
 Chatham::Application.routes.draw do
-  get "users/profile"
 
   devise_for :users
 
   get "home/index"
+
+  resources :users
+  resources :places
+  resources :perspectives
 
   resources :oauth_clients
 

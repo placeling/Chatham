@@ -26,6 +26,7 @@ gem "hashie"
 
 group :test, :development do
   gem "rspec-rails", "~> 2.6"
+  gem 'mocha'
 end
 
 # Use unicorn as the web server

@@ -7,6 +7,9 @@ class User
 
 
   field :username
+
+  embeds_many :perspectives
+
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me

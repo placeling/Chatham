@@ -17,6 +17,10 @@ en:
     back: "Back"
     name: "Name"
     users: "Users"
+    top: "Top"
+    saved: "Saved"
+    new: "New"
+    nearby: "Nearby"
 
 
   admin:
@@ -67,8 +71,24 @@ en:
     application: "Application"
     issued: "Issued"
 
+  place:
+    places: "Places"
+    place: "Place"
+    location: "Location"
+    favorited: "Favorited"
+    favorites: "Favorites"
+    add_new: "Add New Place"
+    updated: "Updated Place"
+    nearby_places: "Nearby Places"
 
 
+  perspective:
+    perspectives: "Perspectives"
+    perspective: "Perspective"
+    notes: "Notes"
+    note: "Note"
+    add_new: "Add Perspective"
+    edit: "Edit Perspective"
 
 
   errors:
