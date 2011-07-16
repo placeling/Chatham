@@ -1,5 +1,6 @@
-PATH
-  remote: ../oauth-plugin/
+GIT
+  remote: git://github.com/imackinn/oauth-plugin.git
+  revision: 6a5136a4a8661890dde72501755058051c2612b3
   specs:
     oauth-plugin (0.4.0.pre6)
       multi_json
@@ -49,6 +50,15 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    capybara (1.0.0)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (~> 0.2.0)
+      xpath (~> 0.1.4)
+    childprocess (0.1.9)
+      ffi (~> 1.0.6)
     crack (0.1.8)
     database_cleaner (0.6.7)
     devise (1.4.2)
@@ -62,6 +72,7 @@ GEM
       addressable (~> 2.2.4)
       multipart-post (~> 1.1.0)
       rack (>= 1.1.0, < 2)
+    ffi (1.0.9)
     hashie (0.4.0)
     highline (1.6.1)
     httparty (0.7.8)
@@ -71,6 +82,7 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.4.6)
+    json_pure (1.5.3)
     mail (2.2.14)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -94,6 +106,7 @@ GEM
     net-ssh (2.0.23)
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
+    nokogiri (1.5.0)
     oauth (0.4.5)
     oauth2 (0.4.1)
       faraday (~> 0.6.1)
@@ -132,6 +145,12 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
+    rubyzip (0.9.4)
+    selenium-webdriver (0.2.2)
+      childprocess (>= 0.1.9)
+      ffi (>= 1.0.7)
+      json_pure
+      rubyzip
     sqlite3-ruby (1.3.2)
     system_timer (1.2.4)
     thor (0.14.6)
@@ -140,6 +159,8 @@ GEM
     tzinfo (0.3.23)
     warden (1.0.4)
       rack (>= 1.0)
+    xpath (0.1.4)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
@@ -147,6 +168,7 @@ PLATFORMS
 DEPENDENCIES
   bson_ext (~> 1.3)
   capistrano
+  capybara
   database_cleaner
   devise (~> 1.4.2)
   hashie

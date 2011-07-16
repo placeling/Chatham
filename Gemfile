@@ -22,13 +22,13 @@ gem "database_cleaner"
 gem "httparty"
 gem "hashie"
 
-#gem "oauth-plugin", :git => "../oauth-plugin/.git" #for development purposes
-gem "oauth-plugin", :git => "git://git@github.com:imackinn/oauth-plugin.git"
+gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
 
 group :test, :development do
   gem "rspec-rails", "~> 2.6"
   gem 'mocha'
   gem 'json'
+  gem 'capybara'
 end
 
 # Use unicorn as the web server
