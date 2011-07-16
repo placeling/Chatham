@@ -1,3 +1,12 @@
+PATH
+  remote: ../oauth-plugin/
+  specs:
+    oauth-plugin (0.4.0.pre6)
+      multi_json
+      oauth (~> 0.4.4)
+      oauth2
+      rack
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -86,11 +95,6 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     oauth (0.4.5)
-    oauth-plugin (0.4.0.pre6)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2
-      rack
     oauth2 (0.4.1)
       faraday (~> 0.6.1)
       multi_json (>= 0.0.5)
@@ -152,7 +156,7 @@ DEPENDENCIES
   mocha
   mongoid (~> 2.0)
   oauth (>= 0.4.4)
-  oauth-plugin (>= 0.4.0.pre1)
+  oauth-plugin!
   rails (= 3.0.3)
   rspec-rails (~> 2.6)
   sqlite3-ruby

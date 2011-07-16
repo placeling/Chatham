@@ -14,8 +14,6 @@ gem "mongoid", "~> 2.0"
 gem "bson_ext", "~> 1.3"
 
 gem "oauth", ">= 0.4.4"
-gem "oauth-plugin", ">= 0.4.0.pre1"
-
 gem "devise", "~> 1.4.2"
 
 
@@ -23,6 +21,9 @@ gem "system_timer"
 gem "database_cleaner"
 gem "httparty"
 gem "hashie"
+
+#gem "oauth-plugin", :git => "../oauth-plugin/.git" #for development purposes
+gem "oauth-plugin", :git => "git://git@github.com:imackinn/oauth-plugin.git"
 
 group :test, :development do
   gem "rspec-rails", "~> 2.6"
