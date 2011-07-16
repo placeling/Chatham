@@ -1,0 +1,56 @@
+{
+   "html_attributions" : [
+      "Listings by \u003ca href=\"http://www.yellowpages.ca/\"\u003eYellowPages.ca\u003c/a\u003e"
+   ],
+   "result" : {
+      "address_components" : [
+         {
+            "long_name" : "2095",
+            "short_name" : "2095",
+            "types" : [ "street_number" ]
+         },
+         {
+            "long_name" : "West 4th Avenue",
+            "short_name" : "West 4th Avenue",
+            "types" : [ "route" ]
+         },
+         {
+            "long_name" : "Vancouver",
+            "short_name" : "Vancouver",
+            "types" : [ "locality", "political" ]
+         },
+         {
+            "long_name" : "Greater Vancouver Regional District",
+            "short_name" : "Greater Vancouver Regional District",
+            "types" : [ "administrative_area_level_2", "political" ]
+         },
+         {
+            "long_name" : "BC",
+            "short_name" : "BC",
+            "types" : [ "administrative_area_level_1", "political" ]
+         },
+         {
+            "long_name" : "V6J 1M7",
+            "short_name" : "V6J 1M7",
+            "types" : [ "postal_code" ]
+         }
+      ],
+      "formatted_address" : "2095 West 4th Avenue, Vancouver, BC V6J 1M7, Canada",
+      "formatted_phone_number" : "(604) 732-6810",
+      "geometry" : {
+         "location" : {
+            "lat" : 49.2682380,
+            "lng" : -123.1525990
+         }
+      },
+      "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+      "id" : "a648ca9b8af31e9726947caecfd062406dc89440",
+      "name" : "Sophie's Cosmic Cafe",
+      "rating" : 3.30,
+      "reference" : "CnRqAAAAupFuI8pPDPHvtmu8wLqOJIIw7MjQnU0AuOSciRaYv315ctp_J0A3Wa480MLdw2S4TZ4bz6tZkDkywesF2IlpDHYxEGOC4yZ7s86XaQkFmMwsddoRjOjGPfBefkHM9oIjbATDZquo1enEMluCCLIkfxIQ_mHe2TJeJCh7C1EKeLD5DRoU-Xa0MoV9FRpW-8u_lcOUrXM5XIw",
+      "types" : [ "restaurant", "food", "establishment" ],
+      "url" : "http://maps.google.com/maps/place?cid=7606348301440864605",
+      "vicinity" : "West 4th Avenue, Vancouver"
+   },
+   "status" : "OK"
+}
