@@ -20,6 +20,13 @@ describe GooglePlaces do
     place_found.should == true
   end
 
+  it "gets details of a specific place" do
+    google_place = @gp.get_place("CnRqAAAAEEnWTAiWPjatj80RAvWUuwVZWXsl25lQ5R_5XHczhyTX0gRT_NXn198gyOfAgK7-mEoWP4lYSSOTUBt5PcyvF8kIb7F8GahGFgFc_t9Z7mOH3pMn0GEaLMoXIFaqCgLCV1j2I4QzPra2vMXu3EjgxBIQomUMMDgY3unvRAVpspfIghoUvERBjeBrR0tfu5x3pQBrmJBb1xU")
+
+    google_place.id.should == "a648ca9b8af31e9726947caecfd062406dc89440"
+
+  end
+
 
   it "doesn't work with a bad key" do
     @gp.api_key = "badkey"

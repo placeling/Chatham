@@ -8,6 +8,18 @@ class GooglePlaces
     @api_key = CHATHAM_CONFIG['google_api']
   end
 
+  def get_place(reference, sensor = true, language ="en")
+    #radis is in meters
+
+    options = {
+      :reference => reference,
+      :sensor => sensor
+    }
+
+    mashup( self.class.get("/details/json", :query => options.merge(self.default_options)) ).result
+
+  end
+
   def find_nearby(x, y, radius, sensor = true, type ="", language ="en")
     #radis is in meters
 
@@ -19,7 +31,7 @@ class GooglePlaces
       :sensor => sensor
     }
 
-    mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) )
+    mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
 
   end
 
@@ -51,7 +63,7 @@ class GooglePlaces
         end
 
         if hash.status == "OK" or hash.status == "ZERO_RESULTS"
-          return hash.results
+          return hash
         elsif hash.status == "REQUEST_DENIED"
           raise "Bad Google Places Request - request denied"
         elsif hash.status == "OVER_QUERY_LIMIT"
