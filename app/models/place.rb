@@ -14,6 +14,7 @@ class Place
 
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
   index :google_id
+  index "perspectives.user_id"
 
 
   def self.find_by_google_id( google_id )

@@ -28,7 +28,7 @@ group :test, :development do
   gem "rspec-rails", "~> 2.6"
   gem 'mocha'
   gem 'json'
-  gem 'capybara'
+  gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'factory_girl_rails'
 end
 

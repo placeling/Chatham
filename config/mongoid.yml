@@ -1,10 +1,13 @@
 development:
   host: localhost
   database: chatham_development
+  autocreate_indexes: true
+
 
 test:
   host: localhost
   database: chatham_test
+  autocreate_indexes: true
 
 # set these environment variables on your prod server
 production:
@@ -12,6 +15,7 @@ production:
   port: <%= ENV['MONGOID_PORT'] %>
   username: <%= ENV['MONGOID_USERNAME'] %>
   password: <%= ENV['MONGOID_PASSWORD'] %>
+  #don't autocreate indexes in production, use the rake task rake db:mongoid:create_indexes instead
   database: <%= ENV['MONGOID_DATABASE'] %>
   # slaves:
   #   - host: slave1.local
