@@ -6,9 +6,9 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  field :username
+  field :username,      :type =>String
 
-  embeds_many :perspectives
+  has_and_belongs_to_many :places
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false

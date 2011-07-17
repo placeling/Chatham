@@ -2,14 +2,15 @@ class Place
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :location, :type => Array
+  field :location, :type => Hash
   field :name, :type => String
   field :google_id, :type => String
   field :vicinity, :type => String
   field :venue_types, :type => Array
   field :google_url,  :type => String
 
-  has_many :perspectives
+  embeds_many :perspectives
+  #doesn't actually need to reference users, kind of contained not needing it
 
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
   index :google_id
@@ -25,7 +26,7 @@ class Place
       p.google_id = raw_place.id
       p.google_url = raw_place.url
       p.vicinity = raw_place.vicinity
-      p.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
+      p.location = {:x =>raw_place.geometry.location.lat, :y =>raw_place.geometry.location.lng}
       p.venue_types = raw_place.types
     end
 

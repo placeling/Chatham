@@ -29,6 +29,7 @@ group :test, :development do
   gem 'mocha'
   gem 'json'
   gem 'capybara'
+  gem 'factory_girl_rails'
 end
 
 # Use unicorn as the web server
