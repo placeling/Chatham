@@ -18,7 +18,7 @@ describe Place do
   end
 
   it "should be able to create a record from a Google places hash" do
-    file = File.open("../fixtures/cosmic_cafe_google_place_detail.json", 'r')
+    file = File.open(Rails.root.join("spec/fixtures/cosmic_cafe_google_place_detail.json"), 'r')
     json = file.readlines.to_s
     hash = Hashie::Mash.new( JSON.parse(json) ).result
 
