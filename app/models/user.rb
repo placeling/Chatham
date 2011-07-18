@@ -31,7 +31,7 @@ class User
 
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => perspectives)
+      attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ) )
     elsif (options[:perspectives] == :created_by )
       attributes.merge(:perspectives => self.perspectives.descending(:created_at))
     else

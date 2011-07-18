@@ -23,7 +23,13 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => @user.as_json(:perspectives => :created_by) }
+      format.json {
+        if (params[:location])
+          render :json => @user.as_json({:perspectives =>:location, :location => params[:location]})
+        else
+          render :json => @user.as_json(:perspectives => :created_by)
+        end
+      }
       format.html
     end
   end

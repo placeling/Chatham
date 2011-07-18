@@ -5,18 +5,17 @@ describe "API - " do
 
   describe "bookmarks for a user can listed" do
     before(:each) do
-      @place = Factory.create(:place)
       @user = Factory.create(:user)
-      @place.user = @user
-      @perspective = Factory.create(:perspective, :memo =>"bookmark retrieve test")
+      @perspective = Factory.build(:perspective, :memo =>"COSMIC")
       @perspective.user = @user
-      @perspective.place = @place
-      @perspective.save
+      @perspective2 = Factory.build(:lib_square_perspective, :memo =>"LIB SQUARE")
+      @perspective2.user = @user
+      @perspective2.save!
+      @perspective.save!
+      @user.save!
     end
 
-    it "by creation date" do
-
-      post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
+    it "by reverse creation date (default)" do
 
       get user_perspectives_path, {:username => @user.username, :format => :json}
       response.status.should be(200)
@@ -24,16 +23,21 @@ describe "API - " do
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
 
       perspectives = returned_data.perspectives
-      perspectives.count.should == 1
-      perspectives[0].memo.should include("bookmark retrieve test")
-
+      perspectives.count.should == 2
+      perspectives[1].memo.should include("COSMIC")
+      perspectives[0].memo.should include("LIB SQUARE")
     end
 
     it "by closest distance" do
-      post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
-
+      get user_perspectives_path, {:username => @user.username, :location=>[49.2642380,-123.1625990], :format => :json}
       response.status.should be(200)
 
+      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
+
+      perspectives = returned_data.perspectives
+      perspectives.count.should == 2
+      perspectives[1].memo.should include("LIB SQUARE")
+      perspectives[0].memo.should include("COSMIC")
     end
 
 
