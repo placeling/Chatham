@@ -3,6 +3,43 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "bookmarks for a user can listed" do
+    before(:each) do
+      @place = Factory.create(:place)
+      @user = Factory.create(:user)
+      @place.user = @user
+      @perspective = Factory.create(:perspective, :memo =>"bookmark retrieve test")
+      @perspective.user = @user
+      @perspective.place = @place
+      @perspective.save
+    end
+
+    it "by creation date" do
+
+      post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
+
+      get user_perspectives_path, {:username => @user.username, :format => :json}
+      response.status.should be(200)
+
+      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
+
+      perspectives = returned_data.perspectives
+      perspectives.count.should == 1
+      perspectives[0].memo.should include("bookmark retrieve test")
+
+    end
+
+    it "by closest distance" do
+      post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
+
+      response.status.should be(200)
+
+    end
+
+
+  end
+
+
   describe "perspective can be added" do
 
     it "to a completely new place" do

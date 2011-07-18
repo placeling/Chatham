@@ -15,4 +15,17 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  def perspectives
+    @user = User.find_by_username( params[:username] )
+
+    if (params[:location])
+
+    end
+
+    respond_to do |format|
+      format.json { render :json => @user.as_json(:perspectives => :created_by) }
+      format.html
+    end
+  end
+
 end

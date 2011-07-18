@@ -29,7 +29,7 @@ group :test, :development do
   gem 'mocha'
   gem 'json'
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', "~> 1.1.rc1"
 end
 
 # Use unicorn as the web server

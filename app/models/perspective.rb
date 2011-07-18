@@ -24,4 +24,8 @@ class Perspective
     end
   end
 
+  def as_json(options={})
+    attributes.merge(:place => place)
+  end
+
 end
