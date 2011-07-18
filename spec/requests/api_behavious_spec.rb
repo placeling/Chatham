@@ -4,9 +4,36 @@ require 'json/ext'
 describe "API - " do
 
   describe "perspective can be added" do
-    it "to a new place that exists on Google Places and the system" do
-      # 49.268547,-123.15279 - Ian's House
 
+    it "to a completely new place" do
+      user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+
+      post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
+
+      post_via_redirect places_path, {
+        :format => 'json',
+        :place => {
+            :name => "Casa MacKinnon",
+            :location => [49.268547,-123.15279]
+        },
+        :perspective => {
+            :memo => "This is where the magic happens",
+            :location => [49.268547,-123.15279],
+            :radius=>'500'
+        }
+      }
+
+      response.status.should be(200)
+
+      #make sure perspective has been added, but place count is still 1
+      place = Place.all().first
+
+      perspective = place.perspectives.where(:user_id => user.id).first
+      perspective.memo.should include("magic happens")
+
+    end
+
+    it "to a new place that exists on Google Places and the system" do
       user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
       place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
 
@@ -21,10 +48,7 @@ describe "API - " do
         :google_id=>"a648ca9b8af31e9726947caecfd062406dc89440",
         :perspective => {
             :memo => "This place is out of this world",
-            :location => {
-              :x => '49.268547',
-              :y =>'-123.15279'
-            },
+            :location => [49.268547,-123.15279],
             :radius=>'500'
         }
       }
@@ -36,7 +60,7 @@ describe "API - " do
       place_query.count.should be(1)
       place = place_query.first
 
-      perspective = place.perspectives.where(:user_id => user.id.to_s).first
+      perspective = place.perspectives.where(:user_id=> user.id).first
       perspective.memo.should include("out of this world")
 
     end
@@ -57,10 +81,7 @@ describe "API - " do
         :google_id=>"a648ca9b8af31e9726947caecfd062406dc89440",
         :perspective => {
             :memo => "This place is da bomb",
-            :location => {
-              :x => '49.268547',
-              :y =>'-123.15279'
-            },
+            :location => [49.268547,-123.15279],
             :radius=>'500'
         }
       }
@@ -69,8 +90,9 @@ describe "API - " do
 
       #make sure place and perspective has been added
       place =  Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      place.should be_valid
 
-      perspective = place.perspectives.where(:user_id => user.id.to_s).first
+      perspective = place.perspectives.where(:user_id=> user.id).first
       perspective.memo.should include("da bomb")
 
     end

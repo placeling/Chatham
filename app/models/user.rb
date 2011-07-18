@@ -8,7 +8,8 @@ class User
 
   field :username,      :type =>String
 
-  has_and_belongs_to_many :places
+  has_many :perspectives
+  has_many :places #ones they created
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
@@ -17,7 +18,6 @@ class User
 
   has_many :client_applications
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application]
-
 
   def is_admin?
     return false

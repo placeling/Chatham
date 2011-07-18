@@ -1,18 +1,27 @@
 class Perspective
   include Mongoid::Document
   include Mongoid::Timestamps
+  before_validation :fix_location
 
   field :favorite,    :type => Boolean, :default => TRUE
   field :memo,        :type => String
-  field :user_id,     :type => String #http://stackoverflow.com/questions/3890633/how-to-reference-an-embedded-document-in-mongoid
 
   #these are meant for internal use, not immediately visible to user -iMack
-  field :location,    :type => Hash
+  field :location,    :type => Array
   field :radius,      :type => Float
 
-  embedded_in :place, :inverse_of => :perspectives
-  index :user_id
+  belongs_to :place
+  belongs_to :user
 
+  index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
 
+  def fix_location
+    if self.location[0].is_a? String
+      self.location[0] = self.location[0].to_f
+    end
+    if self.location[1].is_a? String
+      self.location[1] = self.location[1].to_f
+    end
+  end
 
 end

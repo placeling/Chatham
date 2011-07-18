@@ -12,15 +12,16 @@ class PerspectivesController < ApplicationController
         #kind of a no-op
       else
         gp = GooglePlaces.new
-        @place = Place.create_from_google_place( gp.get_place( params[:google_ref] ) )
+        @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
       end
     end
-    current_user.places << @place
-    @perspective= @place.perspectives.build(params[:perspective])
-    @perspective.user_id = current_user.id
 
-    if @perspective.save
+    @perspective= @place.perspectives.build(params[:perspective])
+    @perspective.user = current_user
+
+    if @place.save!
       current_user.save
+      @perspective.save
 
       respond_to do |format|
         format.html

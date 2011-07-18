@@ -1,7 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
-
+  before_filter :authenticate_user!, :only => :create
 
   def nearby_places
     x = params[:x].to_f
@@ -26,10 +26,23 @@ class PlacesController < ApplicationController
   end
 
   def create
-    @place = current_user.client_applications.build(params[:place])
+    @place = Place.new_from_user_input( params[:place] )
+    @place.user = current_user
+
+    if ( params[:perspective] )
+      @perspective = @place.perspectives.build( params[:perspective] )
+      @perspective.user = current_user
+    end
+
     if @place.save
+      @perspective.save! #don't autosave this relation, since were modding at most 1 doc and dont want to bother rest
+      current_user.save!
       flash[:notice] = t "basic.saved"
-      redirect_to :action => "show", :id => @client_application.id
+      respond_to do |format|
+        format.html { redirect_to :action => "show", :id => @place.id }
+        format.json { render :json => @place }
+      end
+
     else
       render :action => "new"
     end
