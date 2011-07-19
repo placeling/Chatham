@@ -18,7 +18,7 @@ Chatham::Application.routes.draw do
 
 
   match '/users/list' => "users#list", :as => "users_list"
-  match '/users/perspectives' => "users#perspectives", :as => :user_perspectives
+  match '/:username/perspectives' => "users#perspectives", :as => :user_perspectives
   match '/places/nearby_places',  :to => 'places#nearby_places',  :as => :nearby_places
 
   # The priority is based upon order of creation:

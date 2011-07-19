@@ -83,6 +83,7 @@ en:
 
 
   perspective:
+    fav_places: "%{user}'s favorite places"
     perspectives: "Perspectives"
     perspective: "Perspective"
     notes: "Notes"
