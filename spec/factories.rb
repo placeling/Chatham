@@ -43,14 +43,14 @@ FactoryGirl.define do
   factory :perspective do
     association :place, :factory => :place
     location { [49.2642380,-123.1625990] }
-    radius 500
+    accuracy 500
     memo "this place is da bomb"
   end
 
   factory :lib_square_perspective, :class => Perspective do
     association :place, :factory => :lib_square
     location { [49.279430, -123.115334] }
-    radius 500
+    accuracy 500
     memo "I want to like this place but it can get a little douchy"
   end
 end

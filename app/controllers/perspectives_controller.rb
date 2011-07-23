@@ -25,17 +25,16 @@ class PerspectivesController < ApplicationController
   end
 
   def create
+    @place = Place.find_by_google_id( params[:google_id] )
 
-    if params[:google_ref]
-      if @place = Place.find_by_google_id( params[:google_id] )
-        #kind of a no-op
-      else
-        gp = GooglePlaces.new
-        @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
-      end
+    @perspective= @place.perspectives.build(params)
+    if (params[:lat] and params[:long])
+        @perspective.location = [params[:lat].to_f, params[:long].to_f]
+        @perspective.accuracy = params[:accuracy]
+    else
+      @perspective.location = @place.location #made raw, these are by definition the same
+      @perspective.accuracy = params[:accuracy]
     end
-
-    @perspective= @place.perspectives.build(params[:perspective])
     @perspective.user = current_user
 
     if @place.save!

@@ -1,7 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
-  before_filter :authenticate_user!, :only => :create
+  before_filter :authenticate_user!, :only => [:create, :new, :update, :destroy]
 
   def nearby
     lat = params[:lat].to_f
@@ -26,23 +26,40 @@ class PlacesController < ApplicationController
   end
 
   def create
-    @place = Place.new_from_user_input( params[:place] )
-    @place.user = current_user
+    if params[:google_ref]  #check to see what place data is based on
+      if @place = Place.find_by_google_id( params[:google_id] )
+        #kind of a no-op
+      else
+        gp = GooglePlaces.new
+        @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
+        @place.user = current_user
+        @place.save
+      end
+    else
+      @place = Place.new_from_user_input( params )
+      @place.user = current_user
+      @place.save
+    end
 
-    if ( params[:perspective] )
-      @perspective = @place.perspectives.build( params[:perspective] )
+    #check for an attached perspective
+    if ( params[:memo] )
+      @perspective = @place.perspectives.build( )
       @perspective.user = current_user
+      @perspective.memo = params[:memo]
+      if (params[:lat] and params[:long])
+        @perspective.location = [params[:lat].to_f, params[:long].to_f]
+        @perspective.accuracy = params[:accuracy]
+      end
+      @perspective.save! #don't autosave this relation, since were modding at most 1 doc and dont want to bother rest
     end
 
     if @place.save
-      @perspective.save! #don't autosave this relation, since were modding at most 1 doc and dont want to bother rest
       current_user.save!
       flash[:notice] = t "basic.saved"
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
         format.json { render :json => @place }
       end
-
     else
       render :action => "new"
     end

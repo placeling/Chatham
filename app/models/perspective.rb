@@ -13,7 +13,7 @@ class Perspective
   #these are meant for internal use, not immediately visible to user -iMack
   field :place_location,    :type => Array
   field :location,    :type => Array
-  field :radius,      :type => Float
+  field :accuracy,      :type => Float
 
   belongs_to :place
   belongs_to :user

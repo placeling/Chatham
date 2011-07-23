@@ -7,9 +7,10 @@ describe Place do
   it "should be able to create a record from user input" do
     place = Place.new_from_user_input(
             :name => "Casa MacKinnon",
-            :location => [49.268547,-123.15279]
+            :lat => 49.268547,
+            :long => -123.15279
          )
-    place.save
+    place.save!
     place.should be_valid
 
     place = Place.all().first

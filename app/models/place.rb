@@ -46,9 +46,14 @@ class Place
 
 
   def self.new_from_user_input( params )
+    params[:location] = [params[:lat], params[:long]]
     place = Place.new( params )
     place.place_type = "USER_CREATED"
     return place
+  end
+
+   def as_json(options={})
+    attributes.merge(:user => user)
   end
 
   #Address.near(:latlng => [37.761523, -122.423575, 1])

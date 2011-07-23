@@ -19,9 +19,8 @@ Chatham::Application.routes.draw do
     collection do
       get :nearby
     end
+    resources :perspectives, :except =>[:show, :index]
   end
-
-  resources :perspectives
 
   resources :oauth_clients# first created -> highest priority.
 
