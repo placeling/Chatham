@@ -25,16 +25,23 @@ Chatham::Application.routes.draw do
 
   resources :oauth_clients# first created -> highest priority.
 
+  match "/:id" => "users#show", :as => :profile
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
-    scope "/v1" do# Keep in mind you can assign values other than :controller and :action
-      #resources :users, :format => "json"
-      #resources :perspectives, :format => "json"# Sample of named route:
-      #resources :places, :format => "json"#   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-      #match '/places/nearby_places',  :to => 'places#nearby_places', :format => "json"# This route can be invoked with purchase_url(:id => product.id)
+
+  #setting up the api routes
+  scope "/v1", :api_call => true do
+    resources :users, :except => [:destroy, :new, :create], :format => "json" do
+      get :perspectives, :on=>:member, :format => "json"
     end
 
-    match "/:id" => "users#show", :as => :profile
+    resources :places, :except => [:destroy], :format => "json" do
+      collection do
+        get :nearby, :format => "json"
+      end
+    end
+  end
 
   # Sample resource route with options:
   #   resources :products do
