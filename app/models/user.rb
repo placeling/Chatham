@@ -27,6 +27,12 @@ class User
     return false
   end
 
+  def to_param
+    #when routing, this makes the :id really the username
+    self.username
+  end
+
+
   def as_json(options={})
 
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)

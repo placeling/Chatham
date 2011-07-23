@@ -13,7 +13,7 @@ describe PlacesController do
 
   it "gets nearby places for co-ordinate" do
     GooglePlaces.any_instance.expects(:find_nearby).with(-33.8599827,151.2021282,500.0).once().returns([])
-    get :nearby_places, {:x => '-33.8599827', :y =>'151.2021282', :radius=>'500'}
+    get :nearby, {:lat => '-33.8599827', :long =>'151.2021282', :accuracy=>'500'}
     response.should be_success
   end
 

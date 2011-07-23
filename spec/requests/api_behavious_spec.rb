@@ -17,7 +17,7 @@ describe "API - " do
 
     it "by reverse creation date (default)" do
 
-      get user_perspectives_path, {:username => @user.username, :format => :json}
+      get perspectives_user_path(@user), {:format => :json}
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
@@ -29,7 +29,7 @@ describe "API - " do
     end
 
     it "by closest distance" do
-      get user_perspectives_path, {:username => @user.username, :location=>[49.2642380,-123.1625990], :format => :json}
+      get perspectives_user_path(@user), {:location=>[49.2642380,-123.1625990], :format => :json}
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
@@ -60,7 +60,7 @@ describe "API - " do
         :perspective => {
             :memo => "This is where the magic happens",
             :location => [49.268547,-123.15279],
-            :radius=>'500'
+            :accuracy=>'500'
         }
       }
 
@@ -90,7 +90,7 @@ describe "API - " do
         :perspective => {
             :memo => "This place is out of this world",
             :location => [49.268547,-123.15279],
-            :radius=>'500'
+            :accuracy=>'500'
         }
       }
 
@@ -140,18 +140,9 @@ describe "API - " do
   end
 
 
-  describe "GET nearby_places for HTML request" do
-    it "should do show nearby places for a co-ordinate" do
-      get nearby_places_path, {:x => '-33.8599827', :y =>'151.2021282', :radius=>'500'}
-      response.status.should be(200)
-
-      response.body.should include("Barangaroo")
-    end
-  end
-
   describe "GET nearby_places for JSON request" do
     it "should do show nearby places for a co-ordinate" do
-      get nearby_places_path, {:format => "json",:x => '-33.8599827', :y =>'151.2021282', :radius=>'500'}
+      get nearby_places_path, {:format => "json",:lat => '-33.8599827', :long =>'151.2021282', :accuracy=>'500'}
       response.status.should be(200)
       response.body.should include("Barangaroo")
 

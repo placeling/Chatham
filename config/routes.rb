@@ -1,39 +1,40 @@
 Chatham::Application.routes.draw do
 
+  root :to => "home#index"
+
   devise_for :users
 
-  get "home/index"
-
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
-
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
-
   match '/oauth/access_token',  :to => 'oauth#access_token',  :as => :access_token
-
   match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
-
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
-
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
 
+  resources :users do
+    get :perspectives, :on=>:member
+  end
 
-  match '/users/list' => "users#list", :as => "users_list"
-  match '/:username/perspectives' => "users#perspectives", :as => :user_perspectives
-  match '/places/nearby_places',  :to => 'places#nearby_places',  :as => :nearby_places
+  resources :places do
+    collection do
+      get :nearby
+    end
+  end
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+  resources :perspectives
+
+  resources :oauth_clients# first created -> highest priority.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
+    scope "/v1" do# Keep in mind you can assign values other than :controller and :action
+      #resources :users, :format => "json"
+      #resources :perspectives, :format => "json"# Sample of named route:
+      #resources :places, :format => "json"#   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+      #match '/places/nearby_places',  :to => 'places#nearby_places', :format => "json"# This route can be invoked with purchase_url(:id => product.id)
+    end
 
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+    match "/:id" => "users#show", :as => :profile
 
   # Sample resource route with options:
   #   resources :products do
@@ -47,10 +48,6 @@ Chatham::Application.routes.draw do
   #     end
   #   end
 
-  resources :users
-  resources :places
-  resources :perspectives
-  resources :oauth_clients
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
@@ -74,10 +71,7 @@ Chatham::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "home#index"
 
-
-  match "/:username" => "users#profile", :as => :profile
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

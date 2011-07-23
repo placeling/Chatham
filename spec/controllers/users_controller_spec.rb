@@ -10,7 +10,7 @@ describe UsersController do
         user.username = "imack"
 
         User.stubs(:where).with(anything).returns([user])
-        get :profile, :username => "imack"
+        get :show, :id => user.username
         response.should be_success
       end
 
@@ -24,7 +24,7 @@ describe UsersController do
   end
 
   it "shows a list of users" do
-    get :list
+    get :index
     response.should be_success
   end
 

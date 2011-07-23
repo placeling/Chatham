@@ -3,12 +3,12 @@ require 'google_places'
 class PlacesController < ApplicationController
   before_filter :authenticate_user!, :only => :create
 
-  def nearby_places
-    x = params[:x].to_f
-    y = params[:y].to_f
-    radius = params[:radius].to_f
+  def nearby
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+    radius = params[:accuracy].to_f
     gp = GooglePlaces.new
-    @places = gp.find_nearby(x, y, radius)
+    @places = gp.find_nearby(lat, long, radius)
 
     respond_to do |format|
       format.html

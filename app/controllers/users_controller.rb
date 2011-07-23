@@ -1,22 +1,7 @@
 class UsersController < ApplicationController
-  def profile
-    @user = User.where(:username => params['username']).first
-
-    #this is the final step in routes, if this doesn't work its a 404 -iMack
-    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
-
-    respond_to do |format|
-      format.json { render :json => @user }
-      format.html
-    end
-  end
-
-  def list
-    @users = User.all
-  end
 
   def perspectives
-    @user = User.find_by_username( params[:username] )
+    @user = User.find_by_username( params[:id] )
 
     if (params[:location])
 
@@ -33,5 +18,26 @@ class UsersController < ApplicationController
       format.html
     end
   end
+
+  def show
+    @user = User.where(:username => params[:id]).first
+
+    #this is the final step in routes, if this doesn't work its a 404 -iMack
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
+
+    respond_to do |format|
+      format.json { render :json => @user }
+      format.html
+    end
+  end
+
+  def index
+    @users = User.all
+  end
+
+
+
+
+
 
 end
