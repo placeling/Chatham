@@ -12,7 +12,7 @@ Chatham::Application.routes.draw do
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
 
   resources :users do
-    get :perspectives, :on=>:member
+    resources :perspectives, :only =>[:show, :index]
   end
 
   resources :places do
@@ -25,13 +25,11 @@ Chatham::Application.routes.draw do
 
   resources :oauth_clients# first created -> highest priority.
 
-  match "/:id" => "users#show", :as => :profile
-
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
 
   #setting up the api routes
-  scope "/v1", :api_call => true do
+  namespace :v1, :api_call => true do
     resources :users, :except => [:destroy, :new, :create], :format => "json" do
       get :perspectives, :on=>:member, :format => "json"
     end
@@ -42,6 +40,9 @@ Chatham::Application.routes.draw do
       end
     end
   end
+
+  match "/:id" => "users#show", :as => :profile
+
 
   # Sample resource route with options:
   #   resources :products do

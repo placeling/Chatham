@@ -17,7 +17,7 @@ describe "API - " do
 
     it "by reverse creation date (default)" do
 
-      get perspectives_user_path(@user), {:format => :json}
+      get user_perspectives_path(@user), {:format => :json}
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
@@ -29,7 +29,7 @@ describe "API - " do
     end
 
     it "by closest distance" do
-      get perspectives_user_path(@user), {:location=>[49.2642380,-123.1625990], :format => :json}
+      get user_perspectives_path(@user), {:lat=>49.2642380, :long=>-123.1625990, :format => :json}
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )

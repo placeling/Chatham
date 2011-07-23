@@ -1,8 +1,27 @@
 class PerspectivesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except =>:index
 
   def new
 
+  end
+
+  def index
+    @user = User.find_by_username( params[:user_id] )
+
+    if (params[:lat] && params[:long])
+      location = [params[:lat].to_f, params[:long].to_f]
+    end
+
+    respond_to do |format|
+      format.json {
+        if ( location )
+          render :json => @user.as_json({:perspectives =>:location, :location => location})
+        else
+          render :json => @user.as_json(:perspectives => :created_by)
+        end
+      }
+      format.html
+    end
   end
 
   def create
