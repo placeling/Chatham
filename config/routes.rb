@@ -22,6 +22,9 @@ Chatham::Application.routes.draw do
     resources :perspectives, :except =>[:show, :index]
   end
 
+  #this one is used to post a perspective when client has a google_id but not a place_id
+  match '/places/perspectives/' => 'perspectives#create', :as => 'places_perspectives'
+
   resources :oauth_clients# first created -> highest priority.
 
   # Sample of regular route:

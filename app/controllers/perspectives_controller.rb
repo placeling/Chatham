@@ -25,7 +25,11 @@ class PerspectivesController < ApplicationController
   end
 
   def create
-    @place = Place.find_by_google_id( params[:google_id] )
+    if (params[:google_id])
+      @place = Place.find_by_google_id( params[:google_id] )
+    else
+      @place = Place.find( params[:place_id] )
+    end
 
     @perspective= @place.perspectives.build(params)
     if (params[:lat] and params[:long])
