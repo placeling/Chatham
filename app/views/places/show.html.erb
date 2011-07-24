@@ -11,7 +11,7 @@
     <div class="box_content padding">
         <table class="sorting">
           <% @place.perspectives.each do |perspective|%>
-                <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+                <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :place} %>
           <% end %>
         </table>
     </div>
