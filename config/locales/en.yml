@@ -7,6 +7,10 @@ en:
     applications_list: "Oauth Applications"
     users_list: "Users List"
     product_name: "Placeling"
+    copyright: "Copyright"
+    privacy_policy: "Privacy Policy"
+    terms_of_service: "Terms of Service"
+
 
   basic:
     update: "Update"
@@ -21,11 +25,16 @@ en:
     saved: "Saved"
     new: "New"
     nearby: "Nearby"
+    mark: "Placemark"
+    marks: "Placemarks"
+    location: "Location"
 
 
   admin:
     required_failed: "This requires admin privileges"
 
+  profile:
+    profile: "Profile"
 
   user:
     sign_in: "Sign In"

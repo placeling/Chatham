@@ -1,5 +1,24 @@
-<div class="grid_24">
 
+<div class="grid_14">
+
+    <div class="box_top">
+
+        <h2 class="icon list"><%= @place.name %>'s <%= t("basic.marks") %></h2>
+
+        <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
+    </div>
+
+    <div class="box_content padding">
+        <table class="sorting">
+          <% @place.perspectives.each do |perspective|%>
+                <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+          <% end %>
+        </table>
+    </div>
+</div>
+
+
+<div class="grid_10">
      <div class="box_top">
 
          <h2 class="icon list"><%= @place.name %></h2>
@@ -8,19 +27,16 @@
      </div>
 
      <div class="box_content padding">
+
+        <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
+
         <p>
-          <strong>X:</strong>
-          <code><%= @place.location.x  %></code>
-        </p>
-        <p>
-          <strong>Y:</strong>
-          <code><%= @place.location.y  %></code>
+          <strong><%= t("basic.location")%>:</strong>
+          <code><%= @place.location[0].to_s + "," + @place.location[1].to_s  %></code>
         </p>
 
-        <%= link_to t("basic.edit"), edit_place_path(@place) %> |
-        <%= link_to t("basic.back"), places_path %>
      </div>
- </div>
+</div>
 
 
 
