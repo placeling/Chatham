@@ -32,15 +32,19 @@ Chatham::Application.routes.draw do
 
   #setting up the api routes
   namespace :v1, :api_call => true do
-    resources :users, :except => [:destroy, :new, :create], :format => "json" do
-      get :perspectives, :on=>:member, :format => "json"
+    resources :users do
+      resources :perspectives, :only =>[:show, :index]
     end
 
-    resources :places, :except => [:destroy], :format => "json" do
+    resources :places do
       collection do
-        get :nearby, :format => "json"
+        get :nearby
       end
+      resources :perspectives, :except =>[:show, :index]
     end
+
+    #this one is used to post a perspective when client has a google_id but not a place_id
+    match '/places/perspectives/' => 'perspectives#create', :as => 'places_perspectives'
   end
 
   match "/:id" => "users#show", :as => :profile

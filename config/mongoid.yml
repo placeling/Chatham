@@ -9,6 +9,11 @@ test:
   database: chatham_test
   autocreate_indexes: true
 
+staging:
+  host: localhost
+  database: chatham_staging
+  autocreate_indexes: true
+
 # set these environment variables on your prod server
 production:
   host: <%= ENV['MONGOID_HOST'] %>
