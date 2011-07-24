@@ -20,6 +20,20 @@ describe GooglePlaces do
     place_found.should == true
   end
 
+  it "finds a place by name and rough co-ordinates" do
+    nearby = @gp.find_nearby(49.268547,-123.15279,500, false, "Calhoun's")
+
+    place_found = false
+    for place in nearby
+      if place.id == "227eda8780805995c178f614fbf7aab34090f187"#calhouns
+        place_found = true
+        break
+      end
+    end
+
+    place_found.should == true
+  end
+
   it "gets details of a specific place" do
     google_place = @gp.get_place("CnRqAAAAEEnWTAiWPjatj80RAvWUuwVZWXsl25lQ5R_5XHczhyTX0gRT_NXn198gyOfAgK7-mEoWP4lYSSOTUBt5PcyvF8kIb7F8GahGFgFc_t9Z7mOH3pMn0GEaLMoXIFaqCgLCV1j2I4QzPra2vMXu3EjgxBIQomUMMDgY3unvRAVpspfIghoUvERBjeBrR0tfu5x3pQBrmJBb1xU")
 

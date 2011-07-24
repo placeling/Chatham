@@ -20,7 +20,7 @@ class GooglePlaces
 
   end
 
-  def find_nearby(x, y, radius, sensor = true, type ="", language ="en")
+  def find_nearby(x, y, radius, sensor = true, name = nil, type ="", language ="en")
     #radis is in meters
 
     location = [x,y].join(',')
@@ -30,6 +30,10 @@ class GooglePlaces
       :radius => radius,
       :sensor => sensor
     }
+
+    if !name.nil?
+      options[:name] = name
+    end
 
     mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
 
