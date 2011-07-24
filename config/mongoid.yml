@@ -12,7 +12,6 @@ test:
 staging:
   host: localhost
   database: chatham_staging
-  autocreate_indexes: true
 
 # set these environment variables on your prod server
 production:
