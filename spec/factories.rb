@@ -64,6 +64,13 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation { |u| u.password }
   end
+
+  factory :admin do
+    username "Admin"
+    email  "admin@placeling.com"
+    password "foobar"
+    password_confirmation { |u| u.password }
+  end
 end
 
 
