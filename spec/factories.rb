@@ -2,14 +2,67 @@
 # Vancouver Public Library: 49.279484, -123.115349
 # Sophie's Cosmic Cafe: 49.2682380,-123.1525990
 
+FactoryGirl.define do
+
+  factory :oauth_nonce_one, :class => OauthNonce  do
+    nonce "a_nonce"
+    timestamp 1
+  end
+
+  factory :oauth_nonce_two, :class => OauthNonce  do
+    nonce "b_nonce"
+    timestamp 2
+  end
+
+end
+
+FactoryGirl.define do
+
+  factory :oauth_token_one, :class => OauthToken  do
+    association :user, :factory => :user
+    association :client_application, :factory => :client_application_one
+    token "one"
+    secret "MyString"
+  end
+
+  factory :oauth_token_two, :class => OauthToken  do
+    association :user, :factory => :user
+    association :client_application, :factory => :client_application_one
+    token "two"
+    secret "MyString"
+  end
+
+end
+
+FactoryGirl.define do
+
+  factory :client_application_one, :class => ClientApplication  do
+    name "MyString"
+    url "http://test.com"
+    support_url "http://test.com/support"
+    callback_url "http://test.com/callback"
+    key "one_key"
+    secret "MyString"
+  end
+
+  factory :client_application_two, :class => ClientApplication  do
+    name "MyString"
+    url "http://test.com"
+    support_url "http://test.com/support"
+    callback_url "http://test.com/callback"
+    key "two_key"
+    secret "MyString"
+  end
+
+end
 
 
 FactoryGirl.define do
   factory :user do
-    email 'tyler@placeling.com'
+    sequence(:username) { |n| "tyler#{n}" }
+    sequence(:email) { |n| "tyler#{n}@placeling.com" }
     password "foobar"
     password_confirmation { |u| u.password }
-    username 'tyler'
   end
 end
 
@@ -42,6 +95,7 @@ end
 FactoryGirl.define do
   factory :perspective do
     association :place, :factory => :place
+    association :user, :factory => :user
     location { [49.2642380,-123.1625990] }
     accuracy 500
     memo "this place is da bomb"

@@ -5,14 +5,12 @@ describe "API - " do
 
   describe "bookmarks for a user can listed" do
     before(:each) do
-      @user = Factory.create(:user)
-      @perspective = Factory.build(:perspective, :memo =>"COSMIC")
-      @perspective.user = @user
-      @perspective2 = Factory.build(:lib_square_perspective, :memo =>"LIB SQUARE")
-      @perspective2.user = @user
-      @perspective2.save!
-      @perspective.save!
-      @user.save!
+
+      @perspective = Factory.create(:perspective, :memo =>"COSMIC")
+      @user = @perspective.user
+      sleep 1 #ensured a different created_at
+      @perspective2 = Factory.create(:lib_square_perspective, :memo =>"LIB SQUARE", :user => @user)
+
     end
 
     it "by reverse creation date (default)" do
