@@ -6,7 +6,7 @@
 
         <h2 class="icon list"><%= t "basic.users" %></h2>
 
-        <h3 class="right"><a href="#contents">Top</a></h3>
+        <h3 class="right"><a href="#contents"><%= t'basic.top' %></a></h3>
     </div>
 
     <div class="box_content padding">
@@ -19,7 +19,7 @@
           <tbody>
           <% @users.each do |user| %>
             <tr>
-                <td><%= link_to user.username, profile_path(:username => user.username) %></td>
+                <td><%= link_to user.username, user_path(user) %></td>
             </tr>
           <% end %>
           </tbody>

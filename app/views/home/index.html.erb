@@ -1,14 +1,54 @@
 
-    <div class="grid_24">
+    <div class="grid_12">
 
         <div class="box_top">
 
-		    <h2 class="icon list">Home#index</h2>
+		    <h2 class="icon list"><%= t("user.top_users") %></h2>
 
-		    <h3 class="right"><a href="#contents">Top</a></h3>
+		    <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
         </div>
 
         <div class="box_content padding">
-            This is home
+          <table class="sorting">
+              <thead>
+                <tr>
+                    <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @top_users.each do |user| %>
+                <tr>
+                    <td><%= link_to user.username, user_path(user) %></td>
+                </tr>
+              <% end %>
+              </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="grid_12">
+
+        <div class="box_top">
+
+		    <h2 class="icon list"><%= t("place.top_places") %></h2>
+
+		    <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
+        </div>
+
+        <div class="box_content padding">
+            <table class="sorting">
+              <thead>
+                <tr>
+                    <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @top_places.each do |place| %>
+                <tr>
+                    <td><%= link_to place.name, place_path(place) %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
         </div>
     </div>

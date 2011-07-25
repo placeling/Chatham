@@ -10,12 +10,14 @@ class Place
   field :venue_types, :type => Array
   field :google_url,  :type => String
   field :place_type,  :type => String
+  field :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
 
   has_many :perspectives
   belongs_to :user
 
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
   index :google_id
+  index :perspective_count
 
 
   def fix_location
@@ -25,6 +27,10 @@ class Place
     if self.location[1].is_a? String
       self.location[1] = self.location[1].to_f
     end
+  end
+
+  def self.top_places( top_n )
+    self.desc( :perspective_count ).limit( top_n )
   end
 
   def self.find_by_google_id( google_id )

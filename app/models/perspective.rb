@@ -3,6 +3,8 @@ class Perspective
   include Mongoid::Timestamps
   before_validation :fix_location
   before_save :get_place_location
+  before_save :increment_place_and_user
+  after_destroy :decrement_place_and_user
 
   validates_presence_of :place
   validates_presence_of :user
@@ -20,6 +22,16 @@ class Perspective
 
   index [[ :place_location, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
+
+  def increment_place_and_user
+    self.place.perspective_count += 1
+    self.user.perspective_count += 1
+  end
+
+  def decrement_place_and_user
+    self.place.perspective_count -= 1
+    self.user.perspective_count -= 1
+  end
 
   def get_place_location
     self.place_location = self.place.location

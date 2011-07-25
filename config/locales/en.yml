@@ -53,6 +53,7 @@ en:
     confirm_new_password: "Confirm new password"
     change_my_password: "Change my password"
     new_password: "New password"
+    top_users: "Top Users"
 
   oauth:
     registered_successfully: "Registered the information successfully"
@@ -89,6 +90,7 @@ en:
     add_new: "Add New Place"
     updated: "Updated Place"
     nearby_places: "Nearby Places"
+    top_places: "Top Places"
 
 
   perspective:

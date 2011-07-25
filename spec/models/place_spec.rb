@@ -4,6 +4,30 @@ require 'JSON'
 
 describe Place do
 
+  it "increments its perspective count when a perspective is added" do
+    lib_square_perspective = Factory.create(:lib_square_perspective)
+    lib_square_perspective.place.perspective_count.should == 1
+  end
+
+  it "decrements its perspective count when a perspective is added" do
+    lib_square_perspective = Factory.create(:lib_square_perspective)
+    lib_square =  lib_square_perspective.place
+    lib_square.perspective_count.should == 1
+
+    lib_square_perspective.destroy
+    lib_square.perspective_count.should == 0
+  end
+
+  it "should show the most n active places" do
+    sophies = Factory.create(:place)
+    lib_square_perspective = Factory.create(:lib_square_perspective)
+    lib_square = lib_square_perspective.place
+
+    places = Place.top_places( 1 )
+    places.first.name.should == lib_square.name
+
+  end
+
   it "should be able to create a record from user input" do
     place = Place.new_from_user_input(
             :name => "Casa MacKinnon",

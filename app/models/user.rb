@@ -7,6 +7,7 @@ class User
 
 
   field :username,      :type =>String
+  field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
   has_many :perspectives
   has_many :places #ones they created
@@ -18,6 +19,12 @@ class User
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me
 
   index :username
+  index :perspective_count
+
+
+  def self.top_users( top_n )
+    self.desc( :perspective_count ).limit( top_n )
+  end
 
   def self.find_by_username( username )
     self.where( :username => username ).first
