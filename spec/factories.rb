@@ -32,6 +32,13 @@ FactoryGirl.define do
     secret "MyString"
   end
 
+  factory :access_token, :class => AccessToken  do
+    association :user, :factory => :user
+    association :client_application, :factory => :client_application_one
+    token "two"
+  end
+
+
 end
 
 FactoryGirl.define do

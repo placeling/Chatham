@@ -80,6 +80,7 @@ en:
     client_applications: "OAuth Client Applications"
     application: "Application"
     issued: "Issued"
+    no_xauth: "This app does not have xAuth enabled."
 
   place:
     places: "Places"

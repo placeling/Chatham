@@ -6,7 +6,7 @@ Chatham::Application.routes.draw do
 
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
-  match '/oauth/access_token',  :to => 'oauth#access_token',  :as => :access_token
+  match '/oauth/access_token',  :to => 'oauth#access_token_with_xauth_test',  :as => :access_token
   match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
@@ -31,7 +31,7 @@ Chatham::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
 
   #setting up the api routes
-  namespace :v1, :api_call => true do
+  scope 'v1', :api_call => true, :format => :json do
     resources :users do
       resources :perspectives, :only =>[:show, :index]
     end

@@ -42,8 +42,8 @@ class User
 
 
   def as_json(options={})
-
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
+    attributes = self.attributes.slice('username', 'perspective_count')
     if (options[:perspectives] == :location)
       attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ) )
     elsif (options[:perspectives] == :created_by )
@@ -51,6 +51,13 @@ class User
     else
       attributes
     end
+  end
+
+  protected
+
+  def self.find_for_database_authentication(conditions)
+    login = conditions.delete(:login)
+    self.any_of({ :username => login }, { :email => login }).first
   end
 
 end

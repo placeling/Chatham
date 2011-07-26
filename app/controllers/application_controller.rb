@@ -1,6 +1,19 @@
 class ApplicationController < ActionController::Base
-  before_filter :fix_location_parameters
-  protect_from_forgery
+  #before_filter :fix_location_parameters
+  #protect_from_forgery     might want to reenable this
+
+  before_filter :authorize
+
+  def authorize
+    if params[:api_call]
+       #require_oauth_auth_user # http basic auth for API access
+       #request.format = Mime::JS #force a json
+    else
+       #require_user # normal authlogic authentication
+      PP.pp 'test'
+    end
+  end
+
 
   def admin_required
     #this is the method used in oauth_clients_controller, rename for devise

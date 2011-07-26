@@ -13,12 +13,16 @@ class OauthToken
 
   index :token, :unique => true
 
-  referenced_in :user
-  referenced_in :client_application
+  belongs_to :user
+  belongs_to :client_application
 
   validates_uniqueness_of :token
   validates_presence_of :client_application, :token
   before_validation :generate_keys, :on => :create
+
+  def find_by_token(token_string)
+    where(:token => token_string).first
+  end
 
   def invalidated?
     !invalidated_at.nil?

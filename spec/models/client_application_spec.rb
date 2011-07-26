@@ -5,6 +5,14 @@ describe ClientApplication do
     @application = ClientApplication.create :name => "Agree2", :url => "http://agree2.com", :user => Factory(:user)
   end
 
+  it "can be found with a find_by_key" do
+    client_application = ClientApplication.find_by_key( @application.key )
+
+    client_application.should be_valid
+    client_application.name.should == "Agree2"
+  end
+
+
   it "should be valid" do
     @application.should be_valid
   end

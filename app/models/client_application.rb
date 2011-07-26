@@ -10,15 +10,16 @@ class ClientApplication
   field :callback_url,  :type => String
   field :key,           :type => String
   field :secret,        :type => String
-  field :secret,        :type => String
+
+  field :xauth_enabled,  :type => Boolean, :default =>true
 
   index :key, :unique => true
 
-  referenced_in :user
-  references_many :tokens, :class_name => 'OauthToken'
-  references_many :access_tokens
-  references_many :oauth2_verifiers
-  references_many :oauth_tokens
+  belongs_to :user
+  has_many :tokens, :class_name => 'OauthToken'
+  has_many :access_tokens
+  has_many :oauth2_verifiers
+  has_many :oauth_tokens
 
   validates_presence_of :name, :url, :key, :secret
   validates_uniqueness_of :key
@@ -37,6 +38,10 @@ class ClientApplication
     else
       nil
     end
+  end
+
+  def self.find_by_key(consumer_key)
+    ClientApplication.where(:key => consumer_key).first
   end
 
   def self.verify_request(request, options = {}, &block)
