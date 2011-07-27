@@ -10,8 +10,14 @@ class User
   field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
+  #field :followers, :type=> Array, :default => []
+  #field :followees, :type=> Array, :default => []
+
   has_many :perspectives
   has_many :places #ones they created
+
+  has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
+  has_and_belongs_to_many :followees, :class_name =>"User", :inverse_of => nil
 
   has_many :client_applications
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application]
@@ -21,6 +27,7 @@ class User
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me
 
   index :username
+  index :email
   index :perspective_count
 
 
@@ -39,6 +46,16 @@ class User
   def to_param
     #when routing, this makes the :id really the username
     self.username
+  end
+
+  def follow( other_user )
+    other_user.followers << self
+    self.followees << other_user
+  end
+
+  def unfollow( other_user )
+    other_user.followers.delete_all(:conditions => { :username => self.username })
+    self.followees.delete_all(:conditions => { :username => other_user.username })
   end
 
 
