@@ -4,9 +4,15 @@ class OauthController < ApplicationController
 
   def access_token_with_xauth_test
 
+    if current_client_application.nil?
+      render :text => t("oauth.invalid"), :status => 401, :template=>nil
+      return
+    end
+
     if params[:x_auth_mode] == "client_auth"
       if ! current_client_application.xauth_enabled
-        raise Exception.new, t("oauth.no_xauth"), caller
+        render :text => t("oauth.no_xauth"), :status => 401, :template=>nil
+        return
       end
 
       user = User.find_for_database_authentication( { :login => params[:x_auth_username] } )
@@ -14,7 +20,8 @@ class OauthController < ApplicationController
       if user.valid_password?( params[:x_auth_password] )
         sign_in (user)
       else
-        raise Exception.new,  t("devise.failure.invalid"), caller
+        render :text => t("devise.failure.invalid"), :status => 401, :template=>nil
+        return
       end
 
       # get rid of old auth tokens

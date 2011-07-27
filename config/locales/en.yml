@@ -82,6 +82,7 @@ en:
     issued: "Issued"
     no_xauth: "This app does not have xAuth enabled."
     authorized_apps: "The following tokens have been issued to applications in your name"
+    invalid: "Invalid OAuth Request"
 
   place:
     places: "Places"

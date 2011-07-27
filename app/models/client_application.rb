@@ -3,6 +3,7 @@ require 'oauth'
 class ClientApplication
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia #doesnt actually delete on .delete, only .delete! or .destroy!
 
   field :name,          :type => String
   field :url,           :type => String
@@ -66,6 +67,11 @@ class ClientApplication
   # If your application requires passing in extra parameters handle it here
   def create_request_token(params={})
     RequestToken.create :client_application => self, :callback_url=>self.token_callback_url
+  end
+
+  def delete!
+    logger.warn("Delete! (the permanent one) attempted to be called on client_application")
+    self.delete #non-permanent version
   end
 
   protected
