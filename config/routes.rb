@@ -10,6 +10,7 @@ Chatham::Application.routes.draw do
   match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
+  post 'oauth/revoke'
 
   resources :users do
     resources :perspectives, :only =>[:show, :index]
@@ -44,7 +45,7 @@ Chatham::Application.routes.draw do
     end
 
     #this one is used to post a perspective when client has a google_id but not a place_id
-    match '/places/perspectives/' => 'perspectives#create', :as => 'places_perspectives'
+    match '/v1/places/perspectives/' => 'perspectives#create', :as => 'v1_places_perspectives'
   end
 
   match "/:id" => "users#show", :as => :profile

@@ -1,16 +1,10 @@
 class ApplicationController < ActionController::Base
-  #before_filter :fix_location_parameters
-  #protect_from_forgery     might want to reenable this
+  # protect_from_forgery TODO: might want this back
+  before_filter :api_check
 
-  before_filter :authorize
-
-  def authorize
+  def api_check
     if params[:api_call]
-       #require_oauth_auth_user # http basic auth for API access
-       #request.format = Mime::JS #force a json
-    else
-       #require_user # normal authlogic authentication
-      PP.pp 'test'
+      oauth_required
     end
   end
 
@@ -32,17 +26,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def fix_location_parameters
-    if params[:location]
-      location = params[:location]
-      if location[0].is_a? String
-        location[0] = location[0].to_f
-      end
-      if location[1].is_a? String
-        location[1] = location[1].to_f
-      end
-    end
-
+  #oauth-plugin needs this
+  def current_user=(user)
+    current_user = user
   end
 
 end

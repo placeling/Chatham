@@ -17,7 +17,9 @@ class OauthController < ApplicationController
         raise Exception.new,  t("devise.failure.invalid"), caller
       end
 
-      # Must have a users object or have crashed out
+      # get rid of old auth tokens
+      user.tokens.where(:client_application_id =>current_client_application.id).delete_all
+
       request_token = current_client_application.create_request_token
       request_token.authorize!( user )
       request_token.provided_oauth_verifier = request_token.verifier

@@ -7,6 +7,7 @@ class User
 
 
   field :username,      :type =>String
+  field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
   has_many :perspectives
@@ -56,8 +57,7 @@ class User
   protected
 
   def self.find_for_database_authentication(conditions)
-    login = conditions.delete(:login)
-    self.any_of({ :username => login }, { :email => login }).first
+    self.any_of(conditions).first
   end
 
 end

@@ -47,7 +47,7 @@ describe "API - " do
     it "to a completely new place" do
       user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
 
-      post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
+      post_via_redirect user_session_path, 'user[username]' => user.username, 'user[password]' => user.password
 
       post_via_redirect places_path, {
         :format => 'json',
@@ -74,7 +74,7 @@ describe "API - " do
       #make sure place already exists
       Place.find_by_google_id(place.google_id).should be_valid
 
-      post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
+      post_via_redirect user_session_path, 'user[username]' => user.username, 'user[password]' => user.password
 
       post_via_redirect places_perspectives_path, {
         :format => 'json',
@@ -106,7 +106,7 @@ describe "API - " do
       #make sure place doesn't already exist
       Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440").should be_nil
 
-      post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
+      post_via_redirect user_session_path, 'user[username]' => user.username, 'user[password]' => user.password
 
       post_via_redirect places_path, {
         :format => 'json',

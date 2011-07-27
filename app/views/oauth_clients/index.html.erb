@@ -10,7 +10,7 @@
     <div class="box_content padding">
 
         <% unless @tokens.empty? %>
-        <p>The following tokens have been issued to applications in your name</p>
+        <p><%= t('oauth.authoized_apps') %></p>
           <table class="sorting">
           <thead>
             <tr><th><%= t("oauth.application") %></th><th><%= t("oauth.issued") %></th><th>&nbsp;</th></tr>
