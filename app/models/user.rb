@@ -57,7 +57,8 @@ class User
   protected
 
   def self.find_for_database_authentication(conditions)
-    self.any_of(conditions).first
+    login = conditions.delete(:login)
+    self.any_of({ :username => login }, { :email => login }).first
   end
 
 end
