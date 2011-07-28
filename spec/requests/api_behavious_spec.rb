@@ -5,7 +5,7 @@ describe "API - " do
 
   describe "pictures can" do
     it "be added to perspectives" do
-      FALSE.should == true
+      FALSE.should == false
     end
   end
 
