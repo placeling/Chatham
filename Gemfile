@@ -29,6 +29,7 @@ group :test, :development do
   gem 'json'
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'factory_girl_rails', "~> 1.1.rc1"
+  gem 'ci_reporter'
 end
 
 # Deploy with Capistrano
