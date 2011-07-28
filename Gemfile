@@ -6,8 +6,6 @@ gem 'rails', '3.0.3'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
-
 gem "jquery-rails"
 
 gem "mongoid", "~> 2.0"
@@ -22,6 +20,7 @@ gem "database_cleaner"
 gem "httparty"
 gem "hashie"
 
+#gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
 
 group :test, :development do
@@ -31,9 +30,6 @@ group :test, :development do
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'factory_girl_rails', "~> 1.1.rc1"
 end
-
-# Use unicorn as the web server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'
