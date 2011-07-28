@@ -3,6 +3,12 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "pictures can" do
+    it "be added to perspectives" do
+      FALSE.should == true
+    end
+  end
+
   describe "users can" do
     before(:each) do
       @ian = Factory.create(:user, :username=>"imack")
