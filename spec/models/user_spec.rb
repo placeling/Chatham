@@ -33,6 +33,9 @@ describe User do
 
     lindsay.followers.should_not include(ian)
     ian.followees.should_not include(lindsay)
+
+    lindsay = User.find(lindsay.id) #make sure was unfollowed, not deleted
+    lindsay.should be_valid
   end
 
 end

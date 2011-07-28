@@ -10,9 +10,6 @@ class User
   field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
-  #field :followers, :type=> Array, :default => []
-  #field :followees, :type=> Array, :default => []
-
   has_many :perspectives
   has_many :places #ones they created
 
@@ -54,8 +51,8 @@ class User
   end
 
   def unfollow( other_user )
-    other_user.followers.delete_all(:conditions => { :username => self.username })
-    self.followees.delete_all(:conditions => { :username => other_user.username })
+    other_user.followers.delete self
+    self.followees.delete other_user
   end
 
 

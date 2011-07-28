@@ -14,6 +14,12 @@ Chatham::Application.routes.draw do
 
   resources :users do
     resources :perspectives, :only =>[:show, :index]
+    member do
+      get :followers
+      get :followees
+      post :follow
+      post :unfollow
+    end
   end
 
   resources :places do
@@ -35,6 +41,12 @@ Chatham::Application.routes.draw do
   scope 'v1', :api_call => true, :format => :json do
     resources :users do
       resources :perspectives, :only =>[:show, :index]
+      member do
+        get :followers
+        get :followees
+        post :follow
+        post :unfollow
+      end
     end
 
     resources :places do

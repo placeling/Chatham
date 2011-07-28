@@ -3,6 +3,84 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "users can" do
+    before(:each) do
+      @ian = Factory.create(:user, :username=>"imack")
+      @lindsay = Factory.create(:user, :username=>"lindsay")
+    end
+
+    it "be followed" do
+      post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
+
+      post follow_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      #need to refresh from db
+      @lindsay = User.find(@lindsay.id)
+      @ian = User.find(@ian.id)
+
+      @lindsay.followers.should include(@ian)
+      @ian.followees.should include(@lindsay)
+
+      @ian.followers.should_not include(@lindsay)
+      @lindsay.followees.should_not include(@ian)
+    end
+
+    it "be unfollowed" do
+      post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
+
+      post follow_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      #need to refresh from db
+      @lindsay = User.find(@lindsay.id)
+      @ian = User.find(@ian.id)
+
+      @lindsay.followers.should include(@ian)
+      @ian.followees.should include(@lindsay)
+
+      post unfollow_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      #need to refresh from db
+      @lindsay = User.find(@lindsay.id)
+      @ian = User.find(@ian.id)
+
+      @lindsay.followers.should_not include(@ian)
+      @ian.followees.should_not include(@lindsay)
+    end
+
+    it "have a list of their followers returned" do
+      post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
+
+      post follow_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      get followers_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
+      returned_data.followers.count.should == 1
+      returned_data.followers[0].username.should == @ian.username
+    end
+
+    it "have a list of their followees returned" do
+      post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
+
+      post follow_user_path(@lindsay), {:format => :json}
+      response.status.should be(200)
+
+      get followees_user_path(@ian), {:format => :json}
+      response.status.should be(200)
+
+      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
+      returned_data.followees.count.should == 1
+      returned_data.followees[0].username.should == @lindsay.username
+    end
+  end
+
+
+
   describe "bookmarks for a user can listed" do
     before(:each) do
 
