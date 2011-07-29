@@ -14,11 +14,12 @@ gem "bson_ext", "~> 1.3"
 gem "oauth", ">= 0.4.4"
 gem "devise", "~> 1.4.2"
 
-
 gem "system_timer"
-gem "database_cleaner"
 gem "httparty"
 gem "hashie"
+
+gem 'mini_magick'
+gem 'carrierwave'
 
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
@@ -30,6 +31,7 @@ group :test, :development do
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'factory_girl_rails', "~> 1.1.rc1"
   gem 'ci_reporter'
+  gem "database_cleaner"
 end
 
 # Deploy with Capistrano
@@ -38,12 +40,6 @@ gem 'capistrano'
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
 # gem 'ruby-debug19'
-
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators

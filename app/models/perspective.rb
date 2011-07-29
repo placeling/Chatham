@@ -11,14 +11,16 @@ class Perspective
 
   field :favorite,    :type => Boolean, :default => TRUE
   field :memo,        :type => String
+  field :place_location,    :type => Array #for easier indexing
 
   #these are meant for internal use, not immediately visible to user -iMack
-  field :place_location,    :type => Array
   field :location,    :type => Array
   field :accuracy,      :type => Float
 
   belongs_to :place
   belongs_to :user
+
+  embeds_many :pictures
 
   index [[ :place_location, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
