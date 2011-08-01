@@ -1,11 +1,31 @@
 require "spec_helper"
 require 'json/ext'
+require 'carrierwave/test/matchers'
 
 describe "API - " do
 
-  describe "pictures can" do
-    it "be added to perspectives" do
-      FALSE.should == false
+  describe "images can" do
+    include CarrierWave::Test::Matchers
+
+    it "be added to an existing perspective" do
+      user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+      perspective = Factory.create(:perspective, :user =>user)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post_via_redirect place_perspectives_path(perspective.place), {
+        :format => 'json',
+        :title => "Ian's Tattoo'",
+        :image => Rack::Test::UploadedFile.new( "#{Rails.root}/spec/fixtures/IMG_0288.JPG", 'image/jpg' )
+      }
+
+      response.status.should be(200)
+
+      #reget from db
+      perspective = Perspective.find( perspective.id)
+      perspective.pictures.count.should be(1)
+      pic = perspective.pictures.first
+      pic.image.thumb.should be_no_larger_than(64, 64)
     end
   end
 
@@ -151,7 +171,7 @@ describe "API - " do
 
     end
 
-    it "to a new place that exists on Google Places and the system" do
+    it "to a place that exists on Google Places and the system" do
       user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
       place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
 

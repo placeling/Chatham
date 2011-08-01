@@ -37,7 +37,7 @@ RSpec.configure do |config|
   config.before(:all) do
     # Get rid of the linked images
     if Rails.env.test?
-      FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads"])
+      FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads/*"])
       #TODO:still need to account for cache directroy
     end
   end

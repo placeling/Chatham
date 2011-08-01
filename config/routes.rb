@@ -26,7 +26,12 @@ Chatham::Application.routes.draw do
     collection do
       get :nearby
     end
-    resources :perspectives, :except =>[:show, :index]
+    resources :perspectives, :except =>[:show, :index] do
+      collection do
+        post :update
+        get :edit
+      end
+    end
   end
 
   #this one is used to post a perspective when client has a google_id but not a place_id
@@ -53,7 +58,12 @@ Chatham::Application.routes.draw do
       collection do
         get :nearby
       end
-      resources :perspectives, :except =>[:show, :index]
+      resources :perspectives, :except =>[:show, :index] do
+        collection do
+          post :update
+          get :edit
+        end
+      end
     end
 
     #this one is used to post a perspective when client has a google_id but not a place_id

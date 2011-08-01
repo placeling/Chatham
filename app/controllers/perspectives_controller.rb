@@ -24,6 +24,41 @@ class PerspectivesController < ApplicationController
     end
   end
 
+  def update
+
+    @place = Place.find( params[:place_id] )
+
+    @perspective= @place.perspectives.where(:user_id => current_user.id).first
+
+    if params[:perspective]
+      @perspective.update_attributes(params[:@perspective])
+    end
+
+    if params[:image]
+      @picture = @perspective.pictures.build()
+      @picture.image = params[:image]
+      @picture.title = params[:title]
+      @picture.save!
+    end
+    current_user.save!
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @perspective }
+    end
+
+    if @perspective.save
+    else
+      respond_to do |format|
+        format.html { render :new }
+        format.json { render :json => {:status => 'fail'} }
+      end
+    end
+
+
+
+  end
+
   def create
     if (params[:google_id])
       @place = Place.find_by_google_id( params[:google_id] )
