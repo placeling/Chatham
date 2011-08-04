@@ -10,7 +10,7 @@
     <div class="box_content padding">
 
         <% unless @tokens.empty? %>
-        <p><%= t('oauth.authoized_apps') %></p>
+        <p><%= t('oauth.authorized_apps') %></p>
           <table class="sorting">
           <thead>
             <tr><th><%= t("oauth.application") %></th><th><%= t("oauth.issued") %></th><th>&nbsp;</th></tr>
@@ -30,6 +30,7 @@
               <% end %>
           </tbody>
         </table>
+          <br/><br/><br/>
         <% end %>
         <h3>Application Developers</h3>
         <% if @client_applications.empty? %>

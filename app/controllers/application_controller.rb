@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def login_required
+    authenticate_user!
+  end
+
 
   def admin_required
     #this is the method used in oauth_clients_controller, rename for devise

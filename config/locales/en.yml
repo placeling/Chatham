@@ -80,6 +80,7 @@ en:
     client_applications: "OAuth Client Applications"
     application: "Application"
     issued: "Issued"
+    invalidated_at: "Invalidated"
     no_xauth: "This app does not have xAuth enabled."
     authorized_apps: "The following tokens have been issued to applications in your name"
     invalid: "Invalid OAuth Request"

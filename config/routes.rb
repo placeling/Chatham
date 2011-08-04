@@ -10,7 +10,7 @@ Chatham::Application.routes.draw do
   match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
-  post 'oauth/revoke'
+  post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
 
   resources :users do
     resources :perspectives, :only =>[:show, :index]
