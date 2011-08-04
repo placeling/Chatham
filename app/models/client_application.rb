@@ -11,7 +11,9 @@ class ClientApplication
   field :callback_url,  :type => String
   field :key,           :type => String
   field :secret,        :type => String
+  field :description,   :type => String
 
+  field :token_creation_lock, :type => Boolean, :default => false
   field :xauth_enabled,  :type => Boolean, :default =>true
 
   index :key, :unique => true

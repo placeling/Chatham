@@ -10,7 +10,7 @@
      <div class="box_content padding">
        <% form_for :client_application, @client_application, :url => oauth_client_path(@client_application), :html => {:method => :put}  do |f| %>
               <%= render :partial => "form", :locals => { :f => f } %>
-              <%= submit_tag t("basic.edit") %>
+              <%= submit_tag t("basic.save") %>
        <% end %>
        <%= link_to t("basic.show"), oauth_client_path(@client_application) %> |
        <%= link_to t("basic.back"), oauth_clients_path %>

@@ -22,6 +22,10 @@ describe ClientApplication do
     @application.errors.full_messages.should == []
   end
 
+  it "should have a description" do
+    @application.description.should_not be_nil
+  end
+
   it "should have key and secret" do
     @application.key.should_not be_nil
     @application.secret.should_not be_nil

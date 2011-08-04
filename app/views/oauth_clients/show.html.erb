@@ -28,7 +28,10 @@
           <strong><%= t('oauth.authorize_url') %>:</strong>
           <code>http<%='s' if request.ssl? %>://<%= request.host_with_port %><%=@client_application.oauth_server.authorize_path %></code>
         </p>
-
+           <p>
+             <strong><%= t('oauth.description') %>:</strong>
+             <%= @client_application.description %>
+           </p>
         <p>
           <%= t("oauth.we_support_hmac") %>
         </p>

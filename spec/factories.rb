@@ -50,6 +50,7 @@ FactoryGirl.define do
     callback_url "http://test.com/callback"
     key "one_key"
     secret "MyString"
+    description "This is the first test application"
   end
 
   factory :client_application_two, :class => ClientApplication  do
@@ -59,6 +60,7 @@ FactoryGirl.define do
     callback_url "http://test.com/callback"
     key "two_key"
     secret "MyString"
+    description "This is the second test application"
   end
 
 end
