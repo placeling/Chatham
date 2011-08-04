@@ -14,6 +14,22 @@ describe "OAuth Provider" do
   end
 
   describe "using Xauth" do
+    describe "fail on an api request without proper" do
+      it "password" do
+        consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
+        lambda {
+          consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => "tartus69" })
+        }.should raise_error(OAuth::Unauthorized, "401 Unauthorized ")
+      end
+
+      it "username" do
+        consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
+        lambda {
+          consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => "blah", :x_auth_password => @password })
+        }.should raise_error(OAuth::Unauthorized,  "401 Unauthorized ")
+      end
+    end
+
     it "grant access to the api on a valid request" do
 
       consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
@@ -30,15 +46,7 @@ describe "OAuth Provider" do
       consumer = OAuth::Consumer.new(@key, "blah blah", :site => @site)
       lambda {
         consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => @password })
-      }.should raise_error(OAuth::Unauthorized)
-    end
-
-    it "fail on an api request without proper login" do
-
-      consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
-      lambda {
-        consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => "tartus69" })
-      }.should raise_error(OAuth::Unauthorized)
+      }.should raise_error(OAuth::Unauthorized, "403 Forbidden ")
     end
 
     it "fail on an api request without login" do
@@ -46,5 +54,4 @@ describe "OAuth Provider" do
       res.should be_a(Net::HTTPUnauthorized)
     end
   end
-
 end
