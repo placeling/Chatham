@@ -2,7 +2,7 @@ require 'spec_helper'
 describe ClientApplication do
 
   before(:each) do
-    @application = ClientApplication.create :name => "Agree2", :url => "http://agree2.com", :user => Factory(:user)
+    @application = Factory.create(:client_application, :name => "Agree2")
   end
 
   it "can be found with a find_by_key" do

@@ -10,7 +10,7 @@ describe OauthClientsController do
       @user = Factory.create(:admin)
       sign_in @user
 
-      @client_application = Factory.build(:client_application_one, :user => @user)
+      @client_application = Factory.build(:client_application, :user => @user)
       @oauth_token = Factory.create(:access_token, :user =>@user, :client_application => @client_application)
       @client_applications = @user.client_applications
       @client_application.save

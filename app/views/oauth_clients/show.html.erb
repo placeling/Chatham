@@ -40,10 +40,10 @@
        <br/>
 
         <% if admin_user? %>
-            <%= form_for :user, :url => access_token_oauth_client_path(@client_application), :html => {:method => :post}  do |f| %>
+            <%= form_tag access_token_oauth_client_path(@client_application) do |f| %>
                 <p>
                   <strong><%= t("oauth.generate_user_token") %></strong>
-                  <%= f.text_field :username %><%= submit_tag t("basic.submit") %>
+                  <%= text_field_tag :username %><%= submit_tag t("basic.submit") %>
                 </p>
 
 

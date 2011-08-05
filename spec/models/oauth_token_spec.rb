@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe RequestToken do
 
   before(:each) do
-    @token = RequestToken.create :client_application => Factory(:client_application_one)
+    @token = RequestToken.create :client_application => Factory(:client_application)
     @user = Factory.build(:user)
   end
 

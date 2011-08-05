@@ -10,11 +10,11 @@ describe "Security" do
 
     post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-    post_via_redirect access_token_oauth_client_path(client_application), {
+    post access_token_oauth_client_path(client_application), {
         :username => user2.username
     }
 
-    response.status.should be(401) #basically a "fuck off, you aren't an admin'"
+    response.should  redirect_to('/') #basically a "fuck off, you aren't an admin'"
 
   end
 
@@ -33,4 +33,21 @@ describe "Security" do
     response.status.should be(200)
 
   end
+
+  it "should allow admin to create access token even if restricted" do
+
+    user = Factory.create(:admin)
+    user2 = Factory.create(:user, :username=>"patsy")
+    client_application = Factory.create(:client_application, :token_creation_lock =>true)
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    post_via_redirect access_token_oauth_client_path(client_application), {
+        :username => user2.username
+    }
+
+    response.status.should be(200)
+
+    end
+
 end

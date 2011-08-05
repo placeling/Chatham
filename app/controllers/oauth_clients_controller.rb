@@ -25,8 +25,8 @@ class OauthClientsController < ApplicationController
   def access_token
 
     @client_application = ClientApplication.find( params[:id] )
-    user = params[:user]
-    @user = User.where(:username => user['username'] ).first
+
+    @user = User.where(:username => params[:username] ).first
 
     if @user.nil?
       flash[:notice] = t"user.unknown_user"

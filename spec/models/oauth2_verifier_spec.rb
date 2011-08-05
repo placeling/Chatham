@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Oauth2Verifier do
   before(:each) do
-    @verifier = Oauth2Verifier.create :client_application => Factory(:client_application_one), :user=>Factory(:user)
+    @verifier = Oauth2Verifier.create :client_application => Factory(:client_application), :user=>Factory(:user)
   end
 
   it "should be valid" do
