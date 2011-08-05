@@ -24,6 +24,10 @@ class ClientApplication
   has_many :oauth2_verifiers
   has_many :oauth_tokens
 
+  #listed mostly in case we find a malicious client application, foreign keys stored in other.
+  has_many :places
+  has_many :perspectives
+
   validates_presence_of :name, :url, :key, :secret
   validates_uniqueness_of :key
   before_validation :generate_keys, :on => :create
@@ -68,7 +72,11 @@ class ClientApplication
 
   # If your application requires passing in extra parameters handle it here
   def create_request_token(params={})
-    RequestToken.create :client_application => self, :callback_url=>self.token_callback_url
+    if !self.token_creation_lock || params[:token_creation_override]
+      RequestToken.create :client_application => self, :callback_url=>self.token_callback_url
+    else
+      return nil
+    end
   end
 
   def delete!

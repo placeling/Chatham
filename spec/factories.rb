@@ -43,7 +43,7 @@ end
 
 FactoryGirl.define do
 
-  factory :client_application_one, :class => ClientApplication  do
+  factory :client_application, :class => ClientApplication  do
     name "MyString"
     url "http://test.com"
     support_url "http://test.com/support"

@@ -10,6 +10,18 @@
      <div class="box_content padding">
        <% form_for :client_application, @client_application, :url => oauth_client_path(@client_application), :html => {:method => :put}  do |f| %>
               <%= render :partial => "form", :locals => { :f => f } %>
+
+              <% if admin_user? %>
+                <div class="field">
+                  <label for="client_application_xauth_enabled"><%= t("oauth.xauth_enabled") %>*</label><br/>
+                  <%= f.check_box :xauth_enabled %>
+                </div>
+                <div class="field">
+                  <label for="client_application_token_creation_lock"><%= t("oauth.token_creation_lock") %></label><br/>
+                  <%= f.check_box :token_creation_lock %>
+                </div>
+              <% end %>
+
               <%= submit_tag t("basic.save") %>
        <% end %>
        <%= link_to t("basic.show"), oauth_client_path(@client_application) %> |

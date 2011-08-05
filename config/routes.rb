@@ -37,7 +37,11 @@ Chatham::Application.routes.draw do
   #this one is used to post a perspective when client has a google_id but not a place_id
   match '/places/perspectives/' => 'perspectives#create', :as => 'places_perspectives'
 
-  resources :oauth_clients# first created -> highest priority.
+  resources :oauth_clients do
+    member do
+      post :access_token, :format => :html
+    end
+  end
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

@@ -24,6 +24,7 @@ en:
     top: "Top"
     saved: "Saved"
     save: "Save"
+    submit: "Submit"
     new: "New"
     nearby: "Nearby"
     mark: "Placemark"
@@ -55,6 +56,7 @@ en:
     change_my_password: "Change my password"
     new_password: "New password"
     top_users: "Top Users"
+    unknown_user: "Unknown User"
 
   oauth:
     registered_successfully: "Registered the information successfully"
@@ -72,6 +74,7 @@ en:
     allowed_this_request: "You have allowed this request"
     rejected_this_request: "You have disallowed this request"
     oauth_details: "OAuth details for %{app_name}"
+    oauth_access_token: "Access keys for %{username} to %{app_name}"
     consumer_key: "Consumer Key"
     consumer_secret: "Consumer Secret"
     request_token_url: "Request Token URL"
@@ -86,6 +89,11 @@ en:
     authorized_apps: "The following tokens have been issued to applications in your name"
     invalid: "Invalid OAuth Request"
     description: "Application Description"
+    access_token_key: "Access Token Key"
+    access_token_secret: "Access Token Secret"
+    xauth_enabled: "XAuth Enabled"
+    token_creation_lock: "Lock Creation of New Aceess Tokens?"
+    generate_user_token: "Generate application access token for user:"
 
   place:
     places: "Places"

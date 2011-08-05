@@ -13,6 +13,7 @@ class Place
   field :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
 
   has_many :perspectives
+  belongs_to :client_application
   belongs_to :user
 
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180

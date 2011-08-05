@@ -4,7 +4,7 @@
 
          <h2 class="icon list"><%= t("oauth.oauth_details", :app_name => @client_application.name)%></h2>
 
-         <h3 class="right"><a href="#contents">Top</a></h3>
+         <h3 class="right"><a href="#contents"><%= t('basic.top') %></a></h3>
      </div>
 
      <div class="box_content padding">
@@ -35,6 +35,23 @@
         <p>
           <%= t("oauth.we_support_hmac") %>
         </p>
+
+       <hr>
+       <br/>
+
+        <% if admin_user? %>
+            <%= form_for :user, :url => access_token_oauth_client_path(@client_application), :html => {:method => :post}  do |f| %>
+                <p>
+                  <strong><%= t("oauth.generate_user_token") %></strong>
+                  <%= f.text_field :username %><%= submit_tag t("basic.submit") %>
+                </p>
+
+
+            <% end %>
+
+        <% end %>
+
+
         <%= link_to t("basic.edit"), edit_oauth_client_path(@client_application) %> |
         <%= link_to t("basic.back"), oauth_clients_path %>
      </div>

@@ -33,11 +33,13 @@ class PlacesController < ApplicationController
         gp = GooglePlaces.new
         @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
         @place.user = current_user
+        @place.client_application = current_client_application unless current_client_application.nil?
         @place.save
       end
     else
       @place = Place.new_from_user_input( params )
       @place.user = current_user
+      @place.client_application = current_client_application unless current_client_application.nil?
       @place.save
     end
 

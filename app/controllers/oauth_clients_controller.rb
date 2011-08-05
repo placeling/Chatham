@@ -22,6 +22,27 @@ class OauthClientsController < ApplicationController
     end
   end
 
+  def access_token
+
+    @client_application = ClientApplication.find( params[:id] )
+    user = params[:user]
+    @user = User.where(:username => user['username'] ).first
+
+    if @user.nil?
+      flash[:notice] = t"user.unknown_user"
+      redirect_to oauth_client_path(@client_application)
+      return
+    end
+    # get rid of old auth tokens
+    @user.tokens.where(:client_application_id =>@client_application.id).delete_all
+
+    request_token = @client_application.create_request_token({:token_creation_override =>true})
+    request_token.authorize!( @user )
+    request_token.provided_oauth_verifier = request_token.verifier
+    @access_token = request_token.exchange!
+  end
+
+
   def show
   end
 

@@ -67,6 +67,8 @@ class PerspectivesController < ApplicationController
     end
 
     @perspective= @place.perspectives.build(params)
+    @perspective.client_application = current_client_application unless current_client_application.nil?
+
     if (params[:lat] and params[:long])
         @perspective.location = [params[:lat].to_f, params[:long].to_f]
         @perspective.accuracy = params[:accuracy]
