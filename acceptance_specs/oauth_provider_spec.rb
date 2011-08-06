@@ -1,9 +1,10 @@
-require 'acceptance_spec_helper'
+require File.expand_path('../acceptance_spec_helper', __FILE__)
 require 'oauth'
 
 describe "OAuth Provider" do
 
   before(:all) do
+
     ACCEPTANCE_CONFIG = YAML.load_file("#{::Rails.root.to_s}/acceptance_specs/harness.yml")[::Rails.env]
     @key = ACCEPTANCE_CONFIG['consumer_key']
     @secret = ACCEPTANCE_CONFIG['consumer_secret']
@@ -18,14 +19,14 @@ describe "OAuth Provider" do
         consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => "tartus69" })
-        }.should raise_error(OAuth::Unauthorized, "401 Unauthorized ")
+        }.should raise_error(OAuth::Unauthorized, "401 Unauthorized")
       end
 
       it "username" do
         consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => "blah", :x_auth_password => @password })
-        }.should raise_error(OAuth::Unauthorized,  "401 Unauthorized ")
+        }.should raise_error(OAuth::Unauthorized,  "401 Unauthorized")
       end
     end
 
@@ -45,7 +46,7 @@ describe "OAuth Provider" do
       consumer = OAuth::Consumer.new(@key, "blah blah", :site => @site)
       lambda {
         consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => @password })
-      }.should raise_error(OAuth::Unauthorized, "403 Forbidden ")
+      }.should raise_error(OAuth::Unauthorized, "403 Forbidden")
     end
 
     it "fail on an api request without login" do
