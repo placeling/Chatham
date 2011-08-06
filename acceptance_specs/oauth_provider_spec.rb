@@ -1,4 +1,5 @@
-require File.expand_path('../acceptance_spec_helper', __FILE__)
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
 require 'oauth'
 
 describe "OAuth Provider" do
