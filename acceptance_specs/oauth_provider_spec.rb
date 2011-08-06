@@ -1,16 +1,15 @@
-require 'rspec'
+require 'acceptance_spec_helper'
 require 'oauth'
-require 'net/http'
-require 'uri'
 
 describe "OAuth Provider" do
 
-  before(:each) do
-    @key = "qqVY0ubfXOhjvu6wblBatR4H0cZGDJbbtSQ8ejp9"
-    @secret = "BRtWW4PvxCKN7H4BbKe6JAeUI6YDieEsYKn0VsYX"
-    @username = "tyler"
-    @password = "foobar"
-    @site = "http://localhost:3000"
+  before(:all) do
+    ACCEPTANCE_CONFIG = YAML.load_file("#{::Rails.root.to_s}/acceptance_specs/harness.yml")[::Rails.env]
+    @key = ACCEPTANCE_CONFIG['consumer_key']
+    @secret = ACCEPTANCE_CONFIG['consumer_secret']
+    @username = ACCEPTANCE_CONFIG['username']
+    @password = ACCEPTANCE_CONFIG['password']
+    @site = ACCEPTANCE_CONFIG['host']
   end
 
   describe "using Xauth" do

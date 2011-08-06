@@ -9,11 +9,6 @@ puts 'New users created: ' << user.username
 
 
 puts 'creating tyler and his fav spots'
-user = Factory.create(:user)
-perspective = Factory.build(:perspective, :memo =>"COSMIC")
-perspective.user = user
-perspective2 = Factory.build(:lib_square_perspective, :memo =>"LIB SQUARE")
-perspective2.user = user
-perspective2.save!
-perspective.save!
-user.save!
+user = Factory.create(:user, :username=>'tyler')
+perspective = Factory.create(:perspective, :memo =>"COSMIC", :user=>user)
+perspective2 = Factory.create(:lib_square_perspective, :memo =>"LIB SQUARE", :user =>user)

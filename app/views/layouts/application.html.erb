@@ -12,7 +12,7 @@
         <%= render :partial => 'layouts/header' %>
         <% if notice %>
             <div class="grid_24">
-                <div class="info notice" style="margin-bottom:0px;">
+                <div class="info notice">
                     <p><%= notice %></p>
                 </div>
             </div>
@@ -20,8 +20,8 @@
 
         <% if alert %>
             <div class="grid_24">
-                <div class="info alert" style="margin-bottom:0px;">
-                    <p><%= alert %></p>
+                <div class="error notice">
+                  <p><%= alert %></p>
                 </div>
             </div>
         <% end %>

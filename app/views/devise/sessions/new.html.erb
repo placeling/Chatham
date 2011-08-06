@@ -5,15 +5,15 @@
 
         <h2 class="icon list"><%= t "user.sign_in" %></h2>
 
-        <h3 class="right"><a href="#contents">Top</a></h3>
+        <h3 class="right"><a href="#contents"><%= t('basic.top') %></a></h3>
     </div>
 
     <div class="box_content padding">
         <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-          <p><%= f.label :email %><br />
-          <%= f.email_field :email %></p>
+          <p><%= f.label t('basic.username') %><br />
+          <%= f.text_field :login %></p>
 
-          <p><%= f.label :password %><br />
+          <p><%= f.label t('basic.password') %><br />
           <%= f.password_field :password %></p>
 
           <% if devise_mapping.rememberable? -%>

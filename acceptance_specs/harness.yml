@@ -1,0 +1,28 @@
+development:
+  host: "http://localhost:3000"
+  username: "tyler"
+  password: "foobar"
+  consumer_key:  "7RxXdCM7deXLKZLZfqytuM53iBIoizh6w2A4IpRt"
+  consumer_secret: "zJHyMneG6BoYFajdqg0aLaPociCQOdmSyXZ55hIe"
+
+test:
+  host: "http://localhost:3000"
+  username: "tyler"
+  password: "foobar"
+  consumer_key:  ""
+  consumer_secret: ""
+
+staging:
+  host: "http://staging.corp.placeling.com"
+  username: "tyler"
+  password: "foobar"
+  consumer_key:  "notyet"
+  consumer_secret: "notyet"
+
+# these would be live-fire against the production environment
+production:
+  host: "http://api.placeling.com"
+  username: "tyler"
+  password: "foobar"
+  consumer_key:  "notyet"
+  consumer_secret: "notyet"

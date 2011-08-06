@@ -8,7 +8,7 @@ describe "API - " do
     include CarrierWave::Test::Matchers
 
     it "be added to an existing perspective" do
-      user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+      user = Factory.create(:user)
       perspective = Factory.create(:perspective, :user =>user)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
@@ -149,7 +149,7 @@ describe "API - " do
   describe "perspective can be added" do
 
     it "to a completely new place" do
-      user = Factory.create(:user, :username=>'tyler', :password=>'foofoo')
+      user = Factory.create(:user)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
@@ -172,7 +172,7 @@ describe "API - " do
     end
 
     it "to a place that exists on Google Places and the system" do
-      user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+      user = Factory.create(:user)
       place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
 
       #make sure place already exists
@@ -205,7 +205,7 @@ describe "API - " do
     it "to a new place that exists on Google Places but not the system" do
       # 49.268547,-123.15279 - Ian's House
 
-      user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+      user = Factory.create(:user)
 
       #make sure place doesn't already exist
       Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440").should be_nil
