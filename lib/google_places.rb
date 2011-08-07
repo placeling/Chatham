@@ -35,8 +35,15 @@ class GooglePlaces
       options[:name] = name
     end
 
-    mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
+    results = mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
 
+    for place in results
+      if place.types.include?( "political" )
+        results.delete( place )
+      end
+    end
+
+    return results
   end
 
   #for testing

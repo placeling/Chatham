@@ -6,6 +6,20 @@ describe GooglePlaces do
     @gp = GooglePlaces.new
   end
 
+  it "should not return any political results for location" do
+    nearby = @gp.find_nearby(49.268547,-123.15279,500, false)
+
+    extraneous_result = false
+    for place in nearby
+      if place.types.include?( "political" )
+        extraneous_result = true
+        break
+      end
+    end
+
+    extraneous_result.should == false
+  end
+
   it "gets nearby places for a busy co-ordinate" do
     nearby = @gp.find_nearby(-33.8599827,151.2021282,500)
 
