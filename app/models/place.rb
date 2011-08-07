@@ -74,7 +74,9 @@ class Place
     return place
   end
 
-   def as_json(options={})
+  def as_json(options={})
+    attributes.delete(:google_ref)
+    attributes.delete(:address_components)
     attributes.merge(:user => user)
   end
 

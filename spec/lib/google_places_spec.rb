@@ -25,7 +25,7 @@ describe GooglePlaces do
 
     place_found = false
     for place in nearby
-      if place.id == "92f1bbd4ecab8e9add032bccee40a57a8dfd42b4"#Barangaroo
+      if place.id == "e22913360d0b946d099c7a32a77a95e49f9ead66" #pylon lookout
         place_found = true
         break
       end

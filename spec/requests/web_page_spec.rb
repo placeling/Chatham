@@ -7,7 +7,7 @@ describe "Web Page" do
       get nearby_places_path, {:lat => '-33.8599827', :long =>'151.2021282', :accuracy=>'500'}
       response.status.should be(200)
 
-      response.body.should include("Barangaroo")
+      response.body.should include("Pylon")
     end
   end
 

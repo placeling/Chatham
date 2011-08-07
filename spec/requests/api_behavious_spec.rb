@@ -239,12 +239,12 @@ describe "API - " do
     it "should do show nearby places for a co-ordinate" do
       get nearby_places_path, {:format => "json",:lat => '-33.8599827', :long =>'151.2021282', :accuracy=>'500'}
       response.status.should be(200)
-      response.body.should include("Barangaroo")
+      response.body.should include("Pylon")
 
       nearby = JSON.parse( response.body )
       place_found = false
       for place in nearby
-        if place['id'] == "92f1bbd4ecab8e9add032bccee40a57a8dfd42b4"#Barangaroo
+        if place['id'] == "e22913360d0b946d099c7a32a77a95e49f9ead66"#Pylon Lookout
           place_found = true
           break
         end
