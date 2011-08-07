@@ -252,6 +252,18 @@ describe "API - " do
 
       place_found.should == true
     end
+
+    it "should return distances to places" do
+      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
+      response.status.should be(200)
+
+      nearby = JSON.parse( response.body )
+
+      for place in nearby
+        place['distance'].should <= 500
+      end
+
+    end
   end
 
 end

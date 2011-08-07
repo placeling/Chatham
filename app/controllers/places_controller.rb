@@ -10,6 +10,11 @@ class PlacesController < ApplicationController
     gp = GooglePlaces.new
     @places = gp.find_nearby(lat, long, radius)
 
+    for place in @places
+      #add distance to in meters
+      place.distance = 1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)
+    end
+
     respond_to do |format|
       format.html
       format.json { render :json => @places }
