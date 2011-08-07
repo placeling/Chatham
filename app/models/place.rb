@@ -7,10 +7,16 @@ class Place
   field :name, :type => String
   field :google_id, :type => String
   field :vicinity, :type => String
+  field :street_address, :type => String
+  field :phone_number, :type => String
+
   field :venue_types, :type => Array
   field :google_url,  :type => String
   field :place_type,  :type => String
   field :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
+
+  field :google_ref,  :type => String # may need this later, makes easier
+  field :address_components, :type => Hash #save for later
 
   has_many :perspectives
   belongs_to :client_application
@@ -45,6 +51,15 @@ class Place
     place.google_url = raw_place.url
     place.vicinity = raw_place.vicinity
     place.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
+
+    place.phone_number = raw_place.formatted_phone_number unless !raw_place.formatted_phone_number?
+    place.google_ref = raw_place.reference
+    if raw_place.address_components.length > 1
+      #TODO: find out how this scales past north america
+      place.street_address = raw_place.address_components[0].short_name + " " + raw_place.address_components[1].short_name
+    end
+    place.address_components = raw_place.address_components
+
     place.venue_types = raw_place.types
     place.place_type = "GOOGLE_PLACE"
 

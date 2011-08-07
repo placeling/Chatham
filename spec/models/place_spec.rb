@@ -54,6 +54,8 @@ describe Place do
     place = Place.all().first
     place.google_id.should == "a648ca9b8af31e9726947caecfd062406dc89440"
     place.place_type.should == "GOOGLE_PLACE"
+    place.phone_number.should == "(604) 732-6810"
+    place.street_address.should == "2095 West 4th Avenue"
 
   end
 end
