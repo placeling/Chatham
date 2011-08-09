@@ -11,6 +11,11 @@ class User
   field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
+  field :location, :type => Array #meant to be home location, used at signup?
+  index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
+
+  field :description, :type => String
+
   has_many :perspectives
   has_many :places #ones they created
 

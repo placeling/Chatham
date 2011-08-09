@@ -17,6 +17,17 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  def suggested
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+
+    @users = User.where(:location.near => [lat,long]).limit(10)
+
+    respond_to do |format|
+      format.json { render :json=> @users }
+    end
+  end
+
   def follow
     @user = User.where(:username => params[:id]).first
 

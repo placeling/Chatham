@@ -20,6 +20,9 @@ Chatham::Application.routes.draw do
       post :follow
       post :unfollow
     end
+    collection do
+      get :suggested
+    end
   end
 
   resources :perspectives, :only =>:show
@@ -58,6 +61,9 @@ Chatham::Application.routes.draw do
         post :follow
         post :unfollow
       end
+      collection do
+        get :suggested
+      end
     end
     resources :perspectives, :only =>:show
 
@@ -79,32 +85,6 @@ Chatham::Application.routes.draw do
 
   match "/:id" => "users#show", :as => :profile
 
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
 
   # Sample resource route within a namespace:
   #   namespace :admin do

@@ -67,11 +67,22 @@ end
 
 
 FactoryGirl.define do
+  factory :maven, :class => User do
+    username "Gladwell"
+    sequence(:email) { "gladwell@placeling.com" }
+    password "foobar"
+    password_confirmation { |u| u.password }
+    location { [49.2642380,-123.1625990] }
+    description "I am the test user interesting things going on"
+  end
+
   factory :user do
     sequence(:username) { |n| "tyler#{n}" }
     sequence(:email) { |n| "tyler#{n}@placeling.com" }
     password "foobar"
     password_confirmation { |u| u.password }
+    location { [49.2642380,-123.1625990] }
+    description "I am the test user with no admin privileges, and nothing interesting"
   end
 
   factory :admin do
@@ -79,6 +90,8 @@ FactoryGirl.define do
     email  "admin@placeling.com"
     password "foobar"
     password_confirmation { |u| u.password }
+    location { [49.2642380,-123.1625990] }
+    description "I am a placeling administrator"
   end
 end
 
