@@ -2,6 +2,24 @@ require 'spec_helper'
 
 describe PerspectivesController do
 
+  it "should return associated photos in its json" do
+
+    user = Factory.create(:user)
+    picture = Factory.build(:picture)
+    perspective = Factory.create(:perspective, :user =>user)
+    perspective.pictures << picture
+    picture.save
+
+    get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
+
+    response.status.should be(200)
+
+    perspective = JSON.parse( response.body )
+
+    perspective['pictures'].should_not be(nil)
+
+  end
+
   it "should return user and place in its json" do
 
     user = Factory.create(:user)

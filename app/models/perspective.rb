@@ -51,9 +51,9 @@ class Perspective
 
   def as_json(options={})
     if options[:top_level] == false
-      attributes.merge(:place => place)
+      attributes.merge(:place => place, :photos =>pictures)
     else
-      attributes.merge(:place => place, :user => user)
+      attributes.merge(:place => place, :photos =>pictures, :user => user)
     end
 
   end
