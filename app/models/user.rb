@@ -65,6 +65,7 @@ class User
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = self.attributes.slice('username', 'perspective_count')
+    attributes = attributes.merge(:follower_count => followers.count, :following_count => followees.count)
     if (options[:perspectives] == :location)
       attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ).as_json(:top_level => false) )
     elsif (options[:perspectives] == :created_by )

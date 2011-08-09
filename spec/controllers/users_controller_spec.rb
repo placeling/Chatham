@@ -26,6 +26,23 @@ describe UsersController do
         response.should be_success
       end
 
+      it "returns returns follower and followee count in json" do
+        user = Factory.create(:user, :username=>"imack")
+        user2 = Factory.create(:user, :username=>"lindsay")
+
+        user.follow( user2 )
+
+        get :show, :id => user.username, :format=>:json
+
+        response.should be_success
+
+        user = JSON.parse( response.body )
+
+        PP.pp user
+        user['follower_count'].should == 0
+        user['following_count'].should == 1
+
+      end
     end
 
     describe "with invalid params" do
