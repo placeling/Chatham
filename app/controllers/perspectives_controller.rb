@@ -1,7 +1,16 @@
 class PerspectivesController < ApplicationController
-  before_filter :authenticate_user!, :except =>:index
+  before_filter :authenticate_user!, :except =>[:index, :show]
 
   def new
+
+  end
+
+  def show
+    @perspective = Perspective.find( params[:id] )
+
+    respond_to do |format|
+      format.json { render :json =>@perspective }
+    end
 
   end
 

@@ -61,9 +61,9 @@ class User
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = self.attributes.slice('username', 'perspective_count')
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ) )
+      attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ).as_json(:top_level => false) )
     elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:created_at))
+      attributes.merge(:perspectives => self.perspectives.descending(:created_at).as_json(:top_level => false) )
     else
       attributes
     end

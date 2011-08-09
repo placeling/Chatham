@@ -13,7 +13,7 @@ Chatham::Application.routes.draw do
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
 
   resources :users do
-    resources :perspectives, :only =>[:show, :index]
+    resources :perspectives, :only =>[:index]
     member do
       get :followers
       get :followees
@@ -21,6 +21,8 @@ Chatham::Application.routes.draw do
       post :unfollow
     end
   end
+
+  resources :perspectives, :only =>:show
 
   resources :places do
     collection do
@@ -49,7 +51,7 @@ Chatham::Application.routes.draw do
   #setting up the api routes
   scope 'v1', :api_call => true, :format => :json do
     resources :users do
-      resources :perspectives, :only =>[:show, :index]
+      resources :perspectives, :only =>[:index]
       member do
         get :followers
         get :followees
@@ -57,6 +59,7 @@ Chatham::Application.routes.draw do
         post :unfollow
       end
     end
+    resources :perspectives, :only =>:show
 
     resources :places do
       collection do
