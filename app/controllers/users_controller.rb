@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
     respond_to do |format|
-      format.json { render :json => @user }
+      format.json { render :json => @user.as_json({:current_user => current_user}) }
       format.html
     end
   end
@@ -66,11 +66,11 @@ class UsersController < ApplicationController
     end
   end
 
-  def followees
+  def following
     @user = User.where(:username => params[:id]).first
-    @followees = @user.followees
+    @following = @user.following
     respond_to do |format|
-      format.json { render :json => {:followees => @followees} }
+      format.json { render :json => {:following => @following } }
       format.html
     end
   end

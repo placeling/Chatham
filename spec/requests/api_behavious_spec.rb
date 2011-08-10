@@ -46,10 +46,10 @@ describe "API - " do
       @ian = User.find(@ian.id)
 
       @lindsay.followers.should include(@ian)
-      @ian.followees.should include(@lindsay)
+      @ian.following.should include(@lindsay)
 
       @ian.followers.should_not include(@lindsay)
-      @lindsay.followees.should_not include(@ian)
+      @lindsay.following.should_not include(@ian)
     end
 
     it "be unfollowed" do
@@ -63,7 +63,7 @@ describe "API - " do
       @ian = User.find(@ian.id)
 
       @lindsay.followers.should include(@ian)
-      @ian.followees.should include(@lindsay)
+      @ian.following.should include(@lindsay)
 
       post unfollow_user_path(@lindsay), {:format => :json}
       response.status.should be(200)
@@ -73,7 +73,7 @@ describe "API - " do
       @ian = User.find(@ian.id)
 
       @lindsay.followers.should_not include(@ian)
-      @ian.followees.should_not include(@lindsay)
+      @ian.following.should_not include(@lindsay)
     end
 
     it "have a list of their followers returned" do
@@ -90,18 +90,18 @@ describe "API - " do
       returned_data.followers[0].username.should == @ian.username
     end
 
-    it "have a list of their followees returned" do
+    it "have a list of their following returned" do
       post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
 
       post follow_user_path(@lindsay), {:format => :json}
       response.status.should be(200)
 
-      get followees_user_path(@ian), {:format => :json}
+      get following_user_path(@ian), {:format => :json}
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
-      returned_data.followees.count.should == 1
-      returned_data.followees[0].username.should == @lindsay.username
+      returned_data.following.count.should == 1
+      returned_data.following[0].username.should == @lindsay.username
     end
   end
 

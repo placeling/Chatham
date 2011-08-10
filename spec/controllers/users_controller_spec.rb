@@ -43,6 +43,27 @@ describe UsersController do
         user['following_count'].should == 1
 
       end
+
+      it "returns relationship information" do
+        user = Factory.create(:user, :username=>"imack")
+        user2 = Factory.create(:user, :username=>"lindsay")
+
+        user.follow( user2 )
+
+        sign_in user
+
+        get :show, :id => user2.username, :format=>:json
+
+        response.should be_success
+
+        user = JSON.parse( response.body )
+
+        PP.pp user
+        user['following'].should == true
+        user['follows_you'].should == false
+
+      end
+
     end
 
     describe "with invalid params" do

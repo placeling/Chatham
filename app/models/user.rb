@@ -20,7 +20,7 @@ class User
   has_many :places #ones they created
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
-  has_and_belongs_to_many :followees, :class_name =>"User", :inverse_of => nil
+  has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
 
   has_many :client_applications
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application]
@@ -51,21 +51,33 @@ class User
     self.username
   end
 
+  def follows?( other_user )
+    following.include?( other_user )
+  end
+
   def follow( other_user )
     other_user.followers << self
-    self.followees << other_user
+    self.following << other_user
   end
 
   def unfollow( other_user )
     other_user.followers.delete self
-    self.followees.delete other_user
+    self.following.delete other_user
   end
 
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = self.attributes.slice('username', 'perspective_count')
-    attributes = attributes.merge(:follower_count => followers.count, :following_count => followees.count)
+    attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
+
+    if options[:current_user]
+      #check against raw ids so it doesnt have to go back to db
+      following = self['follower_ids'].include?( options[:current_user].id )
+      follows_you = self['following_ids'].include?( options[:current_user].id )
+      attributes = attributes.merge(:following => following, :follows_you => follows_you)
+    end
+
     if (options[:perspectives] == :location)
       attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ).as_json(:top_level => false) )
     elsif (options[:perspectives] == :created_by )

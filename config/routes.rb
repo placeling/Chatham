@@ -16,7 +16,7 @@ Chatham::Application.routes.draw do
     resources :perspectives, :only =>[:index]
     member do
       get :followers
-      get :followees
+      get :following
       post :follow
       post :unfollow
     end
@@ -55,7 +55,7 @@ Chatham::Application.routes.draw do
       resources :perspectives, :only =>[:index]
       member do
         get :followers
-        get :followees
+        get :following
         post :follow
         post :unfollow
       end

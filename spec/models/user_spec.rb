@@ -18,8 +18,8 @@ describe User do
     ian.save
 
     lindsay.followers.should include(ian)
-    ian.followees.should include(lindsay)
-    lindsay.followees.should_not include(ian)
+    ian.following.should include(lindsay)
+    lindsay.following.should_not include(ian)
     ian.followers.should_not include(lindsay)
   end
 
@@ -32,7 +32,7 @@ describe User do
     ian.unfollow( lindsay )
 
     lindsay.followers.should_not include(ian)
-    ian.followees.should_not include(lindsay)
+    ian.following.should_not include(lindsay)
 
     lindsay = User.find(lindsay.id) #make sure was unfollowed, not deleted
     lindsay.should be_valid
