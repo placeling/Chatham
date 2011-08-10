@@ -20,14 +20,14 @@ describe "OAuth Provider" do
         consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => "tartus69" })
-        }.should raise_error(OAuth::Unauthorized, "401 Unauthorized ")
+        }.should raise_error(OAuth::Unauthorized, /401 Unauthorized/)
       end
 
       it "username" do
         consumer = OAuth::Consumer.new(@key, @secret, :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => "blah", :x_auth_password => @password })
-        }.should raise_error(OAuth::Unauthorized,  "401 Unauthorized ")
+        }.should raise_error(OAuth::Unauthorized, /401 Unauthorized/)
       end
     end
 
@@ -47,14 +47,14 @@ describe "OAuth Provider" do
         consumer = OAuth::Consumer.new(nil, nil, :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => @password })
-        }.should raise_error(OAuth::Unauthorized, "403 Forbidden ")
+        }.should raise_error(OAuth::Unauthorized, /401 Unauthorized/)
       end
 
       it "secret" do
         consumer = OAuth::Consumer.new(@key, "blah blah", :site => @site)
         lambda {
           consumer.get_access_token(nil, {}, { :x_auth_mode => 'client_auth', :x_auth_username => @username, :x_auth_password => @password })
-        }.should raise_error(OAuth::Unauthorized, "403 Forbidden ")
+        }.should raise_error(OAuth::Unauthorized, /401 Unauthorized/)
       end
     end
 

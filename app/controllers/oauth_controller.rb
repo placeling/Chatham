@@ -5,15 +5,15 @@ class OauthController < ApplicationController
   def access_token_with_xauth_test
 
     if current_client_application.nil?
-      render :text => t("oauth.invalid"), :status => 403, :template=>nil
-      logger.info "403 - Got invalid Oauth Request"
+      render :text => t("oauth.invalid"), :status => 401, :template=>nil
+      logger.info "401 - Got invalid Oauth Request"
       return
     end
 
     if params[:x_auth_mode] == "client_auth"
       if ! current_client_application.xauth_enabled
-        logger.info "403 - xauth request for app that doesn't have xauth enabled'"
-        render :text => t("oauth.no_xauth"), :status => 403, :template=>nil
+        logger.info "401 - xauth request for app that doesn't have xauth enabled'"
+        render :text => t("oauth.no_xauth"), :status => 401, :template=>nil
         return
       end
 
@@ -23,7 +23,7 @@ class OauthController < ApplicationController
         sign_in (user)
       else
         logger.info "401 - Username/Password not valid"
-        render :text => t("devise.failure.invalid"), :status => 401, :template=>nil
+        render :text => "BAD_PASS: " + t("devise.failure.invalid"), :status => 401, :template=>nil
         return
       end
 
