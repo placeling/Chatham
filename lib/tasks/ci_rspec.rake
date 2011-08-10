@@ -1,3 +1,4 @@
+require 'rubygems' #so next 2 lines don't cause rake to crapout in non-rspec environments
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
 
