@@ -2,15 +2,15 @@ development:
   host: "http://localhost:3000"
   username: "tyler"
   password: "foobar"
-  consumer_key:  "7RxXdCM7deXLKZLZfqytuM53iBIoizh6w2A4IpRt"
-  consumer_secret: "zJHyMneG6BoYFajdqg0aLaPociCQOdmSyXZ55hIe"
+  consumer_key:  "HeXSTRRHIQWmrFAiLxYPQz0TijQwNO6HRhUjkOuv"
+  consumer_secret: "0fFHJiz4GNwCHTomxz1DLKeWch52m92WjsSrYMNt"
 
 test:
   host: "http://localhost:3000"
   username: "tyler"
   password: "foobar"
-  consumer_key:  ""
-  consumer_secret: ""
+  consumer_key:  "HeXSTRRHIQWmrFAiLxYPQz0TijQwNO6HRhUjkOuv"
+  consumer_secret: "0fFHJiz4GNwCHTomxz1DLKeWch52m92WjsSrYMNt"
 
 staging:
   host: "http://staging.corp.placeling.com"

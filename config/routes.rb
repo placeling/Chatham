@@ -48,8 +48,6 @@ Chatham::Application.routes.draw do
     end
   end
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
 
   #setting up the api routes
   scope 'v1', :api_call => true, :format => :json do

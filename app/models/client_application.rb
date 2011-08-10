@@ -48,7 +48,12 @@ class ClientApplication
   end
 
   def self.find_by_key(consumer_key)
-    ClientApplication.where(:key => consumer_key).first
+    @client_applications = ClientApplication.where(:key => consumer_key)
+    if @client_applications.count == 0
+      return nil
+    else
+      @client_applications.first
+    end
   end
 
   def self.verify_request(request, options = {}, &block)
