@@ -29,11 +29,15 @@ class Perspective
   def increment_place_and_user
     self.place.perspective_count += 1
     self.user.perspective_count += 1
+    self.place.save!
+    self.user.save!
   end
 
   def decrement_place_and_user
     self.place.perspective_count -= 1
     self.user.perspective_count -= 1
+    self.place.save!
+    self.user.save!
   end
 
   def get_place_location

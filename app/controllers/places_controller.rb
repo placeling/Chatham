@@ -73,7 +73,21 @@ class PlacesController < ApplicationController
   end
 
   def show
-    @place = Place.find( params[:id] )
+    if BSON::ObjectId.legal?( params[:id] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params[:id])
+    else
+      @place = Place.find_by_google_id( params[:id] )
+    end
+
+    if @place.nil? && params[:google_ref] && current_user
+      #not here, and we need to fetch it
+      gp = GooglePlaces.new
+      @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
+      @place.user = current_user
+      @place.client_application = current_client_application unless current_client_application.nil?
+      @place.save
+    end
 
     respond_to do |format|
       format.html

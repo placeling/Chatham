@@ -20,8 +20,8 @@ describe Place do
 
   it "should show the most n active places" do
     sophies = Factory.create(:place)
-    lib_square_perspective = Factory.create(:lib_square_perspective)
-    lib_square = lib_square_perspective.place
+    lib_square = Factory.create(:lib_square)
+    lib_square_perspective = Factory.create(:lib_square_perspective, :place =>lib_square)
 
     places = Place.top_places( 1 )
     places.first.name.should == lib_square.name

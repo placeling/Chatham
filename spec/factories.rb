@@ -104,6 +104,7 @@ FactoryGirl.define do
     vicinity "West 4th Avenue, Vancouver"
     venue_types {[ "restaurant", "food", "establishment" ]}
     google_url "http://maps.google.com/maps/place?cid=7606348301440864605"
+    google_ref "CnRqAAAAupFuI8pPDPHvtmu8wLqOJIIw7MjQnU0AuOSciRaYv315ctp_J0A3Wa480MLdw2S4TZ4bz6tZkDkywesF2IlpDHYxEGOC4yZ7s86XaQkFmMwsddoRjOjGPfBefkHM9oIjbATDZquo1enEMluCCLIkfxIQ_mHe2TJeJCh7C1EKeLD5DRoU-Xa0MoV9FRpW-8u_lcOUrXM5XIw"
     place_type "GOOGLE_PLACE"
   end
 
