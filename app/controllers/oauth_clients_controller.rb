@@ -4,6 +4,7 @@ class OauthClientsController < ApplicationController
   before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
 
   def index
+    @all_client_applications = ClientApplication.all
     @client_applications = current_user.client_applications
     @tokens = current_user.tokens.where(:invalidated_at => nil )
   end

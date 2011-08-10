@@ -37,6 +37,9 @@ en:
   admin:
     required_failed: "This requires admin privileges"
 
+  applications:
+    all_applications: "All Applications"
+
   profile:
     profile: "Profile"
 
