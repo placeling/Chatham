@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   #oauth-plugin needs this
   def current_user=(user)
-    current_user = user
+    @current_user = user
   end
 
 end
