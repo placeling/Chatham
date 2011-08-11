@@ -35,7 +35,6 @@ class PerspectivesController < ApplicationController
 
   def update
     #this can also function as a "create", given that a user can only have one perspective for a place
-
     if BSON::ObjectId.legal?( params['place_id'] )
       #it's a direct request for a place in our db
       @place = Place.find( params['place_id'])

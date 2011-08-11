@@ -85,13 +85,14 @@ FactoryGirl.define do
     description "I am the test user with no admin privileges, and nothing interesting"
   end
 
-  factory :admin do
+  factory :admin, :class =>User do
     username "Admin"
     email  "admin@placeling.com"
     password "foobar"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
     description "I am a placeling administrator"
+    admin true
   end
 end
 

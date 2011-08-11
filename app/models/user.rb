@@ -15,6 +15,7 @@ class User
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
 
   field :description, :type => String
+  field :admin,       :type => Boolean, :default => false
 
   has_many :perspectives
   has_many :places #ones they created
@@ -43,7 +44,7 @@ class User
   end
 
   def is_admin?
-    return false
+    self.admin
   end
 
   def to_param
