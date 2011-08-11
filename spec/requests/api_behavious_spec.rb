@@ -180,10 +180,8 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      post_via_redirect places_perspectives_path, {
+      post_via_redirect place_perspectives_path( place ), {
         :format => 'json',
-        :google_ref=> 'CnRqAAAAENm_o7U-bsSFgVriK3TWgSX04_dXx9_LQx52SEEe77eIWhU8hrJUI9p8UCP-uyzcUMPPEJDu9WjdRR9Sl3Y5-_FBd-Mr1c6x4DocgErDdRMr3nykG7r1_SC4gBBH9amVAcpJvP80bN8LD94leLBpkRIQmP_0UC128e_Co4mg1H9vEhoU960SUeBMRddoH6mTUgUpm6op838',
-        :google_id=>"a648ca9b8af31e9726947caecfd062406dc89440",
         :memo => "This place is out of this world",
         :lat => 49.268547,
         :long => -123.15279,

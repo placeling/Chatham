@@ -34,49 +34,26 @@ class PerspectivesController < ApplicationController
   end
 
   def update
+    #this can also function as a "create", given that a user can only have one perspective for a place
 
-    @place = Place.find( params[:place_id] )
+    if BSON::ObjectId.legal?( params['place_id'] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params['place_id'])
+    else
+      @place = Place.find_by_google_id( params['place_id'] )
+    end
 
     @perspective= @place.perspectives.where(:user_id => current_user.id).first
+
+    if @perspective.nil?
+      @perspective= @place.perspectives.build(params)
+      @perspective.client_application = current_client_application unless current_client_application.nil?
+      @perspective.user = current_user
+    end
 
     if params[:perspective]
       @perspective.update_attributes(params[:@perspective])
     end
-
-    if params[:image]
-      @picture = @perspective.pictures.build()
-      @picture.image = params[:image]
-      @picture.title = params[:title]
-      @picture.save!
-    end
-    current_user.save!
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @perspective }
-    end
-
-    if @perspective.save
-    else
-      respond_to do |format|
-        format.html { render :new }
-        format.json { render :json => {:status => 'fail'} }
-      end
-    end
-
-
-
-  end
-
-  def create
-    if (params[:google_id])
-      @place = Place.find_by_google_id( params[:google_id] )
-    else
-      @place = Place.find( params[:place_id] )
-    end
-
-    @perspective= @place.perspectives.build(params)
-    @perspective.client_application = current_client_application unless current_client_application.nil?
 
     if (params[:lat] and params[:long])
         @perspective.location = [params[:lat].to_f, params[:long].to_f]
@@ -85,12 +62,15 @@ class PerspectivesController < ApplicationController
       @perspective.location = @place.location #made raw, these are by definition the same
       @perspective.accuracy = params[:accuracy]
     end
-    @perspective.user = current_user
 
-    if @place.save!
-      current_user.save
-      @perspective.save
+    if params[:image]
+      @picture = @perspective.pictures.build()
+      @picture.image = params[:image]
+      @picture.title = params[:title]
+      @picture.save!
+    end
 
+    if @perspective.save
       respond_to do |format|
         format.html
         format.json { render :json => @perspective }
@@ -101,6 +81,7 @@ class PerspectivesController < ApplicationController
         format.json { render :json => {:status => 'fail'} }
       end
     end
+
   end
 
 end

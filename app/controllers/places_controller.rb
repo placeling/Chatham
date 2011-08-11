@@ -12,8 +12,10 @@ class PlacesController < ApplicationController
 
     for place in @places
       #add distance to in meters
-      place.distance = 1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)).floor
     end
+
+    #@places = @places.sort_by { |place| place.distance }
 
     respond_to do |format|
       format.html
@@ -80,10 +82,10 @@ class PlacesController < ApplicationController
       @place = Place.find_by_google_id( params[:id] )
     end
 
-    if @place.nil? && params[:google_ref] && current_user
+    if @place.nil? && params['google_ref'] # && current_user
       #not here, and we need to fetch it
       gp = GooglePlaces.new
-      @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
+      @place = Place.new_from_google_place( gp.get_place( params['google_ref'] ) )
       @place.user = current_user
       @place.client_application = current_client_application unless current_client_application.nil?
       @place.save

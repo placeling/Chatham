@@ -25,22 +25,18 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :perspectives, :only =>:show
+  resources :perspectives, :only =>[:show]
 
   resources :places do
     collection do
       get :nearby
     end
-    resources :perspectives, :except =>[:show, :index] do
+    resources :perspectives, :except =>[:show, :index]  do
       collection do
         post :update
-        get :edit
       end
     end
   end
-
-  #this one is used to post a perspective when client has a google_id but not a place_id
-  match '/places/perspectives/' => 'perspectives#create', :as => 'places_perspectives'
 
   resources :oauth_clients do
     member do
@@ -63,7 +59,8 @@ Chatham::Application.routes.draw do
         get :suggested
       end
     end
-    resources :perspectives, :only =>:show
+
+    resources :perspectives, :only =>[:show]
 
     resources :places do
       collection do
@@ -72,13 +69,9 @@ Chatham::Application.routes.draw do
       resources :perspectives, :except =>[:show, :index] do
         collection do
           post :update
-          get :edit
         end
       end
     end
-
-    #this one is used to post a perspective when client has a google_id but not a place_id
-    match '/v1/places/perspectives/' => 'perspectives#create', :as => 'v1_places_perspectives'
   end
 
   match "/:id" => "users#show", :as => :profile

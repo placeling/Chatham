@@ -6,8 +6,8 @@ class Perspective
   before_save :increment_place_and_user
   after_destroy :decrement_place_and_user
 
-  validates_presence_of :place
-  validates_presence_of :user
+  validates_associated :place
+  validates_associated :user
 
   field :favorite,    :type => Boolean, :default => TRUE
   field :memo,        :type => String
