@@ -21,6 +21,24 @@ describe "API - " do
 
     end
 
+    it "should return an existing place with creator and relationship information" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :user =>user, :place =>place) #triggers a bookmark
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get place_path(:id => place.google_id), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+      showPlace['bookmarked'].should_not be(nil)
+      showPlace['bookmarked'].should be(true)
+    end
+
     it "should return place after creating it if it doesn't exist" do
       user = Factory.create(:user)
       place = Factory.build(:place) #build won't persist like create does

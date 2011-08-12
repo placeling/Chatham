@@ -75,11 +75,16 @@ class Place
   end
 
   def as_json(options={})
+    attributes = self.attributes
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
+
+    if options[:current_user]
+      bookmarked = self.perspectives.where(:user_id=> options[:current_user].id).count >0
+      attributes = attributes.merge(:bookmarked => bookmarked)
+    end
+
     attributes.merge(:user => user)
   end
-
-  #Address.near(:latlng => [37.761523, -122.423575, 1])
 
 end

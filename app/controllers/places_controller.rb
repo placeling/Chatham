@@ -93,7 +93,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => @place }
+      format.json { render :json => @place.as_json(:current_user => current_user) }
     end
   end
 
