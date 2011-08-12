@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
   end
 
   def login_required
-    authenticate_user!
+    if current_user.nil?
+      authenticate_user!
+    end
   end
 
 

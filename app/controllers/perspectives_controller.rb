@@ -1,5 +1,5 @@
 class PerspectivesController < ApplicationController
-  before_filter :authenticate_user!, :except =>[:index, :show]
+  before_filter :login_required, :except =>[:index, :show]
 
   def new
 
@@ -45,22 +45,22 @@ class PerspectivesController < ApplicationController
     @perspective= @place.perspectives.where(:user_id => current_user.id).first
 
     if @perspective.nil?
-      @perspective= @place.perspectives.build(params)
+      @perspective= @place.perspectives.build(params[:perspective])
       @perspective.client_application = current_client_application unless current_client_application.nil?
       @perspective.user = current_user
+      if (params[:lat] and params[:long])
+          @perspective.location = [params[:lat].to_f, params[:long].to_f]
+          @perspective.accuracy = params[:accuracy]
+      else
+        @perspective.location = @place.location #made raw, these are by definition the same
+        @perspective.accuracy = params[:accuracy]
+      end
     end
 
     if params[:perspective]
       @perspective.update_attributes(params[:@perspective])
     end
 
-    if (params[:lat] and params[:long])
-        @perspective.location = [params[:lat].to_f, params[:long].to_f]
-        @perspective.accuracy = params[:accuracy]
-    else
-      @perspective.location = @place.location #made raw, these are by definition the same
-      @perspective.accuracy = params[:accuracy]
-    end
 
     if params[:image]
       @picture = @perspective.pictures.build()

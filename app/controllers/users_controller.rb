@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :only =>[:follow, :unfollow]
+  before_filter :login_required, :only =>[:follow, :unfollow]
 
   def show
     @user = User.where(:username => params[:id]).first

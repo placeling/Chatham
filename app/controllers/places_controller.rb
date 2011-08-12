@@ -1,7 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
-  before_filter :authenticate_user!, :only => [:create, :new, :update, :destroy]
+  before_filter :login_required, :only => [:create, :new, :update, :destroy]
 
   def nearby
     lat = params[:lat].to_f
