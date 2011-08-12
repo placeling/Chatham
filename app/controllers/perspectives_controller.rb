@@ -45,7 +45,7 @@ class PerspectivesController < ApplicationController
     @perspective= @place.perspectives.where(:user_id => current_user.id).first
 
     if @perspective.nil?
-      @perspective= @place.perspectives.build(params[:perspective])
+      @perspective= @place.perspectives.build(params.slice("memo"))
       @perspective.client_application = current_client_application unless current_client_application.nil?
       @perspective.user = current_user
       if (params[:lat] and params[:long])
