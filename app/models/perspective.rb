@@ -3,8 +3,8 @@ class Perspective
   include Mongoid::Timestamps
   before_validation :fix_location
   before_save :get_place_location
-  before_save :increment_place_and_user
-  after_destroy :decrement_place_and_user
+  after_save :reset_user_and_place_perspective_count
+  after_destroy :reset_user_and_place_perspective_count
 
   validates_associated :place
   validates_associated :user
@@ -26,16 +26,9 @@ class Perspective
   index [[ :place_location, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
 
-  def increment_place_and_user
-    self.place.perspective_count += 1
-    self.user.perspective_count += 1
-    self.place.save!
-    self.user.save!
-  end
-
-  def decrement_place_and_user
-    self.place.perspective_count -= 1
-    self.user.perspective_count -= 1
+  def reset_user_and_place_perspective_count
+    self.place.perspective_count = self.place.perspectives.count
+    self.user.perspective_count = self.user.perspectives.count
     self.place.save!
     self.user.save!
   end
@@ -54,10 +47,10 @@ class Perspective
   end
 
   def as_json(options={})
-    if options[:top_level] == false
-      attributes.merge(:place => place, :photos =>pictures)
+    if options[:detail_view] == true
+      attributes.merge(:place => place.as_json(), :photos =>pictures, :user => user.as_json())
     else
-      attributes.merge(:place => place, :photos =>pictures, :user => user)
+      attributes.merge(:place => place.as_json(), :photos =>pictures)
     end
 
   end

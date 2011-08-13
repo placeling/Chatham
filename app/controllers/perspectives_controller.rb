@@ -9,7 +9,7 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find( params[:id] )
 
     respond_to do |format|
-      format.json { render :json =>@perspective }
+      format.json { render :json =>@perspective.as_json(:detail_view => true) }
     end
 
   end

@@ -78,13 +78,19 @@ class Place
     attributes = self.attributes
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
+    attributes.delete(:client_application_id)
 
-    if options[:current_user]
-      bookmarked = self.perspectives.where(:user_id=> options[:current_user].id).count >0
-      attributes = attributes.merge(:bookmarked => bookmarked)
+    if options[:detail_view] == true
+      if options && options[:current_user]
+        bookmarked = self.perspectives.where(:user_id=> options[:current_user].id).count >0
+        attributes = attributes.merge(:bookmarked => bookmarked)
+      end
+
+      attributes.merge(:user => user)
+    else
+      attributes
     end
 
-    attributes.merge(:user => user)
   end
 
 end
