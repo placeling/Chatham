@@ -28,7 +28,7 @@ class User
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin
 
   index :username
   index :email
