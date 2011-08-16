@@ -26,7 +26,7 @@ gem "geocoder"
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
 
-group :test, :development, :staging do
+group :test, :development do
   gem "rspec-rails", "~> 2.6"
   gem 'mocha'
   gem 'json'
