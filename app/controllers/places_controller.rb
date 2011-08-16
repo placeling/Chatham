@@ -8,7 +8,15 @@ class PlacesController < ApplicationController
     long = params[:long].to_f
     radius = params[:accuracy].to_f
     gp = GooglePlaces.new
-    @places = gp.find_nearby(lat, long, radius)
+
+    query = params[:query]
+
+    if query
+      @places = gp.find_nearby(lat, long, radius, query)
+    else
+      @places = gp.find_nearby(lat, long, radius)
+    end
+
 
     for place in @places
       #add distance to in meters
@@ -88,7 +96,7 @@ class PlacesController < ApplicationController
       @place = Place.new_from_google_place( gp.get_place( params['google_ref'] ) )
       @place.user = current_user
       @place.client_application = current_client_application unless current_client_application.nil?
-      @place.save
+      @place.save!
     end
 
     respond_to do |format|

@@ -35,7 +35,7 @@ describe GooglePlaces do
   end
 
   it "finds a place by name and rough co-ordinates" do
-    nearby = @gp.find_nearby(49.268547,-123.15279,500, false, "Calhoun's")
+    nearby = @gp.find_nearby(49.268547,-123.15279,500, "Calhoun's")
 
     place_found = false
     for place in nearby

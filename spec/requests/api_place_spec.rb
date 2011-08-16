@@ -75,6 +75,24 @@ describe "API - " do
       place_found.should == true
     end
 
+
+    it "should take a search term" do
+      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :query => "calhoun's", :accuracy=>'500'}
+      response.status.should be(200)
+
+      nearby = JSON.parse( response.body )
+
+      place_found = false
+      for place in nearby
+        if place['id'] == "227eda8780805995c178f614fbf7aab34090f187"#calhouns
+          place_found = true
+          break
+        end
+      end
+
+      place_found.should == true
+    end
+
     it "should return distances to places" do
       get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
       response.status.should be(200)

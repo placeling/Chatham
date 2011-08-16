@@ -20,7 +20,7 @@ class GooglePlaces
 
   end
 
-  def find_nearby(x, y, radius, sensor = true, name = nil, type ="", language ="en")
+  def find_nearby(x, y, radius, name = nil, sensor = true, type ="", language ="en")
     #radis is in meters
 
     location = [x,y].join(',')
