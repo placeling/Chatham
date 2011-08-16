@@ -11,7 +11,7 @@ class PlacesController < ApplicationController
 
     query = params[:query]
 
-    if query
+    if query && query != ""
       @places = gp.find_nearby(lat, long, radius, query)
     else
       @places = gp.find_nearby(lat, long, radius)
