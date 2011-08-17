@@ -89,6 +89,9 @@ GEM
     geocoder (1.0.2)
     hashie (0.4.0)
     highline (1.6.1)
+    hoptoad_notifier (2.4.2)
+      activesupport
+      builder
     httparty (0.7.8)
       crack (= 0.1.8)
     i18n (0.5.0)
@@ -192,6 +195,7 @@ DEPENDENCIES
   factory_girl_rails (~> 1.1.rc1)
   geocoder
   hashie
+  hoptoad_notifier
   httparty
   jquery-rails
   json
