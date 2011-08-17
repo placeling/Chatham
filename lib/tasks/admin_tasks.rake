@@ -23,7 +23,7 @@ namespace "db" do
 
     if file.nil? or file.mtime < 1.day.ago
       puts "getting new backup"
-      puts `scp lunarluau:/chatham_backups/latest/mongodb-latest.tgz /tmp/mongodb-latest.tgz`
+      puts `scp metricpath:/chatham_backups/latest/mongodb-latest.tgz /tmp/mongodb-latest.tgz`
       puts `rm -rf /tmp/MONGOBACKUP`
       puts `mkdir /tmp/MONGOBACKUP`
       puts `tar -C /tmp/MONGOBACKUP -xzvf /tmp/mongodb-latest.tgz`
