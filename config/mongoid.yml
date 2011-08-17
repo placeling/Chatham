@@ -15,13 +15,7 @@ staging:
 
 # set these environment variables on your prod server
 production:
-  host: <%= ENV['MONGOID_HOST'] %>
-  port: <%= ENV['MONGOID_PORT'] %>
-  username: <%= ENV['MONGOID_USERNAME'] %>
-  password: <%= ENV['MONGOID_PASSWORD'] %>
-  #don't autocreate indexes in production, use the rake task rake db:mongoid:create_indexes instead
-  database: <%= ENV['MONGOID_DATABASE'] %>
-  # slaves:
+  host: localhost
   #   - host: slave1.local
   #     port: 27018
   #   - host: slave2.local
