@@ -23,30 +23,19 @@ set :deploy_to, "/var/www/apps/#{application}"
 set :shared_directory, "#{deploy_to}/shared"
 
 namespace :deploy do
-    desc "Custom Thin deployment: stop"
-    task :stop, :roles => :app do
-        find_and_execute_task("thin:stop")
-    end
+  task :start, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
+  end
 
-    desc "Custom Thin deployment: start"
-    task :start, :roles => :app do
-        find_and_execute_task("thin:start")
-    end
+  task :stop, :roles => :app do
+    # Do nothing.
+  end
 
-    desc "Custom Thin deployment: restart"
-    task :restart, :roles => :app do
-        find_and_execute_task("thin:restart")
-    end
-end
-
-namespace :thin do
-  %w(start stop restart).each do |action|
-  desc "#{action} the app's Thin Cluster"
-    task action.to_sym, :roles => :app do
-      run "thin #{action} -c #{deploy_to}/current -C /etc/thin/chatham.yml -R #{deploy_to}/current/config.ru"
-    end
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
   end
 end
 
-        require 'config/boot'
-        require 'hoptoad_notifier/capistrano'
+require 'config/boot'
+require 'hoptoad_notifier/capistrano'
