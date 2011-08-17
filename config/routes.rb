@@ -1,5 +1,10 @@
 Chatham::Application.routes.draw do
 
+  get "admin/terms_of_service", :as => :terms_of_service
+  get "admin/privacy_policy", :as => :privacy_policy
+  get "admin/about_us", :as => :about_us
+  get "admin/contact_us", :as => :contact_us
+
   root :to => "home#index"
 
   devise_for :users
@@ -47,6 +52,9 @@ Chatham::Application.routes.draw do
 
   #setting up the api routes
   scope 'v1', :api_call => true, :format => :json do
+    get "admin/terms_of_service", :to => 'admin#terms_of_service'
+    get "admin/privacy_policy", :to => 'admin#privacy_policy'
+
     resources :users do
       resources :perspectives, :only =>[:index]
       member do

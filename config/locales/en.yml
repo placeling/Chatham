@@ -7,9 +7,11 @@ en:
     applications_list: "Oauth Applications"
     users_list: "Users List"
     product_name: "Placeling"
-    copyright: "Copyright"
+    copyright: "Copyright 2011, Placeling (Internet Services)"
     privacy_policy: "Privacy Policy"
     terms_of_service: "Terms of Service"
+    contact_us: "Contact"
+    about_us: "About us"
 
 
   basic:
@@ -174,3 +176,16 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+
+
+  tos: "Consectetur blog veniam mcsweeney's retro laborum. Retro sustainable tofu placeat, aliqua thundercats readymade. Dolor high life sint, pariatur quinoa nostrud brooklyn mcsweeney's aliquip readymade echo park laboris sustainable veniam. Etsy locavore iphone esse deserunt, consectetur 8-bit mixtape. Wes anderson aute cosby sweater assumenda, est cupidatat single-origin coffee freegan next level. Artisan craft beer gentrify echo park brooklyn quinoa. Vegan letterpress retro, brunch organic banh mi freegan do cliche duis tumblr.
+
+Delectus nostrud odio yr single-origin coffee. Mustache culpa aute occaecat in. Scenester next level magna fanny pack velit. Accusamus thundercats homo gluten-free dolore duis laboris portland, farm-to-table lo-fi tofu mcsweeney's placeat et vice. Blog raw denim delectus food truck cliche gluten-free four loko aliqua. Mixtape keffiyeh velit 8-bit, seitan non cliche freegan quinoa. Whatever wolf veniam incididunt, artisan messenger bag biodiesel aute tofu."
+
+  privacy: "Artisan before they sold out food truck, nihil keytar aliquip id retro fanny pack anim irony assumenda. Mollit biodiesel lo-fi mlkshk wolf lomo. Master cleanse hoodie ex, sed culpa excepteur voluptate craft beer non irony gluten-free you probably haven't heard of them. Etsy synth pitchfork et. Retro +1 keytar proident DIY, before they sold out american apparel locavore. Tattooed leggings mollit wes anderson aliquip, dreamcatcher echo park officia you probably haven't heard of them banh mi single-origin coffee. Butcher nostrud messenger bag, enim american apparel vice iphone.
+
+Carles skateboard pariatur nesciunt. Austin irony culpa, messenger bag pariatur consequat vice wolf vero duis iphone irure ea. VHS occaecat thundercats id, squid banh mi exercitation mlkshk velit you probably haven't heard of them. Scenester incididunt veniam, eiusmod beard freegan wes anderson accusamus ex. Trust fund vegan duis officia helvetica. Hoodie brunch consectetur est VHS american apparel voluptate. Art party nostrud thundercats before they sold out 3 wolf moon.
+
+Sustainable anim incididunt id irony, officia tempor fanny pack aliquip nulla do. Do photo booth master cleanse pitchfork, locavore banksy aesthetic consequat sint. Trust fund master cleanse cliche, fixie id occaecat single-origin coffee keytar photo booth portland american apparel messenger bag next level. Dolor brunch dolore fanny pack, put a bird on it sustainable organic sartorial banh mi culpa skateboard vegan esse voluptate. Helvetica banksy 3 wolf moon synth, enim reprehenderit single-origin coffee wolf dolore tattooed irony. Master cleanse food truck american apparel, skateboard vero irure vegan et brooklyn dolore. Seitan skateboard dreamcatcher aliquip.
+
+Vero master cleanse assumenda ut carles. Blog homo non VHS. Ullamco minim brunch vero. Exercitation locavore homo, ullamco you probably haven't heard of them odio reprehenderit assumenda. Sustainable Austin yr jean shorts, fugiat leggings eiusmod. Shoreditch nesciunt Austin cillum, twee seitan occaecat vero thundercats. Ut cardigan leggings esse homo retro ullamco, nihil trust fund vice Austin."

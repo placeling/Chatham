@@ -38,6 +38,10 @@
 
     <!-- Navigation: Start -->
     <ul id="navigation" class="dropdown">
+      <li><%= link_to t("home.privacy_policy"), privacy_policy_path %></li>
+      <li><%= link_to t("home.terms_of_service"), terms_of_service_path%></li>
+      <!-- li><%= link_to t("home.contact_us"), contact_us_path %></li>
+      <li><%= link_to t("home.about_us"), about_us_path %></li> -->
         <% if current_user %>
             <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></li>
         <% else %>
