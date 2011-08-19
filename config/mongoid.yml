@@ -2,20 +2,24 @@ development:
   host: localhost
   database: chatham_development
   autocreate_indexes: true
+  raise_not_found_error: false
 
 
 test:
   host: localhost
   database: chatham_test
   autocreate_indexes: true
+  raise_not_found_error: false
 
 staging:
   host: localhost
   database: chatham_staging
+  raise_not_found_error: false
 
 # set these environment variables on your prod server
 production:
   host: localhost
+  raise_not_found_error: false
   #   - host: slave1.local
   #     port: 27018
   #   - host: slave2.local

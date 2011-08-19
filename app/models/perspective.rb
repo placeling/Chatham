@@ -1,6 +1,8 @@
 class Perspective
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
+
   before_validation :fix_location
   before_save :get_place_location
   after_save :reset_user_and_place_perspective_count

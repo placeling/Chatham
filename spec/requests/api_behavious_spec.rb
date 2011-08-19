@@ -141,10 +141,44 @@ describe "API - " do
       perspectives[1].memo.should include("LIB SQUARE")
       perspectives[0].memo.should include("COSMIC")
     end
-
-
   end
 
+  describe "deleting perspectives" do
+    it "can be done by the user who created it" do
+      user = Factory.create(:user)
+      perspective = Factory.create(:perspective, :user =>user)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      delete place_perspectives_path(perspective.place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      #reget from db
+      perspective = Perspective.find(perspective.id)
+      perspective.should be(nil)
+    end
+
+    it "cannot be done by the user who did not create it" do
+      user = Factory.create(:user)
+      hacker = Factory.create(:user, :username=>"badperson")
+      perspective = Factory.create(:perspective, :user =>user)
+
+      post_via_redirect user_session_path, 'user[login]' => hacker.username, 'user[password]' => hacker.password
+
+      delete place_perspectives_path(perspective.place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      #reget from db
+      perspective = Perspective.find(perspective.id)
+      perspective.should_not be(nil)
+    end
+  end
 
   describe "perspective can be added" do
 

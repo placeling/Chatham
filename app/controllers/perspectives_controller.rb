@@ -109,4 +109,25 @@ class PerspectivesController < ApplicationController
 
   end
 
+
+  def destroy
+    if BSON::ObjectId.legal?( params['place_id'] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params['place_id'])
+    else
+      @place = Place.find_by_google_id( params['place_id'] )
+    end
+
+    @perspective= @place.perspectives.where(:user_id => current_user.id).first
+
+    if !@perspective.nil?
+      @perspective.delete
+    end
+
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render :json => {:status => 'deleted'} }
+    end
+  end
+
 end

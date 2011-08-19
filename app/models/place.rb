@@ -1,6 +1,8 @@
 class Place
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
+
   before_validation :fix_location
 
   field :location, :type => Array

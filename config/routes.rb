@@ -30,7 +30,11 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :perspectives, :only =>[:show]
+  resources :perspectives, :only =>[:show]   do
+    collection do
+      get :nearby
+    end
+  end
 
   resources :places do
     collection do
@@ -39,6 +43,7 @@ Chatham::Application.routes.draw do
     resources :perspectives, :except =>[:show, :index]  do
       collection do
         post :update
+        delete :destroy
       end
     end
   end
@@ -68,7 +73,11 @@ Chatham::Application.routes.draw do
       end
     end
 
-    resources :perspectives, :only =>[:show]
+    resources :perspectives, :only =>[:show]   do
+      collection do
+        get :nearby
+      end
+    end
 
     resources :places do
       collection do
@@ -77,6 +86,7 @@ Chatham::Application.routes.draw do
       resources :perspectives, :except =>[:show, :index] do
         collection do
           post :update
+
         end
       end
     end
