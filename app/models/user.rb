@@ -7,6 +7,7 @@ class User
 
 
   field :username,      :type =>String
+  field :fullname,      :type =>String
   alias :login :username
   field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users

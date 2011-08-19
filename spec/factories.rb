@@ -71,6 +71,7 @@ FactoryGirl.define do
     username "Gladwell"
     sequence(:email) { "gladwell@placeling.com" }
     password "foobar"
+    fullname "Malcolm Gladwell"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
     description "I am the test user interesting things going on"
@@ -80,6 +81,7 @@ FactoryGirl.define do
     sequence(:username) { |n| "tyler#{n}" }
     sequence(:email) { |n| "tyler#{n}@placeling.com" }
     password "foobar"
+    fullname "Tyler Durden"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
     description "I am the test user with no admin privileges, and nothing interesting"
@@ -89,6 +91,7 @@ FactoryGirl.define do
     username "Admin"
     email  "admin@placeling.com"
     password "foobar"
+    fullname "Placeling Administrator"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
     description "I am a placeling administrator"
