@@ -5,6 +5,32 @@ class PerspectivesController < ApplicationController
 
   end
 
+  def nearby
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+    radius = params[:accuracy].to_f
+
+    query = params[:query]
+
+
+
+
+    for place in @places
+      #add distance to in meters
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)).floor
+    end
+
+    #@places = @places.sort_by { |place| place.distance }
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @places }
+    end
+
+
+
+  end
+
   def show
     @perspective = Perspective.find( params[:id] )
 

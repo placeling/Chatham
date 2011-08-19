@@ -65,7 +65,7 @@ describe "API - " do
 
       nearby = JSON.parse( response.body )
       place_found = false
-      for place in nearby
+      for place in nearby['places']
         if place['id'] == "e22913360d0b946d099c7a32a77a95e49f9ead66"#Pylon Lookout
           place_found = true
           break
@@ -83,7 +83,7 @@ describe "API - " do
       nearby = JSON.parse( response.body )
 
       place_found = false
-      for place in nearby
+      for place in nearby['places']
         if place['id'] == "227eda8780805995c178f614fbf7aab34090f187"#calhouns
           place_found = true
           break
@@ -99,7 +99,7 @@ describe "API - " do
 
       nearby = JSON.parse( response.body )
 
-      for place in nearby
+      for place in nearby['places']
         place['distance'].should <= 500
       end
 

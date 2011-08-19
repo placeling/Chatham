@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @users = User.where(:location.near => [lat,long]).limit(10)
 
     respond_to do |format|
-      format.json { render :json=> @users }
+      format.json { render :json=> {:suggested => @users } }
     end
   end
 

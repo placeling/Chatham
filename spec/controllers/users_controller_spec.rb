@@ -11,7 +11,7 @@ describe UsersController do
         response.should be_success
         users = JSON.parse( response.body )
 
-        users[0]['username'].should == "gladwell"
+        users['suggested'][0]['username'].should == "gladwell"
       end
    end
 
