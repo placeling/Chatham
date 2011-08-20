@@ -20,6 +20,13 @@ GIT
       selenium-webdriver (~> 2.0.0)
       xpath (~> 0.1.4)
 
+GIT
+  remote: git://github.com/mzsanford/twitter-text-rb.git
+  revision: df4fd78700b50244a85becf66df68092e7b1c9c1
+  specs:
+    twitter-text (1.4.9)
+      activesupport
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -207,3 +214,4 @@ DEPENDENCIES
   rails (= 3.0.3)
   rspec-rails (~> 2.6)
   system_timer
+  twitter-text!

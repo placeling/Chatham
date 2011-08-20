@@ -2,9 +2,12 @@ class Perspective
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  include Twitter::Extractor
+
 
   before_validation :fix_location
   before_save :get_place_location
+  before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
 
@@ -14,6 +17,7 @@ class Perspective
   field :favorite,    :type => Boolean, :default => TRUE
   field :memo,        :type => String
   field :place_location,    :type => Array #for easier indexing
+  field :tags,    :type => Array
 
   #these are meant for internal use, not immediately visible to user -iMack
   field :location,    :type => Array
@@ -27,6 +31,11 @@ class Perspective
 
   index [[ :place_location, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
+  index :tags, :background => true
+
+  def parse_tags
+    self.tags = extract_hashtags( self.memo )
+  end
 
   def reset_user_and_place_perspective_count
     self.place.perspective_count = self.place.perspectives.count

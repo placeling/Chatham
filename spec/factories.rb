@@ -141,7 +141,7 @@ FactoryGirl.define do
     association :user, :factory => :user
     location { [49.2642380,-123.1625990] }
     accuracy 500
-    memo "this place is da bomb"
+    memo "this place is da bomb #foshizz"
   end
 
   factory :lib_square_perspective, :class => Perspective do
@@ -149,6 +149,6 @@ FactoryGirl.define do
     association :user, :factory => :user
     location { [49.279430, -123.115334] }
     accuracy 500
-    memo "I want to like this place but it can get a little douchy"
+    memo "I want to like this place but it can get a little #douchy"
   end
 end

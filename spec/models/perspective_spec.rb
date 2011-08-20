@@ -20,4 +20,12 @@ describe Perspective do
       pic = perspective.pictures.first
       pic.image.thumb.should be_no_larger_than(64, 64)
   end
+
+  it "should extracts hashtags" do
+    user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
+    perspective = Factory.create(:perspective, :user =>user, :memo => "#breakfast is the #best #tag")
+
+    perspective.tags.count.should == 3
+    perspective.tags[1].should == "best"
+  end
 end

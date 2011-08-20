@@ -216,7 +216,7 @@ describe "API - " do
 
       post_via_redirect place_perspectives_path( place ), {
         :format => 'json',
-        :memo => "This place is out of this world",
+        :memo => "This place is out of this world #breakfast",
         :lat => 49.268547,
         :long => -123.15279,
         :accuracy=>'500'
@@ -231,6 +231,7 @@ describe "API - " do
 
       perspective = place.perspectives.where(:user_id=> user.id).first
       perspective.memo.should include("out of this world")
+      perspective.tags[0].should == "breakfast"
 
     end
 

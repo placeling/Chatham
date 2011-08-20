@@ -26,6 +26,8 @@ gem "geocoder"
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
 
+gem "twitter-text", :git => "git://github.com/mzsanford/twitter-text-rb.git"
+
 gem 'hoptoad_notifier'
 
 group :test, :development do
