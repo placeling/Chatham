@@ -19,15 +19,50 @@ class Place
 
   field :google_ref,  :type => String # may need this later, makes easier
   field :address_components, :type => Hash #save for later
+  field :place_tags, :background => true
+  field :place_tags_last_update, :type => DateTime
 
   has_many :perspectives
   belongs_to :client_application
   belongs_to :user
 
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
+  index :place_tags, :background => true
   index :google_id
   index :perspective_count
 
+  def tags
+    t = CHATHAM_CONFIG['cache_tags_time_hours'].to_i
+
+    if self.place_tags_last_update.nil? or self.place_tags_last_update < t.hour.ago
+      #cache these for t hours
+      self.place_tags_last_update = Time.now
+      update_tags
+    end
+
+    return self.place_tags
+  end
+
+  def update_tags
+    n = CHATHAM_CONFIG['num_top_tags']
+
+    tag_tally = {}
+
+    for perspective in self.perspectives
+      for tag in perspective.tags
+        if tag_tally.has_key?( tag )
+          tag_tally[tag] +=1
+        else
+          tag_tally[tag] =1
+        end
+      end
+    end
+
+    sorted_tag_tally = tag_tally.sort_by {|key, value| value}
+
+    self.place_tags = sorted_tag_tally.last( n ).collect!{|value| value[0]}
+
+  end
 
   def fix_location
     if self.location[0].is_a? String
@@ -81,6 +116,9 @@ class Place
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
     attributes.delete(:client_application_id)
+    attributes.delete(:place_tags)
+    attributes.delete(:place_tags_last_update)
+    attributes.merge(:tags => self.tags)
 
     if options[:detail_view] == true
       if options && options[:current_user]

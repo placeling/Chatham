@@ -4,6 +4,16 @@ require 'JSON'
 
 describe Place do
 
+  it "aggregates tags from associated perspectives" do
+    place = Factory.create(:place)
+
+    perspective_one = Factory.create(:perspective, :place =>place, :memo=>"#breakfast #is #the #best #meal of the #day")
+    perspective_two = Factory.create(:perspective, :place =>place, :memo=>"I #am a #fan of #breakfast")
+
+    place.tags.should include("breakfast")
+
+  end
+
   it "increments its perspective count when a perspective is added" do
     lib_square_perspective = Factory.create(:lib_square_perspective)
     lib_square_perspective.place.perspective_count.should == 1
