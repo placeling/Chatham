@@ -4,6 +4,26 @@ require 'JSON'
 
 describe Place do
 
+  it "can be found within a radius" do
+    place = Factory.create(:place, :location => [49.2682380,-123.1525990] )
+    perspective_one = Factory.create(:perspective, :place =>place)
+
+    results = Place.find_all_near(49.2682380,-123.1525990, 10)
+    results.count.should == 1
+    results[0].id.should == place.id
+
+  end
+
+  it "excluded when not in radius" do
+    place = Factory.create(:place, :location => [49.2682380,-123.1525990] )
+
+    perspective_one = Factory.create(:perspective, :place =>place)
+
+    results = Place.find_all_near(49.2682380,1.1525990, 1)
+    results.count.should == 0
+
+  end
+
   it "aggregates tags from associated perspectives" do
     place = Factory.create(:place)
 

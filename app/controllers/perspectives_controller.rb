@@ -130,4 +130,19 @@ class PerspectivesController < ApplicationController
     end
   end
 
+  def nearby
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+    span = params[:span].to_f
+
+    #for finding *all* perspectives nearby
+    @places = Place.find_all_near(lat, long, span)
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {:places => @places} }
+    end
+
+  end
+
 end

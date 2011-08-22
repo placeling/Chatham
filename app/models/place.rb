@@ -73,6 +73,18 @@ class Place
     end
   end
 
+  def self.find_all_near( lat, long, radius )
+
+    n = CHATHAM_CONFIG['max_returned_map']
+
+    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
+    Place.where(:location.within => {"$center" => [[lat,long],radius]}).
+        and(:perspective_count.gte => 1).
+        order_by([:perspective_count, :desc]).
+        limit( n )
+
+  end
+
   def self.top_places( top_n )
     self.desc( :perspective_count ).limit( top_n )
   end

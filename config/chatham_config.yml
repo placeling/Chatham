@@ -1,3 +1,7 @@
 
 num_top_tags: 3
 cache_tags_time_hours: 1
+max_returned_map: 16
+
+
+

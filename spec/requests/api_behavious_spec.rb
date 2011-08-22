@@ -267,4 +267,28 @@ describe "API - " do
     end
   end
 
+  describe "Nearby perspectives can be shown from" do
+
+    it "all users" do
+      user = Factory.create(:user)
+      place = Factory.create(:place, :name => "testA", :location => [49.2682380,-123.1525990] )
+      perspective_one = Factory.create(:perspective, :place =>place)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get nearby_perspectives_path, {
+          :format => "json",
+          :lat => '49.268547',
+          :long =>'-123.15279',
+          :span=>'1'
+      }
+
+      response.status.should be(200)
+      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
+      returned_data.places.count.should == 1
+      returned_data.places[0].name.should == "testA"
+
+    end
+  end
+
 end

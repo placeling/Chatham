@@ -86,7 +86,7 @@ Chatham::Application.routes.draw do
       resources :perspectives, :except =>[:show, :index] do
         collection do
           post :update
-
+          delete :destroy
         end
       end
     end
