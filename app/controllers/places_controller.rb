@@ -32,6 +32,21 @@ class PlacesController < ApplicationController
 
   end
 
+  def random
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+
+    @place = Place.find_random(lat, long)
+
+    #@places = @places.sort_by { |place| place.distance }
+
+    respond_to do |format|
+      format.html { render :show}
+      format.json { render :json => @place }
+    end
+
+  end
+
   def index
     @places = Place.find :all #, :conditions => 'oauth_tokens.invalidated_at is null and oauth_tokens.authorized_at is not null'
   end

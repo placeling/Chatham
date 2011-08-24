@@ -4,6 +4,26 @@ require 'json/ext'
 describe "API - " do
 
   describe "GET place for JSON request" do
+
+    it "should return random place if requested" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get random_places_path, {
+        :format => 'json',:lat => '49.8599827', :long =>'-129.2021282'
+      }
+
+      response.status.should be(200)
+
+      PP.pp response.body
+      showPlace = JSON.parse( response.body )
+      showPlace['name'].should == place.name
+
+    end
+
     it "should return place if it exists" do
       user = Factory.create(:user)
       place = Factory.create(:place)

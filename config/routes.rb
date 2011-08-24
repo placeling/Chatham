@@ -39,6 +39,7 @@ Chatham::Application.routes.draw do
   resources :places do
     collection do
       get :nearby
+      get :random
     end
     resources :perspectives, :except =>[:show, :index]  do
       collection do
@@ -82,6 +83,7 @@ Chatham::Application.routes.draw do
     resources :places do
       collection do
         get :nearby
+        get :random
       end
       resources :perspectives, :except =>[:show, :index] do
         collection do

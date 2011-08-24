@@ -11,6 +11,7 @@ class Place
   field :vicinity, :type => String
   field :street_address, :type => String
   field :phone_number, :type => String
+  field :city_data, :type => String
 
   field :venue_types, :type => Array
   field :google_url,  :type => String
@@ -31,6 +32,19 @@ class Place
   index :google_id
   index :perspective_count
 
+  def self.find_random(lat, long)
+    places = Place.near(:location => [lat,long]).
+        and(:perspective_count.gte => 1).
+        limit( 100 )
+
+    if places.count > 0
+      i = rand(places.size)
+      return places[i]
+    else
+      return nil
+    end
+  end
+
   def tags
     t = CHATHAM_CONFIG['cache_tags_time_hours'].to_i
 
@@ -44,11 +58,13 @@ class Place
   end
 
   def update_tags
+    return unless !self.perspectives.nil?
     n = CHATHAM_CONFIG['num_top_tags']
 
     tag_tally = {}
 
     for perspective in self.perspectives
+      next unless !perspective.tags.nil?
       for tag in perspective.tags
         if tag_tally.has_key?( tag )
           tag_tally[tag] +=1
@@ -103,6 +119,11 @@ class Place
 
     place.phone_number = raw_place.formatted_phone_number unless !raw_place.formatted_phone_number?
     place.google_ref = raw_place.reference
+    if raw_place.address_components.length > 3
+      #TODO: find out how this scales past north america
+      place.city_data = raw_place.address_components[2].short_name + ", " + raw_place.address_components[3].short_name
+    end
+
     if raw_place.address_components.length > 1
       #TODO: find out how this scales past north america
       place.street_address = raw_place.address_components[0].short_name + " " + raw_place.address_components[1].short_name
