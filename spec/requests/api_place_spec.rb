@@ -3,6 +3,54 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "Place perspectives" do
+    it "can all be shown" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user)
+      user3 = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
+      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+
+      get all_place_perspectives_path(place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+      showPlace['perspectives'].count.should == 2
+    end
+
+    it "can be shown for users being followed" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user)
+      user3 = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :memo=>"TEST1", :place =>place, :user =>user2)
+      perspective2 = Factory.create(:perspective, :memo=>"TEST2", :place =>place, :user =>user3)
+      user.follow( user2 )
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+
+      get following_place_perspectives_path(place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+      showPlace['perspectives'].count.should == 1
+      showPlace['perspectives'][0]['memo'].should == "TEST1"
+    end
+
+  end
+
+
   describe "GET place for JSON request" do
 
     it "should return random place if requested" do
@@ -18,7 +66,6 @@ describe "API - " do
 
       response.status.should be(200)
 
-      PP.pp response.body
       showPlace = JSON.parse( response.body )
       showPlace['name'].should == place.name
 

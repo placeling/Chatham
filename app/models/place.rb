@@ -145,18 +145,20 @@ class Place
   end
 
   def as_json(options={})
-    attributes = self.attributes
+    attributes = self.attributes.merge(:tags => self.tags)
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
     attributes.delete(:client_application_id)
     attributes.delete(:place_tags)
     attributes.delete(:place_tags_last_update)
-    attributes.merge(:tags => self.tags)
 
     if options[:detail_view] == true
       if options && options[:current_user]
         bookmarked = self.perspectives.where(:user_id=> options[:current_user].id).count >0
         attributes = attributes.merge(:bookmarked => bookmarked)
+
+        @perspectives = self.perspectives.where(:user_id.in => options[:current_user].following_ids)
+        attributes = attributes.merge(:following_perspective_count => @perspectives.count)
       end
 
       attributes.merge(:user => user)

@@ -45,6 +45,8 @@ Chatham::Application.routes.draw do
       collection do
         post :update
         delete :destroy
+        get :following
+        get :all
       end
     end
   end
@@ -85,10 +87,12 @@ Chatham::Application.routes.draw do
         get :nearby
         get :random
       end
-      resources :perspectives, :except =>[:show, :index] do
+      resources :perspectives, :except =>[:show] do
         collection do
           post :update
           delete :destroy
+          get :following
+          get :all
         end
       end
     end

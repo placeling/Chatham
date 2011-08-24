@@ -5,6 +5,41 @@ class PerspectivesController < ApplicationController
 
   end
 
+  def following
+    if BSON::ObjectId.legal?( params['place_id'] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params['place_id'])
+    else
+      @place = Place.find_by_google_id( params['place_id'] )
+    end
+
+    @perspectives = @place.perspectives.where(:user_id.in => current_user.following_ids)
+
+    PP.pp @perspectives
+    PP.pp @perspectives.entries
+
+    respond_to do |format|
+      format.json { render :json => {:perspectives =>@perspectives, :count => @perspectives.count} }
+    end
+
+  end
+
+  def all
+    if BSON::ObjectId.legal?( params['place_id'] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params['place_id'])
+    else
+      @place = Place.find_by_google_id( params['place_id'] )
+    end
+
+    @perspectives = @place.perspectives
+
+    respond_to do |format|
+      format.json { render :json => {:perspectives =>@perspectives, :count => @perspectives.count} }
+    end
+  end
+
+
   def show
     @perspective = Perspective.find( params[:id] )
 
