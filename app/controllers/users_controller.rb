@@ -13,10 +13,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def index
-    @users = User.all
-  end
-
   def suggested
     lat = params[:lat].to_f
     long = params[:long].to_f

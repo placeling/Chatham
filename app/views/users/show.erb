@@ -1,35 +1,29 @@
 
-<div class="grid_14">
-
-    <div class="box_top">
-
-        <h2 class="icon list"><%= @user.username %>'s <%= t("place.favorites") %></h2>
-
-        <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
-    </div>
+<div id="maincontent">
+  <h1><%= @user.username %>'s <%= t("place.favorites") %></h1>
 
     <div class="box_content padding">
-        <table class="sorting">
+        <ul>
           <% @user.perspectives.each do |perspective|%>
+              <li>
                 <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+               </li>
           <% end %>
-        </table>
+        </ul>
     </div>
 </div>
 
 
-<div class="grid_10">
+<div id="nav">
 
-    <div class="box_top">
-        <h2 class="icon user"><%= @user.username %></h2>
-
-        <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
-    </div>
-
-    <div class="box_content padding">
-           <p>
-              <b><%= t('basic.marks') %>:</b> <%= @user.perspectives.count %><br>
-           </p>
-    </div>
+  <div class="boxnav">
+        <h3 class="titlenav"><%= @user.username %></h3>
+        <div class="contentnav">
+            <b><%= t('basic.marks') %>:</b> <%= @user.perspectives.count %><br>
+          <b><%= t('user.following') %>:</b> <%= @user.following.count %><br>
+          <b><%= t('user.followers') %>:</b> <%= @user.followers.count %><br>
+            <div class="clear"></div>
+        </div>
+   </div>
 </div>
 

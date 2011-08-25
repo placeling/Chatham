@@ -1,12 +1,6 @@
 
-<div class="grid_24">
-
-    <div class="box_top">
-
-        <h2 class="icon list"><%= t "user.sign_in" %></h2>
-
-        <h3 class="right"><a href="#contents"><%= t('basic.top') %></a></h3>
-    </div>
+<div id="maincontent">
+  <h1><%= t "user.sign_in" %></h1>
 
     <div class="box_content padding">
         <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
@@ -23,6 +17,7 @@
           <p><%= f.submit t "user.sign_in" %></p>
         <% end %>
 
+        <br/>      <br/>
         <%= render :partial => "devise/shared/links" %>
     </div>
 </div>

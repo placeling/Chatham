@@ -1,66 +1,36 @@
-<div class="grid_24">
 
-  <% if current_user %>
-      <div id="userpanel">
-        <ul id="user" class="dropdown">
-            <li class="topnav">
-                <!-- User Name -->
-                <a href="#" class="top icon user"><%= current_user.username %></a>
-                <!-- User Dropdown Content: Start -->
-                <ul class="subnav">
-                    <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"icon lock" %></li>
-                </ul>
-                <!-- User Dropdown Content: End -->
-            </li>
-        </ul>
-
-        <% if admin_user? %>
-            <ul id="admin_links" class="dropdown right">
-                <li class="topnav">
-                    <a href="#" class="top icon pen"><%= t("home.admin_links") %></a>
-
-                    <!-- Style (Themes) Switcher Content: Start -->
-                    <ul class="subnav">
-                        <%= render(:partial =>"home/admin_links") %>
-                    </ul>
-                    <!-- Style (Themes) Switcher Content: End -->
-                </li>
-            </ul>
-        <% end %>
-      </div>
-  <% end %>
-
-  <div id="header">
+<div id="header">
 
     <!-- Logo: Start -->
-    <a href="/" id="logo"><%= t('home.product_name') %></a>
+    <a href="/" id="logo" class="replace"><span></span></a>
     <!-- Logo: End -->
 
     <!-- Navigation: Start -->
-    <ul id="navigation" class="dropdown">
-      <li><%= link_to t("home.privacy_policy"), privacy_policy_path %></li>
-      <li><%= link_to t("home.terms_of_service"), terms_of_service_path%></li>
-      <!-- li><%= link_to t("home.contact_us"), contact_us_path %></li>
-      <li><%= link_to t("home.about_us"), about_us_path %></li> -->
-        <% if current_user %>
-            <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></li>
-        <% else %>
-            <li><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></li>
-        <% end %>
-    </ul>
+    <div id="placemainmenu">
+        <ul id="mainmenu">
+
+          <li><%= link_to t("home.contact_us"), contact_us_path %></li>
+          <li><%= link_to t("home.about_us"), about_us_path %></li>
+            <% if current_user %>
+                <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></li>
+            <% else %>
+                <li><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></li>
+            <% end %>
+
+            <% if admin_user? %>
+                <ul id="admin_links" class="dropdown right">
+                    <li class="topnav">
+                        <a href="#" class="top icon pen"><%= t("home.admin_links") %></a>
+
+                        <!-- Style (Themes) Switcher Content: Start -->
+                        <ul class="subnav">
+                            <%= render(:partial =>"home/admin_links") %>
+                        </ul>
+                        <!-- Style (Themes) Switcher Content: End -->
+                    </li>
+                </ul>
+            <% end %>
+        </ul>
+    </div>
     <!-- Navigation: End -->
-  </div>
-
-
-  <div id="breadcrumb">
-    <!-- Breadcrumb: Start
-    <ul class="left">
-        <li class="icon dashboard"><a href="#">{Index}</a></li>
-        <li class="icon point_right"><a href="#">{Subsection}</a></li>
-        <li class="icon point_right active"><a href="#">{Active Section}</a></li>
-    </ul>
-     Breadcrumb: End -->
-
-  </div>
-
 </div>

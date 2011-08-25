@@ -6,30 +6,28 @@
   <%= csrf_meta_tag %>
 <%= render(:partial =>"layouts/header_imports") %>
   </head>
-  <body>
+  <body id="homepage">
 
-    <div id="wrap" class="container_24">
-        <%= render :partial => 'layouts/header' %>
-        <% if notice %>
-            <div class="grid_24">
-                <div class="info notice">
+    <p><a class="skiplink" href="#maintontent">skip over navigation</a></p>
+    <div id="container">
+
+        <div id="wrapper">
+            <%= render :partial => 'layouts/header' %>
+
+            <div id="content">
+                <% if notice %>
                     <p><%= notice %></p>
-                </div>
+                <% end %>
+
+                <% if alert %>
+                    <p><%= alert %></p>
+                <% end %>
+
+                <%= yield %>
+                <div class="clear"></div>
             </div>
-        <% end %>
-
-        <% if alert %>
-            <div class="grid_24">
-                <div class="error notice">
-                  <p><%= alert %></p>
-                </div>
-            </div>
-        <% end %>
-
-        <%= yield %>
-
-     <%= render :partial => 'layouts/footer' %>
-
+        </div>
+        <%= render :partial => 'layouts/footer' %>
     </div>
 
 <%= render(:partial =>"layouts/footer_imports") %>

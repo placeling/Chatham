@@ -1,42 +1,33 @@
 
-<div class="grid_14">
+<div id="maincontent">
+  <h1><%= @place.name %>'s <%= t("basic.marks") %></h1>
 
-    <div class="box_top">
-
-        <h2 class="icon list"><%= @place.name %>'s <%= t("basic.marks") %></h2>
-
-        <h3 class="right"><a href="#contents"><%= t("basic.top") %></a></h3>
-    </div>
-
-    <div class="box_content padding">
-        <table class="sorting">
-          <% @place.perspectives.each do |perspective|%>
-                <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :place} %>
-          <% end %>
-        </table>
-    </div>
+    <table class="sorting">
+        <% @place.perspectives.each do |perspective|%>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :place} %>
+        <% end %>
+    </table>
 </div>
 
 
-<div class="grid_10">
-     <div class="box_top">
+<div id="nav">
 
-         <h2 class="icon list"><%= @place.name %></h2>
+  <div class="boxnav">
+    <h2 class="titlenav"><%= @place.name %></h2>
 
-         <h3 class="right"><a href="#contents"><%= t'basic.top' %></a></h3>
-     </div>
 
-     <div class="box_content padding">
+   <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
 
-        <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
+   <p>
+     <strong><%= t("basic.location")%>:</strong>
+     <code><%= @place.location[0].to_s + "," + @place.location[1].to_s  %></code>
+   </p>
 
-        <p>
-          <strong><%= t("basic.location")%>:</strong>
-          <code><%= @place.location[0].to_s + "," + @place.location[1].to_s  %></code>
-        </p>
-
-     </div>
+   </div>
 </div>
 
+
+
+</div>
 
 

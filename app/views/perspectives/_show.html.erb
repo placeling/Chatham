@@ -1,7 +1,7 @@
 <% #http://code.google.com/apis/maps/documentation/staticmaps/  %>
-<tr>
-    <td><%= ((source == :user)?
+<div>
+    <%= ((source == :user)?
                 (link_to perspective.place.name, place_path(perspective.place)) :
                 (link_to perspective.user.username, user_path(perspective.user)) )  %>
-      - <%= perspective.memo %></td>
-</tr>
+      - <%= perspective.memo %>
+</div>

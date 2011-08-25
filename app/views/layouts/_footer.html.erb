@@ -1,9 +1,16 @@
-<div class="grid_24">
 
-  <div id="footer">
+<div id="wrapfooter">
 
-   <%= t('home.copyright')  %> 2011 &nbsp;
+    <div id="footer">
+        <div class="clear"></div>
+    </div>
 
-  </div>
+</div>
 
+<div id="footerbottom">
+  <ul id="menufooter">
+    <li><%= link_to t("home.privacy_policy"), privacy_policy_path %></li>
+    <li><%= link_to t("home.terms_of_service"), terms_of_service_path%></li>
+  </ul>
+  <h6><%= t('home.copyright')  %></h6>
 </div>
