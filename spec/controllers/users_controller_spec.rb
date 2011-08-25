@@ -73,9 +73,5 @@ describe UsersController do
     end
   end
 
-  it "shows a list of users" do
-    get :index
-    response.should be_success
-  end
 
 end
