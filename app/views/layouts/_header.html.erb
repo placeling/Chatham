@@ -11,24 +11,19 @@
 
           <li><%= link_to t("home.contact_us"), contact_us_path %></li>
           <li><%= link_to t("home.about_us"), about_us_path %></li>
+
+            <% if admin_user? %>
+              <li><a href="#"><%= t("home.admin_links") %></a>
+                <ul>
+                    <%= render(:partial =>"home/admin_links") %>
+                </ul>
+              </li>
+            <% end %>
+
             <% if current_user %>
                 <li><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></li>
             <% else %>
                 <li><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></li>
-            <% end %>
-
-            <% if admin_user? %>
-                <ul id="admin_links" class="dropdown right">
-                    <li class="topnav">
-                        <a href="#" class="top icon pen"><%= t("home.admin_links") %></a>
-
-                        <!-- Style (Themes) Switcher Content: Start -->
-                        <ul class="subnav">
-                            <%= render(:partial =>"home/admin_links") %>
-                        </ul>
-                        <!-- Style (Themes) Switcher Content: End -->
-                    </li>
-                </ul>
             <% end %>
         </ul>
     </div>
