@@ -13,6 +13,8 @@ class User
   field :email,         :type =>String
   field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
+  field :favourite_perspectives,    :type => Array, :default =>[]
+
   field :location, :type => Array #meant to be home location, used at signup?
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
 
@@ -35,6 +37,7 @@ class User
   index :username
   index :email
   index :perspective_count
+  index :favourite_perspectives, :background => true
 
 
   def self.top_users( top_n )

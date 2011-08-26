@@ -31,6 +31,10 @@ Chatham::Application.routes.draw do
   end
 
   resources :perspectives, :only =>[:show]   do
+    member do
+      post :star
+      post :unstar
+    end
     collection do
       get :nearby
     end
@@ -77,6 +81,10 @@ Chatham::Application.routes.draw do
     end
 
     resources :perspectives, :only =>[:show]   do
+      member do
+        post :star
+        post :unstar
+      end
       collection do
         get :nearby
       end

@@ -15,9 +15,6 @@ class PerspectivesController < ApplicationController
 
     @perspectives = @place.perspectives.where(:user_id.in => current_user.following_ids)
 
-    PP.pp @perspectives
-    PP.pp @perspectives.entries
-
     respond_to do |format|
       format.json { render :json => {:perspectives =>@perspectives, :count => @perspectives.count} }
     end
@@ -39,14 +36,26 @@ class PerspectivesController < ApplicationController
     end
   end
 
-
-  def show
+  def star
     @perspective = Perspective.find( params[:id] )
 
-    respond_to do |format|
-      format.json { render :json =>@perspective.as_json(:detail_view => true) }
-    end
+    current_user.favourite_perspectives << @perspective.id
+    current_user.save
 
+    respond_to do |format|
+      format.json { render :json =>{:result => "Success"} }
+    end
+  end
+
+  def unstar
+    @perspective = Perspective.find( params[:id] )
+
+    current_user.favourite_perspectives.delete( @perspective.id )
+    current_user.save
+
+    respond_to do |format|
+      format.json { render :json =>{:result => "Success"} }
+    end
   end
 
   def index

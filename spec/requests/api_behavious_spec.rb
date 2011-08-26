@@ -180,6 +180,48 @@ describe "API - " do
     end
   end
 
+  describe "Perspective" do
+    it "can be starred" do
+      user = Factory.create(:user)
+      perspective = Factory.create(:perspective)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post star_perspective_path(perspective), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      user = User.find(user.id) #regrab because should have changeds
+      user.favourite_perspectives.should include(perspective.id)
+
+    end
+
+
+    it "can be unstarred" do
+      user = Factory.create(:user)
+      perspective = Factory.create(:perspective)
+      user.favourite_perspectives << perspective.id
+      user.save
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      user.favourite_perspectives.should include(perspective.id)
+
+      post_via_redirect unstar_perspective_path(perspective), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+      user = User.find(user.id) #regrab because should have changeds
+      user.favourite_perspectives.should_not include(perspective.id)
+
+    end
+  end
+
+
+
   describe "perspective can be added" do
 
     it "to a completely new place" do
