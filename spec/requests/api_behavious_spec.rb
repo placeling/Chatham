@@ -217,6 +217,8 @@ describe "API - " do
       user = User.find(user.id) #regrab because should have changeds
       user.favourite_perspectives.should_not include(perspective.id)
 
+      perspective = Perspective.find( perspective.id ) #make sure didn't delete actual perspective
+      perspective.should_not be_nil
     end
   end
 

@@ -21,6 +21,15 @@ class PerspectivesController < ApplicationController
 
   end
 
+  def show
+    @perspective = Perspective.find( params[:id] )
+
+    respond_to do |format|
+      format.json { render :json =>@perspective.as_json(:detail_view => true) }
+    end
+
+  end
+
   def all
     if BSON::ObjectId.legal?( params['place_id'] )
       #it's a direct request for a place in our db
