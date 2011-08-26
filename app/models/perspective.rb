@@ -18,6 +18,7 @@ class Perspective
   field :memo,        :type => String
   field :place_location,    :type => Array #for easier indexing
   field :tags,    :type => Array
+  field :fav_count, :type => Integer, :default =>0
 
   #these are meant for internal use, not immediately visible to user -iMack
   field :location,    :type => Array
@@ -60,6 +61,8 @@ class Perspective
   def as_json(options={})
     if options[:detail_view] == true
       attributes.merge(:place => place.as_json(), :photos =>pictures, :user => user.as_json())
+    elsif options[:raw_view] == true
+      attributes.merge(:photos =>pictures)
     else
       attributes.merge(:place => place.as_json(), :photos =>pictures)
     end

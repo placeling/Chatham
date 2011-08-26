@@ -196,6 +196,9 @@ describe "API - " do
       user = User.find(user.id) #regrab because should have changeds
       user.favourite_perspectives.should include(perspective.id)
 
+      perspective = Perspective.find( perspective.id )
+      perspective.fav_count.should == 1
+
     end
 
 
@@ -203,6 +206,8 @@ describe "API - " do
       user = Factory.create(:user)
       perspective = Factory.create(:perspective)
       user.favourite_perspectives << perspective.id
+      perspective.fav_count +=1
+      perspective.save
       user.save
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
@@ -219,6 +224,7 @@ describe "API - " do
 
       perspective = Perspective.find( perspective.id ) #make sure didn't delete actual perspective
       perspective.should_not be_nil
+      perspective.fav_count.should == 0
     end
   end
 

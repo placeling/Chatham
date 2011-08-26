@@ -88,6 +88,32 @@ describe "API - " do
 
     end
 
+    it "should return starred perspectives and user perspective" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place, :user=>user, :memo=>"Memo1")
+      perspective1 = Factory.create(:perspective, :place =>place, :memo=>"Memo2")
+      perspective2 = Factory.create(:perspective, :place =>place, :memo=>"Memo3")
+
+      user.favourite_perspectives << perspective1.id
+      user.save
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get place_path(:id => place.google_id), {
+        :format => 'json'
+      }
+
+      response.status.should be( 200 )
+
+      showPlace= JSON.parse( response.body )
+      returned_perspectives = showPlace['perspectives']
+      returned_perspectives[0]['_id'].should == perspective.id.to_s
+      returned_perspectives[1]['_id'].should == perspective1.id.to_s
+      returned_perspectives.count.should == 2
+
+    end
+
     it "should return an existing place with creator and relationship information" do
       user = Factory.create(:user)
       place = Factory.create(:place)

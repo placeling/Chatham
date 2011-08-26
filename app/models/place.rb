@@ -154,11 +154,20 @@ class Place
 
     if options[:detail_view] == true
       if options && options[:current_user]
-        bookmarked = self.perspectives.where(:user_id=> options[:current_user].id).count >0
+        user = options[:current_user]
+        bookmarked = self.perspectives.where(:user_id=> user.id).count >0
         attributes = attributes.merge(:bookmarked => bookmarked)
 
-        @perspectives = self.perspectives.where(:user_id.in => options[:current_user].following_ids)
-        attributes = attributes.merge(:following_perspective_count => @perspectives.count)
+        attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:user_id.in => user.following_ids).count)
+
+        @home_perspectives = [] #perspectives to be returned in detail view
+        perspective = user.perspectives.where( :place_id => self.id ).first
+        @home_perspectives << perspective unless perspective.nil?
+
+        @starred = self.perspectives.where(:_id.in => user.favourite_perspectives)
+        @home_perspectives.concat( @starred )
+
+        attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:raw_view=>true} ) )
       end
 
       attributes.merge(:user => user)

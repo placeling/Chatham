@@ -49,7 +49,9 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find( params[:id] )
 
     current_user.favourite_perspectives << @perspective.id
+    @perspective.fav_count += 1
     current_user.save
+    @perspective.save
 
     respond_to do |format|
       format.json { render :json =>{:result => "Success"} }
@@ -60,7 +62,9 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find( params[:id] )
 
     current_user.favourite_perspectives.delete( @perspective.id )
+    @perspective.fav_count -= 1
     current_user.save
+    @perspective.save
 
     respond_to do |format|
       format.json { render :json =>{:result => "Success"} }
