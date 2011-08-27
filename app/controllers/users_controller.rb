@@ -17,10 +17,10 @@ class UsersController < ApplicationController
     lat = params[:lat].to_f
     long = params[:long].to_f
 
-    @users = User.where(:location.near => [lat,long]).limit(10)
+    @users = User.order_by([:created_at, :desc]).limit(10)
 
     respond_to do |format|
-      format.json { render :json=> {:suggested => @users } }
+      format.json { render :json=> {:suggested => @users.as_json({:current_user => current_user}) } }
     end
   end
 

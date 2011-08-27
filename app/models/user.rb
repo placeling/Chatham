@@ -79,7 +79,7 @@ class User
 
     if options[:current_user]
       #check against raw ids so it doesnt have to go back to db
-      following = self['follower_ids'].include?( options[:current_user].id )
+      following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
       follows_you = self['following_ids'].include?( options[:current_user].id )
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
     end
