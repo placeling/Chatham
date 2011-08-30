@@ -181,6 +181,28 @@ describe "API - " do
   end
 
   describe "Perspective" do
+
+    it "can be updated" do
+      user = Factory.create(:user)
+      perspective = Factory.create(:perspective, :user => user)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post place_perspectives_path(perspective.place), {
+        :format => 'json',
+        :memo => "This place is great for #breakfast"
+      }
+
+      response.status.should be(200)
+
+
+      perspective = Perspective.find( perspective.id )
+      perspective.memo.should include("#breakfast")
+      perspective.place_location.should_not be_nil
+
+    end
+
+
     it "can be starred" do
       user = Factory.create(:user)
       perspective = Factory.create(:perspective)

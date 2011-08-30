@@ -114,8 +114,8 @@ class PerspectivesController < ApplicationController
       end
     end
 
-    if params[:perspective]
-      @perspective.update_attributes(params[:@perspective])
+    if params[:memo]
+      @perspective.update_attributes(params.slice("memo"))
     end
 
 
