@@ -14,9 +14,14 @@ class PerspectivesController < ApplicationController
     end
 
     @perspectives = @place.perspectives.where(:user_id.in => current_user.following_ids)
+    perspectives_count = @perspectives
+
+    for perspective in @perspectives
+      @perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    end
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => @perspectives.count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => perspectives_count} }
     end
 
   end
@@ -39,9 +44,14 @@ class PerspectivesController < ApplicationController
     end
 
     @perspectives = @place.perspectives
+    perspectives_count = @perspectives.count
+
+    for perspective in @perspectives
+      @perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    end
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => @perspectives.count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => perspectives_count} }
     end
   end
 

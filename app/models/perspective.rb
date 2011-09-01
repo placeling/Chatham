@@ -33,6 +33,11 @@ class Perspective
   index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
   index :tags, :background => true
 
+
+  def empty_perspective?
+    return (memo.nil? or memo.length ==0) && (self.pictures.count == 0)
+  end
+
   def parse_tags
     self.tags = extract_hashtags( self.memo )
   end
@@ -61,8 +66,8 @@ class Perspective
     attributes = self.attributes.merge(:photos =>pictures)
 
     if options[:current_user]
-      user = options[:current_user]
-      if user.favourite_perspectives.include?( self.id )
+      current_user = options[:current_user]
+      if current_user.favourite_perspectives.include?( self.id )
         attributes = attributes.merge(:starred => true)
       else
         attributes = attributes.merge(:starred => false)
@@ -70,9 +75,9 @@ class Perspective
     end
 
     if options[:detail_view] == true
-      attributes.merge(:place => place.as_json(),:user => user.as_json())
+      attributes.merge(:place => self.place.as_json(),:user => self.user.as_json())
     elsif !options[:raw_view]
-      attributes.merge(:place => place.as_json())
+      attributes.merge(:place => self.place.as_json())
     else
       attributes
     end
