@@ -1,4 +1,4 @@
-require "rspec"
+require "spec_helper"
 
 describe "API - Perspective" do
 
@@ -22,6 +22,36 @@ describe "API - Perspective" do
 
   end
 
+
+  it "JSON call should state whether it has been starred" do
+      user = Factory.create(:user)
+      perspective = Factory.create(:perspective)
+
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place)
+      user.favourite_perspectives << perspective.id
+      perspective.fav_count +=1
+      perspective.save
+      user.save
+
+      perspective2 = Factory.create(:perspective, :place =>place)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+
+      get all_place_perspectives_path(place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+      showPlace['perspectives'].count.should == 2
+      showPlace['perspectives'][0]['starred'].should == true
+      showPlace['perspectives'][1]['starred'].should == false
+
+  end
 
    it "can be starred" do
      user = Factory.create(:user)

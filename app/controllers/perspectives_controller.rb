@@ -16,7 +16,7 @@ class PerspectivesController < ApplicationController
     @perspectives = @place.perspectives.where(:user_id.in => current_user.following_ids)
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives, :count => @perspectives.count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => @perspectives.count} }
     end
 
   end
@@ -25,7 +25,7 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find( params[:id] )
 
     respond_to do |format|
-      format.json { render :json =>@perspective.as_json(:detail_view => true) }
+      format.json { render :json =>@perspective.as_json(:current_user => current_user, :detail_view => true) }
     end
 
   end
@@ -41,7 +41,7 @@ class PerspectivesController < ApplicationController
     @perspectives = @place.perspectives
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives, :count => @perspectives.count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => @perspectives.count} }
     end
   end
 
@@ -54,7 +54,7 @@ class PerspectivesController < ApplicationController
     @perspective.save
 
     respond_to do |format|
-      format.json { render :json =>{:result => "Success"} }
+      format.json { render :json =>{:result => "starred"} }
     end
   end
 
@@ -67,7 +67,7 @@ class PerspectivesController < ApplicationController
     @perspective.save
 
     respond_to do |format|
-      format.json { render :json =>{:result => "Success"} }
+      format.json { render :json =>{:result => "unstarred"} }
     end
   end
 

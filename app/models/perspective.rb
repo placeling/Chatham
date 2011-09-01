@@ -14,7 +14,6 @@ class Perspective
   validates_associated :place
   validates_associated :user
 
-  field :favorite,    :type => Boolean, :default => TRUE
   field :memo,        :type => String
   field :place_location,    :type => Array #for easier indexing
   field :tags,    :type => Array
@@ -59,12 +58,23 @@ class Perspective
   end
 
   def as_json(options={})
+    attributes = self.attributes.merge(:photos =>pictures)
+
+    if options[:current_user]
+      user = options[:current_user]
+      if user.favourite_perspectives.include?( self.id )
+        attributes = attributes.merge(:starred => true)
+      else
+        attributes = attributes.merge(:starred => false)
+      end
+    end
+
     if options[:detail_view] == true
-      attributes.merge(:place => place.as_json(), :photos =>pictures, :user => user.as_json())
-    elsif options[:raw_view] == true
-      attributes.merge(:photos =>pictures)
+      attributes.merge(:place => place.as_json(),:user => user.as_json())
+    elsif !options[:raw_view]
+      attributes.merge(:place => place.as_json())
     else
-      attributes.merge(:place => place.as_json(), :photos =>pictures)
+      attributes
     end
 
   end
