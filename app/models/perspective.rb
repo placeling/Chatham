@@ -72,6 +72,12 @@ class Perspective
       else
         attributes = attributes.merge(:starred => false)
       end
+
+      if current_user.id ==  self[:user_id]
+        attributes = attributes.merge(:mine => true)
+      else
+        attributes = attributes.merge(:mine => false)
+      end
     end
 
     if options[:detail_view] == true
