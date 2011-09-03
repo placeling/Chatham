@@ -30,15 +30,15 @@ gem "twitter-text", :git => "git://github.com/mzsanford/twitter-text-rb.git"
 
 gem 'hoptoad_notifier'
 
-group :test, :development do
-  gem "rspec-rails", "~> 2.6"
-  gem 'mocha'
-  gem 'json'
-  gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
-  gem 'factory_girl_rails', "~> 1.1.rc1"
-  gem 'ci_reporter'
-  gem "database_cleaner"
-end
+
+gem "rspec-rails", "~> 2.6"
+gem 'mocha'
+gem 'json'
+gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
+gem 'factory_girl_rails', "~> 1.1.rc1"
+gem 'ci_reporter'
+gem "database_cleaner"
+
 
 # Deploy with Capistrano
 gem 'capistrano'

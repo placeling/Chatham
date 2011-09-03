@@ -2,32 +2,33 @@
 <div id="maincontent">
   <h1><%= @place.name %>'s <%= t("basic.marks") %></h1>
 
-    <table class="sorting">
+    <ul id="listnews">
         <% @place.perspectives.each do |perspective|%>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :place} %>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective} %>
         <% end %>
-    </table>
+    </ul>
 </div>
+
 
 
 <div id="nav">
 
   <div class="boxnav">
-    <h2 class="titlenav"><%= @place.name %></h2>
+        <h3 class="titlenav"><%= @place.name %></h3>
+        <div class="contentnav">
 
+            <ul id="listteamnav">
+                <li style="height: 200px;text-align: center"><%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %><br>
+                </li>
+                <li> <b><%= t('place.location') %>:</b> <%= @place.location[0].to_s + "," + @place.location[1].to_s  %><br>
+                </li>
 
-   <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
+            </ul>
 
-   <p>
-     <strong><%= t("basic.location")%>:</strong>
-     <code><%= @place.location[0].to_s + "," + @place.location[1].to_s  %></code>
-   </p>
+        </div>
 
-   </div>
-</div>
-
-
-
+        <div class="clear"></div>
+  </div>
 </div>
 
 

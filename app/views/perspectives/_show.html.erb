@@ -1,7 +1,10 @@
-<% #http://code.google.com/apis/maps/documentation/staticmaps/  %>
-<div>
-    <%= ((source == :user)?
-                (link_to perspective.place.name, place_path(perspective.place)) :
-                (link_to perspective.user.username, user_path(perspective.user)) )  %>
-      - <%= perspective.memo %>
-</div>
+<li id="perspective_<%=perspective.id %>">
+  <ul class="newsinfo">
+    <li class="first"><%= link_to perspective.user.username, user_path(perspective.user)   %></li>
+    <li><%= perspective.updated_at %></li>
+    <li class="last"> <%= perspective.tags.join(",") unless perspective.tags.nil? %></li>
+   </ul>
+
+    <p><%= perspective.memo %></p>
+
+</li>
