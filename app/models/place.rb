@@ -25,7 +25,7 @@ class Place
 
   has_many :perspectives
   belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
-  belongs_to  :user, :foreign_key => 'uid'
+  belongs_to  :user
 
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :ptg, :background => true
