@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_filter :login_required, :only =>[:follow, :unfollow]
 
   def show
-    @user = User.where(:username => params[:id]).first
+    @user = User.find_by_username(params[:id])
 
     #this is the final step in routes, if this doesn't work its a 404 -iMack
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def follow
-    @user = User.where(:username => params[:id]).first
+    @user = User.find_by_username( params[:id] )
 
     current_user.follow( @user )
 
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   end
 
   def unfollow
-    @user = User.where(:username => params[:id]).first
+    @user = User.find_by_username( params[:id] )
 
     current_user.unfollow( @user )
 
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 
 
   def followers
-    @user = User.where(:username => params[:id]).first
+    @user = User.find_by_username( params[:id] )
     @followers = @user.followers
     respond_to do |format|
       format.json { render :json => {:followers => @followers} }
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   end
 
   def following
-    @user = User.where(:username => params[:id]).first
+    @user = User.find_by_username( params[:id] )
     @following = @user.following
     respond_to do |format|
       format.json { render :json => {:following => @following } }

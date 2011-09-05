@@ -145,9 +145,8 @@ describe "API - Perspective" do
       response.status.should be(200)
 
       #make sure perspective has been added, but place count is still 1
-      place_query = Place.where(:google_id => "a648ca9b8af31e9726947caecfd062406dc89440")
-      place_query.count.should be(1)
-      place = place_query.first
+      place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      Place.count.should be(1)
 
       perspective = place.perspectives.where(:user_id=> user.id).first
       perspective.memo.should include("out of this world")

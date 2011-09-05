@@ -5,9 +5,9 @@ class Place
 
   before_validation :fix_location
 
-  field :location, :type => Array
+  field :loc, :as => :location, :type => Array
   field :name, :type => String
-  field :google_id, :type => String
+  field :gid, :as => :google_id, :type => String
   field :vicinity, :type => String
   field :street_address, :type => String
   field :phone_number, :type => String
@@ -16,25 +16,25 @@ class Place
   field :venue_types, :type => Array
   field :google_url,  :type => String
   field :place_type,  :type => String
-  field :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
+  field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
 
   field :google_ref,  :type => String # may need this later, makes easier
   field :address_components, :type => Hash #save for later
-  field :place_tags, :background => true
+  field :ptg, :as => :place_tags, :background => true
   field :place_tags_last_update, :type => DateTime
 
   has_many :perspectives
-  belongs_to :client_application
-  belongs_to :user
+  belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
+  belongs_to  :user, :foreign_key => 'uid'
 
-  index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
-  index :place_tags, :background => true
-  index :google_id
-  index :perspective_count
+  index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index :ptg, :background => true
+  index :gid
+  index :pc
 
   def self.find_random(lat, long)
-    places = Place.near(:location => [lat,long]).
-        and(:perspective_count.gte => 1).
+    places = Place.near(:loc => [lat,long]).
+        and(:pc.gte => 1).
         limit( 100 )
 
     if places.count > 0
@@ -94,19 +94,19 @@ class Place
     n = CHATHAM_CONFIG['max_returned_map']
 
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    Place.where(:location.within => {"$center" => [[lat,long],radius]}).
-        and(:perspective_count.gte => 1).
-        order_by([:perspective_count, :desc]).
+    Place.where(:loc.within => {"$center" => [[lat,long],radius]}).
+        and(:pc.gte => 1).
+        order_by([:pc, :desc]).
         limit( n )
 
   end
 
   def self.top_places( top_n )
-    self.desc( :perspective_count ).limit( top_n )
+    self.desc( :pc ).limit( top_n )
   end
 
   def self.find_by_google_id( google_id )
-    Place.where(:google_id => google_id).first
+    Place.where(:gid => google_id).first
   end
 
   def self.new_from_google_place( raw_place )
@@ -149,7 +149,7 @@ class Place
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
     attributes.delete(:client_application_id)
-    attributes.delete(:place_tags)
+    attributes.delete(:ptg)
     attributes.delete(:place_tags_last_update)
 
     if options[:detail_view] == true

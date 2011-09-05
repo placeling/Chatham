@@ -31,13 +31,16 @@ gem "twitter-text", :git => "git://github.com/mzsanford/twitter-text-rb.git"
 gem 'hoptoad_notifier'
 
 
-gem "rspec-rails", "~> 2.6"
-gem 'mocha'
-gem 'json'
-gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
-gem 'factory_girl_rails', "~> 1.1.rc1"
+gem "rspec-rails", "~> 2.6"  #needs these outside to prevent rake break
 gem 'ci_reporter'
-gem "database_cleaner"
+
+group :test, :development do
+  gem 'mocha'
+  gem 'json'
+  gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
+  gem 'factory_girl_rails', "~> 1.1.rc1"
+  gem "database_cleaner"
+end
 
 
 # Deploy with Capistrano

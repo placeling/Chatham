@@ -4,35 +4,34 @@ class Perspective
   include Mongoid::Paranoia
   include Twitter::Extractor
 
+  field :memo,        :type => String
+  field :ploc, :as =>:place_location,    :type => Array #for easier indexing
+  field :tags,    :type => Array
+  field :fav_count, :type => Integer, :default =>0
+
+  #these are meant for internal use, not immediately visible to user -iMack
+  field :loc, :as => :location,    :type => Array
+  field :accuracy,      :type => Float
+
+  belongs_to :place#, :foreign_key => 'pid', :index =>true
+  belongs_to :user#, :foreign_key => 'uid', :index =>true
+  belongs_to :client_application
+
+  embeds_many :pictures
+
+  index [[ :ploc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index :tags, :background => true
+
+
+  validates_associated :place
+  validates_associated :user
 
   before_validation :fix_location
   before_save :get_place_location
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
-
-  validates_associated :place
-  validates_associated :user
-
-  field :memo,        :type => String
-  field :place_location,    :type => Array #for easier indexing
-  field :tags,    :type => Array
-  field :fav_count, :type => Integer, :default =>0
-
-  #these are meant for internal use, not immediately visible to user -iMack
-  field :location,    :type => Array
-  field :accuracy,      :type => Float
-
-  belongs_to :place
-  belongs_to :user
-  belongs_to :client_application
-
-  embeds_many :pictures
-
-  index [[ :place_location, Mongo::GEO2D ]], :min => -180, :max => 180
-  index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
-  index :tags, :background => true
-
 
   def empty_perspective?
     return (memo.nil? or memo.length ==0) && (self.pictures.count == 0)

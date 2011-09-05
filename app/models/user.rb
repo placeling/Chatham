@@ -11,12 +11,11 @@ class User
   field :fullname,      :type =>String
   alias :login :username
   field :email,         :type =>String
-  field :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
+  field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
 
-  field :favourite_perspectives,    :type => Array, :default =>[]
+  field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
 
-  field :location, :type => Array #meant to be home location, used at signup?
-  index [[ :location, Mongo::GEO2D ]], :min => -180, :max => 180
+  field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
 
   field :description, :type => String
   field :admin,       :type => Boolean, :default => false
@@ -34,14 +33,15 @@ class User
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin
 
-  index :username
+  index :unm
   index :email
-  index :perspective_count
-  index :favourite_perspectives, :background => true
+  index :pc
+  index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index :fp, :background => true
 
 
   def self.top_users( top_n )
-    self.desc( :perspective_count ).limit( top_n )
+    self.desc( :pc ).limit( top_n )
   end
 
   def self.find_by_username( username )
@@ -74,7 +74,7 @@ class User
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-    attributes = self.attributes.slice('username', 'perspective_count')
+    attributes = {:username => self['username'], :perspectives_count =>self['pc']}
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
 
     if options[:current_user]
@@ -85,7 +85,7 @@ class User
     end
 
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:location => options[:location] ) )
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ) )
     elsif (options[:perspectives] == :created_by )
       attributes.merge(:perspectives => self.perspectives.descending(:created_at) )
     else
