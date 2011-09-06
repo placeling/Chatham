@@ -13,7 +13,7 @@ class OauthToken
 
   index :token, :unique => true
 
-  belongs_to :user
+  belongs_to :user, :foreign_key =>'uid'
   belongs_to :client_application
 
   validates_uniqueness_of :token

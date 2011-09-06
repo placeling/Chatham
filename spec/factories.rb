@@ -53,6 +53,23 @@ FactoryGirl.define do
     description "This is the first test application"
   end
 
+  factory :nina, :class => ClientApplication  do
+    name "Nina"
+    url "http://localhost:3000"
+    support_url "http://localhost:3000"
+    callback_url "http://localhost:3000"
+    description "This is the flagship iPhone application for Placeling"
+  end
+
+  factory :acceptance_tests, :class => ClientApplication  do
+    name "Acceptance Specs"
+    url "http://localhost:3000"
+    support_url "http://localhost:3000"
+    callback_url "http://localhost:3000"
+    description "This for the live acceptance tests"
+  end
+
+
   factory :client_application_two, :class => ClientApplication  do
     name "MyString"
     url "http://test.com"

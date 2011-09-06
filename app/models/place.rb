@@ -149,8 +149,11 @@ class Place
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
     attributes.delete(:client_application_id)
-    attributes.delete(:ptg)
     attributes.delete(:place_tags_last_update)
+    attributes[:location] = attributes.delete('loc')
+    attributes[:place_tags] = attributes.delete('ptg')
+    attributes[:google_id] = attributes.delete('gid')
+    attributes[:perspective_count] = attributes.delete('pc')
 
     if options[:detail_view] == true
       if options && options[:current_user]

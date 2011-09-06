@@ -26,8 +26,8 @@ class User
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
 
-  has_many :client_applications
-  has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application]
+  has_many :client_applications, :foreign_key =>'uid'
+  has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application], :foreign_key =>'uid'
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
