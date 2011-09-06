@@ -5,7 +5,6 @@ describe UsersController do
    describe "GET suggested" do
       it "returns list of suggested users" do
         maven = Factory.create(:maven, :username => "gladwell",:location =>[49, -121])
-        user = Factory.create(:user, :location =>nil)
 
         get :suggested, :lat => 49, :long => -120, :format=>:json
         response.should be_success
