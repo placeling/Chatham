@@ -23,9 +23,9 @@ class Place
   field :ptg, :as => :place_tags, :background => true
   field :place_tags_last_update, :type => DateTime
 
-  has_many :perspectives
+  has_many :perspectives, :foreign_key => 'plid'
   belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
-  belongs_to  :user
+  belongs_to  :user #not really that significant
 
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :ptg, :background => true
@@ -161,10 +161,10 @@ class Place
         attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:user_id.in => current_user.following_ids).count)
 
         @home_perspectives = [] #perspectives to be returned in detail view
-        perspective = current_user.perspectives.where( :place_id => self.id ).first
+        perspective = current_user.perspectives.where( :plid => self.id ).first
         @home_perspectives << perspective unless perspective.nil?
 
-        @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:user_id => current_user.id)
+        @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
         @home_perspectives.concat( @starred )
 
         attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :raw_view=>true} ) )

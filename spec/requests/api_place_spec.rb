@@ -100,7 +100,7 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      get place_path(:id => place.google_id), {
+      get place_path( place), {
         :format => 'json'
       }
 
