@@ -14,7 +14,7 @@ class Perspective
   field :accuracy,      :type => Float
 
   belongs_to :place#, :foreign_key => 'pid', :index =>true
-  belongs_to :user#, :foreign_key => 'uid', :index =>true
+  belongs_to :user, :foreign_key => 'uid' #, :index =>true
   belongs_to :client_application
 
   embeds_many :pictures

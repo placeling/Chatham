@@ -155,7 +155,7 @@ class Place
     if options[:detail_view] == true
       if options && options[:current_user]
         current_user = options[:current_user]
-        bookmarked = self.perspectives.where(:user_id=> current_user.id).count >0
+        bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
         attributes = attributes.merge(:bookmarked => bookmarked)
 
         attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:user_id.in => current_user.following_ids).count)

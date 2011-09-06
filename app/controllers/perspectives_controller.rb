@@ -13,7 +13,7 @@ class PerspectivesController < ApplicationController
       @place = Place.find_by_google_id( params['place_id'] )
     end
 
-    @perspectives = @place.perspectives.where(:user_id.in => current_user.following_ids)
+    @perspectives = current_user.following_perspectives_for_place( @place )
     perspectives_count = @perspectives
 
     for perspective in @perspectives
@@ -109,7 +109,7 @@ class PerspectivesController < ApplicationController
       @place = Place.find_by_google_id( params['place_id'] )
     end
 
-    @perspective= @place.perspectives.where(:user_id => current_user.id).first
+    @perspective= current_user.perspective_for_place( @place )
 
     if @perspective.nil?
       @perspective= @place.perspectives.build(params.slice("memo"))
@@ -159,7 +159,7 @@ class PerspectivesController < ApplicationController
       @place = Place.find_by_google_id( params['place_id'] )
     end
 
-    @perspective= @place.perspectives.where(:user_id => current_user.id).first
+    @perspective= current_user.perspective_for_place( @place )
 
     if !@perspective.nil?
       @perspective.delete

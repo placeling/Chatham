@@ -20,7 +20,7 @@ class User
   field :description, :type => String
   field :admin,       :type => Boolean, :default => false
 
-  has_many :perspectives
+  has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
@@ -46,6 +46,14 @@ class User
 
   def self.find_by_username( username )
     self.where( :username => username ).first
+  end
+
+  def perspective_for_place( place )
+    place.perspectives.where(:uid => self.id).first
+  end
+
+  def following_perspectives_for_place( place )
+    place.perspectives.where(:uid.in => self.following_ids)
   end
 
   def is_admin?

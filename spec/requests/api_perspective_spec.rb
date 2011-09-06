@@ -120,7 +120,7 @@ describe "API - Perspective" do
       #make sure perspective has been added, but place count is still 1
       place = Place.all().first
 
-      perspective = place.perspectives.where(:user_id => user.id).first
+      perspective = user.perspective_for_place( place )
       perspective.memo.should include("magic happens")
 
     end
@@ -148,7 +148,7 @@ describe "API - Perspective" do
       place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
       Place.count.should be(1)
 
-      perspective = place.perspectives.where(:user_id=> user.id).first
+      perspective = user.perspective_for_place( place )
       perspective.memo.should include("out of this world")
       perspective.tags[0].should == "breakfast"
 
@@ -180,7 +180,7 @@ describe "API - Perspective" do
       place =  Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
       place.should be_valid
 
-      perspective = place.perspectives.where(:user_id=> user.id).first
+      perspective = user.perspective_for_place( place )
       perspective.memo.should include("da bomb")
 
     end
