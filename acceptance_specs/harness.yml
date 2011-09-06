@@ -2,27 +2,27 @@ development:
   host: "http://localhost:3000"
   username: "tyler"
   password: "foobar"
-  consumer_key:  "lyNgb5P3hTUHA53URue1wYYJjEciVXtrCgcEcgoT"
-  consumer_secret: "vT8PAseLcnEuHec20rhGQp0au4kNYmgto9xAso0l"
+  consumer_key:  "R0Yy5x3jK5hMXJQfSOVUO0wKlEn3rtfxX8jGakI7"
+  consumer_secret: "6Y079Qfsgx1pNsk6Tc0egKWIXmXzNJORIFUddu03"
 
 test:
   host: "http://staging.corp.placeling.com"
   username: "tyler"
   password: "foobar"
-  consumer_key:  "Lpa3ZHu5QKMXkFVwChzNgfZs7nVqMXiEIVCY2inU"
-  consumer_secret: "8oi9eM6zbYEfTyZqzAcDrM7aU4boVIhqeoAFzpR6"
+  consumer_key:  "R0Yy5x3jK5hMXJQfSOVUO0wKlEn3rtfxX8jGakI7"
+  consumer_secret: "6Y079Qfsgx1pNsk6Tc0egKWIXmXzNJORIFUddu03"
 
 staging:
   host: "http://staging.corp.placeling.com"
   username: "tyler"
   password: "foobar"
-  consumer_key:  "Lpa3ZHu5QKMXkFVwChzNgfZs7nVqMXiEIVCY2inU"
-  consumer_secret: "8oi9eM6zbYEfTyZqzAcDrM7aU4boVIhqeoAFzpR6"
+  consumer_key:  "R0Yy5x3jK5hMXJQfSOVUO0wKlEn3rtfxX8jGakI7"
+  consumer_secret: "6Y079Qfsgx1pNsk6Tc0egKWIXmXzNJORIFUddu03"
 
 # these would be live-fire against the production environment
 production:
   host: "http://api.placeling.com"
   username: "tyler"
   password: "foobar"
-  consumer_key:  "Lpa3ZHu5QKMXkFVwChzNgfZs7nVqMXiEIVCY2inU"
-  consumer_secret: "8oi9eM6zbYEfTyZqzAcDrM7aU4boVIhqeoAFzpR6"
+  consumer_key:  "R0Yy5x3jK5hMXJQfSOVUO0wKlEn3rtfxX8jGakI7"
+  consumer_secret: "6Y079Qfsgx1pNsk6Tc0egKWIXmXzNJORIFUddu03"
