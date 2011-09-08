@@ -13,7 +13,7 @@ ian.admin = true
 ian.save
 puts 'New users created: ' << ian.username
 user = User.create!(:admin => true, :username => 'lindsayrgwatt',
-                    :email => 'lindsay@placeling.com ', :password => 'queens2001', :password_confirmation => 'queens2001')
+                    :email => 'lindsay@placeling.com ', :password => 'queens2001', :password_confirmation => 'queens2001', :loc => [49.273, -123.145])
 puts 'New users created: ' << user.username
 user.admin = true
 user.save

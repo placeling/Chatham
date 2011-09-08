@@ -44,6 +44,7 @@ Chatham::Application.routes.draw do
     collection do
       get :nearby
       get :random
+      get :search
     end
     resources :perspectives, :except =>[:show, :index]  do
       collection do
