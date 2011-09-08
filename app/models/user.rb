@@ -51,7 +51,7 @@ class User
   end
 
   def remove_tokens_for( client_application )
-    user.tokens.where(:cid =>client_application.id).delete_all
+    self.tokens.where(:cid =>client_application.id).delete_all
   end
 
   def perspective_for_place( place )
