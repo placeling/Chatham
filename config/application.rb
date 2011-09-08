@@ -53,6 +53,7 @@ module Chatham
       g.template_engine :erb
     end
 
+    paths.app.views << "app/views/devise"
 
   end
 end

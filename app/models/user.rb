@@ -20,6 +20,8 @@ class User
   field :description, :type => String
   field :admin,       :type => Boolean, :default => false
 
+  field :facebook_access_token, :type => String
+
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
 
@@ -31,7 +33,7 @@ class User
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :facebook_access_token
 
   index :unm
   index :email
@@ -46,6 +48,10 @@ class User
 
   def self.find_by_username( username )
     self.where( :username => username ).first
+  end
+
+  def remove_tokens_for( client_application )
+    user.tokens.where(:cid =>client_application.id).delete_all
   end
 
   def perspective_for_place( place )

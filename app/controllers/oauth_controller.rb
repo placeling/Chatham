@@ -28,7 +28,7 @@ class OauthController < ApplicationController
       end
 
       # get rid of old auth tokens
-      user.tokens.where(:client_application_id =>current_client_application.id).delete_all
+      user.remove_tokens_for( current_client_application )
 
       request_token = current_client_application.create_request_token
       request_token.authorize!( user )
