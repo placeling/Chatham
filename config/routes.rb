@@ -7,7 +7,7 @@ Chatham::Application.routes.draw do
 
   root :to => "home#index"
 
-  devise_for :users ,  :controllers => {:registrations => "registrations"}
+  devise_for :users
 
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
