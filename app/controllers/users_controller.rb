@@ -1,6 +1,47 @@
 class UsersController < ApplicationController
   before_filter :login_required, :only =>[:follow, :unfollow]
 
+
+  def create
+    return unless params[:format] == :json
+
+    #intentionally only takes one password (for now)
+    user = User.new(:username =>params[:username],
+                    :email =>params[:email],
+                    :password =>params[:password],
+                    :confirmation_password =>params[:password])
+
+    user.facebook_access_token = params[:facebook_access_token]
+
+    lat = params[:lat].to_f
+    long = params[:long].to_f
+    user.location = [lat, long]
+
+    user[:fbDict] = params[:fbDict]
+
+    if user.save
+      if current_client_application
+        #send back some access keys so user can immediately start
+        request_token = current_client_application.create_request_token
+        request_token.authorize!( user )
+        request_token.provided_oauth_verifier = request_token.verifier
+        access_token = request_token.exchange!
+
+        respond_to do |format|
+          format.json { render :json => {:status =>"success", :token => access_token.to_query } }
+        end
+      else
+        respond_to do |format|
+          format.json { render :json => {:status =>"success"} }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:status => "fail", :message => user.errors} }
+      end
+    end
+  end
+
   def show
     @user = User.find_by_username(params[:id])
 

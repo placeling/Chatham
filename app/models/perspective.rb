@@ -81,7 +81,9 @@ class Perspective
 
     if options[:detail_view] == true
       attributes.merge(:place => self.place.as_json(),:user => self.user.as_json())
-    elsif !options[:raw_view]
+    elsif options[:place_view]
+      attributes.merge(:user => self.user.as_json())
+    elsif options[:user_view]
       attributes.merge(:place => self.place.as_json())
     else
       attributes

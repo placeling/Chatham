@@ -2,16 +2,21 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery TODO: might want this back
   before_filter :api_check
 
+  alias :logged_in? :user_signed_in?
+
   def api_check
     if params[:api_call]
-      oauth_required
+      if !current_client_application
+        oauth_required
+      end
     end
   end
 
   def login_required
-    if current_user.nil?
-      authenticate_user!
-    end
+    login_or_oauth_required
+    #if current_user.nil?
+    #  authenticate_user!
+    #end
   end
 
 

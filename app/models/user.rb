@@ -99,9 +99,9 @@ class User
     end
 
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ) )
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).as_json(:user_view=>true)  )
     elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:created_at) )
+      attributes.merge(:perspectives => self.perspectives.descending(:created_at).as_json(:user_view=>true) )
     else
       attributes
     end

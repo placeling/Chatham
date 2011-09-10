@@ -170,7 +170,7 @@ class Place
         @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
         @home_perspectives.concat( @starred )
 
-        attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :raw_view=>true} ) )
+        attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
       end
 
       attributes.merge(:user => user)

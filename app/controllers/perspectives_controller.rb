@@ -21,7 +21,7 @@ class PerspectivesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => perspectives_count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json({:current_user => current_user, :place_view => true}), :count => perspectives_count} }
     end
 
   end
@@ -51,7 +51,7 @@ class PerspectivesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:perspectives =>@perspectives.as_json(:current_user => current_user), :count => perspectives_count} }
+      format.json { render :json => {:perspectives =>@perspectives.as_json({:current_user => current_user, :place_view => true}), :count => perspectives_count} }
     end
   end
 
