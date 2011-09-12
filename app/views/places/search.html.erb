@@ -1,0 +1,51 @@
+<div id="maincontent">
+  <div id="search_form">
+    <h1>Enter a place name</h1>
+    <%= form_tag({:controller => "places", :action => "search"}, :method => "get") do %>
+      <%= text_field_tag(:query, @query) %>
+      <%= hidden_field_tag(:lat, @user.loc[0]) %>
+      <%= hidden_field_tag(:long, @user.loc[1]) %>
+      <%= submit_tag("search", :class => "button") %>
+    <% end %>
+  </div>
+  
+  <% if @places %>
+    <div id="results">
+    <% if @places.length == 0 %>
+      <p>We couldn't find a place called <span class="emphasize">"<%= @query %>"</span></p>
+      <ul>Tips:
+        <li>Make sure all words are spelled correctly</li>
+        <li>Try including the city in your search e.g., "Motorino, Brooklyn"</li>
+      </ul>
+      <div id="new_place">
+        Are we missing "<%= @query %>"? <%= link_to 'Add it as a new location', new_place_path %>
+      </div>
+    <% else %>
+      <% @places.each_with_index do |place, index|%>
+        <div>
+          <p class="name"><%= link_to place.name, place %>
+            <% if admin_user? %>
+              <a class="new_perspective" href="">Add perspective</a>
+            <% end%>
+          </p>
+          <p class="address"><%= place.street_address %> <a class="map<%= index %>" href="http://maps.googleapis.com/maps/api/staticmap?center=<%= place.loc[0] %>,<%= place.loc[1] %>&zoom=16&size=800x600&sensor=false&markers=color:red%7C<%= place.loc[0] %>,<%= place.loc[1] %>">map</a></p>
+        </div>
+      <% end %>
+      <div id="new_place">
+        Not the "<%= @query %>" you're looking for? <%= link_to 'Add it as a new location', new_place_path %>
+      </div>
+    <% end %>
+    </div>
+  <% end %>  
+</div>
+
+<% content_for :javascript do %>
+  <script src="/javascripts/lightbox.js" type="text/javascript"></script>
+  <script type='text/javascript'>
+     <% if @places %>
+       <% @places.each_with_index do |place, index|%>
+         $('a.map<%= index %>').lightBox();
+       <% end %>
+     <% end %>
+  </script>
+<% end %>

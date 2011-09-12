@@ -1,7 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
-  before_filter :login_required, :only => [:create, :new, :update, :destroy]
+  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
 
   def nearby
     lat = params[:lat].to_f
@@ -46,7 +46,46 @@ class PlacesController < ApplicationController
     end
 
   end
-
+  
+  def search
+    @user = current_user
+    
+    if params[:lat] && params[:long] && params[:query] && params[:query].length > 0
+      lat = params[:lat].to_f
+      long = params[:long].to_f
+      radius = 50.0
+      gp = GooglePlaces.new
+      
+      query = params[:query]
+      if params[:query].length > 0
+        @query = params[:query]
+      end
+      
+      @places = []
+      @raw_places = gp.find_nearby(lat, long, radius, query)
+      if @raw_places.length > 0
+        @raw_places.each do |place|
+          @place = Place.find_by_google_id( place.id )
+          
+          if @place.nil?
+            #not here, and we need to fetch it
+            gp = GooglePlaces.new
+            @place = Place.new_from_google_place( gp.get_place( place.reference ) )
+            @place.user = current_user
+            @place.client_application = current_client_application unless current_client_application.nil?
+            @place.save!
+          end
+          
+          @places.push(@place)
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def index
     @places = Place.find :all #, :conditions => 'oauth_tokens.invalidated_at is null and oauth_tokens.authorized_at is not null'
   end
