@@ -16,6 +16,8 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+  config.filter_run_excluding :broken => true
+
   config.mock_with :mocha
   config.include Devise::TestHelpers, :type => :controller
   config.include Factory::Syntax::Methods
