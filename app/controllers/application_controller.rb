@@ -6,9 +6,7 @@ class ApplicationController < ActionController::Base
 
   def api_check
     if params[:api_call]
-      if !current_client_application
-        oauth_required
-      end
+      oauth_app_required
     end
   end
 
