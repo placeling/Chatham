@@ -11,7 +11,7 @@ describe "OAuth Provider" do
     @secret = ACCEPTANCE_CONFIG['consumer_secret']
     @username = ACCEPTANCE_CONFIG['username']
     @password = ACCEPTANCE_CONFIG['password']
-    @site = ACCEPTANCE_CONFIG['host']
+    @site = ACCEPTANCE_CONFIG['host'] + "/places/new"
   end
 
   describe "using Xauth" do
@@ -59,7 +59,7 @@ describe "OAuth Provider" do
     end
 
     it "fail on an api request without login" do
-      res = Net::HTTP.get_response URI.parse("#{@site}/v1/users/tyler")
+      res = Net::HTTP.get_response URI.parse(@site)
       res.should be_a(Net::HTTPUnauthorized)
     end
   end
