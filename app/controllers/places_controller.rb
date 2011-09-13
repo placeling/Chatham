@@ -153,9 +153,15 @@ class PlacesController < ApplicationController
       @place.save!
     end
 
+    if params['rf']
+      @referring_user = User.find_by_username( params['rf'] )
+    else
+      @referring_user = nil
+    end
+
     respond_to do |format|
       format.html
-      format.json { render :json => @place.as_json(:detail_view => true, :current_user => current_user) }
+      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
     end
   end
 

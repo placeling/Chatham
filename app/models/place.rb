@@ -20,7 +20,7 @@ class Place
 
   field :google_ref,  :type => String # may need this later, makes easier
   field :address_components, :type => Hash #save for later
-  field :ptg, :as => :place_tags, :background => true
+  field :ptg, :as => :place_tags, :type => Array
   field :place_tags_last_update, :type => DateTime
 
   has_many :perspectives, :foreign_key => 'plid'
@@ -156,7 +156,7 @@ class Place
     attributes[:perspective_count] = attributes.delete('pc')
 
     if options[:detail_view] == true
-      if options && options[:current_user]
+      if options[:current_user]
         current_user = options[:current_user]
         bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
         attributes = attributes.merge(:bookmarked => bookmarked)
@@ -171,6 +171,20 @@ class Place
         @home_perspectives.concat( @starred )
 
         attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
+      end
+
+      if options[:referring_user]
+        referring_user = options[:referring_user]
+
+        @referring_perspectives = [] #perspectives to be returned in detail view
+
+        perspective = referring_user.perspectives.where( :plid => self.id ).first
+        @referring_perspectives << perspective unless perspective.nil?
+
+        @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
+        @referring_perspectives.concat( @starred )
+
+        attributes = attributes.merge( :referring_perspectives => @referring_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
       end
 
       attributes.merge(:user => user)

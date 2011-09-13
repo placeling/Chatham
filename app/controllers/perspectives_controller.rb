@@ -91,9 +91,9 @@ class PerspectivesController < ApplicationController
     respond_to do |format|
       format.json {
         if ( location )
-          render :json => @user.as_json({:perspectives =>:location, :location => location})
+          render :json => @user.as_json({:current_user => current_user,:perspectives =>:location, :location => location})
         else
-          render :json => @user.as_json(:perspectives => :created_by)
+          render :json => @user.as_json({:current_user => current_user,:perspectives => :created_by})
         end
       }
       format.html
