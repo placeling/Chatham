@@ -30,8 +30,7 @@ describe "API - Perspective" do
       user = Factory.create(:user)
       place = Factory.create(:place)
       perspective = Factory.create(:perspective, :place =>place)
-      user.favourite_perspectives << perspective.id
-      perspective.fav_count +=1
+      user.star( perspective )
       perspective.save
       user.save
 
@@ -77,8 +76,7 @@ describe "API - Perspective" do
    it "can be unstarred" do
      user = Factory.create(:user)
      perspective = Factory.create(:perspective)
-     user.favourite_perspectives << perspective.id
-     perspective.fav_count +=1
+     user.star( perspective )
      perspective.save
      user.save
 

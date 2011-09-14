@@ -71,6 +71,16 @@ class User
     self.username
   end
 
+  def star( perspective )
+    self.favourite_perspectives << perspective.id
+    perspective.fav_count += 1
+  end
+
+  def unstar( perspective )
+    self.favourite_perspectives.delete( perspective.id )
+    perspective.fav_count -= 1
+  end
+
   def follows?( other_user )
     following.include?( other_user )
   end

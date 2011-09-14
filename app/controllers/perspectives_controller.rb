@@ -58,8 +58,8 @@ class PerspectivesController < ApplicationController
   def star
     @perspective = Perspective.find( params[:id] )
 
-    current_user.favourite_perspectives << @perspective.id
-    @perspective.fav_count += 1
+    current_user.star( @perspective )
+
     current_user.save
     @perspective.save
 
@@ -70,9 +70,8 @@ class PerspectivesController < ApplicationController
 
   def unstar
     @perspective = Perspective.find( params[:id] )
+    current_user.unstar( @perspective )
 
-    current_user.favourite_perspectives.delete( @perspective.id )
-    @perspective.fav_count -= 1
     current_user.save
     @perspective.save
 
