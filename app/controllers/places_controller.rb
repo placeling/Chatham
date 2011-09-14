@@ -1,6 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
+  before_filter :admin_required, :only => [:create, :new]
   before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
 
   def nearby
@@ -91,7 +92,14 @@ class PlacesController < ApplicationController
   end
 
   def new
-    @place = Place.new
+    file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
+    
+    content = file.read()
+    @categories = JSON(content)
+    
+    respond_to do |format|
+      format.html
+    end
   end
 
   def create

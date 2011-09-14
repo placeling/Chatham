@@ -746,6 +746,52 @@ div#placemainmenu li li:hover ul
 	line-height:1.8em;
 }
 
+/* New Place
+=====================================================================*/
+#new_place_form p {
+    font-size: 18px;
+}
+
+.standout {
+    font-size: 18px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#name {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 24px;
+    padding: 2px 5px;
+    width: 490px;
+    margin-bottom: 5px;
+}
+
+#map {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+    width: 500px;
+    height: 400px;
+}
+
+.radio_text {
+    padding-left: 5px;
+}
+
+.radio {
+    height: 0.9em;
+}
+
+#accordion {
+    width: 500px;
+}
+
+#create {
+    margin-left: 400px;
+    margin-top: 20px;
+}
+
 /* Search
 =====================================================================*/
 #search_form {

@@ -114,7 +114,17 @@ en:
     updated: "Updated Place"
     nearby_places: "Nearby Places"
     top_places: "Top Places"
-
+    name: "Place Name:"
+    category: "Pick the category that best describes this place:"
+    search_name: "Enter a place name"
+    search_no_result: "We couldn't find a place called"
+    search_tip: "Tips"
+    search_tip_1: "Make sure all words are spelled correctly"
+    search_tip_2: "Try including the city in your search e.g., 'Motorino, Brooklyn'"
+    search_missing: "Are we missing"
+    add_perspective: "Add perspective"
+    add_1: "Not the"
+    add_2: "you're looking for"
 
   perspective:
     fav_places: "%{user}'s favorite places"
