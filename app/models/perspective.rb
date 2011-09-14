@@ -53,11 +53,13 @@ class Perspective
   end
 
   def fix_location
-    if self.location[0].is_a? String
-      self.location[0] = self.location[0].to_f
-    end
-    if self.location[1].is_a? String
-      self.location[1] = self.location[1].to_f
+    if self.location
+      if self.location[0].is_a? String
+        self.location[0] = self.location[0].to_f
+      end
+      if self.location[1].is_a? String
+        self.location[1] = self.location[1].to_f
+      end
     end
   end
 

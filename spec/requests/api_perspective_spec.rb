@@ -70,6 +70,14 @@ describe "API - Perspective" do
      perspective = Perspective.find( perspective.id )
      perspective.fav_count.should == 1
 
+     found = false #test for adding user bookmark
+     for p in user.perspectives
+      if p.place.id == perspective.place.id
+        found = true
+      end
+     end
+     found.should == true
+
    end
 
 

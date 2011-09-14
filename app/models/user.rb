@@ -74,6 +74,17 @@ class User
   def star( perspective )
     self.favourite_perspectives << perspective.id
     perspective.fav_count += 1
+
+    place = perspective.place
+    user_perspective = self.perspective_for_place( place )
+
+    #starring a perspective triggers a bookmark of it
+    if user_perspective.nil?
+      user_perspective= place.perspectives.build()
+      user_perspective.user = self
+      user_perspective.save
+    end
+
   end
 
   def unstar( perspective )
