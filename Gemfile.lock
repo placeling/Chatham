@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/imackinn/oauth-plugin.git
-  revision: 74e1a7f7e3ab6d4ff486fbaecd46fdd7996265ef
+  revision: ffbd67dbf8d226f20216f11049e7624eadbdda31
   specs:
     oauth-plugin (0.4.0.pre6)
       multi_json
@@ -88,8 +88,8 @@ GEM
     factory_girl_rails (1.1.rc1)
       factory_girl (~> 2.0.0.rc)
       railties (>= 3.0.0)
-    faraday (0.6.1)
-      addressable (~> 2.2.4)
+    faraday (0.7.4)
+      addressable (~> 2.2.6)
       multipart-post (~> 1.1.0)
       rack (>= 1.1.0, < 2)
     ffi (1.0.9)
@@ -134,9 +134,9 @@ GEM
       net-ssh (>= 1.99.1)
     nokogiri (1.5.0)
     oauth (0.4.5)
-    oauth2 (0.4.1)
-      faraday (~> 0.6.1)
-      multi_json (>= 0.0.5)
+    oauth2 (0.5.0)
+      faraday (>= 0.6.1, < 0.8)
+      multi_json (~> 1.0.0)
     orm_adapter (0.0.5)
     polyglot (0.3.1)
     rack (1.2.1)
