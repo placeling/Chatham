@@ -1,7 +1,7 @@
 require 'google_places'
 
 class PlacesController < ApplicationController
-  before_filter :admin_required, :only => [:create, :new]
+  before_filter :admin_required, :only => [:new]
   before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
 
   def nearby
@@ -103,6 +103,8 @@ class PlacesController < ApplicationController
   end
 
   def create
+    return unless (params[:format] == :json or params[:format] == 'json' or current_user.is_admin? == true)
+    
     if params[:google_ref]  #check to see what place data is based on
       if @place = Place.find_by_google_id( params[:google_id] )
         #kind of a no-op
