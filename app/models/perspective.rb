@@ -68,16 +68,17 @@ class Perspective
 
     if options[:current_user]
       current_user = options[:current_user]
-      if current_user.favourite_perspectives.include?( self.id )
-        attributes = attributes.merge(:starred => true)
-      else
-        attributes = attributes.merge(:starred => false)
-      end
 
       if current_user.id ==  self[:uid]
         attributes = attributes.merge(:mine => true)
+        attributes = attributes.merge(:starred => true)
       else
         attributes = attributes.merge(:mine => false)
+        if current_user.favourite_perspectives.include?( self.id )
+          attributes = attributes.merge(:starred => true)
+        else
+          attributes = attributes.merge(:starred => false)
+        end
       end
     end
 

@@ -113,16 +113,19 @@ class User
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
 
     if options[:current_user]
+      current_user =options[:current_user]
       #check against raw ids so it doesnt have to go back to db
       following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
       follows_you = self['following_ids'].include?( options[:current_user].id )
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
+    else
+      current_user = nil
     end
 
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).as_json(:user_view=>true)  )
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).as_json({:user_view=>true,:current_user =>current_user })  )
     elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:created_at).as_json(:user_view=>true) )
+      attributes.merge(:perspectives => self.perspectives.descending(:created_at).as_json({:user_view=>true,:current_user =>current_user }) )
     else
       attributes
     end
