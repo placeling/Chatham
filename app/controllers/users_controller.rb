@@ -49,7 +49,7 @@ class UsersController < ApplicationController
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
     respond_to do |format|
-      format.json { render :json => @user.as_json({:current_user => current_user, :perspective => :created_by}) }
+      format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
       format.html
     end
   end
