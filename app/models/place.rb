@@ -89,12 +89,28 @@ class Place
     end
   end
 
-  def self.find_all_near( lat, long, radius )
+  def self.find_nearby_for_user( user, lat, long, span )
+    n = CHATHAM_CONFIG['max_returned_map']
+
+    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
+    perspectives = Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
+        and(:uid => user.id).
+        limit( n )
+
+    places = []
+    for perspective in perspectives
+      places << perspective.place
+    end
+
+    return places
+  end
+
+  def self.find_all_near( lat, long, span )
 
     n = CHATHAM_CONFIG['max_returned_map']
 
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    Place.where(:loc.within => {"$center" => [[lat,long],radius]}).
+    Place.where(:loc.within => {"$center" => [[lat,long],span]}).
         and(:pc.gte => 1).
         order_by([:pc, :desc]).
         limit( n )

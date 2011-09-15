@@ -171,12 +171,18 @@ class PerspectivesController < ApplicationController
   end
 
   def nearby
+    #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     long = params[:long].to_f
     span = params[:span].to_f #needs to be > 0
 
-    #for finding *all* perspectives nearby
-    @places = Place.find_all_near(lat, long, span)
+    if params[:username]
+      user = User.find_by_username( params[:username] )
+      @places = Place.find_nearby_for_user( user, lat, long, span )
+    else
+      #for finding *all* perspectives nearby
+      @places = Place.find_all_near(lat, long, span)
+    end
 
     respond_to do |format|
       format.html
