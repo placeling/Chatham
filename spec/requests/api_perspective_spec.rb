@@ -107,8 +107,9 @@ describe "API - Perspective" do
 
 
   describe "can be added" do
-
-    it "to a completely new place" do
+    
+    # Marked broken as will otherwise attempt to write to Google Places API. Use lib/google_places_spec.rb instead
+    it "to a completely new place", :broken => true do
       user = Factory.create(:user)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
