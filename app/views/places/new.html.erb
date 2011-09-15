@@ -1,10 +1,10 @@
 <div id="new_place_form">
-  <form action="" method="post">
+  <form action="<%= url_for(:action => 'create') %>" method="post">
     <div class="standout"><label for="name"><%= t'place.name' %></label></div>
-    <p><input type="text" id="name"></p>
+    <p><input type="text" id="name" name="name"></p>
     <p>
-      <input type="hidden" id="lat" value="default">
-      <input type="hidden" id="lng" value="default">
+      <input type="hidden" id="lat" name="lat" value="default">
+      <input type="hidden" id="long" name="long" value="default">
     </p>
     <div id="map">
     </div>
@@ -54,10 +54,7 @@
       var lng = map.getCenter().lng();
       
       $('#lat').val(lat);
-      $('#lng').val(lng);
-      
-      e.preventDefault();
-      return false;
+      $('#long').val(lng);
     });
   </script>
 <% end %>

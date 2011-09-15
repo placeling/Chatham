@@ -2,7 +2,7 @@ require 'json'
 
 class GooglePlaces
   include HTTParty
-  #debug_output $stdout
+  debug_output $stdout
   
   # api docs: http://code.google.com/apis/maps/documentation/places/
   base_uri "https://maps.googleapis.com/maps/api/place"
@@ -60,8 +60,8 @@ class GooglePlaces
     
     body = {
       :location => {
-        :lat => x,
-        :lng => y
+        :lat => x.to_f,
+        :lng => y.to_f
       },
       :accuracy => radius,
       :name => name,
