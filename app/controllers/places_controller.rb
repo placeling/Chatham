@@ -1,4 +1,5 @@
 require 'google_places'
+require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]
@@ -116,8 +117,6 @@ class PlacesController < ApplicationController
         @place.save
       end
     else
-      puts "Params received in controller"
-      puts params
       @place = Place.new_from_user_input( params )
       @place.user = current_user
       @place.client_application = current_client_application unless current_client_application.nil?

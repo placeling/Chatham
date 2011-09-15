@@ -6,7 +6,7 @@ class GooglePlaces
   
   # api docs: http://code.google.com/apis/maps/documentation/places/
   base_uri "https://maps.googleapis.com/maps/api/place"
-
+  
   def initialize()
     @api_key = CHATHAM_CONFIG['google_api']
   end
@@ -136,6 +136,6 @@ class GooglePlaces
         raise "Google Places API returned non-200 result"
       end
     end
-
+    
 end
 

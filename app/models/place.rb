@@ -1,4 +1,5 @@
 require 'google_places'
+require 'google_reverse_geocode'
 
 class Place
   include Mongoid::Document
@@ -86,12 +87,9 @@ class Place
   def create_location
     if self.location.nil?
       begin
-        puts "Passed parameters are:"
-        puts params
         self.location = [params[:lat], params[:long]]
       rescue
         errors.add_to_base "You didn't include a latitude and longitude"
-        puts "added error message"
       end
     end
   end
@@ -174,9 +172,6 @@ class Place
   end
 
   def self.new_from_user_input( params )
-    puts "Parameters received in model"
-    puts params
-    
     gp = GooglePlaces.new
     
     # Don't have radius if coming from admin tool, but need to create place
@@ -185,6 +180,11 @@ class Place
     end
     
     raw_place = gp.create(params[:lat], params[:long], params[:radius], params[:name], params[:category])
+    
+    grg = GoogleReverseGeocode.new
+    
+    raw_address = grg.reverse_geocode(params[:lat], params[:long])
+    
     place = Place.new
     
     place.name = params[:name]
@@ -195,6 +195,40 @@ class Place
     
     place.venue_types = [params[:category]]
     place.place_type = "USER_CREATED"
+    
+    if !raw_address.nil?
+      street_number = nil
+      route = nil
+      locality = nil
+      admin_area_level_1 = nil
+      
+      raw_address.address_components.each do |component|
+        if component["types"].include? "street_number"
+          street_number = component["short_name"]
+        end
+        if component["types"].include? "route"
+          route = component["short_name"]
+        end
+        if component["types"].include? "locality"
+          locality = component["long_name"]
+        end
+        if component["types"].include? "administrative_area_level_1"
+          admin_area_level_1 = component["short_name"]
+        end
+      end
+      
+      if !street_number.nil? and !route.nil?
+        place.address_components = street_number + " " + route
+      elsif street_number.nil? and !route.nil?
+        place.address_components = route
+      end
+      
+      if !locality.nil? and !admin_area_level_1.nil?
+        place.city_data = locality + ", " + admin_area_level_1
+      elsif locality.nil? and !admin_area_level_1.nil?
+        place.city_data = admin_area_level_1
+      end
+    end
     
     return place
   end

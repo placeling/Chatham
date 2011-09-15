@@ -1,3 +1,2 @@
-<%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{location[0]},
-    #{location[1]}&zoom=16&size=200x200&sensor=false&markers=color:blue%7C#{location[0]},
-    #{location[1]}") %>
+<%# Following must be on one line as spaces (%20) in Google Maps will move marker off-center %>
+<%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{location[0]},#{location[1]}&zoom=16&size=200x200&sensor=false&markers=color:blue%7C#{location[0]},#{location[1]}") %>
