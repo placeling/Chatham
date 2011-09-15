@@ -140,6 +140,12 @@ FactoryGirl.define do
     google_url "http://maps.google.com/maps/place?cid=3254539966235120932"
     place_type "GOOGLE_PLACE"
   end
+  
+  factory :new_place, :class => Place do
+    location { [49.28199, -123.10814]}
+    name "GrowLab Test Place"
+    venue_types {[ "other"]}
+  end
 
 end
 

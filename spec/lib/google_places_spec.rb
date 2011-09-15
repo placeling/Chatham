@@ -55,7 +55,6 @@ describe GooglePlaces do
 
   end
 
-
   it "doesn't work with a bad key" do
     @gp.api_key = "badkey"
     expect{ @gp.find_nearby(-33.8599827,151.2021282,500) }.to raise_error
@@ -67,5 +66,48 @@ describe GooglePlaces do
     nearby.length.should == 0
   end
 
-
+  it "searches for a place; if found deletes it, creates/recreates it, confirms it's searchable and deletes it" do
+    growlab = Factory.create(:new_place)
+    
+    searcher = @gp.find_nearby(growlab.location[0], growlab.location[1], 10, growlab.name)
+    
+    place_found = false
+    for place in searcher
+      if place.name == growlab.name
+        reference = place.reference
+        place_found = true
+        break
+      end
+    end
+    
+    if place_found == true:
+      puts "Place already existed"
+      goner = @gp.delete(reference)
+      goner.status.should == "OK"
+    end
+    
+    newbie = @gp.create(growlab.location[0], growlab.location[1], 10, growlab.name, growlab.venue_types[0])
+    
+    newbie.status.should == "OK"
+    newbie.reference.should_not be(nil)
+    newbie.id.should_not be(nil)
+    
+    growlab.google_id = newbie.id
+    growlab.google_ref = newbie.reference
+    
+    searcher = @gp.find_nearby(growlab.location[0], growlab.location[1], 10, growlab.name)
+    
+    place_found = false
+    for place in searcher
+      if place.name == growlab.name
+        place_found = true
+        break
+      end
+    end
+    
+    place_found.should == true
+    
+    goner = @gp.delete(newbie.reference)
+    goner.status.should == "OK"
+  end
 end
