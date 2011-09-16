@@ -1,10 +1,14 @@
+require 'google_places'
+require 'google_reverse_geocode'
+
 class Place
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
 
+  before_validation :create_location
   before_validation :fix_location
-
+  
   field :loc, :as => :location, :type => Array
   field :name, :type => String
   field :gid, :as => :google_id, :type => String
@@ -79,13 +83,28 @@ class Place
     self.place_tags = sorted_tag_tally.last( n ).collect!{|value| value[0]}
 
   end
-
-  def fix_location
-    if self.location[0].is_a? String
-      self.location[0] = self.location[0].to_f
+  
+  def create_location
+    if self.location.nil?
+      begin
+        self.location = [params[:lat], params[:long]]
+      rescue
+        errors.add_to_base "You didn't include a latitude and longitude"
+      end
     end
-    if self.location[1].is_a? String
-      self.location[1] = self.location[1].to_f
+  end
+  
+  # Need error if not valid values
+  def fix_location
+    begin
+      if self.location[0].is_a? String
+        self.location[0] = self.location[0].to_f
+      end
+      if self.location[1].is_a? String
+        self.location[1] = self.location[1].to_f
+      end
+    rescue
+      errors.add_to_base "You didn't include a latitude and longitude"
     end
   end
 
@@ -152,11 +171,65 @@ class Place
     return place
   end
 
-
   def self.new_from_user_input( params )
-    params[:location] = [params[:lat], params[:long]]
-    place = Place.new( params )
+    gp = GooglePlaces.new
+    
+    # Don't have radius if coming from admin tool, but need to create place
+    if not params[:radius]
+      params[:radius] = 10
+    end
+    
+    raw_place = gp.create(params[:lat], params[:long], params[:radius], params[:name], params[:category])
+    
+    grg = GoogleReverseGeocode.new
+    
+    raw_address = grg.reverse_geocode(params[:lat], params[:long])
+    
+    place = Place.new
+    
+    place.name = params[:name]
+    place.google_id = raw_place.id
+    place.location = [params[:lat], params[:long]]
+    
+    place.google_ref = raw_place.reference
+    
+    place.venue_types = [params[:category]]
     place.place_type = "USER_CREATED"
+    
+    if !raw_address.nil?
+      street_number = nil
+      route = nil
+      locality = nil
+      admin_area_level_1 = nil
+      
+      raw_address.address_components.each do |component|
+        if component["types"].include? "street_number"
+          street_number = component["short_name"]
+        end
+        if component["types"].include? "route"
+          route = component["short_name"]
+        end
+        if component["types"].include? "locality"
+          locality = component["long_name"]
+        end
+        if component["types"].include? "administrative_area_level_1"
+          admin_area_level_1 = component["short_name"]
+        end
+      end
+      
+      if !street_number.nil? and !route.nil?
+        place.address_components = street_number + " " + route
+      elsif street_number.nil? and !route.nil?
+        place.address_components = route
+      end
+      
+      if !locality.nil? and !admin_area_level_1.nil?
+        place.city_data = locality + ", " + admin_area_level_1
+      elsif locality.nil? and !admin_area_level_1.nil?
+        place.city_data = admin_area_level_1
+      end
+    end
+    
     return place
   end
 

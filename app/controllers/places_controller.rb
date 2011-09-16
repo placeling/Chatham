@@ -1,4 +1,5 @@
 require 'google_places'
+require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]

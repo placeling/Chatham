@@ -58,7 +58,8 @@ describe Place do
 
   end
 
-  it "should be able to create a record from user input" do
+  # Following marked broken as would otherwise write to Google Places API. Use lib/google_places_spec.rb to test
+  it "should be able to create a record from user input", :broken => true do
     place = Place.new_from_user_input(
             :name => "Casa MacKinnon",
             :lat => 49.268547,
