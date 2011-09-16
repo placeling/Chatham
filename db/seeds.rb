@@ -26,5 +26,5 @@ acceptance_tests = Factory.create(:acceptance_tests, :user => ian)
 
 puts 'creating tyler and his fav spots'
 user = Factory.create(:user, :username=>'tyler')
-perspective = Factory.create(:perspective, :memo =>"COSMIC", :user=>user)
-perspective2 = Factory.create(:lib_square_perspective, :memo =>"LIB SQUARE", :user =>user)
+perspective = Factory.create(:perspective, :user=>user)
+perspective2 = Factory.create(:lib_square_perspective, :user =>user)
