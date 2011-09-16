@@ -5,9 +5,10 @@ class Place
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
-
-  before_validation :create_location
+  
   before_validation :fix_location
+  
+  validates :name, :venue_types, :presence => true
   
   field :loc, :as => :location, :type => Array
   field :name, :type => String
@@ -84,17 +85,6 @@ class Place
 
   end
   
-  def create_location
-    if self.location.nil?
-      begin
-        self.location = [params[:lat], params[:long]]
-      rescue
-        errors.add_to_base "You didn't include a latitude and longitude"
-      end
-    end
-  end
-  
-  # Need error if not valid values
   def fix_location
     begin
       if self.location[0].is_a? String
@@ -104,7 +94,10 @@ class Place
         self.location[1] = self.location[1].to_f
       end
     rescue
-      errors.add_to_base "You didn't include a latitude and longitude"
+      errors.add(:base, "You didn't include a latitude and longitude")
+    end
+    if self.location[0] == 0.0 and self.location[1] == 0.0:
+      errors.add(:base, "You didn't include a latitude and longitude")
     end
   end
 
@@ -171,29 +164,24 @@ class Place
     return place
   end
 
-  def self.new_from_user_input( params )
+  def self.new_from_user_input( old_place, radius=10 )
     gp = GooglePlaces.new
     
-    # Don't have radius if coming from admin tool, but need to create place
-    if not params[:radius]
-      params[:radius] = 10
-    end
-    
-    raw_place = gp.create(params[:lat], params[:long], params[:radius], params[:name], params[:category])
+    raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, old_place.venue_types[0])
     
     grg = GoogleReverseGeocode.new
     
-    raw_address = grg.reverse_geocode(params[:lat], params[:long])
+    raw_address = grg.reverse_geocode(old_place.location[0], old_place.location[1])
     
     place = Place.new
     
-    place.name = params[:name]
+    place.name = old_place.name
     place.google_id = raw_place.id
-    place.location = [params[:lat], params[:long]]
+    place.location = old_place.location
     
     place.google_ref = raw_place.reference
     
-    place.venue_types = [params[:category]]
+    place.venue_types = old_place.venue_types
     place.place_type = "USER_CREATED"
     
     if !raw_address.nil?

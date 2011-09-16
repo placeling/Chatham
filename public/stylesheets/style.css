@@ -754,11 +754,10 @@ div#placemainmenu li li:hover ul
 
 .standout {
     font-size: 18px;
-    margin-left: 5px;
     margin-bottom: 5px;
 }
 
-#name {
+#place_name {
     border: 1px solid #CCCCCC;
     border-radius: 5px 5px 5px 5px;
     font-size: 24px;

@@ -1,5 +1,48 @@
 <%= error_messages_for :client_application %>
-<div class="field">
-  <label for="place_name"><%= t("basic.name") %>*</label><br/>
-  <%= f.text_field :name %>
-</div>
+<%= form_for(@place) do |f| %>
+  <% if @place.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
+
+      <ul>
+      <% @place.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="standout">
+    <p><%= t'place.name' %></p>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <% if @place.location %>
+      <% @place.location.each_with_index do |location, index| %>
+        <% if index == 0 %>
+          <input id="lat" name="place[location][]" type="hidden" value="<%= location %>">
+        <% elsif index == 1 %>
+          <input id="lng" name="place[location][]" type="hidden" value="<%= location %>">
+        <% end %>
+      <% end %>
+    <% else %>
+      <input id="lat" name="place[location][]" type="hidden" value="empty" />
+      <input id="lng" name="place[location][]" type="hidden" value="empty" />
+    <% end %>
+  </div>
+  <div id="map"></div>
+  <div id="accordion">
+    <% @categories.keys().sort.each do |category| %>
+      <h3><a href="#"><%= category %></a></h3>
+      <div>
+        <% @categories[category].keys().sort.each do |friendly_term|%>
+          <p><input class="radio" type="radio" name="place[venue_types][]" value="<%= @categories[category][friendly_term] %>"/><span class="radio_text"><%= friendly_term %></span></p>
+        <% end %>
+      </div>
+    <% end %>  
+    
+  </div>
+  <div id="create">
+    <%= f.submit :class => 'button', :value => 'create'%>
+  </div>
+<% end %>
