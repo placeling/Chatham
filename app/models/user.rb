@@ -35,6 +35,8 @@ class User
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application], :foreign_key =>'uid'
 
   validates_presence_of :username
+  validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
+  validates_length_of :username, :within => 3..20, :too_long => "pick a shorter username", :too_short => "pick a longer username"
   validates_uniqueness_of :username, :email, :case_sensitive => false
   validates_uniqueness_of :facebook_id, :allow_nil =>true
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :facebook_access_token
