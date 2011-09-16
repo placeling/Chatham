@@ -21,9 +21,12 @@ class User
   field :admin,       :type => Boolean, :default => false
 
   field :facebook_access_token, :type => String
+  field :facebook_id, :type => Integer
 
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
+
+  field :fbDict, :type => Hash
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
@@ -33,6 +36,7 @@ class User
 
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
+  validates_uniqueness_of :facebook_id, :allow_nil =>true
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :facebook_access_token
 
   index :unm

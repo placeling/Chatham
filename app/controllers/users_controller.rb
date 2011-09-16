@@ -17,7 +17,10 @@ class UsersController < ApplicationController
     long = params[:long].to_f
     user.location = [lat, long]
 
-    user[:fbDict] = params[:fbDict]
+    if (params[:fbDict])
+      user[:fbDict] = params[:fbDict]
+      user.facebook_id = params[:fbDict][:id].to_i
+    end
 
     if user.save
       if current_client_application
