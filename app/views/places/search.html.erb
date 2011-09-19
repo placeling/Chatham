@@ -27,7 +27,7 @@
         <div>
           <p class="name"><%= link_to place.name, place %>
             <% if admin_user? %>
-              <a class="new_perspective" href=""><%= t'place.add_perspective' %></a>
+              <%= link_to (t'place.add_perspective'), new_place_perspective_path(place), :class => "new_perspective" %>
             <% end%>
           </p>
           <p class="address"><%= place.street_address %> <a class="map<%= index %>" href="http://maps.googleapis.com/maps/api/staticmap?center=<%= place.loc[0] %>,<%= place.loc[1] %>&zoom=16&size=800x600&sensor=false&markers=color:red%7C<%= place.loc[0] %>,<%= place.loc[1] %>">map</a></p>
@@ -35,7 +35,7 @@
       <% end %>
       <% if admin_user? %>
       <div id="new_place">
-        <%= t'place.add_1' %> "<%= @query %>" <%= t'place.add_2' %>? <%= link_to 'Add it as a new location', new_place_path %>
+        <%= t'place.add_1' %> "<%= @query %>" <%= t'place.add_2' %>? <%= link_to (t'place.add_place'), new_place_path %>
       </div>
       <% end %>
     <% end %>

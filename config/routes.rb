@@ -49,6 +49,7 @@ Chatham::Application.routes.draw do
     resources :perspectives, :except =>[:show, :index]  do
       collection do
         post :update
+        post :admin_create
         delete :destroy
         get :following
         get :all

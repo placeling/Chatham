@@ -2,9 +2,57 @@ class PerspectivesController < ApplicationController
   before_filter :login_required, :except =>[:index, :show]
 
   def new
-
+    @place = Place.find(params[:place_id])
+    @perspective = Perspective.new
+    
+    respond_to do |format|
+      format.html
+    end
   end
-
+  
+  def admin_create
+    @perspective = Perspective.new(params[:perspective])
+    
+    @place = Place.find( params['place_id'])
+    if !@place.nil?
+      if params[:username] and admin_user?
+        @user = User.find_by_username(params[:username])
+        if @user.nil?
+          @perspective.errors.add(:user, "Invalid user")
+        end
+      else
+        @user = current_user
+      end
+    else
+      @perspective.errors.add(:place, "Invalid place")
+    end
+    
+    if !@place.nil? and !@user.nil?
+      @perspective.place = @place
+      @perspective.user = @user
+      
+      @exists = Perspective.where(:uid => @user.id).and(:plid => @place.id)
+      
+      if @exists.length > 0
+        @perspective.errors.add_to_base("User already has a perspective for here")
+      end
+      
+      if @perspective.errors.length > 0
+        render :action => "new"
+      else
+        if @perspective.save
+          respond_to do |format|
+            format.html {redirect_to place_path(@place)}
+          end
+        else
+          render :action => "new"
+        end
+      end
+    else
+      render :action => "new"
+    end
+  end
+  
   def following
     if BSON::ObjectId.legal?( params['place_id'] )
       #it's a direct request for a place in our db
