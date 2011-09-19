@@ -147,16 +147,19 @@ class Place
 
     place.phone_number = raw_place.formatted_phone_number unless !raw_place.formatted_phone_number?
     place.google_ref = raw_place.reference
-    if raw_place.address_components.length > 3
-      #TODO: find out how this scales past north america
-      place.city_data = raw_place.address_components[2].short_name + ", " + raw_place.address_components[3].short_name
-    end
 
-    if raw_place.address_components.length > 1
-      #TODO: find out how this scales past north america
-      place.street_address = raw_place.address_components[0].short_name + " " + raw_place.address_components[1].short_name
+    if raw_place.address_components
+      if raw_place.address_components.length > 3
+        #TODO: find out how this scales past north america
+        place.city_data = raw_place.address_components[2].short_name + ", " + raw_place.address_components[3].short_name
+      end
+
+      if raw_place.address_components.length > 1
+        #TODO: find out how this scales past north america
+        place.street_address = raw_place.address_components[0].short_name + " " + raw_place.address_components[1].short_name
+      end
+      place.address_components = raw_place.address_components
     end
-    place.address_components = raw_place.address_components
 
     place.venue_types = raw_place.types
     place.place_type = "GOOGLE_PLACE"

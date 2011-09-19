@@ -1,0 +1,16 @@
+{
+   "html_attributions" : [],
+   "result" : {
+      "geometry" : {
+         "location" : {
+            "lat" : 49.28195930030890,
+            "lng" : -123.1081249904630
+         }
+      },
+      "id" : "a6ccd2c4d6822652e72209c9113dca26dc790ec5",
+      "name" : "Growlab",
+      "reference" : "CmRZAAAAOyFGtBYLQPXjFhWErruL1UqqNaI0hJqaVbnCLbUdkGsxLhN6DEEhkYLUNU4bSFc7eiqxPSh3FUdYgVek0Cg1FANjd6qhEolLgW1KT0SAQpwPeMBLGyqXaSBmG1xQl5MPEhAgnl1VKFcNv_Mu7dlae6XmGhRAX5g01hm7gPiu-Y8fLM1EginDGg",
+      "types" : [ "establishment" ]
+   },
+   "status" : "OK"
+}
