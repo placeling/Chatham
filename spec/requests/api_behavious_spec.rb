@@ -25,7 +25,7 @@ describe "API - " do
       perspective = Perspective.find( perspective.id)
       perspective.pictures.count.should be(1)
       pic = perspective.pictures.first
-      pic.image.thumb.should be_no_larger_than(64, 64)
+      pic.image.thumb.should be_no_larger_than(160,160)
     end
   end
 

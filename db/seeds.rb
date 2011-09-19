@@ -1,4 +1,4 @@
-if (Rails.env == "production")
+if (Rails.env == "production" or Rails.env == "staging")
   raise "FUCK OFF, you're trying to reset the database in production"
   return
 end

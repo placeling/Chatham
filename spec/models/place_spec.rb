@@ -89,4 +89,19 @@ describe Place do
     place.street_address.should == "2095 West 4th Avenue"
 
   end
+
+  it "should be able to create a record from a Google places hash without address information" do
+    file = File.open(Rails.root.join("spec/fixtures/usermade_growlab_google_place_detail.json"), 'r')
+    json = file.readlines.to_s
+    hash = Hashie::Mash.new( JSON.parse(json) ).result
+
+    place = Place.new_from_google_place( hash )
+    place.save
+    place.should be_valid
+
+    place = Place.all().first
+    place.google_id.should == "a6ccd2c4d6822652e72209c9113dca26dc790ec5"
+    place.place_type.should == "GOOGLE_PLACE"
+
+  end
 end
