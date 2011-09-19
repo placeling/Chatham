@@ -17,8 +17,20 @@ describe PictureUploader do
   end
 
   context 'the thumb version' do
-    it "should scale down an image to no more than 64 by 64 pixels" do
-      @uploader.thumb.should be_no_larger_than(64, 64)
+    it "should scale down an image to no more than 160 by 160 pixels" do
+      @uploader.thumb.should be_no_larger_than(160, 160)
+    end
+  end
+
+  context 'the iphone  version' do
+    it "should scale down an image to fit on an iphone display pixels" do
+      @uploader.thumb.should be_no_larger_than(480, 480)
+    end
+  end
+
+  context 'the main version' do
+    it "should scale down an image to fit on an iphone display pixels" do
+      @uploader.thumb.should be_no_larger_than(960, 960)
     end
   end
 
