@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
     if @perspective.save
       respond_to do |format|
         format.html
-        format.json { render :json => @perspective.as_json({:current_user => current_user}) }
+        format.json { render :json => @picture.as_json({:current_user => current_user}) }
       end
     else
       respond_to do |format|
