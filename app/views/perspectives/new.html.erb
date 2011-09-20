@@ -1,0 +1,49 @@
+<div id="place_info">
+  <h1><%= @place.name %></h1>
+  <% if @place.street_address %>
+    <h2><%= @place.street_address %></h2>
+  <% end %>
+</div>
+
+<div id="new_perspective_form">
+  <%= form_for([@place, @perspective], :url => {:controller => "perspectives", :action => "admin_create"}, :method => "post") do |f, g|%>
+    <% if @perspective.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@perspective.errors.count, "error") %> prohibited this perspective from being saved:</h2>
+
+        <ul>
+        <% @perspective.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <% if admin_user? %>
+      <div>
+        <p class="standout"><%= t'perspective.user' %></p>
+        <p>
+        <% if @perspective.user.nil? %>
+          <input id="username" name="username" type="text"/>
+        <% else %>
+          <%= text_field_tag(:username, @perspective.user.username)%>
+        <% end %>
+        </p>
+      </div>
+    <% end %>
+
+    <div>
+      <p class="standout"><%= t'perspective.memo' %></p>
+      <%= f.text_area(:memo) %>
+    </div>
+
+    <div id="create">
+      <%= f.submit :class => 'button', :value => 'create'%>
+    </div>
+  <% end %>
+</div>
+
+<!--
+<%= form_tag([@place, @perspective], :url => {:controller => "perspectives", :action => "admin_create"}, :method => "post") do |f, g| %>
+<% end %>
+-->

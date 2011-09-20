@@ -1,0 +1,36 @@
+<%= error_messages_for :client_application %>
+<%= form_for([@place, @perspective]) do |f, g| %>
+  <% if @perspective.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@perspective.errors.count, "error") %> prohibited this perspective from being saved:</h2>
+
+      <ul>
+      <% @perspective.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <% if admin_user? %>
+    <div>
+      <p class="standout"><%= t'perspective.user' %></p>
+      <p>
+      <% if @perspective.user.nil? %>
+        <input id="username" name="username" type="text"/>
+      <% else %>
+        <%= f.text_field(:username, @perspective.user.username)%>
+      <% end %>
+      </p>
+    </div>
+  <% end %>
+  
+  <div>
+    <p class="standout"><%= t'perspective.memo' %></p>
+    <%= f.text_area(:memo) %>
+  </div>
+  
+  <div id="create">
+    <%= f.submit :class => 'button', :value => 'create'%>
+  </div>
+<% end %>

@@ -26,7 +26,7 @@ describe "API - Perspective" do
   it "JSON call should state whether it has been starred" do
       user = Factory.create(:user)
       perspective = Factory.create(:perspective)
-
+      
       user = Factory.create(:user)
       place = Factory.create(:place)
       perspective = Factory.create(:perspective, :place =>place)
@@ -35,7 +35,7 @@ describe "API - Perspective" do
       user.save
 
       perspective2 = Factory.create(:perspective, :place =>place)
-
+      
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
 

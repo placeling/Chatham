@@ -5,7 +5,26 @@ describe GooglePlaces do
   before(:each) do
     @gp = GooglePlaces.new
   end
-
+  
+  it "shouldn't be able to check in at an invalid location" do
+    failed_check_in = @gp.check_in("invalid location")
+    
+    failed_check_in.should == "Invalid location"
+  end
+  
+  it "shouldn't be able to check in if missing a valid reference" do
+    place = Place.new
+    place.name = "Fake place"
+    place.google_id = "Fake1234"
+    place.location = [45.0, 45.0]
+    place.venue_types = ["other"]
+    place.save
+    
+    failed_check_in = @gp.check_in("Fake1234")
+    
+    failed_check_in.should == "No google reference"
+  end
+  
   it "should not return any political results for location" do
     nearby = @gp.find_nearby(49.268547,-123.15279,500, false)
 
@@ -66,7 +85,7 @@ describe GooglePlaces do
     nearby.length.should == 0
   end
 
-  it "searches for a place; if found deletes it, creates/recreates it, confirms it's searchable and deletes it" do
+  it "searches for a place; if found deletes it, creates/recreates it, confirms it's searchable, checks in and deletes it" do
     growlab = Factory.create(:new_place)
     
     searcher = @gp.find_nearby(growlab.location[0], growlab.location[1], 10, growlab.name)
@@ -81,7 +100,6 @@ describe GooglePlaces do
     end
     
     if place_found == true:
-      puts "Place already existed"
       goner = @gp.delete(reference)
       goner.status.should == "OK"
     end
@@ -94,6 +112,7 @@ describe GooglePlaces do
     
     growlab.google_id = newbie.id
     growlab.google_ref = newbie.reference
+    growlab.save
     
     searcher = @gp.find_nearby(growlab.location[0], growlab.location[1], 10, growlab.name)
     
@@ -107,6 +126,9 @@ describe GooglePlaces do
     
     place_found.should == true
     
+    successful_check_in = @gp.check_in(growlab.google_id)
+    successful_check_in.should == "OK"
+        
     goner = @gp.delete(newbie.reference)
     goner.status.should == "OK"
   end

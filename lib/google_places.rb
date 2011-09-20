@@ -23,6 +23,31 @@ class GooglePlaces
 
   end
 
+  def check_in(google_id, sensor = false)
+    place = Place.where(:gid => google_id)
+    
+    if place.length != 1
+      return "Invalid location"
+    end
+    
+    if !place[0].google_ref.nil?
+      options = {
+        :sensor => sensor
+      }
+
+      ref = {:reference => place[0].google_ref}
+
+      result = mashup(self.class.post("/check-in/json",
+                                      :query => options.merge(self.default_options),
+                                      :body => ref.to_json))
+                                      
+      return result["status"]
+    else
+      return "No google reference"
+    end
+    return false
+  end
+
   def find_nearby(x, y, radius, query = nil, sensor = true, type ="", language ="en")
     #radius is in meters
 

@@ -64,6 +64,8 @@ class PlacesController < ApplicationController
       end
       
       @places = []
+      
+      # Google Places
       @raw_places = gp.find_nearby(lat, long, radius, query)
       if @raw_places.length > 0
         @raw_places.each do |place|
@@ -79,6 +81,20 @@ class PlacesController < ApplicationController
           end
           
           @places.push(@place)
+        end
+      end
+      
+      # Our database - need to do as Google doesn't always find places we add (e.g., Siwash Rock)
+      # NOTE: This is hacky as do not have case-insensitive search in MongoDB
+      query_term = params[:query].strip.split(",")[0]
+      if query.length > 0
+        our_places = Place.where(:name => query_term)
+        if our_places.length > 0
+          our_places.each do |our_place|
+            if !@places.include? our_place
+              @places.push(our_place)
+            end
+          end
         end
       end
     end
@@ -118,8 +134,6 @@ class PlacesController < ApplicationController
         @place.save
       end
     else
-      puts "POST params are:"
-      puts params
       @place = Place.new(params[:place])
       if @place.valid?
         puts "Place is valid"
@@ -127,8 +141,6 @@ class PlacesController < ApplicationController
         @place.user = current_user
         @place.client_application = current_client_application unless current_client_application.nil?
         @place.save
-      else
-        puts "Place is not valid"
       end
       
       file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')

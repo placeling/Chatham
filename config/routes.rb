@@ -50,6 +50,7 @@ Chatham::Application.routes.draw do
       collection do
         resources :photos
         post :update
+        post :admin_create
         delete :destroy
         get :following
         get :all

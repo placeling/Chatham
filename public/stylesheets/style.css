@@ -746,6 +746,40 @@ div#placemainmenu li li:hover ul
 	line-height:1.8em;
 }
 
+/* Perspective Form
+=====================================================================*/
+#place_info {
+    padding: 10px;
+}
+
+#place_info h1 {
+    font-size: 24px;
+}
+
+#place_info h2 {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#new_perspective {
+    width: 600px;
+    padding: 10px;
+}
+
+#username {
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 24px;
+    padding: 2px 5px;
+    margin-bottom: 5px;
+}
+
+#perspective_memo {
+    width: 100%;
+    heigth: 200px;
+}
+
 /* New Place
 =====================================================================*/
 #new_place_form p {

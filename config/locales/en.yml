@@ -122,6 +122,7 @@ en:
     search_tip_1: "Make sure all words are spelled correctly"
     search_tip_2: "Try including the city in your search e.g., 'Motorino, Brooklyn'"
     search_missing: "Are we missing"
+    add_place: "Add it as a new location"
     add_perspective: "Add perspective"
     add_1: "Not the"
     add_2: "you're looking for"
@@ -134,6 +135,8 @@ en:
     note: "Note"
     add_new: "Add Perspective"
     edit: "Edit Perspective"
+    memo: "Your notes about this place"
+    user: "Enter the username you want to attach this perspective to"
 
 
   errors:
