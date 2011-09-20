@@ -9,7 +9,7 @@ class Picture
 
 
   def as_json(options={})
-    attributes = self.attributes.merge(:photos =>pictures)
+    attributes = self.attributes
 
     if options[:current_user]
       current_user = options[:current_user]
@@ -20,5 +20,6 @@ class Picture
         attributes = attributes.merge(:mine => false)
       end
     end
+    attributes
   end
 end
