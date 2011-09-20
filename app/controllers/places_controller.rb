@@ -134,8 +134,6 @@ class PlacesController < ApplicationController
         @place.save
       end
     else
-      puts "POST params are:"
-      puts params
       @place = Place.new(params[:place])
       if @place.valid?
         puts "Place is valid"
@@ -143,8 +141,6 @@ class PlacesController < ApplicationController
         @place.user = current_user
         @place.client_application = current_client_application unless current_client_application.nil?
         @place.save
-      else
-        puts "Place is not valid"
       end
       
       file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
