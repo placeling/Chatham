@@ -146,7 +146,13 @@ FactoryGirl.define do
     name "GrowLab Test Place"
     venue_types {[ "other"]}
   end
-
+  
+  factory :invalid_google_id_place, :class => Place do
+    location {[45.0, 45.0]}
+    name "A Fake Place"
+    google_id "Fake1234"
+    venue_types {["other"]}
+  end
 end
 
 

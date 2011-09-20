@@ -13,14 +13,9 @@ describe GooglePlaces do
   end
   
   it "shouldn't be able to check in if missing a valid reference" do
-    place = Place.new
-    place.name = "Fake place"
-    place.google_id = "Fake1234"
-    place.location = [45.0, 45.0]
-    place.venue_types = ["other"]
-    place.save
+    invalid_place = Factory.create(:invalid_google_id_place)
     
-    failed_check_in = @gp.check_in("Fake1234")
+    failed_check_in = @gp.check_in(invalid_place.google_id)
     
     failed_check_in.should == "No google reference"
   end
