@@ -24,18 +24,18 @@ class GooglePlaces
   end
 
   def check_in(google_id, sensor = false)
-    place = Place.where(:gid => google_id)
+    place = Place.find_by_google_id(google_id)
     
-    if place.length != 1
+    if place.nil?
       return "Invalid location"
     end
     
-    if !place[0].google_ref.nil?
+    if !place.google_ref.nil?
       options = {
         :sensor => sensor
       }
 
-      ref = {:reference => place[0].google_ref}
+      ref = {:reference => place.google_ref}
 
       result = mashup(self.class.post("/check-in/json",
                                       :query => options.merge(self.default_options),

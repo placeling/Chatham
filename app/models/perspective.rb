@@ -30,24 +30,16 @@ class Perspective
   validates_associated :user
 
   before_validation :fix_location
-  before_save :check_if_new
   before_save :get_place_location
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
-  after_save :check_in_if_new
   after_destroy :reset_user_and_place_perspective_count
-
-  def check_if_new
-    @was_a_new_record = new_record?
-    return true
-  end
+  after_create :check_in
   
-  def check_in_if_new
-    if @was_a_new_record
-      if self.place.google_id:
-        gp = GooglePlaces.new
-        output = gp.check_in(self.place.google_id)
-      end
+  def check_in
+    if self.place.google_id:
+      gp = GooglePlaces.new
+      output = gp.check_in(self.place.google_id)
     end
   end
 
