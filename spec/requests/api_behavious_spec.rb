@@ -13,7 +13,7 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      post_via_redirect place_perspectives_path(perspective.place), {
+      post_via_redirect place_photos_path(perspective.place), {
         :format => 'json',
         :title => "Ian's Tattoo'",
         :image => Rack::Test::UploadedFile.new( "#{Rails.root}/spec/fixtures/IMG_0288.JPG", 'image/jpg' )
@@ -23,6 +23,27 @@ describe "API - " do
 
       #reget from db
       perspective = Perspective.find( perspective.id)
+      perspective.pictures.count.should be(1)
+      pic = perspective.pictures.first
+      pic.image.thumb.should be_no_larger_than(160,160)
+    end
+
+
+    it "be added to a new perspective" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post_via_redirect place_photos_path(place), {
+        :format => 'json',
+        :image => Rack::Test::UploadedFile.new( "#{Rails.root}/spec/fixtures/IMG_0288.JPG", 'image/jpg' )
+      }
+
+      response.status.should be(200)
+
+      #reget from db
+      perspective = user.perspective_for_place( place )
       perspective.pictures.count.should be(1)
       pic = perspective.pictures.first
       pic.image.thumb.should be_no_larger_than(160,160)

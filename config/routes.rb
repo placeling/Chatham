@@ -48,6 +48,7 @@ Chatham::Application.routes.draw do
     end
     resources :perspectives, :except =>[:show, :index]  do
       collection do
+        resources :photos
         post :update
         delete :destroy
         get :following
@@ -98,6 +99,7 @@ Chatham::Application.routes.draw do
       end
       resources :perspectives, :except =>[:show] do
         collection do
+          resources :photos
           post :update
           delete :destroy
           get :following

@@ -127,14 +127,6 @@ class PerspectivesController < ApplicationController
       @perspective.update_attributes(params.slice("memo"))
     end
 
-
-    if params[:image]
-      @picture = @perspective.pictures.build()
-      @picture.image = params[:image]
-      @picture.title = params[:title]
-      @picture.save!
-    end
-
     if @perspective.save
       respond_to do |format|
         format.html
