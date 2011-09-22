@@ -126,6 +126,7 @@ en:
     add_perspective: "Add perspective"
     add_1: "Not the"
     add_2: "you're looking for"
+    address_latlng: "Enter a lat/lng decimal pair or an address:"
 
   perspective:
     fav_places: "%{user}'s favorite places"
