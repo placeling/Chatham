@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/imackinn/oauth-plugin.git
-  revision: ffbd67dbf8d226f20216f11049e7624eadbdda31
+  revision: c56b80970ebae15c6a473fed199c0d2c25b8afe0
   specs:
     oauth-plugin (0.4.0.pre6)
       multi_json
