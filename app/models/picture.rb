@@ -10,18 +10,14 @@ class Picture
 
   def as_json(options={})
     attributes = self.attributes
-
-    if options[:current_user]
-      current_user = options[:current_user]
-      attributes = attributes.merge(:thumb_url => self.image_url(:thumb),
+    attributes = attributes.merge(:thumb_url => self.image_url(:thumb),
                                     :iphone_url => self.image_url(:iphone),
                                     :main_url => self.image_url(:main))
 
-      if current_user.id ==  self.perspective[:uid]
-        attributes = attributes.merge(:mine => true)
-      else
-        attributes = attributes.merge(:mine => false)
-      end
+    if options[:current_user] && options[:current_user].id == self.perspective[:uid]
+      attributes = attributes.merge(:mine => true)
+    else
+      attributes = attributes.merge(:mine => false)
     end
     attributes
   end

@@ -160,7 +160,6 @@ FactoryGirl.define do
 
   factory :picture do
     image File.open(File.join(Rails.root, 'spec', 'fixtures', 'IMG_0288.JPG') )
-    title "Ian's Tattoo'"
   end
 end
 
