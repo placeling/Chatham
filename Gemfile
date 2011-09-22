@@ -17,6 +17,7 @@ gem "devise", "~> 1.4.2"
 gem "system_timer"
 gem "httparty"
 gem "hashie"
+gem 'uuidtools'
 
 gem 'mini_magick'
 gem 'carrierwave'

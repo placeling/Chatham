@@ -13,6 +13,9 @@ class Picture
 
     if options[:current_user]
       current_user = options[:current_user]
+      attributes = attributes.merge(:thumb_url => self.image_url(:thumb),
+                :half_url => self.image_url(:half), :iphone_url => self.image_url(:iphone),
+                :main_url => self.image_url(:main))
 
       if current_user.id ==  self.perspective[:uid]
         attributes = attributes.merge(:mine => true)

@@ -195,6 +195,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
+    uuidtools (2.1.2)
     warden (1.0.4)
       rack (>= 1.0)
     xpath (0.1.4)
@@ -228,3 +229,4 @@ DEPENDENCIES
   rspec-rails (~> 2.6)
   system_timer
   twitter-text!
+  uuidtools
