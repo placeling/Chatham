@@ -9,6 +9,7 @@ class Place
   before_validation :fix_location
   
   validates :name, :venue_types, :presence => true
+  validates_uniqueness_of :gid
   
   field :loc, :as => :location, :type => Array
   field :name, :type => String
