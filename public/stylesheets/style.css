@@ -791,13 +791,17 @@ div#placemainmenu li li:hover ul
     margin-bottom: 5px;
 }
 
-#place_name {
+.place_input {
     border: 1px solid #CCCCCC;
     border-radius: 5px 5px 5px 5px;
     font-size: 24px;
     padding: 2px 5px;
     width: 490px;
     margin-bottom: 5px;
+}
+
+#map_updated {
+    margin-left: 8px;
 }
 
 #map {

@@ -14,7 +14,14 @@
 
   <div class="standout">
     <p><%= t'place.name' %></p>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :class => "place_input" %>
+  </div>
+  <div class="standout">
+    <p><%= t'place.address_latlng' %></p>
+    <p><input id="map_source" class="place_input"/><a href="http://www.placeling.com", id="map_updated">Update map</a></p>
+  </div>
+  <div class="standout">
+    <div id="ambiguous"></div>
   </div>
   <div class="field">
     <% if @place.location %>
