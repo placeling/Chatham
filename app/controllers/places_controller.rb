@@ -134,19 +134,14 @@ class PlacesController < ApplicationController
         @place.save
       end
     else
+      puts "I'm in user-created path"
       @place = Place.new(params[:place])
       if @place.valid?
-        puts "Place is valid"
         @place = Place.new_from_user_input(@place)
         @place.user = current_user
         @place.client_application = current_client_application unless current_client_application.nil?
         @place.save
-      end
-      
-      file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
-      content = file.read()
-      @categories = JSON(content)
-      
+      end      
     end
 
     #check for an attached perspective
