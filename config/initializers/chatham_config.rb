@@ -6,3 +6,7 @@ rescue
 end
 
 CHATHAM_CONFIG = secret_keys.merge( YAML.load_file("#{::Rails.root.to_s}/config/chatham_config.yml") )
+
+file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
+content = file.read()
+CATEGORIES = JSON(content)

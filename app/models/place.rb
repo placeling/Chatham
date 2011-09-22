@@ -162,9 +162,7 @@ class Place
     end
     
     # TODO This is hacky and ignores i18n
-    file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
-    content = file.read()
-    @categories = JSON(content)
+    @categories = CATEGORIES
     
     friendly_mapping = {}
     @categories.each do |category, components|
@@ -204,9 +202,7 @@ class Place
     gp = GooglePlaces.new
     
     # TODO This is hacky and ignores i18n
-    file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
-    content = file.read()
-    @categories = JSON(content)
+    @categories = CATEGORIES
     
     google_mapping = {}
     @categories.each do |category, components|
@@ -216,9 +212,6 @@ class Place
     end
     
     venue_type = google_mapping[old_place.venue_types[0]]
-    
-    puts "venue type is:"
-    puts venue_type
     
     raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, venue_type)
     
