@@ -20,6 +20,7 @@ gem "hashie"
 
 gem 'mini_magick'
 gem 'carrierwave'
+gem 'fog'
 
 gem "geocoder"
 
