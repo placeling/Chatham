@@ -94,8 +94,14 @@ describe Place do
     file = File.open(Rails.root.join("spec/fixtures/usermade_growlab_google_place_detail.json"), 'r')
     json = file.readlines.to_s
     hash = Hashie::Mash.new( JSON.parse(json) ).result
-
+    
+    #puts hash
+    
     place = Place.new_from_google_place( hash )
+    
+    #puts "place.venue_types is in spec is:"
+    #puts place.venue_types
+    
     place.save
     place.should be_valid
 

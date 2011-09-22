@@ -160,8 +160,41 @@ class Place
       end
       place.address_components = raw_place.address_components
     end
-
-    place.venue_types = raw_place.types
+    
+    # TODO This is hacky and ignores i18n
+    file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
+    content = file.read()
+    @categories = JSON(content)
+    
+    friendly_mapping = {}
+    @categories.each do |category, components|
+      components.each do |key, value|
+        # multiple items map to "other" so skip it
+        if value != "other"
+          friendly_mapping[value] = key
+        end
+      end
+    end
+    
+    clean_venues = []
+    raw_place.types.each do |venue|
+      # skip other as no value in showing "other" to user. WTF does "other" mean?
+      if venue != "other"
+        if friendly_mapping.has_key?(venue)
+          clean_venues.push(friendly_mapping[venue])
+        else
+          pieces = venue.split("_")
+          new_pieces = []
+          pieces.each do |piece|
+            new_pieces.push(piece.capitalize)
+          end
+          clean_venues.push(new_pieces.join(" "))
+        end
+      end
+    end
+    
+    place.venue_types = clean_venues
+    
     place.place_type = "GOOGLE_PLACE"
 
     return place
@@ -170,7 +203,24 @@ class Place
   def self.new_from_user_input( old_place, radius=10 )
     gp = GooglePlaces.new
     
-    raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, old_place.venue_types[0])
+    # TODO This is hacky and ignores i18n
+    file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
+    content = file.read()
+    @categories = JSON(content)
+    
+    google_mapping = {}
+    @categories.each do |category, components|
+      components.each do |key, value|
+        google_mapping[key] = value
+      end
+    end
+    
+    venue_type = google_mapping[old_place.venue_types[0]]
+    
+    puts "venue type is:"
+    puts venue_type
+    
+    raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, venue_type)
     
     grg = GoogleReverseGeocode.new
     
@@ -223,7 +273,7 @@ class Place
     
     return place
   end
-
+  
   def as_json(options={})
     attributes = self.attributes.merge(:tags => self.tags)
     attributes.delete(:google_ref)

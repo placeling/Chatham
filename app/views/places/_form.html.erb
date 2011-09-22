@@ -36,7 +36,7 @@
       <h3><a href="#"><%= category %></a></h3>
       <div>
         <% @categories[category].keys().sort.each do |friendly_term|%>
-          <p><input class="radio" type="radio" name="place[venue_types][]" value="<%= @categories[category][friendly_term] %>"/><span class="radio_text"><%= friendly_term %></span></p>
+          <p><input class="radio" type="checkbox" name="place[venue_types][]" value="<%= friendly_term %>"/><span class="radio_text"><%= friendly_term %></span></p>
         <% end %>
       </div>
     <% end %>  
