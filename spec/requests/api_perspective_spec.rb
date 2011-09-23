@@ -25,9 +25,6 @@ describe "API - Perspective" do
 
   it "JSON call should state whether it has been starred" do
       user = Factory.create(:user)
-      perspective = Factory.create(:perspective)
-      
-      user = Factory.create(:user)
       place = Factory.create(:place)
       perspective = Factory.create(:perspective, :place =>place)
       user.star( perspective )

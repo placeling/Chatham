@@ -8,9 +8,6 @@ class Place
   
   before_validation :fix_location
   
-  validates :name, :venue_types, :presence => true
-  validates_uniqueness_of :gid
-  
   field :loc, :as => :location, :type => Array
   field :name, :type => String
   field :gid, :as => :google_id, :type => String
@@ -32,6 +29,9 @@ class Place
   has_many :perspectives, :foreign_key => 'plid'
   belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
   belongs_to  :user #not really that significant
+
+  validates_uniqueness_of :google_id, :allow_nil =>true
+  validates :name, :venue_types, :presence => true
 
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :ptg, :background => true
