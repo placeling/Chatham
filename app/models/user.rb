@@ -46,6 +46,7 @@ class User
   index :pc
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :fp, :background => true
+  index :facebook_id
 
 
   def self.top_users( top_n )
@@ -54,6 +55,10 @@ class User
 
   def self.find_by_username( username )
     self.where( :username => username ).first
+  end
+
+  def self.find_by_facebook_id( fid )
+    self.where( :facebook_id => fid ).first
   end
 
   def remove_tokens_for( client_application )

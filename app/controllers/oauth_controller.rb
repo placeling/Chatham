@@ -2,6 +2,31 @@ require 'oauth/controllers/provider_controller'
 class OauthController < ApplicationController
   include OAuth::Controllers::ProviderController
 
+
+  def login_fb
+    return unless params[:format] == :json
+    fb_token = params["FBAccessTokenKey"]
+    fbid = params["FBId"].to_i
+
+    user = User.find_by_facebook_id( fbid )
+
+    if user
+      #tokens match, authenticated user
+      # get rid of old auth tokens
+      user.remove_tokens_for( current_client_application )
+
+      request_token = current_client_application.create_request_token
+      request_token.authorize!( user )
+      request_token.provided_oauth_verifier = request_token.verifier
+      access_token = request_token.exchange!
+      render :text => access_token.to_query + "&username=#{user.username}"
+
+    else
+      render :text => "false"
+    end
+
+  end
+
   def access_token_with_xauth_test
 
     if current_client_application.nil?
