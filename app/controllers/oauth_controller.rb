@@ -5,6 +5,7 @@ class OauthController < ApplicationController
 
   def login_fb
     return unless params[:format] == :json
+    return unless current_client_application.secret == "kODuCtHsB0poBe62J3FfWB2rCEUeyeYQkEWW0R6i"
     fb_token = params["FBAccessTokenKey"]
     fbid = params["FBId"].to_i
 
