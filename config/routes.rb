@@ -24,6 +24,7 @@ Chatham::Application.routes.draw do
       get :following
       post :follow
       post :unfollow
+      get :activity
     end
     collection do
       get :suggested
@@ -78,6 +79,7 @@ Chatham::Application.routes.draw do
         get :following
         post :follow
         post :unfollow
+        get :activity
       end
       collection do
         get :suggested
