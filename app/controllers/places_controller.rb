@@ -134,7 +134,6 @@ class PlacesController < ApplicationController
         @place.save
       end
     else
-      puts "I'm in user-created path"
       @place = Place.new(params[:place])
       if @place.valid?
         @place = Place.new_from_user_input(@place)

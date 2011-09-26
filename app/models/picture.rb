@@ -2,11 +2,12 @@ class Picture
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  attr_accessible :image, :title
+
   field :title, :type => String
   mount_uploader :image, PictureUploader
-
+  
   embedded_in :perspective
-
 
   def as_json(options={})
     attributes = self.attributes

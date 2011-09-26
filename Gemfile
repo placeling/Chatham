@@ -42,6 +42,8 @@ gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
 gem 'factory_girl_rails', "~> 1.1.rc1"
 gem "database_cleaner"
 
+gem 'nested_form'
+
 group :test, :development do
 
 end
