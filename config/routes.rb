@@ -26,7 +26,7 @@ Chatham::Application.routes.draw do
       post :unfollow
     end
     collection do
-      get :suggested
+      post :suggested
     end
   end
 
@@ -80,7 +80,7 @@ Chatham::Application.routes.draw do
         post :unfollow
       end
       collection do
-        get :suggested
+        post :suggested
       end
     end
 
