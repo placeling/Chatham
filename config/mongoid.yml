@@ -19,6 +19,7 @@ staging:
 # set these environment variables on your prod server
 production:
   host: localhost
+  database: chatham_production
   raise_not_found_error: false
   #   - host: slave1.local
   #     port: 27018
