@@ -4,6 +4,7 @@ class PerspectivesController < ApplicationController
   def new
     @place = Place.find(params[:place_id])
     @perspective = Perspective.new
+    @perspective.pictures.build
     
     respond_to do |format|
       format.html
@@ -40,6 +41,11 @@ class PerspectivesController < ApplicationController
       if @perspective.errors.length > 0
         render :action => "new"
       else
+        @perspective.pictures.each do |picture|
+          picture.save
+        end
+        
+        
         if @perspective.save
           respond_to do |format|
             format.html {redirect_to place_path(@place)}

@@ -44,12 +44,11 @@ class PictureUploader < CarrierWave::Uploader::Base
    version :main do
      process :resize_to_fit => [960, 960]
    end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  # def extension_white_list
-  #   %w(jpg jpeg gif png)
-  # end
+   
+   # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
+   def extension_white_list
+     %w(jpg jpeg gif png)
+   end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

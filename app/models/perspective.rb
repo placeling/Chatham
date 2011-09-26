@@ -20,11 +20,11 @@ class Perspective
   belongs_to :client_application
 
   embeds_many :pictures
+  accepts_nested_attributes_for :pictures, :allow_destroy => true
 
   index [[ :ploc, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :tags, :background => true
-
 
   validates_associated :place
   validates_associated :user
@@ -57,7 +57,13 @@ class Perspective
     self.place.save!
     self.user.save!
   end
-
+  
+  def picture_details=(picture_details)
+    picture_details.each do |picture|
+      pictures.build(picture)
+    end
+  end
+  
   def get_place_location
     self.place_location = self.place.location
   end
