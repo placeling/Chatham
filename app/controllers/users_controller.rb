@@ -115,4 +115,17 @@ class UsersController < ApplicationController
     end
   end
 
+
+  def activity
+    @user = User.find_by_username( params[:id] )
+
+    @activities = @user.activity_feed.activities
+
+    respond_to do |format|
+      format.json { render :json => {:user_feed => @activities.as_json() } }
+      format.html
+    end
+
+  end
+
 end
