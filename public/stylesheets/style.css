@@ -766,7 +766,7 @@ div#placemainmenu li li:hover ul
     padding: 10px;
 }
 
-#username {
+.entry_field {
     width: 100%;
     border: 1px solid #CCCCCC;
     border-radius: 5px 5px 5px 5px;

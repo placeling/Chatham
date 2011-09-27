@@ -3,8 +3,8 @@
     <h1><%= t'place.search_name' %></h1>
     <%= form_tag({:controller => "places", :action => "search"}, :method => "get") do %>
       <%= text_field_tag(:query, @query) %>
-      <%= hidden_field_tag(:lat, @user.loc[0]) %>
-      <%= hidden_field_tag(:long, @user.loc[1]) %>
+      <%= hidden_field_tag(:lat, 49.282049) %>
+      <%= hidden_field_tag(:long, -123.107772) %>
       <%= submit_tag("search", :class => "button") %>
     <% end %>
   </div>

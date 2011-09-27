@@ -14,11 +14,11 @@
     var crosshairShape = {coords:[0,0,0,0],type:'rect'};
     var default_lat = $("#lat").val();
     if (isNaN(default_lat)) {
-      default_lat = <%= current_user.location[0] %>;
+      default_lat = <%= 49.282049 %>;
     }
     var default_lng = $("#lng").val();
     if (isNaN(default_lng)) {
-      default_lng = <%= current_user.location[1] %>;
+      default_lng = <%= -123.107772 %>;
     }
     var latlng = new google.maps.LatLng(default_lat, default_lng);
     var myOptions = {
@@ -31,7 +31,7 @@
     var map = new google.maps.Map(document.getElementById("map"), myOptions);
     var marker = new google.maps.Marker({
       map: map,
-      icon: 'http://www.daftlogic.com/images/cross-hairs.gif',
+      icon: '/images/cross-hairs.gif',
       shape: crosshairShape
     });
     marker.bindTo('position', map, 'center');

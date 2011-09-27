@@ -138,6 +138,7 @@ en:
     edit: "Edit Perspective"
     memo: "Your notes about this place"
     user: "Enter the username you want to attach this perspective to"
+    url: "Add a website"
 
 
   errors:
