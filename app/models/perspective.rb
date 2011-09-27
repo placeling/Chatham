@@ -10,7 +10,8 @@ class Perspective
   field :ploc, :as =>:place_location,    :type => Array #for easier indexing
   field :tags,    :type => Array
   field :fav_count, :type => Integer, :default =>0
-
+  field :url,       :type => String
+    
   #these are meant for internal use, not immediately visible to user -iMack
   field :loc, :as => :location,    :type => Array
   field :accuracy,      :type => Float
@@ -28,6 +29,9 @@ class Perspective
 
   validates_associated :place
   validates_associated :user
+
+  validates :url, :format => { :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix,
+      :message => "Invalid URL" }
 
   before_validation :fix_location
   before_save :get_place_location

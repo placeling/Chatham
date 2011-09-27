@@ -18,9 +18,9 @@
       <p class="standout"><%= t'perspective.user' %></p>
       <p>
       <% if @perspective.user.nil? %>
-        <input id="username" name="username" type="text"/>
+        <input id="username" class="entry_field" name="username" type="text"/>
       <% else %>
-        <%= text_field_tag(:username, @perspective.user.username)%>
+        <%= text_field_tag(:username, @perspective.user.username, {:class => "entry_field"})%>
       <% end %>
       </p>
     </div>
@@ -29,6 +29,11 @@
   <div>
     <p class="standout"><%= t'perspective.memo' %></p>
     <%= f.text_area(:memo) %>
+  </div>
+  
+  <div>
+    <p class="standout"><%= t'perspective.url' %></p>
+    <%= f.text_field(:url, {:class => "entry_field"}) %>
   </div>
   
   <div>
