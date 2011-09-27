@@ -3,6 +3,7 @@ development:
   database: chatham_development
   autocreate_indexes: true
   raise_not_found_error: false
+  allow_dynamic_fields: false
 
 
 test:
@@ -10,6 +11,7 @@ test:
   database: chatham_test
   autocreate_indexes: true
   raise_not_found_error: false
+  allow_dynamic_fields: false
 
 staging:
   host: localhost

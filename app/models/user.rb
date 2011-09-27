@@ -6,7 +6,6 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-
   field :username,      :type =>String
   field :fullname,      :type =>String
   alias :login :username
@@ -33,6 +32,8 @@ class User
 
   has_many :client_applications, :foreign_key =>'uid'
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application], :foreign_key =>'uid'
+
+  embeds_one :activity_feed
 
   validates_presence_of :username
   validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
@@ -93,8 +94,11 @@ class User
     if user_perspective.nil?
       user_perspective= place.perspectives.build()
       user_perspective.user = self
+      user_perspective.skip_feed = true
       user_perspective.save
     end
+
+    ActivityFeed.add_star_perspective(self, perspective.user, perspective)
 
   end
 
@@ -110,11 +114,26 @@ class User
   def follow( other_user )
     other_user.followers << self
     self.following << other_user
+    ActivityFeed.add_follow( self, other_user)
   end
 
   def unfollow( other_user )
     other_user.followers.delete self
     self.following.delete other_user
+  end
+
+  def build_activity
+    if !self.activity_feed
+      self.create_activity_feed
+    end
+
+    chunk = self.activity_feed.head_chunk
+
+    activity = chunk.activities.build
+    activity.actor1 = self.id
+    activity.username1 = self.username
+
+    return activity
   end
 
 

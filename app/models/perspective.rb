@@ -35,12 +35,24 @@ class Perspective
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
   after_create :check_in
+  after_create :notify_feed_create
+  after_update :notify_feed_update
+
+  attr_accessor :skip_feed
   
   def check_in
     if self.place.google_id:
       gp = GooglePlaces.new
       output = gp.check_in(self.place.google_id)
     end
+  end
+
+  def notify_feed_create
+    ActivityFeed.add_new_perspective(self.user, self) unless self.skip_feed
+  end
+
+  def notify_feed_update
+    ActivityFeed.add_update_perspective(self.user, self) unless self.skip_feed
   end
 
   def empty_perspective?
