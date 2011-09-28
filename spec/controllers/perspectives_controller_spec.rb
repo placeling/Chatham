@@ -7,7 +7,7 @@ describe PerspectivesController do
     user = Factory.create(:user)
     picture = Factory.build(:picture)
     perspective = Factory.create(:perspective, :user =>user)
-    perspective.pictures << picture
+    picture = perspective.pictures.build
     picture.save
 
     get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
