@@ -17,7 +17,7 @@ class Picture
   validates_presence_of :creation_environment, :on => :create
 
   def set_creation_environment
-    self.creation_environment = Rails.env
+    self.creation_environment = Rails.env unless !self.creation_environment.nil?
   end
 
   def cache_urls
@@ -57,6 +57,10 @@ class Picture
     attributes = attributes.merge(:thumb_url => self.thumb_url,
                                     :iphone_url => self.iphone_url,
                                     :main_url => self.main_url)
+    attributes.delete('creation_environment')
+    attributes.delete('thumb_cache_url')
+    attributes.delete('iphone_cache_url')
+    attributes.delete('main_cache_url')
 
     if options[:current_user] && options[:current_user].id == self.perspective[:uid]
       attributes = attributes.merge(:mine => true)
