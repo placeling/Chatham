@@ -9,6 +9,8 @@ gem 'rails', '3.0.3'
 gem "jquery-rails"
 
 gem "mongoid", "~> 2.0"
+gem "mongoid_rails_migrations", "~> 0.0.13"
+
 gem "bson_ext", "~> 1.3"
 
 gem "oauth", ">= 0.4.4"
