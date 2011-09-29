@@ -80,13 +80,17 @@ class PerspectivesController < ApplicationController
 
   end
 
-  def show
+   def show
+     #returns the place page (or json) for perspectives' host
     @perspective = Perspective.find( params[:id] )
+    @place = @perspective.place
+
+    @referring_user = @perspective.user
 
     respond_to do |format|
-      format.json { render :json =>@perspective.as_json(:current_user => current_user, :detail_view => true) }
+      format.html
+      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
     end
-
   end
 
   def all
