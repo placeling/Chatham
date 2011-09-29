@@ -1,13 +1,12 @@
 class DestroyEmptyPhotos < Mongoid::Migration
   def self.up
     for perspective in Perspective.all
-      if perspective.pictures
         for picture in perspective.pictures
           if picture.main_cache_url.nil?
-            picture.destroy
+            perspective.pictures.where( :id =>picture.id ).delete_all
+            puts "destroying #{picture.id} on perspective for #{perspective.place.name}"
           end
         end
-      end
     end
   end
 
