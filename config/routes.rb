@@ -68,8 +68,9 @@ Chatham::Application.routes.draw do
 
   #setting up the api routes
   scope 'v1', :api_call => true, :format => :json do
-    get "admin/terms_of_service", :to => 'admin#terms_of_service'
-    get "admin/privacy_policy", :to => 'admin#privacy_policy'
+    get "/feeds/home_timeline",  :to => "home#home_timeline"
+    get "/admin/terms_of_service", :to => 'admin#terms_of_service'
+    get "/admin/privacy_policy", :to => 'admin#privacy_policy'
     post '/oauth/login_fb',      :to => 'oauth#login_fb',      :as => :login_fb
 
     resources :users do
