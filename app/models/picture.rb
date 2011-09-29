@@ -1,5 +1,6 @@
 class Picture
   include Mongoid::Document
+  include Mongoid::Paranoia
   include Mongoid::Timestamps
 
   field :creation_environment, :type => String
