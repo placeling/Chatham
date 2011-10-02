@@ -4,13 +4,6 @@ require 'google_places'
 describe PlacesController do
   include Devise::TestHelpers
 
-  describe "GET 'places'" do
-    it "should be successful" do
-      get :index
-      response.should be_success
-    end
-  end
-
   describe "GET 'search'" do
     render_views
     before(:each) do
