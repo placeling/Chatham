@@ -1,5 +1,6 @@
 Chatham::Application.routes.draw do
 
+  get "/feeds/home_timeline",  :to => "home#home_timeline",   :as => :home_feed
   get "admin/terms_of_service", :as => :terms_of_service
   get "admin/privacy_policy", :as => :privacy_policy
   get "admin/about_us", :as => :about_us

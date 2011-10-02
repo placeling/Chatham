@@ -105,7 +105,7 @@ class ActivityFeed
         chunk = chunk.next
       else
         activities = activities + chunk.activities.order_by([[:created_at, :desc]])[j..(start+n -i)]
-        i = i + (chunk.activities.count -j)
+        i = i - j + chunk.activities.count
       end
     end
 
