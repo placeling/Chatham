@@ -15,7 +15,7 @@ describe PlacesController do
     render_views
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      @user = Factory.create(:admin)
+      @user = Factory.create(:user)
       sign_in @user
     end
 
@@ -24,6 +24,21 @@ describe PlacesController do
       response.should be_success
     end
   end
+
+  describe "GET 'new'" do
+    render_views
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @user = Factory.create(:admin)
+      sign_in @user
+    end
+
+    it "should be successful" do
+      get :new
+      response.should be_success
+    end
+  end
+
 
 
   it "gets nearby places for co-ordinate" do
