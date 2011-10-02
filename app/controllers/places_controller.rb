@@ -103,10 +103,6 @@ class PlacesController < ApplicationController
       format.html
     end
   end
-  
-  def index
-    @places = Place.find :all #, :conditions => 'oauth_tokens.invalidated_at is null and oauth_tokens.authorized_at is not null'
-  end
 
   def new
     @place = Place.new
