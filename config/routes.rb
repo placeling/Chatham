@@ -43,13 +43,11 @@ Chatham::Application.routes.draw do
   end
 
   resources :places, :except =>[:index] do
-    member do
-      get :suggested
-    end
     collection do
       get :nearby
       get :random
       get :search
+      get :suggested
     end
     resources :perspectives, :except =>[:show, :index]  do
       collection do
@@ -102,10 +100,8 @@ Chatham::Application.routes.draw do
     end
 
     resources :places, :except =>[:index] do
-      member do
-        get :suggested
-      end
       collection do
+        get :suggested
         get :nearby
         get :random
       end
