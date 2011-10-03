@@ -29,14 +29,16 @@ class ActivityFeed
   end
 
   def self.add_update_perspective(actor1, perspective)
-    activity = actor1.build_activity
+    if perspective.updated_at < 1.day.ago
+      activity = actor1.build_activity
 
-    activity.activity_type = "UPDATE_PERSPECTIVE"
+      activity.activity_type = "UPDATE_PERSPECTIVE"
 
-    activity.subject = perspective.id
-    activity.subject_title = perspective.place.name
+      activity.subject = perspective.id
+      activity.subject_title = perspective.place.name
 
-    activity.save
+      activity.save
+    end
   end
 
   def self.add_star_perspective(actor1, actor2, perspective)
