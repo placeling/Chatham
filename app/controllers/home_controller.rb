@@ -28,6 +28,7 @@ class HomeController < ApplicationController
 
     @activities.sort! { |a,b| a.created_at <=> b.created_at }
     @activities.reverse!
+    @activities = @activities[0..10]
 
     respond_to do |format|
       format.json { render :json => {:home_feed => @activities.as_json() } }
