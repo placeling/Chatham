@@ -11,15 +11,13 @@ class UsersController < ApplicationController
                     :password =>params[:password],
                     :confirmation_password =>params[:password])
 
-    user.facebook_access_token = params[:facebook_access_token]
-
     lat = params[:lat].to_f
     long = params[:long].to_f
     user.location = [lat, long]
 
-    if (params[:fbDict])
-      user[:fbDict] = params[:fbDict]
-      user.facebook_id = params[:fbDict][:id].to_i
+    if (params[:facebook_access_token])
+      user.facebook_access_token = params[:facebook_access_token]
+      user.facebook_id = params[:facebook_id].to_i
     end
 
     if user.save
