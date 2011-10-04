@@ -251,7 +251,7 @@ class PotentialPerspectivesController < ApplicationController
     @potential_perspective.destroy
 
     respond_to do |format|
-      format.html { redirect_to(potential_perspectives_path(@potential_perspective.user)) }
+      format.html { redirect_to(user_potential_perspectives_path(@potential_perspective.user)) }
     end
   end
 end
