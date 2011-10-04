@@ -30,6 +30,8 @@ class Place
   belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
   belongs_to  :user #not really that significant
 
+  attr_accessor :users_bookmarking #transient property, shows people following
+
   validates_uniqueness_of :google_id, :allow_nil =>true
   validates :name, :venue_types, :presence => true
 

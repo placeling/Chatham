@@ -3,6 +3,41 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "GET suggested places" do
+
+    it "(unfiltered) based on following" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user)
+      user3 = Factory.create(:user)
+      user4 = Factory.create(:user) #control user
+
+      user.follow( user2 )
+      user.follow( user3 )
+
+      place = Factory.create(:lib_square)
+      place2 = Factory.create(:new_place)
+      place3 = Factory.create(:place)
+
+      perspective = Factory.create(:perspective, :memo=>"one", :place =>place, :user =>user2)
+      perspective2 = Factory.create(:perspective, :memo=>"two", :place =>place, :user =>user3)
+      perspective3 = Factory.create(:perspective, :memo=>"three", :place =>place2, :user =>user3)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get suggested_places_path, {
+        :format => 'json',
+        :lat => '49.282049',
+        :lng => '-123.107772'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+      showPlace['suggested_places'].count.should == 2
+
+    end
+  end
+
   describe "Place perspectives" do
     it "can all be shown" do
       user = Factory.create(:user)

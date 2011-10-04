@@ -43,7 +43,20 @@ class Perspective
   before_update :notify_feed_update
 
   attr_accessor :skip_feed
-  
+
+  def self.find_all_near_for_following(lat, long, user)
+    span = 0.01 #params[:span].to_f #needs to be > 0
+
+    n = CHATHAM_CONFIG['max_returned_map']
+
+    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
+    Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
+        and(:uid.in => user[:following_ids]).
+        limit( n )
+
+  end
+
+
   def check_in
     if self.place.google_id:
       gp = GooglePlaces.new
