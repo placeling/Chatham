@@ -56,10 +56,10 @@ describe ActivityFeed do
 
     activity_feed = user.activity_feed
 
-    activity_feed.activities.count.should == 2
+    activity_feed.activities.count.should == 1 #don't show update within' 1 day
     activity = activity_feed.activities.first
 
-    activity.activity_type.should == "UPDATE_PERSPECTIVE"
+    activity.activity_type.should == "NEW_PERSPECTIVE"
     activity.actor1.should == user.id
     activity.username1.should == user.username
     activity.subject.should == perspective.id

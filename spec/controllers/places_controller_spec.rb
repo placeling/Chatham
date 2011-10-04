@@ -2,13 +2,36 @@ require 'spec_helper'
 require 'google_places'
 
 describe PlacesController do
+  include Devise::TestHelpers
 
-  describe "GET 'places'" do
+  describe "GET 'search'" do
+    render_views
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @user = Factory.create(:user)
+      sign_in @user
+    end
+
     it "should be successful" do
-      get :index
+      get :search
       response.should be_success
     end
   end
+
+  describe "GET 'new'" do
+    render_views
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @user = Factory.create(:admin)
+      sign_in @user
+    end
+
+    it "should be successful" do
+      get :new
+      response.should be_success
+    end
+  end
+
 
 
   it "gets nearby places for co-ordinate" do

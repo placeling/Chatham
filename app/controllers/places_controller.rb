@@ -3,7 +3,7 @@ require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]
-  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
+  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search, :suggested]
 
   def nearby
     lat = params[:lat].to_f
@@ -103,10 +103,6 @@ class PlacesController < ApplicationController
       format.html
     end
   end
-  
-  def index
-    @places = Place.find :all #, :conditions => 'oauth_tokens.invalidated_at is null and oauth_tokens.authorized_at is not null'
-  end
 
   def new
     @place = Place.new
@@ -119,6 +115,35 @@ class PlacesController < ApplicationController
       format.html
     end
   end
+
+  def suggested
+    #doesn't actually return perspectives, just places for given perspectives
+    lat = params[:lat].to_f
+    lng = params[:lng].to_f
+
+    @perspectives = Perspective.find_all_near_for_following(lat, lng, current_user)
+
+    @places_dict = {}
+
+    for perspective in @perspectives
+      place = perspective.place
+      if @places_dict.has_key?(place.id)
+        place = @places_dict[place.id]
+        place.users_bookmarking << perspective.user.username
+      else
+        place.users_bookmarking =  [perspective.user.username]
+        @places_dict[place.id] = place
+      end
+    end
+
+    @places = @places_dict.values
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {:suggested_places => @places} }
+    end
+  end
+
 
   def create
     return unless (params[:format] == :json or params[:format] == 'json' or current_user.is_admin? == true)

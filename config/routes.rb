@@ -1,5 +1,6 @@
 Chatham::Application.routes.draw do
 
+  get "/feeds/home_timeline",  :to => "home#home_timeline",   :as => :home_feed
   get "admin/terms_of_service", :as => :terms_of_service
   get "admin/privacy_policy", :as => :privacy_policy
   get "admin/about_us", :as => :about_us
@@ -47,11 +48,12 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :places do
+  resources :places, :except =>[:index] do
     collection do
       get :nearby
       get :random
       get :search
+      get :suggested
     end
     resources :perspectives, :except =>[:show, :index]  do
       collection do
@@ -74,8 +76,9 @@ Chatham::Application.routes.draw do
 
   #setting up the api routes
   scope 'v1', :api_call => true, :format => :json do
-    get "admin/terms_of_service", :to => 'admin#terms_of_service'
-    get "admin/privacy_policy", :to => 'admin#privacy_policy'
+    get "/feeds/home_timeline",  :to => "home#home_timeline"
+    get "/admin/terms_of_service", :to => 'admin#terms_of_service'
+    get "/admin/privacy_policy", :to => 'admin#privacy_policy'
     post '/oauth/login_fb',      :to => 'oauth#login_fb',      :as => :login_fb
 
     resources :users do
@@ -102,8 +105,9 @@ Chatham::Application.routes.draw do
       end
     end
 
-    resources :places do
+    resources :places, :except =>[:index] do
       collection do
+        get :suggested
         get :nearby
         get :random
       end
