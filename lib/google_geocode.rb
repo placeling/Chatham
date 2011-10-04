@@ -12,7 +12,6 @@ class GoogleGeocode
   def geocode(address_pieces)
     options = {
       :sensor => false,
-      #:address => u(address_pieces.join(","))
       :address => address_pieces.join(",")
     }
     

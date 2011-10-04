@@ -1,0 +1,132 @@
+<p id="notice"><%= notice %></p>
+
+<% if @red.length > 0 %>
+<div class="place_grouping">
+  <p class="heading"><%= t'potential_perspective.red' %></p>
+  <table class="locations">
+    <tr>
+      <th class="locations"></th>
+      <th class="locations"><%= t'potential_perspective.name' %></th>
+      <th class="locations"><%= t'potential_perspective.location' %></th>
+      <th class="locations"><%= t'potential_perspective.latlong' %></th>
+      <th class="locations"><%= t'potential_perspective.action' %></th>
+      <th class="locations"><%= t'potential_perspective.index_notes' %></th>
+      <th class="locations"><%= t'potential_perspective.index_url' %></th>
+    </tr>
+    <% @red.each do |entry| %>
+      <tr>
+        <td class="locations light"><%= image_tag("/images/admin/red_light.png") %></td>
+        <td class="locations place_name"><%= entry.name %></td>
+        <td class="locations unknown_address">
+          <% if entry.address %>
+            <p><%= entry.address %></p>
+          <% end %>
+          <% if entry.locality or entry.state_prov %>
+            <p>
+              <% # following is one line to remove whitespace that would otherwise appear before comma %>
+              <% if entry.locality %><%= entry.locality %><% end %><% if entry.state_prov %><% if entry.locality %>, <% end %><%= entry.state_prov %><% end %>
+            </p>
+          <% end%>
+          <% if entry.postal_code %>
+            <p><%= entry.postal_code %></p>
+          <% end %>
+          <% if entry.country %>
+            <p><%= entry.country %></p>
+          <% end %>
+        </td>
+        <td class="locations">
+          <% if entry.location[0] == 0.0 or entry.location[1] == 0.0 or entry.location.length == 0 %>
+            None
+          <% else %>
+            <%= entry.location[0] %>, <%= entry.location[1] %>
+          <% end %>
+        </td>
+        <td class="locations action"><%= link_to "Fix", edit_potential_perspective_path(entry) %></td>
+        <td class="locations"><%= simple_format(entry.notes) %></td>
+        <td class="locations"><% if entry.url %><a href="<%= entry.url %>"><%= t'potential_perspective.index_url' %></a><% end %></td>
+        <td class="locations remove"><%= link_to "Remove", potential_perspective_path(entry), {:confirm => "Are you sure you want to delete this?\n\nThere's no undo", :method => :delete} %></td>
+      </tr>
+    <% end %>
+  </table>
+  
+</div>
+<% end %>
+
+<% if @yellow.length > 0 %>
+<div class="place_grouping">
+  <p class="heading"><%= t'potential_perspective.yellow' %></p>
+  <table class="locations">
+    <tr class="locations">
+      <th class="locations"></th>
+      <th class="locations"><%= t'potential_perspective.name' %></th>
+      <th class="locations"><%= t'potential_perspective.location' %></th>
+      <th class="locations"><%= t'potential_perspective.action' %></th>
+      <th class="locations"><%= t'potential_perspective.index_notes' %></th>
+      <th class="locations"><%= t'potential_perspective.index_url' %></th>
+    </tr>
+    <% @yellow.each do |entry| %>
+      <tr>
+        <td class="locations light"><%= image_tag("/images/admin/yellow_light.png") %></td>
+        <td class="locations place_name"><%= entry.name %></td>
+        <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
+        <td class="locations action"><%= link_to "Fix", edit_potential_perspective_path(entry) %></td>
+        <td class="locations"><%= simple_format(entry.notes) %></td>
+        <td class="locations"><% if entry.url %><a href="<%= entry.url %>"><%= t'potential_perspective.index_url' %></a><% end %></td>
+        <td class="locations remove"><%= link_to "Remove", potential_perspective_path(entry), {:confirm => "Are you sure you want to delete this?\n\nThere's no undo", :method => :delete} %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>
+
+<% if @green.length > 0 %>
+<div class="place_grouping">
+  <p class="heading"><%= t'potential_perspective.green' %> <%= link_to "Process", {:controller => "potential_perspectives", :action => "potential_to_real"}, :confirm => "Process these?\nThere's no going back", :method => :post, :class => "process" %></p>
+  <table class="locations">
+    <tr class="locations">
+      <th class="locations"></th>
+      <th class="locations"><%= t'potential_perspective.name' %></th>
+      <th class="locations"><%= t'potential_perspective.location' %></th>
+      <th class="locations"><%= t'potential_perspective.action' %></th>
+      <th class="locations"><%= t'potential_perspective.index_notes' %></th>
+      <th class="locations"><%= t'potential_perspective.index_url' %></th>
+    </tr>
+    <% @green.each do |entry| %>
+      <tr class="locations">
+        <td class="locations light"><%= image_tag("/images/admin/green_light.png") %></td>
+        <td class="locations place_name"><%= entry.name %></td>
+        <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
+        <td class="locations action"><%= link_to "Edit", edit_potential_perspective_path(entry) %></td>
+        <td class="locations"><%= simple_format(entry.notes) %></td>
+        <td class="locations"><% if entry.url %><a href="<%= entry.url %>"><%= t'potential_perspective.index_url' %></a><% end %></td>
+        <td class="locations remove"><%= link_to "Remove", potential_perspective_path(entry), {:confirm => "Are you sure you want to delete this?\n\nThere's no undo", :method => :delete} %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>
+
+<% if @black.length > 0 %>
+<div class="place_grouping">
+  <p class="heading"><%= t'potential_perspective.black' %></p>
+  <table class="locations">
+    <tr class="locations">
+      <th class="locations"></th>
+      <th class="locations"><%= t'potential_perspective.name' %></th>
+      <th class="locations"><%= t'potential_perspective.location' %></th>
+      <th class="locations"><%= t'potential_perspective.index_notes' %></th>
+      <th class="locations"><%= t'potential_perspective.index_url' %></th>
+    </tr>
+    <% @black.each do |entry| %>
+      <tr class="locations">
+        <td class="locations light"><%= image_tag("/images/admin/black_light.png") %></td>
+        <td class="locations place_name"><%= entry.name %></td>
+        <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
+        <td class="locations"><%= simple_format(entry.notes) %></td>
+        <td class="locations"><% if entry.url %><a href="<%= entry.url %>"><%= t'potential_perspective.index_url' %></a><% end %></td>
+        <td class="locations remove"><%= link_to "Remove", potential_perspective_path(entry), {:confirm => "Are you sure you want to delete this?\n\nThere's no undo", :method => :delete} %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>

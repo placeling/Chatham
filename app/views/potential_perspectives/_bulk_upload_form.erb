@@ -1,0 +1,27 @@
+<%= nested_form_for(@potential_perspective, :url => {:action=>"create", :controller=>"potential_perspectives"}, :method => "post", :html => {:multipart=> true}) do |f|%>
+  <% if @potential_perspective.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@potential_perspective.errors.count, "error") %> <%= t'potential_perspective.error' %></h2>
+
+      <ul>
+      <% @potential_perspective.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <div id="username">
+      <p class="instruction"><%= t'potential_perspective.username' %></p>
+      <p><%= f.text_field :username, :class => "entry_field" %></p>
+    </div>
+    <div id="csv_file">
+      <p class="instruction"><%= t'potential_perspective.csv_file' %></p>
+      <p><%= file_field_tag :upload %></p>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => 'button', :value => 'create' %>   
+  </div>
+<% end %>

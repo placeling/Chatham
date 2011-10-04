@@ -45,6 +45,7 @@ gem 'factory_girl_rails', "~> 1.1.rc1"
 gem "database_cleaner"
 
 gem 'nested_form'
+gem 'fastercsv'
 
 group :test, :development do
 

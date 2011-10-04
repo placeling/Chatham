@@ -1,5 +1,5 @@
 <%= error_messages_for :client_application %>
-<%-# For infon on nested forms: http://railscasts.com/episodes/196-nested-model-form-part-1 %>
+<%-# For info on nested forms: http://railscasts.com/episodes/196-nested-model-form-part-1 %>
 <%= nested_form_for(@perspective, :url => {:controller => "perspectives", :action => "admin_create"}, :method => "post", :html => {:multipart=> true}) do |f|%>
   <% if @perspective.errors.any? %>
     <div id="error_explanation">

@@ -746,6 +746,118 @@ div#placemainmenu li li:hover ul
 	line-height:1.8em;
 }
 
+/* Bulk upload perspectives form
+=====================================================================*/
+#username {
+    margin:10px;
+    width: 500px;
+}
+
+#csv_file {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+/* Potential Perspectives
+=====================================================================*/
+.place_grouping {
+    width: 1000px;
+    margin: 10px;
+}
+
+.heading {
+    font-size: 24px;
+}
+
+.action_call {
+    font-size: 18px;
+}
+
+.action_call_info {
+    font-size: 14px;
+}
+
+.place_name {
+    font-size:36px;
+}
+
+table.locations
+{
+    border-collapse:collapse;
+    border: 1px solid black;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+th.locations {
+    border: 1px solid black;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+    background: #D1D1D1;
+}
+
+td.locations {
+    border: 1px solid black;
+    font-size: 14px;
+}
+
+.light {
+    width: 36px;
+}
+
+.image {
+    width: 200px;
+    background: #f1f1f0;
+}
+
+.remove {
+    width: 70px;
+}
+
+.action {
+    width: 70px;
+}
+
+.unknown_address {
+    width: 200px;
+}
+
+.new_place {
+    width: 450px;
+    margin-left: 480px;
+}
+
+.pick_existing {
+    width: 450px;
+    float:left;
+}
+
+li.existing {
+    padding: 5px;
+}
+
+li:nth-child(odd).existing { background:#FFC4F5 }
+
+.existing {
+    font-size: 18px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.instruction {
+    font-size: 18px;
+    padding: 5px;
+}
+
+.notes {
+    width: 800px;
+}
+
+.process {
+    font-size: 14px;
+}
+
 /* Perspective Form
 =====================================================================*/
 #place_info {

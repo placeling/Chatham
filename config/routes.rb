@@ -15,10 +15,14 @@ Chatham::Application.routes.draw do
   match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
   match '/oauth',               :to => 'oauth#index',         :as => :oauth
+  match '/bulkupload/new',      :to => 'potential_perspectives#new',  :via => :get
+  match '/bulkupload/new',      :to => 'potential_perspectives#create', :via => :post
+  match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
 
   resources :users do
     resources :perspectives, :only =>[:index]
+    resources :potential_perspectives, :only => [:index, :potential_to_real]
     member do
       get :followers
       get :following
@@ -30,7 +34,9 @@ Chatham::Application.routes.draw do
       get :suggested
     end
   end
-
+  
+  resources :potential_perspectives, :only => [:update, :edit, :destroy]
+  
   resources :perspectives, :only =>[:show]   do
     member do
       post :star
