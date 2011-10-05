@@ -272,6 +272,8 @@ class Place
   
   def as_json(options={})
     attributes = self.attributes.merge(:tags => self.tags)
+    attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
+
     attributes.delete(:google_ref)
     attributes.delete(:address_components)
     attributes.delete(:client_application_id)
