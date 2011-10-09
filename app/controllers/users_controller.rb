@@ -91,7 +91,7 @@ class UsersController < ApplicationController
     lat = params[:lat].to_f
     long = params[:long].to_f
 
-    @users = User.order_by([:created_at, :desc]).limit(10)
+    @users = User.order_by([:created_at, :desc]).limit(50)
 
     respond_to do |format|
       format.json { render :json=> {:suggested => @users.as_json({:current_user => current_user}) } }
