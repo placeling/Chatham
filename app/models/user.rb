@@ -6,26 +6,34 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  #before_validation :fix_location
+  after_create :cache_urls
+
   field :username,      :type =>String
   field :fullname,      :type =>String
   alias :login :username
   field :email,         :type =>String
   field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
-
   field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
 
-  field :description, :type => String
+  field :description, :type => String, :default => ""
   field :admin,       :type => Boolean, :default => false
 
+  field :url, :type => String, :default => ""
   field :facebook_access_token, :type => String
   field :facebook_id, :type => Integer
+
+  field :thumb_cache_url, :type => String
+  field :main_cache_url, :type => String
 
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
 
   field :fbDict, :type => Hash
+
+  mount_uploader :avatar, AvatarUploader
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
@@ -49,6 +57,37 @@ class User
   index :fp, :background => true
   index :facebook_id
 
+  def fix_location
+    #this is broken until we upgrade to rails 3.1
+    if self.location[0]
+      self.location[0] = number_with_precision(self.location[0], :precision => 2)
+    end
+    if self.location[1]
+      self.location[1] = number_with_precision(self.location[1], :precision => 2)
+    end
+  end
+
+  def cache_urls
+    self.thumb_cache_url = self.avatar_url(:thumb)
+    self.main_cache_url =  self.avatar_url(:main)
+    self.save
+  end
+
+  def thumb_url
+    if thumb_cache_url
+      return thumb_cache_url
+    else
+      return self.avatar_url(:thumb)
+    end
+  end
+
+  def main_url
+    if main_cache_url
+      return main_cache_url
+    else
+      return self.avatar_url(:main)
+    end
+  end
 
   def self.top_users( top_n )
     self.desc( :pc ).limit( top_n )
@@ -139,7 +178,10 @@ class User
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-    attributes = {:username => self['username'], :perspectives_count =>self['pc']}
+    attributes = {:username => self['username'],  :perspectives_count =>self['pc'],
+                  :url => self.url, :description => self.description,
+                  :thumb_url => thumb_url, :main_url => main_url }
+
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
 
     if options[:current_user]
@@ -147,7 +189,7 @@ class User
       #check against raw ids so it doesnt have to go back to db
       following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
       follows_you = self['following_ids'].include?( options[:current_user].id )
-      attributes = attributes.merge(:following => following, :follows_you => follows_you)
+      attributes = attributes.merge(:following => following, :follows_you => follows_you, :email => self.email, :location=>self[:loc])
     else
       current_user = nil
     end

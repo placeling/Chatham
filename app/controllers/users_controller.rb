@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :login_required, :only =>[:follow, :unfollow]
 
+  before_filter :login_required, :only =>[:update, :follow, :unfollow]
 
   def create
     return unless params[:format] == :json
@@ -52,6 +52,38 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
       format.html
+    end
+  end
+
+  def update
+    @user = User.find_by_username(params[:id])
+    return unless @user.id == current_user.id
+
+    #intentionally only takes one password (for now)
+    @user.description = params[:description]
+    @user.url = params[:url]
+    lat = params[:user_lat].to_f
+    lng = params[:user_lng].to_f
+    if lat and lng
+      @user.location = [lat, lng]
+    end
+
+    if params[:email] &&  params[:email] != @user.email
+      #update email logic coming soon
+    end
+
+    if params[:image]
+      @user.avatar = params[:image]
+    end
+
+    if @user.save
+      respond_to do |format|
+        format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:status => "fail", :message => @user.errors} }
+      end
     end
   end
 
