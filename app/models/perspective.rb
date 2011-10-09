@@ -45,13 +45,14 @@ class Perspective
   attr_accessor :skip_feed
 
   def self.find_all_near_for_following(lat, long, user)
-    span = 0.01 #params[:span].to_f #needs to be > 0
+    span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']
 
+    following_ids = user[:following_ids]
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        and(:uid.in => user[:following_ids]).
+        and(:uid.in => following_ids).
         limit( n )
 
   end
