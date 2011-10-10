@@ -14,7 +14,8 @@ class OauthController < ApplicationController
     if user #&& user.facebook_access_token == fb_token
       #tokens match, authenticated user
       # get rid of old auth tokens
-      user.remove_tokens_for( current_client_application )
+
+      #user.remove_tokens_for( current_client_application )
 
       request_token = current_client_application.create_request_token
       request_token.authorize!( user )
@@ -54,7 +55,7 @@ class OauthController < ApplicationController
       end
 
       # get rid of old auth tokens
-      user.remove_tokens_for( current_client_application )
+      #user.remove_tokens_for( current_client_application )
 
       request_token = current_client_application.create_request_token
       request_token.authorize!( user )
