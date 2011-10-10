@@ -110,7 +110,7 @@ class User
   end
 
   def following_perspectives_for_place( place )
-    place.perspectives.where(:uid.in => self.following_ids)
+    place.perspectives.where(:uid.in => self.following_ids).entries
   end
 
   def is_admin?

@@ -121,6 +121,7 @@ class PlacesController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
 
+
     @perspectives = Perspective.find_all_near_for_following(lat, lng, current_user)
 
     @places_dict = {}

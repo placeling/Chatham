@@ -68,7 +68,7 @@ class PerspectivesController < ApplicationController
     end
 
     @perspectives = current_user.following_perspectives_for_place( @place )
-    perspectives_count = @perspectives
+    perspectives_count = @perspectives.count
 
     for perspective in @perspectives
       @perspectives.delete( perspective ) unless !perspective.empty_perspective?

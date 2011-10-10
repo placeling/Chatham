@@ -289,7 +289,7 @@ class Place
         bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
         attributes = attributes.merge(:bookmarked => bookmarked)
 
-        attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:user_id.in => current_user.following_ids).count)
+        attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:uid.in => current_user.following_ids).count)
 
         @home_perspectives = [] #perspectives to be returned in detail view
         perspective = current_user.perspectives.where( :plid => self.id ).first
