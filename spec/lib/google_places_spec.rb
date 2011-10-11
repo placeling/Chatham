@@ -80,7 +80,7 @@ describe GooglePlaces do
     nearby.length.should == 0
   end
 
-  it "searches for a place; if found deletes it, creates/recreates it, confirms it's searchable, checks in and deletes it" do
+  it "searches for a place; if found deletes it, creates/recreates it, confirms it's searchable, checks in and deletes it" , :broken => true do
     growlab = Factory.create(:new_place)
     
     searcher = @gp.find_nearby(growlab.location[0], growlab.location[1], 10, growlab.name)
