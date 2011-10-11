@@ -55,12 +55,15 @@ class GooglePlaces
 
     options = {
       :location => location,
-      :radius => radius,
       :sensor => sensor
     }
 
     if !query.nil?
+      #override radius to something larger
       options[:name] = query
+      options[:radius] = 20000
+    else
+      options[:radius] = radius
     end
 
     results = mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
