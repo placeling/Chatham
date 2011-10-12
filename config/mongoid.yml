@@ -14,7 +14,7 @@ test:
   allow_dynamic_fields: false
 
 staging:
-  host: localhost
+  host: 10.170.90.180
   database: chatham_staging
   raise_not_found_error: false
 

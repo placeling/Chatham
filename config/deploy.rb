@@ -4,12 +4,18 @@ set :application, "chatham"
 set :repository,  "set your repository location here"
 
 task :production do
-  raise "MOFO YOU HAVENT SET UP PRODUCTION YET"
+  set :gateway, 'ubuntu@ec2-174-129-147-96.compute-1.amazonaws.com:11235'
+  server '10.209.115.58', :app, :web, :db, :primary => true
+  ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
+  set :user, 'ubuntu'
+  set :use_sudo, false
+  set :rails_env, "production"
 end
 
 task :staging do
-  server '204.232.211.183', :app, :web, :db, :primary => true
-  set :user, 'imack'
+  server 'ec2-50-18-132-90.us-west-1.compute.amazonaws.com', :app, :web, :db, :primary => true
+  ssh_options[:forward_agent] = true
+  set :user, 'ubuntu'
   set :port, '11235'
   set :use_sudo, false
   set :rails_env, "staging"
@@ -21,6 +27,7 @@ set :scm, "git"
 
 set :deploy_to, "/var/www/apps/#{application}"
 set :shared_directory, "#{deploy_to}/shared"
+set :deploy_via, :remote_cache
 
 namespace :deploy do
   task :start, :roles => :app do
