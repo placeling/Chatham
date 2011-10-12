@@ -30,6 +30,6 @@ namespace "db" do
     end
 
     # this is a little hacky, but works for now
-    puts `mongorestore -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_staging/`
+    puts `mongorestore -h #{db.host} -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_staging/`
   end
 end
