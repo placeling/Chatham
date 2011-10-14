@@ -120,7 +120,7 @@ class PlacesController < ApplicationController
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
-
+    query = params[:query]
 
     @perspectives = Perspective.find_all_near_for_following(lat, lng, current_user)
 
@@ -128,11 +128,16 @@ class PlacesController < ApplicationController
 
     for perspective in @perspectives
       place = perspective.place
+      if perspective.user.id == current_user.id
+        username = "You"
+      else
+        username =  perspective.user.username
+      end
       if @places_dict.has_key?(place.id)
         place = @places_dict[place.id]
-        place.users_bookmarking << perspective.user.username
+        place.users_bookmarking << username
       else
-        place.users_bookmarking =  [perspective.user.username]
+        place.users_bookmarking =  [username]
         @places_dict[place.id] = place
       end
     end
