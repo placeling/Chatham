@@ -23,14 +23,14 @@ namespace "db" do
 
     if file.nil? or file.mtime < 1.day.ago
       puts "getting new backup"
-      puts `scp staging:/chatham_backups/latest/mongodb-latest.tgz /tmp/mongodb-latest.tgz`
+      puts `scp -P 11235 ubuntu@beagle.placeling.com:/chatham_backups/latest/mongodb-latest.tgz /tmp/mongodb-latest.tgz`
       puts `rm -rf /tmp/MONGOBACKUP`
       puts `mkdir /tmp/MONGOBACKUP`
       puts `tar -C /tmp/MONGOBACKUP -xzvf /tmp/mongodb-latest.tgz`
     end
 
     # this is a little hacky, but works for now
-    puts `mongorestore -h #{db.connection.host} -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_staging/`
+    puts `mongorestore -h #{db.connection.host} -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_production/`
     Rake::Task["db:mongoid:create_indexes"].invoke
   end
 end

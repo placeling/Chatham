@@ -9,10 +9,10 @@ CarrierWave.configure do |config|
         :aws_secret_access_key  => 'BBHSxhEJK/JuwHNYWXwwjjVjV/R8cpBHlGAfHYS1'       # required
     }
 
-   if Rails.env.development?
-      config.fog_directory  = 'chatham-test'                     # required
+   if Rails.env.production?
+      config.fog_directory  = 'chatham-production'                     # required
    else
-      config.fog_directory  =  'chatham-production'                    # required
+      config.fog_directory  =  'chatham-test'                    # required
    end
 
 end
