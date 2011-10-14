@@ -31,5 +31,6 @@ namespace "db" do
 
     # this is a little hacky, but works for now
     puts `mongorestore -h #{db.connection.host} -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_staging/`
+    Rake::Task["db:mongoid:create_indexes"].invoke
   end
 end
