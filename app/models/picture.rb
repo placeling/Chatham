@@ -7,6 +7,8 @@ class Picture
   field :iphone_cache_url, :type => String
   field :main_cache_url, :type => String
 
+  field :deleted, :type =>Boolean, :default => false
+
   mount_uploader :image, PictureUploader
   
   embedded_in :perspective

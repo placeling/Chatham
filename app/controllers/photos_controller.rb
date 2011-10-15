@@ -35,7 +35,31 @@ class PhotosController < ApplicationController
 
   end
 
-  def delete
+  def destroy
+    #doesn't delete, just flags as deleted to be scooped up later
+        #this can also function as a "create", given that a user can only have one perspective for a place
+    if BSON::ObjectId.legal?( params['place_id'] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params['place_id'])
+    else
+      @place = Place.find_by_google_id( params['place_id'] )
+    end
+
+    @perspective= current_user.perspective_for_place( @place )
+    @picture = @perspective.pictures.find( params['id'] )
+
+    @picture.deleted = true;
+
+    if @picture.save
+      respond_to do |format|
+        format.json { render :json => {:status => 'done'} }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:status => 'fail'} }
+      end
+    end
+
   end
 
 end
