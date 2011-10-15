@@ -42,6 +42,7 @@ Chatham::Application.routes.draw do
     member do
       post :star
       post :unstar
+      post :flag
     end
     collection do
       get :nearby
@@ -99,6 +100,7 @@ Chatham::Application.routes.draw do
       member do
         post :star
         post :unstar
+        post :flag
       end
       collection do
         get :nearby

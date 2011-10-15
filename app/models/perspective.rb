@@ -11,9 +11,11 @@ class Perspective
   field :tags,    :type => Array
   field :fav_count, :type => Integer, :default =>0
   field :url,       :type => String
+  field :flag_count, :type => Integer, :default =>0
     
   #these are meant for internal use, not immediately visible to user -iMack
   field :loc, :as => :location,    :type => Array
+  field :flaggers, :type =>Array
   field :accuracy,      :type => Float
 
   belongs_to :place, :foreign_key => 'plid' #, :index =>true
@@ -54,7 +56,16 @@ class Perspective
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
         and(:uid.in => following_ids).
         limit( n )
+  end
 
+  def self.find_all_near(lat, long)
+    span = 0.02 #params[:span].to_f #needs to be > 0
+
+    n = CHATHAM_CONFIG['max_returned_map']
+
+    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
+    Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
+        limit( n )
   end
 
 
@@ -79,6 +90,17 @@ class Perspective
 
   def parse_tags
     self.tags = extract_hashtags( self.memo )
+  end
+
+  def flagme( user )
+    if self.flag_count >= 0
+      self.flag_count += 1
+    end
+
+    if self.flaggers.nil?
+      self.flaggers = []
+    end
+    self.flaggers << user.id
   end
 
   def reset_user_and_place_perspective_count

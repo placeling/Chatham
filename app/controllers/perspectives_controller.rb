@@ -113,6 +113,18 @@ class PerspectivesController < ApplicationController
     end
   end
 
+  def flag
+    @perspective = Perspective.find( params[:id] )
+
+    @perspective.flagme( current_user)
+
+    @perspective.save
+
+    respond_to do |format|
+      format.json { render :json =>{:result => "flagged"} }
+    end
+  end
+
   def star
     @perspective = Perspective.find( params[:id] )
 

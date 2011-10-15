@@ -2,6 +2,23 @@ require "spec_helper"
 
 describe "API - Perspective" do
 
+  it "can be flagged" do
+     user = Factory.create(:user)
+     user2 = Factory.create(:user)
+     perspective = Factory.create(:perspective, :user => user2)
+
+     post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+     post flag_perspective_path(perspective), {
+       :format => 'json'
+     }
+
+     response.status.should be(200)
+
+     perspective = Perspective.find( perspective.id )
+     perspective.flag_count.should == 1
+  end
+
   it "can be updated" do
      user = Factory.create(:user)
      perspective = Factory.create(:perspective, :user => user)
