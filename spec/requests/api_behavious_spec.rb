@@ -177,17 +177,6 @@ describe "API - " do
       perspectives[0].memo.should include("LIB SQUARE")
     end
 
-    it "by closest distance" do
-      get user_perspectives_path(@user), {:lat=>49.2642380, :long=>-123.1625990, :format => :json}
-      response.status.should be(200)
-
-      returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
-
-      perspectives = returned_data.perspectives
-      perspectives.count.should == 2
-      perspectives[1].memo.should include("LIB SQUARE")
-      perspectives[0].memo.should include("COSMIC")
-    end
   end
 
   describe "deleting perspectives" do

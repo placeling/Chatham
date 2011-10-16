@@ -46,6 +46,13 @@ class Perspective
 
   attr_accessor :skip_feed
 
+  def self.find_recent_for_user( user, start, count )
+    Perspective.where(:uid => user.id).
+        order_by( [:created_at, :desc] ).
+        skip( start ).
+        limit( count ).entries
+  end
+
   def self.find_all_near_for_following(lat, long, user)
     span = 0.02 #params[:span].to_f #needs to be > 0
 

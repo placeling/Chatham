@@ -23,7 +23,6 @@ describe Perspective do
   end
 
   it "should return the json strings associated with a photo" do
-
       user = Factory.create(:user, :email=>'tyler@placeling.com', :password=>'foofoo')
       perspective = Factory.create(:perspective, :user =>user)
       pic = Factory.build(:picture)
@@ -45,5 +44,17 @@ describe Perspective do
 
     perspective.tags.count.should == 3
     perspective.tags[1].should == "best"
+  end
+
+  it "can be found from a starting offset" do
+    user = Factory.create(:user)
+    perspective = Factory.create(:perspective, :user =>user, :memo => "#breakfast")
+    sleep(1)
+    Factory.create(:perspective, :user =>user, :memo => "#lunch")
+
+    perspectives = Perspective.find_recent_for_user( user, 1, 20 )
+
+    perspectives.count.should == 1
+    perspectives[0].id.should == perspective.id
   end
 end

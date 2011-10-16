@@ -152,19 +152,18 @@ class PerspectivesController < ApplicationController
 
   def index
     @user = User.find_by_username( params[:user_id] )
+    start_pos = params[:start]
+
+    count = 20
 
     if (params[:lat] && params[:long])
       location = [params[:lat].to_f, params[:long].to_f]
     end
 
+    @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
+
     respond_to do |format|
-      format.json {
-        if ( location )
-          render :json => @user.as_json({:current_user => current_user,:perspectives =>:location, :location => location})
-        else
-          render :json => @user.as_json({:current_user => current_user,:perspectives => :created_by})
-        end
-      }
+      format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }  }
       format.html
     end
   end
