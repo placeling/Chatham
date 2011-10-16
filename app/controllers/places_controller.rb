@@ -120,9 +120,13 @@ class PlacesController < ApplicationController
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
-    query = params[:query]
+    query = params[:query].downcase.strip
 
-    @perspectives = Perspective.find_all_near_for_following(lat, lng, current_user)
+    if query != nil and query != ""
+      @perspectives = Perspective.find_query_near_for_following(current_user, query, lat, lng)
+    else
+      @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+    end
 
     @places_dict = {}
 

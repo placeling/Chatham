@@ -53,7 +53,29 @@ class Perspective
         limit( count ).entries
   end
 
-  def self.find_all_near_for_following(lat, long, user)
+  def self.find_query_near_for_following(user, query, lat, long)
+    #span = 0.02 #params[:span].to_f #needs to be > 0
+
+    n = CHATHAM_CONFIG['max_returned_map']
+
+    tags =[]
+    for term in query.split
+      if term[0,1] == '#'
+        tags << term[1..-1]
+      else
+        tags << term
+      end
+    end
+
+    following_ids = user[:following_ids] << user.id
+
+    Perspective.any_in(:tags => tags ).
+        and(:ploc.near => [lat,long]).
+        and(:uid.in => following_ids).
+        limit( n ).entries
+  end
+
+  def self.find_all_near_for_following(user, lat, long)
     span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']
