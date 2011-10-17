@@ -152,7 +152,7 @@ class PerspectivesController < ApplicationController
 
   def index
     @user = User.find_by_username( params[:user_id] )
-    start_pos = params[:start]
+    start_pos = params[:start].to_i
 
     count = 20
 
