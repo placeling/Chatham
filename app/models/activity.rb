@@ -6,7 +6,8 @@ class Activity
 
   field :user1, :as => :actor1, :type => BSON::ObjectId
   field :username1, :type => String
-
+  field :thumb1, :type => String
+  
   field :user2, :as => :actor2, :type => BSON::ObjectId
   field :username2, :type => String
 

@@ -177,6 +177,7 @@ class User
     activity = chunk.activities.build
     activity.actor1 = self.id
     activity.username1 = self.username
+    activity.thumb1 = self.thumb_cache_url
 
     return activity
   end
