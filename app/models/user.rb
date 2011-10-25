@@ -94,9 +94,9 @@ class User
   end
 
   def self.top_nearby( lat, lng, top_n )
-    User.where(:loc.within => {"$center" => [[lat,lng],0.1]}).
+    User.where(:loc.within => {"$center" => [[lat,lng],0.3]}).
         desc( :pc ).
-        limit( top_n )
+        limit( top_n ).entries
   end
 
   def self.find_by_username( username )
