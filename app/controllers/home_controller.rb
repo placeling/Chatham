@@ -31,7 +31,7 @@ class HomeController < ApplicationController
     @activities = @activities[0..10]
 
     respond_to do |format|
-      format.json { render :json => {:home_feed => @activities.as_json() } }
+      format.json { render :json => {:home_feed => @activities.as_json(), :user =>current_user.as_json() } }
       format.html
     end
 
