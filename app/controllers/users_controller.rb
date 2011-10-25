@@ -89,9 +89,18 @@ class UsersController < ApplicationController
 
   def suggested
     lat = params[:lat].to_f
-    long = params[:long].to_f
+    lng = params[:lng].to_f
+    socialgraph = params[:socialgraph]
 
-    @users = User.order_by([:created_at, :desc]).limit(50)
+    if lng.nil? or lng == ""
+      lng = params[:long].to_f
+    end
+
+    if lng and lat
+      @users = User.top_nearby( lat, lng, top_n )
+    else
+      @users = User.order_by([:created_at, :desc]).limit(25)
+    end
 
     respond_to do |format|
       format.json { render :json=> {:suggested => @users.as_json({:current_user => current_user}) } }

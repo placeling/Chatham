@@ -93,6 +93,12 @@ class User
     self.desc( :pc ).limit( top_n )
   end
 
+  def self.top_nearby( lat, lng, top_n )
+    User.where(:loc.within => {"$center" => [[lat,lng],0.1]}).
+        desc( :pc ).
+        limit( top_n )
+  end
+
   def self.find_by_username( username )
     self.where( :username => username ).first
   end
