@@ -97,7 +97,7 @@ class UsersController < ApplicationController
     end
 
     if lng and lat
-      @users = User.top_nearby( lat, lng, top_n )
+      @users = User.top_nearby( lat, lng, 25 )
     else
       @users = User.order_by([:created_at, :desc]).limit(25)
     end
