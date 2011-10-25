@@ -27,7 +27,8 @@ describe "API - " do
       get suggested_places_path, {
         :format => 'json',
         :lat => '49.282049',
-        :lng => '-123.107772'
+        :lng => '-123.107772',
+        :socialgraph =>true
       }
 
       response.status.should be(200)

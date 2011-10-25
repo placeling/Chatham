@@ -3,7 +3,7 @@ require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]
-  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search, :suggested]
+  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
 
   def nearby
     lat = params[:lat].to_f
@@ -121,12 +121,18 @@ class PlacesController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
     query = params[:query]
+    socialgraph = params[:socialgraph]
 
-    if query != nil and query != ""
-      @perspectives = Perspective.find_query_near_for_following(current_user, query.downcase.strip, lat, lng)
+    if socialgraph and current_user
+      if query != nil and query != ""
+        @perspectives = Perspective.find_query_near_for_following(current_user, query.downcase.strip, lat, lng)
+      else
+        @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+      end
     else
-      @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+      @perspectives = []
     end
+
 
     @places_dict = {}
 

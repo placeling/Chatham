@@ -1,5 +1,5 @@
 class PerspectivesController < ApplicationController
-  before_filter :login_required, :except =>[:index, :show]
+  before_filter :login_required, :except =>[:index, :show, :nearby, :all]
 
   def new
     @place = Place.find(params[:place_id])

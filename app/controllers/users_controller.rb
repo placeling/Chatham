@@ -90,7 +90,6 @@ class UsersController < ApplicationController
   def suggested
     lat = params[:lat].to_f
     lng = params[:lng].to_f
-    socialgraph = params[:socialgraph]
 
     if lng.nil? or lng == 0
       lng = params[:long].to_f
