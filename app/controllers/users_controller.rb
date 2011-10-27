@@ -149,6 +149,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def index
+    follow_filter = params[:follow_filter]
+
+    if BSON::ObjectId.legal?( params[:place_id] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params[:place_id])
+    else
+      @place = Place.find_by_google_id( params[:place_id] )
+    end
+
+    @users = []
+
+    if !follow_filter
+      @perspectives = @place.perspectives
+    else
+      @perspectives = current_user.following_perspectives_for_place( @place )
+    end
+
+    for perspective in @perspectives
+      @users << perspective.user
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {:users => @users.as_json({:current_user => current_user}) } }
+    end
+  end
+
 
   def activity
     @user = User.find_by_username( params[:id] )

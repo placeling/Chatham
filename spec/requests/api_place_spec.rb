@@ -3,6 +3,54 @@ require 'json/ext'
 
 describe "API - " do
 
+
+  describe "GET users list who have bookmarked the place" do
+    it "for all users" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user)
+      user3 = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
+      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+
+      get place_users_path(place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      userlist = JSON.parse( response.body )
+      userlist['users'].count.should == 2
+    end
+
+    it "for followed users" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user)
+      user3 = Factory.create(:user)
+      place = Factory.create(:place)
+      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
+      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+      user.follow(user2)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get place_users_path(place), {
+        :format => 'json',
+          :follow_filter => true
+      }
+
+      response.status.should be(200)
+
+      userlist = JSON.parse( response.body )
+      userlist['users'].count.should == 1
+      userlist['users'][0]['username'].should == user2.username
+    end
+
+  end
+
   describe "GET suggested places" do
 
     it "(unfiltered) based on following" do

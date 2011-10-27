@@ -56,6 +56,7 @@ Chatham::Application.routes.draw do
       get :search
       get :suggested
     end
+    resources :users, :only =>[:index]
     resources :perspectives, :except =>[:show, :index]  do
       collection do
         resources :photos
@@ -113,6 +114,7 @@ Chatham::Application.routes.draw do
         get :nearby
         get :random
       end
+      resources :users, :only =>[:index]
       resources :perspectives, :except =>[:show] do
         collection do
           resources :photos
