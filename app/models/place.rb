@@ -283,38 +283,38 @@ class Place
     attributes[:google_id] = attributes.delete('gid')
     attributes[:perspective_count] = attributes.delete('pc')
 
+    if options[:current_user]
+      current_user = options[:current_user]
+      bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
+      attributes = attributes.merge(:bookmarked => bookmarked)
+
+      attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:uid.in => current_user.following_ids).count)
+
+      @home_perspectives = [] #perspectives to be returned in detail view
+      perspective = current_user.perspectives.where( :plid => self.id ).first
+      @home_perspectives << perspective unless perspective.nil?
+
+      @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
+      @home_perspectives.concat( @starred )
+
+      attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
+    end
+
+    if options[:referring_user]
+      referring_user = options[:referring_user]
+
+      @referring_perspectives = [] #perspectives to be returned in detail view
+
+      perspective = referring_user.perspectives.where( :plid => self.id ).first
+      @referring_perspectives << perspective unless perspective.nil?
+
+      @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
+      @referring_perspectives.concat( @starred )
+
+      attributes = attributes.merge( :referring_perspectives => @referring_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
+    end
+
     if options[:detail_view] == true
-      if options[:current_user]
-        current_user = options[:current_user]
-        bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
-        attributes = attributes.merge(:bookmarked => bookmarked)
-
-        attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:uid.in => current_user.following_ids).count)
-
-        @home_perspectives = [] #perspectives to be returned in detail view
-        perspective = current_user.perspectives.where( :plid => self.id ).first
-        @home_perspectives << perspective unless perspective.nil?
-
-        @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
-        @home_perspectives.concat( @starred )
-
-        attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
-      end
-
-      if options[:referring_user]
-        referring_user = options[:referring_user]
-
-        @referring_perspectives = [] #perspectives to be returned in detail view
-
-        perspective = referring_user.perspectives.where( :plid => self.id ).first
-        @referring_perspectives << perspective unless perspective.nil?
-
-        @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
-        @referring_perspectives.concat( @starred )
-
-        attributes = attributes.merge( :referring_perspectives => @referring_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
-      end
-
       attributes.merge(:user => user)
     else
       attributes

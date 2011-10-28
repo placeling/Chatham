@@ -247,7 +247,7 @@ class PerspectivesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => {:places => @places} }
+      format.json { render :json => {:places => @places.as_json({:current_user => current_user})} }
     end
 
   end
