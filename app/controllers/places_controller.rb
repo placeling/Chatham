@@ -7,12 +7,15 @@ class PlacesController < ApplicationController
 
   def nearby
     lat = params[:lat].to_f
-    long = params[:long].to_f
+    long = params[:lng].to_f
     radius = params[:accuracy].to_f
     gp = GooglePlaces.new
 
     query = params[:query]
 
+    if long.nil? || long == 0
+      long = params[:long].to_f
+    end
 
     if query && query != ""
       @places = gp.find_nearby(lat, long, radius, query)
@@ -37,7 +40,7 @@ class PlacesController < ApplicationController
 
   def random
     lat = params[:lat].to_f
-    long = params[:long].to_f
+    long = params[:lng].to_f
 
     @place = Place.find_random(lat, long)
 
