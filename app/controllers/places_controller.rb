@@ -133,10 +133,10 @@ class PlacesController < ApplicationController
     end
 
     #preprocess for query
-    if query != nil and query != ""
-      for category in CATEGORIES.keys
-        if query.downcase.include? category.downcase
-          query = query.gsub( category.downcase, CATEGORIES[category].values.join(" ").downcase )
+    if query != nil and query.strip != ""
+      for category_key in CATEGORIES.keys
+        if query.downcase.include? category_key.downcase
+          query = query.downcase.gsub( category_key.downcase, CATEGORIES[category_key].values.join(" ").downcase )
         end
       end
 
