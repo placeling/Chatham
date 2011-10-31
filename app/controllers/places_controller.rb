@@ -13,6 +13,9 @@ class PlacesController < ApplicationController
 
     query = params[:query]
 
+    #TEST: cap radius at 100m
+    radius = [100, radius].min
+
     if query && query != ""
       @places = gp.find_nearby(lat, long, radius, query)
     else
@@ -25,6 +28,7 @@ class PlacesController < ApplicationController
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)).floor
     end
 
+    #TEST: sort by distance rather than popularity
     #@places = @places.sort_by { |place| place.distance }
 
     respond_to do |format|
@@ -120,25 +124,35 @@ class PlacesController < ApplicationController
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
-    query = params[:query]
+    query = params[:query].downcase
     socialgraph = params[:socialgraph]
 
-    if socialgraph and current_user
-      if query != nil and query != ""
+    #preprocess for query
+    if query != nil and query != ""
+      for category in CATEGORIES.keys
+        if query.include? category.downcase
+          query = query.gsub( category.downcase, CATEGORIES[category].values.join(" ").downcase )
+        end
+      end
+
+      if socialgraph and current_user
         @perspectives = Perspective.find_query_near_for_following(current_user, query.downcase.strip, lat, lng)
       else
-        @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+        @perspectives = Perspective.find_query_near(query, lat, lng)
       end
     else
-      @perspectives = []
+      if socialgraph and current_user
+        @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+      else
+        @perspectives = Perspective.find_all_near(lat, lng)
+      end
     end
-
 
     @places_dict = {}
 
     for perspective in @perspectives
       place = perspective.place
-      if perspective.user.id == current_user.id
+      if current_user && perspective.user.id == current_user.id
         username = "You"
       else
         username =  perspective.user.username
@@ -153,6 +167,14 @@ class PlacesController < ApplicationController
     end
 
     @places = @places_dict.values
+
+    for place in @places
+      #add distance to in meters
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
+    end
+
+    #TEST: sort by distance rather than popularity
+    @places = @places.sort_by { |place| place.distance }
 
     respond_to do |format|
       format.html

@@ -31,6 +31,7 @@ class Place
   belongs_to  :user #not really that significant
 
   attr_accessor :users_bookmarking #transient property, shows people following
+  attr_accessor :distance #transient property, shows distance to current location
 
   validates_uniqueness_of :google_id, :allow_nil =>true
   validates :name, :venue_types, :presence => true

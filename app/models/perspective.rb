@@ -111,18 +111,6 @@ class Perspective
 
     n = CHATHAM_CONFIG['max_returned_map']
 
-    following_ids = user[:following_ids]
-    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        and(:uid.in => following_ids).
-        limit( n )
-  end
-
-  def self.find_all_near(lat, long)
-    span = 0.02 #params[:span].to_f #needs to be > 0
-
-    n = CHATHAM_CONFIG['max_returned_map']
-
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
         limit( n )
