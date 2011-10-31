@@ -35,7 +35,7 @@ describe GooglePlaces do
   end
 
   it "gets nearby places for a busy co-ordinate" do
-    nearby = @gp.find_nearby(-33.8599827,151.2021282,500)
+    nearby = @gp.find_nearby(-33.860084,151.207198,500)
 
     place_found = false
     for place in nearby

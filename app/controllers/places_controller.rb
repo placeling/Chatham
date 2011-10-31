@@ -13,15 +13,12 @@ class PlacesController < ApplicationController
 
     query = params[:query]
 
-    #TEST: cap radius at 100m
-    radius = [100, radius].min
 
     if query && query != ""
       @places = gp.find_nearby(lat, long, radius, query)
     else
       @places = gp.find_nearby(lat, long, radius)
     end
-
 
     for place in @places
       #add distance to in meters
@@ -124,13 +121,13 @@ class PlacesController < ApplicationController
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
-    query = params[:query].downcase
+    query = params[:query]
     socialgraph = params[:socialgraph]
 
     #preprocess for query
     if query != nil and query != ""
       for category in CATEGORIES.keys
-        if query.include? category.downcase
+        if query.downcase.include? category.downcase
           query = query.gsub( category.downcase, CATEGORIES[category].values.join(" ").downcase )
         end
       end

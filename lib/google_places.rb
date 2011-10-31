@@ -63,6 +63,8 @@ class GooglePlaces
       options[:name] = query
       options[:radius] = 20000
     else
+      #TEST: cap radius at 100m
+      radius = [200, radius].min
       options[:radius] = radius
     end
 
