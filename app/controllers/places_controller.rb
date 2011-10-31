@@ -122,7 +122,12 @@ class PlacesController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
     query = params[:query]
+    category = params[:category]
     socialgraph = params[:socialgraph]
+
+    if !category.nil?
+      query = category + ' ' + query
+    end
 
     #preprocess for query
     if query != nil and query != ""
