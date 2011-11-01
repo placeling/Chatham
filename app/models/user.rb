@@ -77,6 +77,7 @@ class User
     if thumb_cache_url
       return thumb_cache_url
     else
+      self.thumb_cache_url = self.avatar_url(:thumb)
       return self.avatar_url(:thumb)
     end
   end
@@ -85,6 +86,7 @@ class User
     if main_cache_url
       return main_cache_url
     else
+      self.thumb_cache_url = self.avatar_url(:main)
       return self.avatar_url(:main)
     end
   end
@@ -177,7 +179,7 @@ class User
     activity = chunk.activities.build
     activity.actor1 = self.id
     activity.username1 = self.username
-    activity.thumb1 = self.thumb_cache_url
+    activity.thumb1 = self.thumb_url
 
     return activity
   end
