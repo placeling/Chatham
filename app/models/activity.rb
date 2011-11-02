@@ -18,4 +18,20 @@ class Activity
 
   validates_presence_of :actor1, :username1
 
+
+  def as_json(options={})
+    #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
+
+    if self.thumb1.nil?
+      user = User.find_by_username(self.username1)
+      if user && user.thumb_url
+        self.thumb1 = user.thumb_url
+      end
+    else
+      puts self.thumb1
+    end
+
+    self.attributes
+  end
+
 end
