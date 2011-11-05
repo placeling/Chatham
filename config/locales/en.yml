@@ -96,6 +96,9 @@ en:
     unknown_user: "Unknown User"
     following: "Following"
     followers: "Followers"
+    reserved_username: "is reserved"
+    shitty_password: "is way too obvious"
+
 
   oauth:
     registered_successfully: "Registered the information successfully"

@@ -38,4 +38,19 @@ describe User do
     lindsay.should be_valid
   end
 
+  it "should not be able to be created with inappropriate username" do
+    user = Factory.build(:user, :username => 'bitch')
+    user.should_not be_valid
+  end
+
+  it "should not be able to be created with reserved username" do
+    user = Factory.build(:user, :username => 'places')
+    user.should_not be_valid
+  end
+
+  it "should not be able to be created with a shitty password" do
+    user = Factory.build(:user, :password => 'abc123')
+    user.should_not be_valid
+  end
+
 end

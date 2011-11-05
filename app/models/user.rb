@@ -43,6 +43,8 @@ class User
 
   embeds_one :activity_feed
 
+  validate :acceptable_name, :on => :create
+  validate :acceptable_password
   validates_presence_of :username
   validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
   validates_length_of :username, :within => 3..20, :too_long => "pick a shorter username", :too_short => "pick a longer username"
@@ -56,6 +58,23 @@ class User
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :fp, :background => true
   index :facebook_id
+
+  def acceptable_name
+    if NAUGHTY_WORDS.include? self.username
+      errors.add :username, I18n.t('user.reserved_username')
+    end
+
+    if RESERVED_USERNAMES.include? self.username
+      errors.add :username, I18n.t('user.reserved_username')
+    end
+  end
+
+  def acceptable_password
+    if SHITTY_PASSWORDS.include? @password
+      errors.add :password, I18n.t('user.shitty_password')
+    end
+  end
+
 
   def fix_location
     #this is broken until we upgrade to rails 3.1

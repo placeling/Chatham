@@ -10,3 +10,15 @@ CHATHAM_CONFIG = secret_keys.merge( YAML.load_file("#{::Rails.root.to_s}/config/
 file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
 content = file.read()
 CATEGORIES = JSON(content)
+
+file = File.open(Rails.root.join("config/naughty_words.json"), 'r')
+content = file.read()
+NAUGHTY_WORDS = JSON(content)
+
+file = File.open(Rails.root.join("config/reserved_usernames.json"), 'r')
+content = file.read()
+RESERVED_USERNAMES = JSON(content)
+
+file = File.open(Rails.root.join("config/shitty_passwords.json"), 'r')
+content = file.read()
+SHITTY_PASSWORDS = JSON(content)
