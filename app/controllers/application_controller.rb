@@ -35,6 +35,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   #oauth-plugin needs this
   def current_user=(user)
     @current_user = user

@@ -83,6 +83,7 @@ class PerspectivesController < ApplicationController
    def show
      #returns the place page (or json) for perspectives' host
     @perspective = Perspective.find( params[:id] )
+    not_found unless !@perspective.nil?
     @place = @perspective.place
 
     @referring_user = @perspective.user
