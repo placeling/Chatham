@@ -12,6 +12,16 @@ describe UsersController do
 
         users['suggested'][0]['username'].should == "gladwell"
       end
+
+      it "returns nothing when given invalid co-ordinate" do
+        maven = Factory.create(:maven, :username => "gladwell",:location =>[49, -121])
+
+        get :suggested, :lat => 193, :lng => -343, :format=>:json
+        response.should be_success
+        users = JSON.parse( response.body )
+
+        users['suggested'].count.should == 0
+      end
    end
 
   describe "GET /:id" do

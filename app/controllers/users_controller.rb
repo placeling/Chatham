@@ -95,7 +95,13 @@ class UsersController < ApplicationController
       lng = params[:long].to_f
     end
 
-    @users = User.top_nearby( lat, lng, 25 )
+    if lng > 180 or lng < -180 or lat > 180 or lat < -180
+      #for some reason, is not a proper co-ordinate
+      @users = []
+      logger.warn "#WARN #INPUTERROR Suggested user search with co-ordinates not on earth"
+    else
+      @users = User.top_nearby( lat, lng, 25 )
+    end
 
     respond_to do |format|
       format.json { render :json=> {:suggested => @users.as_json({:current_user => current_user}) } }
