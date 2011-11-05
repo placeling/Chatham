@@ -37,4 +37,11 @@ describe PerspectivesController, :broken=> true do
 
   end
 
+  it "should return a 404 for a non-existent perspective" do
+
+    get :show, :id => "BLAH", :format => :json
+
+    response.status.should be(200)
+  end
+
 end
