@@ -9,7 +9,6 @@ class Perspective
   field :memo,        :type => String
   field :ploc, :as =>:place_location,    :type => Array #for easier indexing
   field :tags,    :type => Array
-  field :fav_count, :type => Integer, :default =>0
   field :url,       :type => String
   field :flag_count, :type => Integer, :default =>0
     
@@ -17,6 +16,10 @@ class Perspective
   field :loc, :as => :location,    :type => Array
   field :flaggers, :type =>Array
   field :accuracy,      :type => Float
+
+  #contains starred perspectives this user has of on the place
+  field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
+  field :su, :as => :starring_users, :type =>Array, :default =>[]
 
   belongs_to :place, :foreign_key => 'plid' #, :index =>true
   belongs_to :user, :foreign_key => 'uid' #, :index =>true
@@ -118,9 +121,13 @@ class Perspective
 
 
   def check_in
-    if self.place.google_id:
+    if self.place.google_id and Rails.env.production?
       gp = GooglePlaces.new
-      output = gp.check_in(self.place.google_id)
+      begin
+        output = gp.check_in(self.place.google_id)
+      rescue
+        #don't fail just because we can't reach google
+      end
     end
   end
 
@@ -138,6 +145,10 @@ class Perspective
 
   def parse_tags
     self.tags = extract_hashtags( self.memo )
+  end
+
+  def fav_count
+    self.starring_users.count
   end
 
   def flagme( user )
@@ -180,7 +191,7 @@ class Perspective
   end
 
   def as_json(options={})
-    attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false))
+    attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false), :fav_count =>self.fav_count)
 
     if options[:current_user]
       current_user = options[:current_user]
@@ -190,7 +201,7 @@ class Perspective
         attributes = attributes.merge(:starred => true)
       else
         attributes = attributes.merge(:mine => false)
-        if current_user.favourite_perspectives.include?( self.id )
+        if self.starring_users.include?( current_user.id )
           attributes = attributes.merge(:starred => true)
         else
           attributes = attributes.merge(:starred => false)

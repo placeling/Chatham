@@ -129,22 +129,16 @@ class PerspectivesController < ApplicationController
   def star
     @perspective = Perspective.find( params[:id] )
 
-    current_user.star( @perspective )
-
-    current_user.save
-    @perspective.save
+    @user_perspective = current_user.star( @perspective )
 
     respond_to do |format|
-      format.json { render :json =>{:result => "starred"} }
+      format.json { render :json =>{:result => "starred", :perspective =>@user_perspective } }
     end
   end
 
   def unstar
     @perspective = Perspective.find( params[:id] )
     current_user.unstar( @perspective )
-
-    current_user.save
-    @perspective.save
 
     respond_to do |format|
       format.json { render :json =>{:result => "unstarred"} }

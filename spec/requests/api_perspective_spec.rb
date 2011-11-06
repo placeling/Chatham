@@ -78,19 +78,12 @@ describe "API - Perspective" do
 
      response.status.should be(200)
 
-     user = User.find(user.id) #regrab because should have changeds
-     user.favourite_perspectives.should include(perspective.id)
-
-     perspective = Perspective.find( perspective.id )
+     perspective = Perspective.find(perspective.id)
+     perspective.starring_users.should include(user.id)
      perspective.fav_count.should == 1
 
-     found = false #test for adding user bookmark
-     for p in user.perspectives
-      if p.place.id == perspective.place.id
-        found = true
-      end
-     end
-     found.should == true
+     user_perspective = user.perspective_for_place(perspective.place)
+     user_perspective.favourite_perspectives.should include(perspective.id)
 
    end
 

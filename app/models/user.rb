@@ -150,8 +150,6 @@ class User
   end
 
   def star( perspective )
-    self.favourite_perspectives << perspective.id
-    perspective.fav_count += 1
 
     place = perspective.place
     user_perspective = self.perspective_for_place( place )
@@ -161,16 +159,27 @@ class User
       user_perspective= place.perspectives.build()
       user_perspective.user = self
       user_perspective.skip_feed = true
-      user_perspective.save
     end
 
-    ActivityFeed.add_star_perspective(self, perspective.user, perspective)
+    user_perspective.favourite_perspectives << perspective.id
+    user_perspective.save
 
+    perspective.starring_users << self.id
+    perspective.save
+
+    ActivityFeed.add_star_perspective(self, perspective.user, perspective)
   end
 
   def unstar( perspective )
-    self.favourite_perspectives.delete( perspective.id )
-    perspective.fav_count -= 1
+
+    place = perspective.place
+    user_perspective = self.perspective_for_place( place )
+
+    user_perspective.favourite_perspectives.delete( perspective.id )
+    user_perspective.save
+
+    perspective.starring_users.delete( self.id )
+    perspective.save
   end
 
   def follows?( other_user )
