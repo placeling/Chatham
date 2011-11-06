@@ -46,6 +46,7 @@ class Perspective
   after_create :check_in
   before_create :notify_feed_create
   before_update :notify_feed_update
+  before_destroy :scrub_stars
 
   attr_accessor :skip_feed
 
@@ -128,6 +129,13 @@ class Perspective
       rescue
         #don't fail just because we can't reach google
       end
+    end
+  end
+
+  def scrub_stars
+    user = self.user
+    for perspective in self.favourite_perspectives
+      perspective.starring_users.delete( user.id )
     end
   end
 

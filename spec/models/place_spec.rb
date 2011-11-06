@@ -39,7 +39,7 @@ describe Place do
     lib_square_perspective.place.perspective_count.should == 1
   end
 
-  it "decrements its perspective count when a perspective is added" do
+  it "decrements its perspective count when a perspective is deleted" do
     lib_square_perspective = Factory.create(:lib_square_perspective)
     lib_square =  lib_square_perspective.place
     lib_square.perspective_count.should == 1

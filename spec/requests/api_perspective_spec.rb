@@ -91,21 +91,23 @@ describe "API - Perspective" do
    it "can be unstarred" do
      user = Factory.create(:user)
      perspective = Factory.create(:perspective)
+     place = perspective.place
      user.star( perspective )
      perspective.save
      user.save
 
      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-     user.favourite_perspectives.should include(perspective.id)
+     user_perspective = user.perspective_for_place( place )
+     user_perspective.favourite_perspectives.should include(perspective.id)
 
      post_via_redirect unstar_perspective_path(perspective), {
        :format => 'json'
      }
 
      response.status.should be(200)
-     user = User.find(user.id) #regrab because should have changeds
-     user.favourite_perspectives.should_not include(perspective.id)
+     user_perspective = Perspective.find(user_perspective.id) #regrab because should have changeds
+     user_perspective.favourite_perspectives.should_not include(perspective.id)
 
      perspective = Perspective.find( perspective.id ) #make sure didn't delete actual perspective
      perspective.should_not be_nil
