@@ -57,7 +57,7 @@ class Perspective
         limit( count ).entries
   end
 
-  def self.find_query_near_for_following(user, query, lat, long)
+  def self.query_near_following(user, query, lat, long)
     #span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']
@@ -79,7 +79,7 @@ class Perspective
         limit( n ).entries
   end
 
-  def self.find_all_near_for_following(user, lat, long)
+  def self.all_near_following(user, lat, long)
     span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']
@@ -91,7 +91,7 @@ class Perspective
         limit( n )
   end
 
-  def self.find_query_near(query, lat, long)
+  def self.query_near(query, lat, long)
     #span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']
@@ -110,7 +110,7 @@ class Perspective
         limit( n ).entries
   end
 
-  def self.find_all_near(lat, long)
+  def self.all_near(lat, long)
     span = 0.02 #params[:span].to_f #needs to be > 0
 
     n = CHATHAM_CONFIG['max_returned_map']

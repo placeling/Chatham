@@ -117,7 +117,7 @@ class PerspectivesController < ApplicationController
   def flag
     @perspective = Perspective.find( params[:id] )
 
-    @perspective.flagme( current_user)
+    @perspective.flagme( current_user )
 
     @perspective.save
 
@@ -244,7 +244,7 @@ class PerspectivesController < ApplicationController
 
     if params[:username]
       user = User.find_by_username( params[:username] )
-      @places = Place.find_nearby_for_user( user, lat, long, span )
+      @places = Place.nearby_for_user( user, lat, long, span )
     else
       #for finding *all* perspectives nearby
       @places = Place.find_all_near(lat, long, span)

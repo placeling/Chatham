@@ -105,7 +105,7 @@ class Place
     end
   end
 
-  def self.find_nearby_for_user( user, lat, long, span )
+  def self.nearby_for_user( user, lat, long, span )
     n = CHATHAM_CONFIG['max_returned_map']
 
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
@@ -121,16 +121,12 @@ class Place
     return places
   end
 
-  def self.find_all_near( lat, long, span )
-
-    n = CHATHAM_CONFIG['max_returned_map']
+  def self.all_near( lat, long, span )
 
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Place.where(:loc.within => {"$center" => [[lat,long],span]}).
         and(:pc.gte => 1).
-        order_by([:pc, :desc]).
-        limit( n )
-
+        order_by([:pc, :desc])
   end
 
   def self.top_places( top_n )

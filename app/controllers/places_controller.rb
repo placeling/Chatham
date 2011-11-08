@@ -128,6 +128,8 @@ class PlacesController < ApplicationController
     category = params[:category]
     socialgraph = params[:socialgraph]
 
+    n = CHATHAM_CONFIG['max_returned_map']
+
     if !category.nil?
       query = category + ' ' + query
     end
@@ -141,15 +143,15 @@ class PlacesController < ApplicationController
       end
 
       if socialgraph and current_user
-        @perspectives = Perspective.find_query_near_for_following(current_user, query.downcase.strip, lat, lng)
+        @perspectives = Perspective.query_near_following(current_user, query.downcase.strip, lat, lng)
       else
-        @perspectives = Perspective.find_query_near(query, lat, lng)
+        @perspectives = Perspective.query_near(query, lat, lng)
       end
     else
       if socialgraph and current_user
-        @perspectives = Perspective.find_all_near_for_following(current_user, lat, lng)
+        @perspectives = Perspective.all_near_following(current_user, lat, lng).limit( n )
       else
-        @perspectives = Perspective.find_all_near(lat, lng)
+        @perspectives = Perspective.find_all_near(lat, lng).limit( n )
       end
     end
 
