@@ -1,10 +1,10 @@
 Chatham::Application.routes.draw do
 
   get "/feeds/home_timeline",  :to => "home#home_timeline",   :as => :home_feed
-  get "admin/terms_of_service", :as => :terms_of_service
-  get "admin/privacy_policy", :as => :privacy_policy
-  get "admin/about_us", :as => :about_us
-  get "admin/contact_us", :as => :contact_us
+  get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
+  get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
+  get "/about_us", :to => 'admin#about_us', :as => :about_us
+  get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
 
   root :to => "home#index"
 
