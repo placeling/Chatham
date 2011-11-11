@@ -129,6 +129,11 @@ class Place
         order_by([:pc, :desc])
   end
 
+  def self.find_by_categories( lat, long, span, categories_array )
+    Place.any_in(:venue_types => categories_array ).
+        and(:loc.within => {"$center" => [[lat,long],span]})
+  end
+
   def self.top_places( top_n )
     self.desc( :pc ).limit( top_n )
   end

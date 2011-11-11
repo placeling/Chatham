@@ -130,9 +130,15 @@ class PlacesController < ApplicationController
 
     n = CHATHAM_CONFIG['max_returned_map']
 
+    span = 0.2
+
     if !category.nil?
       query = category + ' ' + query
     end
+
+    categories_array = CATEGORIES[category]
+
+    @category_places = Place.find_by_categories( lat, long, span, categories_array )
 
     #preprocess for query
     if query != nil and query.strip != ""
