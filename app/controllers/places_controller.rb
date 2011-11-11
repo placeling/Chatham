@@ -138,7 +138,7 @@ class PlacesController < ApplicationController
 
     categories_array = CATEGORIES[category]
 
-    @category_places = Place.find_by_categories( lat, long, span, categories_array )
+    @category_places = Place.find_by_categories( lat, lng, span, categories_array )
 
     #preprocess for query
     if query != nil and query.strip != ""

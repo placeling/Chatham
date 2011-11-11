@@ -247,7 +247,7 @@ class PerspectivesController < ApplicationController
       @places = Place.nearby_for_user( user, lat, long, span )
     else
       #for finding *all* perspectives nearby
-      @places = Place.find_all_near(lat, long, span)
+      @places = Place.all_near(lat, long, span)
     end
 
     respond_to do |format|
