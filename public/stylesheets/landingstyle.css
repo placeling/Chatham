@@ -18,7 +18,7 @@
 
 #top_bracket {
     border-top: 1px solid #6CBDBE;
-    background-image: url(grey_to_white.png);
+    background-image: url(/images/grey_to_white.png);
     background-position: center top;
     background-repeat: repeat-x;
     margin: 0;
