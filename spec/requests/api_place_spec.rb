@@ -264,14 +264,14 @@ describe "API - " do
 
   describe "GET nearby_places for JSON request" do
     it "should do show nearby places for a co-ordinate" do
-      get nearby_places_path, {:format => "json",:lat => '-33.860084', :long =>'151.207198', :accuracy=>'500'}
+      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
       response.status.should be(200)
       response.body.should include("Pylon")
 
       nearby = JSON.parse( response.body )
       place_found = false
       for place in nearby['places']
-        if place['id'] == "e22913360d0b946d099c7a32a77a95e49f9ead66"#Pylon Lookout
+        if place['id'] == "a648ca9b8af31e9726947caecfd062406dc89440" #Sophie's cosmic cafe
           place_found = true
           break
         end
