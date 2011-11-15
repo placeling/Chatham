@@ -17,7 +17,7 @@ describe "Admin", :type => :request do
   it "should display status page" do
 
       res = Net::HTTP.get_response URI.parse(@site + "/admin/status")
-      res.code.should be(200)
+      res.code.should == "200"
 
       res.body.should include("E8455D251B002C7A0E0ADE385C8940E29CE7C139233B31A9889009B37814CA49")
   end
