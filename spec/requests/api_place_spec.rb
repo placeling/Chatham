@@ -266,7 +266,7 @@ describe "API - " do
     it "should do show nearby places for a co-ordinate" do
       get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
       response.status.should be(200)
-      response.body.should include("Pylon")
+      response.body.should include("Sohpie")
 
       nearby = JSON.parse( response.body )
       place_found = false
