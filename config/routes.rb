@@ -5,6 +5,7 @@ Chatham::Application.routes.draw do
   get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
   get "/about_us", :to => 'admin#about_us', :as => :about_us
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
+  get "/admin/status", :to => 'admin#status',:as => :status
 
   root :to => "home#index"
 

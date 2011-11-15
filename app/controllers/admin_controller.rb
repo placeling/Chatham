@@ -21,4 +21,8 @@ class AdminController < ApplicationController
   def contact_us
   end
 
+  def status
+    render :status, :layout =>false
+  end
+
 end
