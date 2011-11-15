@@ -84,7 +84,7 @@ class Perspective
 
     n = CHATHAM_CONFIG['max_returned_map']
 
-    following_ids = user[:following_ids]
+    following_ids = user[:following_ids] << user.id
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
         and(:uid.in => following_ids).

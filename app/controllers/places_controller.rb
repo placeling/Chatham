@@ -126,28 +126,23 @@ class PlacesController < ApplicationController
     lng = params[:lng].to_f
     query = params[:query]
     category = params[:category]
-    socialgraph = params[:socialgraph]
+    socialgraph = params[:socialgraph].downcase == "true"
 
     n = CHATHAM_CONFIG['max_returned_map']
 
     span = 0.2
 
-    if !category.nil?
-      query = category + ' ' + query
+    if category != nil and category.strip != ""
+      categories_array = CATEGORIES[category].values
+      category_places = Place.find_by_categories( lat, lng, span, categories_array )
+      @category_place_ids = []
+      for place in  category_places.entries
+        @category_place_ids << place.id
+      end
     end
-
-    categories_array = CATEGORIES[category]
-
-    @category_places = Place.find_by_categories( lat, lng, span, categories_array )
 
     #preprocess for query
     if query != nil and query.strip != ""
-      for category_key in CATEGORIES.keys
-        if query.downcase.include? category_key.downcase
-          query = query.downcase.gsub( category_key.downcase, CATEGORIES[category_key].values.join(" ").downcase )
-        end
-      end
-
       if socialgraph and current_user
         @perspectives = Perspective.query_near_following(current_user, query.downcase.strip, lat, lng)
       else
@@ -157,14 +152,19 @@ class PlacesController < ApplicationController
       if socialgraph and current_user
         @perspectives = Perspective.all_near_following(current_user, lat, lng).limit( n )
       else
-        @perspectives = Perspective.find_all_near(lat, lng).limit( n )
+        @perspectives = Perspective.all_near(lat, lng).limit( n )
       end
     end
 
     @places_dict = {}
 
-    for perspective in @perspectives
+    for perspective in @perspectives.entries
       place = perspective.place
+
+      if category != nil and category.strip != ""  and  !@category_place_ids.include? place.id
+        next
+      end
+
       if current_user && perspective.user.id == current_user.id
         username = "You"
       else
