@@ -29,7 +29,7 @@
 
 #bottom_bracket {
     border-bottom: 1px solid #6CBDBE;
-    background-image: url(white_to_grey.png);
+    background-image: url(/images/white_to_grey.png);
     background-position: center top;
     background-repeat: repeat-x;
     margin: 0;
