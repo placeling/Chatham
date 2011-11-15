@@ -273,6 +273,8 @@ class Place
   end
   
   def as_json(options={})
+    self.venue_types.delete("Establishment") #filter out establishment from return values
+
     attributes = self.attributes.merge(:tags => self.tags)
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
 
