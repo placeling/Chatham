@@ -128,40 +128,32 @@ class PlacesController < ApplicationController
     category = params[:category]
     socialgraph = params[:socialgraph].downcase == "true"
 
-    n = CHATHAM_CONFIG['max_returned_map']
+    n = 100
 
     span = 0.2
-
-    if category != nil and category.strip != ""
-      categories_array = CATEGORIES[category].values
-      category_places = Place.find_by_categories( lat, lng, span, categories_array )
-      @category_place_ids = []
-      for place in  category_places.entries
-        @category_place_ids << place.id
-      end
-    end
 
     #preprocess for query
     if query != nil and query.strip != ""
       if socialgraph and current_user
-        @perspectives = Perspective.query_near_following(current_user, query.downcase.strip, lat, lng)
+        @perspectives = Perspective.query_near_following(current_user, query.downcase.strip, lat, lng, n)
       else
-        @perspectives = Perspective.query_near(query, lat, lng)
+        @perspectives = Perspective.query_near(query, lat, lng, n)
       end
     else
       if socialgraph and current_user
-        @perspectives = Perspective.all_near_following(current_user, lat, lng).limit( n )
+        @perspectives = Perspective.all_near_following(current_user, lat, lng, span, n)
       else
-        @perspectives = Perspective.all_near(lat, lng).limit( n )
+        @perspectives = Perspective.all_near(lat, lng, span, n )
       end
     end
 
     @places_dict = {}
+    categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
 
     for perspective in @perspectives.entries
       place = perspective.place
 
-      if category != nil and category.strip != ""  and  !@category_place_ids.include? place.id
+      if category != nil and category.strip != ""  and  (categories_array & place.venue_types).empty?
         next
       end
 
@@ -186,8 +178,13 @@ class PlacesController < ApplicationController
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
     end
 
-    #TEST: sort by distance rather than popularity
-    @places = @places.sort_by { |place| place.distance }
+    if socialgraph and current_user
+      #TEST: sort by distance rather than popularity
+      @places = @places.sort_by { |place| place.distance }
+    else
+      @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
+    end
+
 
     respond_to do |format|
       format.html

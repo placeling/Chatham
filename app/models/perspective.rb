@@ -54,14 +54,11 @@ class Perspective
     Perspective.where(:uid => user.id).
         order_by( [:created_at, :desc] ).
         skip( start ).
-        limit( count ).entries
+        limit( count ).
+        entries
   end
 
-  def self.query_near_following(user, query, lat, long)
-    #span = 0.02 #params[:span].to_f #needs to be > 0
-
-    n = CHATHAM_CONFIG['max_returned_map']
-
+  def self.query_near_following(user, query, lat, long, limit=20)
     tags =[]
     for term in query.split
       if term[0,1] == '#'
@@ -76,25 +73,21 @@ class Perspective
     Perspective.any_in(:tags => tags ).
         and(:ploc.near => [lat,long]).
         and(:uid.in => following_ids).
-        limit( n ).entries
+        limit(limit).
+        entries
   end
 
-  def self.all_near_following(user, lat, long)
-    span = 0.02 #params[:span].to_f #needs to be > 0
-
-    n = CHATHAM_CONFIG['max_returned_map']
-
+  def self.all_near_following(user, lat, long, span, limit=20)
     following_ids = user[:following_ids] << user.id
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
         and(:uid.in => following_ids).
-        limit( n )
+        limit(limit).
+        entries
   end
 
-  def self.query_near(query, lat, long)
+  def self.query_near(query, lat, long, limit=20)
     #span = 0.02 #params[:span].to_f #needs to be > 0
-
-    n = CHATHAM_CONFIG['max_returned_map']
 
     tags =[]
     for term in query.split
@@ -106,18 +99,15 @@ class Perspective
     end
 
     Perspective.any_in(:tags => tags ).
-        and(:ploc.near => [lat,long]).
-        limit( n ).entries
+        and(:ploc.near => [lat,long]).limit(limit).
+        entries
   end
 
-  def self.all_near(lat, long)
-    span = 0.02 #params[:span].to_f #needs to be > 0
-
-    n = CHATHAM_CONFIG['max_returned_map']
-
+  def self.all_near(lat, long, span, limit=20)
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
     Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        limit( n )
+        limit(limit).
+        entries
   end
 
 
