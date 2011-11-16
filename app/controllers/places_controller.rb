@@ -148,13 +148,16 @@ class PlacesController < ApplicationController
     end
 
     @places_dict = {}
-    categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
+
 
     for perspective in @perspectives.entries
       place = perspective.place
 
-      if category != nil and category.strip != ""  and  (categories_array & place.venue_types).empty?
-        next
+      if category != nil and category.strip != ""
+        categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
+        if  (categories_array & place.venue_types).empty?
+          next
+        end
       end
 
       if current_user && perspective.user.id == current_user.id
