@@ -9,9 +9,11 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
   #before_validation :fix_location
+  before_validation :set_downcase_username
   after_create :cache_urls
 
   field :username,      :type =>String
+  field :du, :as => :downcase_username, :type => String
   field :fullname,      :type =>String
   alias :login :username
   field :email,         :type =>String
@@ -60,6 +62,11 @@ class User
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :fp, :background => true
   index :facebook_id
+  index :du
+
+  def set_downcase_username
+    self.downcase_username = self.username.downcase
+  end
 
   def acceptable_name
     if NAUGHTY_WORDS.include? self.username
@@ -133,7 +140,7 @@ class User
   end
 
   def self.find_by_username( username )
-    self.where( :username => username ).first
+    self.where( :du => username.downcase ).first
   end
 
   def self.find_by_facebook_id( fid )
