@@ -260,6 +260,22 @@ class PlacesController < ApplicationController
       @place.save!
     end
 
+    if current_user
+      @following_perspectives = current_user.following_perspectives_for_place( @place )
+      @follow_perspectives_count = @following_perspectives.count
+
+      for perspective in @following_perspectives
+        @following_perspectives.delete( perspective ) unless !perspective.empty_perspective?
+      end
+    end if
+
+    @all_perspectives = @place.perspectives
+    @all_perspectives_count = @all_perspectives.count
+
+    for perspective in @all_perspectives
+      @all_perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    end
+
     if params['rf']
       @referring_user = User.find_by_username( params['rf'] )
     else

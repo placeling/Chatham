@@ -1,16 +1,33 @@
 
 <div id="maincontent">
-  <h1><%= @place.name %>'s <%= t("basic.marks") %></h1>
-      <ul id="listteamnav">
-        <li style="height: 200px;text-align: center"><%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %><br>
-        </li>
-        <li> <b><%= t('place.location') %>:</b> <%= @place.location[0].to_s + "," + @place.location[1].to_s  %><br>
-        </li>
 
-    </ul>
+    <table>
+        <tr>
+          <td>
+            <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
+          </td>
 
-    <ul id="listnews">
-        <% @place.perspectives.order_by([:created_at, :desc]).each do |perspective|%>
+          <td>
+            <h2><%= @place.name %></h2>
+            <div id="address_line"><%= @place.street_address %></div>
+            <div id="city_line"><%= @place.city_data %></div>
+            <div id="loc_line"><%= @place.location[0].to_s + "," + @place.location[1].to_s  %> </div>
+          </td>
+        </tr>
+    </table>
+
+    <h2>Your Network</h2>
+        <% if @following_perspectives %>
+            <ul id="network_perspectives">
+                <% @following_perspectives.each do |perspective|%>
+                    <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>:place} %>
+                <% end %>
+            </ul>
+        <% end %>
+
+    <h2>Everyone</h2>
+    <ul id="everyone_perspectives">
+        <% @all_perspectives.each do |perspective|%>
             <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>:place} %>
         <% end %>
     </ul>
