@@ -9,9 +9,6 @@
     <div id="placemainmenu">
         <ul id="mainmenu">
 
-          <li><%= link_to t("home.contact_us"), contact_us_path %></li>
-          <li><%= link_to t("home.about_us"), about_us_path %></li>
-
             <% if admin_user? %>
               <li><a href="#"><%= t("home.admin_links") %></a>
                 <ul>

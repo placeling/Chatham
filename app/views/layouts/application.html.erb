@@ -22,8 +22,16 @@
                 <% if alert %>
                     <p><%= alert %></p>
                 <% end %>
+                <div id="maincontent">
+                    <%= yield %>
+                </div>
 
-                <%= yield %>
+                <div id="nav">
+
+                  <div class="boxnav">
+                    <%= render(:partial =>"layouts/like_box") %>
+                   </div>
+                </div>
                 <div class="clear"></div>
             </div>
         </div>

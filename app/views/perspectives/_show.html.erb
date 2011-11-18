@@ -1,10 +1,31 @@
 <li id="perspective_<%=perspective.id %>">
-  <ul class="newsinfo">
-    <li class="first"><%= link_to perspective.user.username, user_path(perspective.user)   %></li>
-    <li><%= perspective.updated_at %></li>
-    <li class="last"> <%= perspective.tags.join(",") unless perspective.tags.nil? %></li>
-   </ul>
+
+    <% if source == :user %>
+        <h2><%= link_to perspective.place.name, place_path(perspective.place)   %></h2>
+    <% else %>
+        <h2><%= link_to perspective.user.username, user_path(perspective.user)   %></h2>
+    <% end %>
 
     <p><%= perspective.memo %></p>
 
+
+    <table width="100%">
+      <tr>
+      <% perspective.pictures.each_with_index do |photo, i|  %>
+        <td width="130px"><%= image_tag photo.thumb_url %></td>
+
+        <% if i % 6 == 5 %>
+            </tr>
+            <tr>
+        <% end %>
+
+      <% end %>
+
+      </tr>
+    </table>
+
+    <ul class="newsinfo">
+        <li><%= perspective.updated_at %></li>
+        <li class="last"> <%= perspective.tags.join(",") unless perspective.tags.nil? %></li>
+    </ul>
 </li>

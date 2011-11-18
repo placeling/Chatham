@@ -139,19 +139,23 @@ class UsersController < ApplicationController
 
   def followers
     @user = User.find_by_username( params[:id] )
-    @followers = @user.followers
+    @users = @user.followers
+    @title = t('user.follower_title', :username =>@user.username)
+
     respond_to do |format|
-      format.json { render :json => {:followers => @followers} }
-      format.html
+      format.json { render :json => {:followers => @users} }
+      format.html { render :template => 'users/list'}
     end
   end
 
   def following
     @user = User.find_by_username( params[:id] )
-    @following = @user.following
+    @users = @user.following
+    @title = t('user.following_title', :username =>@user.username)
+
     respond_to do |format|
-      format.json { render :json => {:following => @following } }
-      format.html
+      format.json { render :json => {:following => @users } }
+      format.html { render :template => 'users/list'}
     end
   end
 

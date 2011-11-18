@@ -98,6 +98,8 @@ en:
     followers: "Followers"
     reserved_username: "is reserved"
     shitty_password: "is way too obvious"
+    follower_title: "%{username}'s Followers"
+    following_title: "People %{username} Follows"
 
 
   oauth:

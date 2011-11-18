@@ -1,3 +1,375 @@
 
 
 #userpanel #blah .subnav li a  { width:66px; min-width:50px; }
+
+body #main-container{
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+
+.list_thumb {
+    max-width:32px;
+    height:32px;
+}
+
+
+#errorExplanation h2 {
+  background-color:#c00;
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  margin:-7px;
+  padding:5px 5px 5px 15px;
+  text-align:left;
+}
+
+#errorExplanation p {
+  color:#000000;
+  margin-bottom:0;
+  padding:5px;
+}
+
+#errorExplanation ul li {
+  font-size:12px;
+  list-style:square;
+}
+
+
+#info_panel {
+  padding: 0px 20px 20px 20px;
+}
+
+
+#logo {
+  margin-top: 5px;
+}
+
+
+
+#sidebar {
+  width: 180px;
+  padding: 20px 5px 15px 5px;
+  display: block;
+  float: left;
+}
+
+
+.vote_arrow{
+    width: 24px;
+    height: 24px;
+}
+
+#column_items{
+    -moz-border-radius:0px 5px 5px 0px;
+    background-color: #5EA4BF;
+    padding: 5px 10px 10px 10px;
+    -webkit-border-radius: 0px 5px 5px 0px;
+}
+
+.errorExplanation {
+  background-color:#f0f0f0;
+  border:2px solid red;
+  color:#FF0000;
+  margin-bottom:20px;
+  padding:7px 7px 12px;
+  width:400px;
+}
+
+.fieldWithErrors {
+  background-color:#FF0000;
+  display:table;
+  padding:2px;
+}
+
+
+.formField {
+  padding:5px;
+}
+
+td.quote {
+  width:450px;
+}
+
+.link_to {
+  border:none;
+}
+
+.menu_icon {
+  height:17px;
+  vertical-align:middle;
+  width:17px;
+}
+
+a img {
+  border:0;
+}
+
+a {
+  text-decoration: none;
+  color: #1170CC;
+}
+
+.quote_list{
+    width:550px;
+}
+
+ul.tweets {
+    list-style-position:outside;
+    list-style-type:none;
+    position: relative;
+    padding-top: 5px;
+    width: 518px;
+}
+
+ul.users li.user {
+    border-bottom:1px solid #EEEEEE;
+    line-height:16px;
+    padding:10px 0 8px 0px;
+    position:relative;
+    margin-left: 0px;
+}
+
+ul.users > li:first-child {
+  border-top:1px solid #EEEEEE;
+  margin-top: 0px;
+}
+
+#more_quotes_box {
+  text-align: center;
+  width:100%;
+}
+
+#more_quotes_box  a{
+  padding: 5px;
+  width: 100%;
+}
+
+.pretty-hover{
+  background-color:#D2F25E ;
+}
+
+.quote {
+  font-size:13px;
+  list-style-type:none;
+  font-family:'Lucida Grande',sans-serif;
+}
+
+.user_body {
+    min-height: 48px;
+    display: block;
+    margin-left:56px;
+}
+
+.red_off {
+    background-position:-80px 0;
+}
+
+.yellow_off {
+    background-position:-48px 0;
+}
+
+.green_off {
+    background-position:-16px 0;
+}
+
+.red_on {
+    background-position:-64px 0;
+}
+
+.yellow_on {
+    background-position:-32px 0;
+}
+
+.green_on {
+    background-position:0px 0;
+}
+
+
+#flash_message {
+  width: 50%;
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+  margin-left: 25%;
+  margin-right: 25%;
+  color: white;
+  background-color: #5EA4BF;
+}
+
+.raw_thumb {
+    display:block;
+    height:50px;
+    margin:0 10px 0 10px;
+    overflow:hidden;
+    position:absolute;
+    width:50px;
+    z-index:10;
+}
+
+.thumb {
+    display:block;
+    height:50px;
+    left:0;
+    margin:0 10px 0 40px;
+    overflow:hidden;
+    position:absolute;
+    width:50px;
+    z-index:10;
+}
+
+.thumb_image {
+    height:48px;
+    width:48px;
+}
+
+.tweet_ranking{
+    display:block;
+    height:50px;
+    margin:0 10px 0 10px;
+    overflow:hidden;
+    position:absolute;
+    width:24px;
+    z-index:10;
+}
+
+.raw_status_body  {
+    display:block;
+    margin-left:65px;
+    min-height:48px;
+    width:450px;
+}
+
+.tweet_text {
+    padding: 5px 30px 5px 0px;
+
+}
+
+.status_body  {
+    overflow: auto;
+    display:block;
+    padding: 0 10px 0 10px;
+    min-height:48px;
+    width:500px;
+}
+
+.arrow {
+  display: none;
+  padding-left: 10px;
+  width: 50px;
+}
+
+.spinny_wheel {
+  padding-left: 10px;
+}
+
+.status_stats{
+  color:#999999;
+  font-size:14px;
+  padding-top: 2px;
+  font-weight: bold;
+}
+
+.quote_content{
+    margin-bottom: 5px;
+    padding:5px;
+    width:550px;
+    background-color: white;
+}
+
+.quote_big_text{
+    font-family:georgia;
+    font-size:2em;
+    font-weight:400;
+    line-height:1.25em;
+    overflow:hidden;
+    padding:0;
+}
+
+.author{
+    text-align: right;
+    margin-top: 10px;
+}
+
+.author a{
+   color: #021C26;
+   font-style:italic;
+}
+
+.quote_stats{
+    padding:5px;
+    width:550px;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
+.stats_table{
+    width:100%;
+}
+
+.stats_table th{
+    text-align: center;
+}
+.stats_table td{
+    text-align: center;
+}
+
+
+.stats_table th{
+    color:#5EA4BF;
+}
+
+.panel_text{
+    font: 13px/20px "Lucida Grande",Arial,Sans-serif;
+    color:white;
+}
+
+.share_column {
+    text-align: center;
+    padding: 0 0 0 0;
+    width: 100%;
+    list-style-type: none;
+}
+
+.share_column li{
+    display: inline;
+}
+
+.popup_text {
+    font-size: 14px;
+
+}
+
+.previous_stats{
+    width:550px;
+    background-color:white;
+    padding: 5px 5px 5px 5px;
+
+}
+
+.previous_stats th{
+    color:#5EA4BF;
+}
+
+#login_badge a {
+    color: #ffffff;
+}
+
+
+.boxBody .tweet_panel {
+    display:none;
+    height:auto;
+}
+
+.sharing_tab{
+    width:120px;
+    float:right;
+}
+
+
+.status_indicators{
+    display:none;
+}
+
+.show_more_box {
+    width:auto;
+    text-align:center;
+}

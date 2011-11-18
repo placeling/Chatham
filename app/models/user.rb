@@ -92,6 +92,16 @@ class User
     self.save
   end
 
+  def image_src
+    src = thumb_url
+
+    if src.nil?
+      src = "/images/default_profile.png"
+    end
+
+    return src
+  end
+
   def thumb_url
     if thumb_cache_url
       return thumb_cache_url
