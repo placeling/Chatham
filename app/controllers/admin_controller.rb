@@ -31,6 +31,7 @@ class AdminController < ApplicationController
   def dashboard
     @user_count = User.count
     @users = User.descending(:created_at).limit(100)
+    @past_day_bookmarks = Perspective.where(:created_at.gt =>1.day.ago)
 
   end
 
