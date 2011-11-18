@@ -1,4 +1,7 @@
 class AdminController < ApplicationController
+
+  before_filter :admin_required, :only => [:dashboard]
+
   def terms_of_service
     @terms = t("tos")
     respond_to do |format|
@@ -23,6 +26,12 @@ class AdminController < ApplicationController
 
   def status
     render :status, :layout =>false
+  end
+
+  def dashboard
+    @user_count = User.count
+    @users = User.descending(:created_at).limit(100)
+
   end
 
 end
