@@ -103,6 +103,10 @@ class UsersController < ApplicationController
       @users = User.top_nearby( lat, lng, 25 )
     end
 
+    if current_user
+      @users.delete( current_user )
+    end
+
     respond_to do |format|
       format.json { render :json=> {:suggested => @users.as_json({:current_user => current_user}) } }
     end
