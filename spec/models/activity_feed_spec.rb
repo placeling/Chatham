@@ -22,7 +22,7 @@ describe ActivityFeed do
 
     activity.activity_type.should == "FOLLOW"
     activity.actor1.should == user.id
-    activity.thumb1.should == user.thumb_cache_url
+    activity.thumb1.should == user.thumb_url
     activity.actor2.should == user2.id
     activity.username1.should == user.username
     activity.username2.should == user2.username
@@ -41,7 +41,7 @@ describe ActivityFeed do
 
     activity.activity_type.should == "NEW_PERSPECTIVE"
     activity.actor1.should == user.id
-    activity.thumb1.should == user.thumb_cache_url
+    activity.thumb1.should == user.thumb_url
     activity.username1.should == user.username
     activity.subject.should == perspective.id
 
@@ -63,7 +63,7 @@ describe ActivityFeed do
 
     activity.activity_type.should == "NEW_PERSPECTIVE"
     activity.actor1.should == user.id
-    activity.thumb1.should == user.thumb_cache_url
+    activity.thumb1.should == user.thumb_url
     activity.username1.should == user.username
     activity.subject.should == perspective.id
 
@@ -84,7 +84,7 @@ describe ActivityFeed do
 
     activity.activity_type.should == "STAR_PERSPECTIVE"
     activity.actor1.should == user.id
-    activity.thumb1.should == user.thumb_cache_url
+    activity.thumb1.should == user.thumb_url
     activity.username1.should == user.username
     activity.actor2.should == user2.id
     activity.username2.should == user2.username

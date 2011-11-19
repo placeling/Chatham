@@ -10,7 +10,6 @@ class User
 
   #before_validation :fix_location
   before_validation :set_downcase_username
-  after_create :cache_urls
 
   field :username,      :type =>String
   field :du, :as => :downcase_username, :type => String
@@ -19,6 +18,7 @@ class User
   field :email,         :type =>String
   field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
   field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
+  field :creation_environment, :type => String
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
 
@@ -84,7 +84,6 @@ class User
     end
   end
 
-
   def fix_location
     #this is broken until we upgrade to rails 3.1
     if self.location[0]
@@ -98,34 +97,23 @@ class User
   def cache_urls
     self.thumb_cache_url = self.avatar_url(:thumb)
     self.main_cache_url =  self.avatar_url(:main)
-    self.save
-  end
-
-  def image_src
-    src = thumb_url
-
-    if src.nil?
-      src = "/images/default_profile.png"
-    end
-
-    return src
   end
 
   def thumb_url
-    if thumb_cache_url
+    if Rails.env == self.creation_environment
+      return self.avatar_url(:thumb)
+    elsif thumb_cache_url
       return thumb_cache_url
     else
-      self.thumb_cache_url = self.avatar_url(:thumb)
-      return self.avatar_url(:thumb)
+      return "images/default_profile.png"
     end
   end
 
   def main_url
-    if main_cache_url
-      return main_cache_url
-    else
-      self.thumb_cache_url = self.avatar_url(:main)
+    if Rails.env == self.creation_environment
       return self.avatar_url(:main)
+    else
+      return main_cache_url
     end
   end
 

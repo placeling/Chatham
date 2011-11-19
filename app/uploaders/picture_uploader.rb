@@ -7,12 +7,18 @@ class PictureUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  if Rails.env.test?
-    storage :file
-  else
-    storage :fog
+  after :store, :set_model_urls
+
+  def set_model_urls(file)
+    model.creation_environment = Rails.env
+    model.cache_urls
   end
 
+  if Rails.env.test?
+      storage :file
+  else
+      storage :fog
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:

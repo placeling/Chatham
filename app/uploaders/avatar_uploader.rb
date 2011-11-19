@@ -3,6 +3,13 @@
 
 class AvatarUploader < CarrierWave::Uploader::Base
 
+  after :store, :set_model_urls
+
+  def set_model_urls(file)
+    model.creation_environment = Rails.env
+    model.cache_urls
+  end
+
   # Include RMagick or ImageScience support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -20,9 +27,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
 
   # Process files as they are uploaded:
   # process :scale => [200, 300]

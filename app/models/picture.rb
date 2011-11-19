@@ -13,20 +13,20 @@ class Picture
   
   embedded_in :perspective
 
-  before_validation :set_creation_environment
-  after_create :cache_urls
+  #validates_presence_of :creation_environment, :on => :create
+  after_save :more_test
 
-  validates_presence_of :creation_environment, :on => :create
-
-  def set_creation_environment
-    self.creation_environment = Rails.env unless !self.creation_environment.nil?
+  def more_test
+    if self.changed?
+      #added cache urls
+      self.save
+    end
   end
 
   def cache_urls
     self.thumb_cache_url = self.image_url(:thumb)
     self.iphone_cache_url = self.image_url(:iphone)
     self.main_cache_url =  self.image_url(:main)
-    self.save
   end
 
   def thumb_url
