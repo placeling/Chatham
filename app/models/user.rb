@@ -105,15 +105,17 @@ class User
     elsif thumb_cache_url
       return thumb_cache_url
     else
-      return "images/default_profile.png"
+      return "/images/default_profile.png"
     end
   end
 
   def main_url
     if Rails.env == self.creation_environment
       return self.avatar_url(:main)
-    else
+    elsif main_cache_url
       return main_cache_url
+    else
+      return "/images/default_profile.png"
     end
   end
 
