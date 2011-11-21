@@ -164,8 +164,8 @@ class PerspectivesController < ApplicationController
     @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
 
     respond_to do |format|
-      format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }  }
       format.html
+      format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }  }
     end
   end
 
