@@ -50,8 +50,8 @@ class UsersController < ApplicationController
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
     respond_to do |format|
-      format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
       format.html
+      format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
     end
   end
 
@@ -121,8 +121,8 @@ class UsersController < ApplicationController
     current_user.save!
 
     respond_to do |format|
-      format.json { render :text => "OK" }
       format.html { render :show }
+      format.json { render :text => "OK" }
     end
   end
 
@@ -135,8 +135,8 @@ class UsersController < ApplicationController
     current_user.save!
 
     respond_to do |format|
-      format.json { render :text => "OK" }
       format.html { render :show }
+      format.json { render :text => "OK" }
     end
   end
 
@@ -158,8 +158,8 @@ class UsersController < ApplicationController
     @title = t('user.following_title', :username =>@user.username)
 
     respond_to do |format|
-      format.json { render :json => {:following => @users } }
       format.html { render :template => 'users/list'}
+      format.json { render :json => {:following => @users } }
     end
   end
 
@@ -198,8 +198,8 @@ class UsersController < ApplicationController
     @activities = @user.activity_feed.activities
 
     respond_to do |format|
-      format.json { render :json => {:user_feed => @activities.as_json() } }
       format.html
+      format.json { render :json => {:user_feed => @activities.as_json() } }
     end
 
   end
