@@ -43,6 +43,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    query = params[:q]
+
+    @users = User.search_by_username(query)
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {:status =>"success", :users => @users.as_json({:current_user => current_user}) } }
+    end
+  end
+
   def show
     @user = User.find_by_username(params[:id])
 

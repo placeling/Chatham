@@ -26,6 +26,73 @@ describe "Timeline" do
   end
 end
 
+describe "Users search" do
+
+  it "finds same user name" do
+    user = Factory.create(:user, :username => 'test')
+    user1 = Factory.create(:user, :username => 'tyler')
+    user2 = Factory.create(:user, :username => 'ian')
+    user3 = Factory.create(:user, :username => 'lindsay')
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    get search_users_path, {
+       :format => 'json',
+        :q => 'tyler'
+    }
+
+    response.status.should be(200)
+    response_dict = JSON.parse( response.body )
+    users = response_dict['users']
+    users.count.should == 1
+    users[0]['username'].should == user1.username
+
+  end
+
+
+  it "finds a partial name" do
+    user = Factory.create(:user, :username => 'test')
+    user1 = Factory.create(:user, :username => 'tyler')
+    user2 = Factory.create(:user, :username => 'ian')
+    user3 = Factory.create(:user, :username => 'lindsay')
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    get search_users_path, {
+       :format => 'json',
+        :q => 'ty'
+    }
+
+    response.status.should be(200)
+    response_dict = JSON.parse( response.body )
+    users = response_dict['users']
+    users.count.should == 1
+    users[0]['username'].should == user1.username
+
+  end
+
+
+  it "doesn't return anything for non-existent substring" do
+    user = Factory.create(:user, :username => 'test')
+    user1 = Factory.create(:user, :username => 'tyler')
+    user2 = Factory.create(:user, :username => 'ian')
+    user3 = Factory.create(:user, :username => 'lindsay')
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    get search_users_path, {
+       :format => 'json',
+        :q => 'z'
+    }
+
+    response.status.should be(200)
+    response_dict = JSON.parse( response.body )
+    users = response_dict['users']
+    users.count.should == 0
+
+  end
+
+end
 
 describe "Users signup" , :broken => true do
     it "with an email" do

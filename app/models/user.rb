@@ -137,6 +137,10 @@ class User
     self.where( :facebook_id => fid ).first
   end
 
+  def self.search_by_username( username )
+    self.where( :du => /^#{username.downcase}/i).limit( 20 )
+  end
+
   def remove_tokens_for( client_application )
     self.tokens.where(:cid =>client_application.id).delete_all
   end

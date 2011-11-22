@@ -53,4 +53,22 @@ describe User do
     user.should_not be_valid
   end
 
+  it "can be searched for" do
+    user1 = Factory.create(:user, :username => 'tyler')
+    user2 = Factory.create(:user, :username => 'ian')
+    user3 = Factory.create(:user, :username => 'lindsay')
+
+    users = User.search_by_username("ty")
+    users.count.should == 1
+    users[0].id.should == user1.id
+
+    users = User.search_by_username("z")
+    users.count.should == 0
+
+    users = User.search_by_username("tyler")
+    users.count.should == 1
+    users[0].id.should == user1.id
+
+  end
+
 end

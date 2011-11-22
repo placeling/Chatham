@@ -35,6 +35,7 @@ Chatham::Application.routes.draw do
     end
     collection do
       get :suggested
+      get :search
     end
   end
   
@@ -96,6 +97,7 @@ Chatham::Application.routes.draw do
       end
       collection do
         get :suggested
+        get :search
       end
     end
 
