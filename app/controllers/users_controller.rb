@@ -154,7 +154,10 @@ class UsersController < ApplicationController
 
   def followers
     @user = User.find_by_username( params[:id] )
-    @users = @user.followers
+    start_pos = params[:start].to_i
+    count = 20
+
+    @users = @user.followers.skip(start_pos).limit( count )
     @title = t('user.follower_title', :username =>@user.username)
 
     respond_to do |format|
@@ -165,7 +168,10 @@ class UsersController < ApplicationController
 
   def following
     @user = User.find_by_username( params[:id] )
-    @users = @user.following
+    start_pos = params[:start].to_i
+    count = 20
+
+    @users = @user.following.skip(start_pos).limit( count )
     @title = t('user.following_title', :username =>@user.username)
 
     respond_to do |format|

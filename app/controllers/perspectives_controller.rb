@@ -153,7 +153,7 @@ class PerspectivesController < ApplicationController
     long = params[:lng].to_f
 
     count = 20
-        if long.nil? || long == 0
+    if long.nil? || long == 0
       long = params[:long].to_f
     end
 
