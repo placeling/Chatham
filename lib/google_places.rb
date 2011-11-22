@@ -48,14 +48,15 @@ class GooglePlaces
     return false
   end
 
-  def find_nearby(x, y, radius, query = nil, sensor = true, type ="", language ="en")
+  def find_nearby(x, y, radius, query = nil, sensor = true, type_array =[], language ="en")
     #radius is in meters
 
     location = [x,y].join(',')
 
     options = {
       :location => location,
-      :sensor => sensor
+      :sensor => sensor,
+      :types => type_array.join("|")
     }
 
     if !query.nil?

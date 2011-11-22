@@ -7,25 +7,25 @@ class PlacesController < ApplicationController
 
   def nearby
     lat = params[:lat].to_f
-    long = params[:lng].to_f
+    lng = params[:lng].to_f
     radius = params[:accuracy].to_f
     gp = GooglePlaces.new
 
     query = params[:query]
 
-    if long.nil? || long == 0
-      long = params[:long].to_f
+    if lng.nil? || lng == 0
+      lng = params[:long].to_f
     end
 
     if query && query != ""
-      @places = gp.find_nearby(lat, long, radius, query)
+      @places = gp.find_nearby(lat, lng, radius, query)
     else
-      @places = gp.find_nearby(lat, long, radius)
+      @places = gp.find_nearby(lat, lng, radius)
     end
 
     for place in @places
       #add distance to in meters
-      place.distance = (1000 * Geocoder::Calculations.distance_between([lat,long], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)).floor
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.geometry.location.lat,place.geometry.location.lng], :units =>:km)).floor
     end
 
     #TEST: sort by distance rather than popularity
@@ -131,6 +131,7 @@ class PlacesController < ApplicationController
     n = 100
 
     span = 0.2
+    radius = 1000
 
     #preprocess for query
     if query != nil and query.strip != ""
@@ -181,18 +182,40 @@ class PlacesController < ApplicationController
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
     end
 
-    if socialgraph and current_user
+    if current_user and socialgraph
       #TEST: sort by distance rather than popularity
       @places = @places.sort_by { |place| place.distance }
     else
       @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
     end
 
+    if !socialgraph and @places.count < 5
+      gp = GooglePlaces.new
+      #covers "barrie problem" of no content
+      if category != nil and category.strip != ""
+        categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
+        @google_places = gp.find_nearby(lat, lng, radius, nil, true, categories_array)
+      else
+        @google_places = gp.find_nearby(lat, lng, radius)
+      end
+
+      for gplace in @google_places
+        for place in @places
+          if place.id == gplace.id
+            @google_places.delete( gplace )
+            break
+          end
+        end
+      end
+
+      @places = @places + @google_places
+    end
 
     respond_to do |format|
-      format.html
-      format.json { render :json => {:suggested_places => @places} }
+        format.html
+        format.json { render :json => {:suggested_places => @places} }
     end
+
   end
 
 
