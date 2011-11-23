@@ -1,0 +1,4 @@
+<div>
+  <p><%= t'inprogress.wrong' %> <%= link_to "Forget it", user_inprogres_path(:id => @potential_perspective, :user_id => @potential_perspective.user, :address => "forget"), {:confirm => "Are you sure you want to change this address?", :method => :put} %></p>
+  <p><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{@potential_perspective.location[0]},#{@potential_perspective.location[1]}&zoom=16&size=1000x800&sensor=false&markers=color:blue%7C#{@potential_perspective.location[0]},#{@potential_perspective.location[1]}") %></p>
+</div>

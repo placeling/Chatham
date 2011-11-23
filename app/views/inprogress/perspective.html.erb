@@ -1,0 +1,30 @@
+<% if @potential_perspective.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@potential_perspective.errors.count, "error") %> <%= t'inprogress.error2' %></h2>
+
+    <ul>
+    <% @potential_perspective.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="notes">
+<%= form_for ([@user, @potential_perspective], :url => user_inprogres_path) do |f|%>
+    <p class="place_name"><%= @potential_perspective.name %></p>
+    <p><%= t'inprogress.notes' %></p>
+    <p>
+      <%= f.text_area :notes, :class => "notes" %>
+    </p>
+    <p>
+      <p class="instruction"><%= t'inprogress.url' %></p>
+      <%= f.text_field :url, :class => "entry_field" %>
+    </p>
+    <div id="create">
+      <%= f.submit :class => 'button', :value => 'update'%>
+    </div>
+<% end %>
+<div class="instruction"><%= t'inprogress.wrong_place' %> <%= link_to "Forget it", user_inprogres_path(:id => @potential_perspective, :user_id => @potential_perspective.user, :dropplace => "forget"), {:confirm => "Are you sure you want to change this place?", :method => :put} %>
+</div>
+</div>
