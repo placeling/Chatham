@@ -198,9 +198,11 @@ class PerspectivesController < ApplicationController
     end
 
     if @perspective.save
+      @perspective.place.update_tags
+      @perspective.place.save
       respond_to do |format|
         format.html
-        format.json { render :json => @perspective.as_json({:current_user => current_user}) }
+        format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
       end
     else
       respond_to do |format|
