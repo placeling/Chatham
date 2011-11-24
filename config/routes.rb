@@ -22,10 +22,18 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new',      :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
-
+  
   resources :users do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
+    resources :inprogress do
+      member do
+        get :map
+      end
+      collection do
+        get :convert
+      end
+    end
     member do
       get :followers
       get :following
