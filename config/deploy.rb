@@ -5,7 +5,7 @@ set :repository,  "set your repository location here"
 
 task :production do
   set :gateway, 'ubuntu@ec2-174-129-147-96.compute-1.amazonaws.com:11235'
-  server '10.209.115.58', :app, :web, :db, :primary => true
+  server '10.196.210.55', :app, :web, :db, :primary => true
   ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
   set :user, 'ubuntu'
   set :use_sudo, false
