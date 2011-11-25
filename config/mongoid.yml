@@ -17,12 +17,14 @@ staging:
   host: 10.170.90.180
   database: chatham_staging
   raise_not_found_error: false
+  pool_size: 5
 
 # set these environment variables on your prod server
 production:
   host: 10.120.65.248
   database: chatham_production
   raise_not_found_error: false
+  pool_size: 5
   #   - host: slave1.local
   #     port: 27018
   #   - host: slave2.local
