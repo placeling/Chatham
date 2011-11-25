@@ -214,6 +214,7 @@ class InProgressPerspective
       if self.place.nil? and (self.potential_places.nil? or self.potential_places.length == 0)
         placer = GooglePlaces.new
         results = placer.find_nearby(self.location[0], self.location[1], GOOGLE_RADIUS, self.name)
+        sleep 1 # Pause for 1 second so don't ever overload Google Places API requests
         
         if results.length == 1
           # Do not naively assume place is a match. Google Places can return results that are completely off
@@ -236,6 +237,7 @@ class InProgressPerspective
         # If not exact match, get all nearby places and whittle down list
         if self.place.nil?
           results += placer.find_nearby(self.location[0], self.location[1], GOOGLE_RADIUS)
+          sleep 1 # Pause for 1 second so don't ever overload Google Places API requests
           
           found_ids = []
           
