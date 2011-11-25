@@ -32,10 +32,10 @@ class InprogressController < ApplicationController
   def index
     @user = User.where({:username => params[:user_id]})
     
-    @red = InProgressPerspective.where({'user_id' => @user[0].id, :status => "red"}).to_a
-    @yellow = InProgressPerspective.where({'user_id' => @user[0].id, :status => "yellow"}).to_a
-    @green = InProgressPerspective.where({'user_id' => @user[0].id, :status => "green"}).to_a
-    @black = InProgressPerspective.where({'user_id' => @user[0].id, :status => "black"}).to_a
+    @red = InProgressPerspective.where({'user_id' => @user[0].id, :status => "red"}).order_by([:name, :asc]).to_a
+    @yellow = InProgressPerspective.where({'user_id' => @user[0].id, :status => "yellow"}).order_by([:name, :asc]).to_a
+    @green = InProgressPerspective.where({'user_id' => @user[0].id, :status => "green"}).order_by([:name, :asc]).to_a
+    @black = InProgressPerspective.where({'user_id' => @user[0].id, :status => "black"}).order_by([:name, :asc]).to_a
     
     respond_to do |format|
       format.html
