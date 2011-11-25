@@ -205,7 +205,7 @@ class InprogressController < ApplicationController
             @place = Place.new_from_user_input(@place)
             @place.user = current_user
             @place.client_application = current_client_application unless current_client_application.nil?
-            @place.save
+            @place.save!
             
             @potential_perspective.place = @place
           end
@@ -241,9 +241,9 @@ class InprogressController < ApplicationController
     @potential_perspective = InProgressPerspective.find(params[:id])
     @potential_perspective.potential_places.delete_all
     @potential_perspective.destroy
-
+    
     respond_to do |format|
-      format.html { redirect_to(user_inprogress_path(@potential_perspective.user)) }
+      format.html { redirect_to(user_inprogress_path(params[:user_id])) }
     end
   end
 end
