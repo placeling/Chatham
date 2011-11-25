@@ -4,7 +4,7 @@ set :application, "chatham"
 set :repository,  "set your repository location here"
 
 task :production do
-  set :gateway, 'ubuntu@ec2-174-129-147-96.compute-1.amazonaws.com:11235'
+  set :gateway, 'beagle.placeling.com:11235'
   server '10.196.210.55', :app, :web, :db, :primary => true
   ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
   set :user, 'ubuntu'
