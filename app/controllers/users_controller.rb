@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     return unless params[:format] == :json
 
     #intentionally only takes one password (for now)
-    user = User.new(:username =>params[:username],
+    user = User.new(:username =>params[:username].strip,
                     :email =>params[:email],
                     :password =>params[:password],
                     :confirmation_password =>params[:password])
