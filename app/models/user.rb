@@ -18,7 +18,7 @@ class User
   field :email,         :type =>String
   field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
   field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
-  field :creation_environment, :type => String
+  field :creation_environment, :type => String, :default => "production"
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
 
