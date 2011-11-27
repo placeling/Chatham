@@ -64,6 +64,15 @@ class User
   index :facebook_id
   index :du
 
+  after_save :more_test
+
+  def more_test
+    if self.changed?
+      #added cache urls
+      self.save
+    end
+  end
+
   def set_downcase_username
     self.downcase_username = self.username.downcase
   end

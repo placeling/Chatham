@@ -52,7 +52,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    "#{secure_token}.#{file.extension}" if original_filename.present?
+    if !Rails.env.test?
+      "#{secure_token}#{File.extname(original_filename).downcase}" if original_filename
+    else
+      "#{secure_token}.#{file.extension}" if original_filename.present?
+    end
   end
 
   def secure_token
