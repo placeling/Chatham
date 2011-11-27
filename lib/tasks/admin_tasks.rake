@@ -5,6 +5,10 @@ namespace "db" do
 
   desc "Drops the database for mongodb"
   task :drop do
+    if (Rails.env == "production")
+      raise "FUCK OFF, you're trying to reset the database in production"
+      return
+    end
     db = Mongoid::Config.master
     conn = db.connection
 
@@ -14,6 +18,10 @@ namespace "db" do
 
   desc "Reloads the database based the the latest backup from production"
   task :download_and_install do
+    if (Rails.env == "production")
+      raise "FUCK OFF, you're trying to reset the database in production"
+      return
+    end
     db = Mongoid::Config.master
 
     if File.exists?('/tmp/mongodb-latest.tgz')
