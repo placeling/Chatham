@@ -76,7 +76,7 @@
           <ul>
             <p>Is this place:</p>
             <% entry.potential_places.each do |place| %>
-              <li><%= link_to place.name, user_inprogres_path(:id => entry, :user_id => entry.user, :gid => place.id, :ref => place.reference), :method => :put %></li>
+              <li><%= link_to place.name, user_inprogres_path(:id => entry, :user_id => entry.user, :gid => place.gid, :ref => place.reference), :method => :put %></li>
             <% end %>
           </ul>
           <p>None of the above? <%= link_to "Create a new place", edit_user_inprogres_path({:id => entry, :user_id => entry.user}) %></p>

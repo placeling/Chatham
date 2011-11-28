@@ -172,7 +172,7 @@ class InprogressController < ApplicationController
     if params.include?("gid") and params.include?("ref")
       place = Place.find_by_google_id( params[:gid] )
       
-      if @place.nil?
+      if place.nil?
         gp = GooglePlaces.new
         place = Place.new_from_google_place( gp.get_place( params[:ref] ) )
         place.user = current_user
