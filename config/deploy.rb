@@ -44,5 +44,11 @@ namespace :deploy do
   end
 end
 
+namespace :db do
+  task :reload, :roles => :app do
+    run("cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} db:reload")
+  end
+end
+
 require 'config/boot'
 require 'hoptoad_notifier/capistrano'
