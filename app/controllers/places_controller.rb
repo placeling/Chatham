@@ -130,7 +130,7 @@ class PlacesController < ApplicationController
 
     n = 100
 
-    span = 0.2
+    span = 0.02
     radius = 1000
 
     #preprocess for query
