@@ -20,8 +20,8 @@ describe PerspectivesController do
 
   end
 
-  it "should return user and place in its json" do
-
+  it "should return a place with an embedde perspective for its 'show'" do
+    #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
     user = Factory.create(:user)
     place = Factory.create(:place)
     perspective = Factory.create(:perspective, :user =>user, :place =>place)
@@ -30,10 +30,10 @@ describe PerspectivesController do
 
     response.status.should == 200
 
-    perspective = JSON.parse( response.body )
+    json_place = JSON.parse( response.body )
 
-    perspective['place'].should_not be(nil)
-    perspective['user'].should_not be(nil)
+    json_place['referring_perspectives'].should_not be(nil)
+    json_place['_id'].should ==  place.id.to_s
 
   end
 
