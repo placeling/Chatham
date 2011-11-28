@@ -2,24 +2,6 @@ require 'spec_helper'
 
 describe PerspectivesController do
 
-  it "should return associated photos in its json" do
-
-    user = Factory.create(:user)
-    picture = Factory.build(:picture)
-    perspective = Factory.create(:perspective, :user =>user)
-    picture = perspective.pictures.build
-    picture.save
-
-    get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
-
-    response.status.should == 200
-
-    perspective = JSON.parse( response.body )
-
-    perspective['pictures'].should_not be(nil)
-
-  end
-
   it "should return a place with an embedde perspective for its 'show'" do
     #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
     user = Factory.create(:user)
