@@ -132,7 +132,7 @@ class PerspectivesController < ApplicationController
     @user_perspective = current_user.star( @perspective )
 
     respond_to do |format|
-      format.json { render :json =>{:result => "starred", :perspective =>@user_perspective } }
+      format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }
     end
   end
 
