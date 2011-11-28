@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PerspectivesController, :broken=> true do
+describe PerspectivesController do
 
   it "should return associated photos in its json" do
 
@@ -12,7 +12,7 @@ describe PerspectivesController, :broken=> true do
 
     get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
 
-    response.status.should be(200)
+    response.status.should == 200
 
     perspective = JSON.parse( response.body )
 
@@ -28,7 +28,7 @@ describe PerspectivesController, :broken=> true do
 
     get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
 
-    response.status.should be(200)
+    response.status.should == 200
 
     perspective = JSON.parse( response.body )
 
@@ -37,11 +37,23 @@ describe PerspectivesController, :broken=> true do
 
   end
 
-  it "should return a 404 for a non-existent perspective" do
 
-    get :show, :id => "BLAH", :format => :json
+  it "returns parent perspective after a starring" do
+    user = Factory.create(:user)
+    perspective = Factory.create(:perspective)
 
-    response.status.should be(200)
-  end
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    sign_in user
+
+    post :star, :id => perspective.id, :format => :json
+
+    response.status.should == 200
+
+    json_perspective = JSON.parse( response.body )
+
+    json_perspective['perspective'].should_not be(nil)
+    json_perspective['perspective']['plid'].should == perspective.place.id.to_s
+
+   end
 
 end

@@ -190,6 +190,8 @@ class User
     perspective.save
 
     ActivityFeed.add_star_perspective(self, perspective.user, perspective)
+
+    return user_perspective
   end
 
   def unstar( perspective )

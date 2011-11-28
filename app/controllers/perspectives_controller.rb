@@ -90,7 +90,7 @@ class PerspectivesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
+      format.json { render :json => @perspective.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
     end
   end
 
