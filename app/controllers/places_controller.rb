@@ -208,7 +208,13 @@ class PlacesController < ApplicationController
         end
       end
 
+      for place in @google_places
+        #add distance to in meters
+        place.location = [place.geometry.location.lat, place.geometry.location.lng]
+      end
+
       @places = @places + @google_places
+
     end
 
     respond_to do |format|
