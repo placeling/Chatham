@@ -189,7 +189,7 @@ class PlacesController < ApplicationController
       @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
     end
 
-    if !socialgraph and @places.count < 5
+    if false #!socialgraph and @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
@@ -208,8 +208,10 @@ class PlacesController < ApplicationController
         end
       end
 
+      #this doesn't really work
       for place in @google_places
         #add distance to in meters
+        place['_id'] = place.reference
         place.location = [place.geometry.location.lat, place.geometry.location.lng]
       end
 
