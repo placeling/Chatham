@@ -31,25 +31,31 @@ class Picture
 
   def thumb_url
     if Rails.env == self.creation_environment
-      return self.image_url(:thumb)
+      self.image_url(:thumb)
+    elsif thumb_cache_url
+      thumb_cache_url
     else
-      return thumb_cache_url
+      return "http://placeling.com/images/default_profile.png"
     end
   end
 
   def iphone_url
     if Rails.env == self.creation_environment
-      return self.image_url(:iphone)
+      self.image_url(:iphone)
+    elsif iphone_cache_url
+      iphone_cache_url
     else
-      return iphone_cache_url
+      return "http://placeling.com/images/default_profile.png"
     end
   end
 
   def main_url
     if Rails.env == self.creation_environment
-      return self.image_url(:main)
+      self.image_url(:main)
+    elsif main_cache_url
+      main_cache_url
     else
-      return main_cache_url
+      return "http://placeling.com/images/default_profile.png"
     end
   end
 
