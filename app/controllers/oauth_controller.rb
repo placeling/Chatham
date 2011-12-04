@@ -5,14 +5,14 @@ class OauthController < ApplicationController
 
   def login_fb
     return unless params[:format] == :json
-    return unless current_client_application.secret == "kODuCtHsB0poBe62J3FfWB2rCEUeyeYQkEWW0R6i"
+
     fb_token = params["FBAccessTokenKey"]
-    fbid = params["facebook_id"].to_i
+    fbid = params["facebook_id"]
 
-    user = User.find_by_facebook_id( fbid )
+    auth = Authentication.find_by_provider_and_uid("facebook",fbid)
 
-    if user #&& user.facebook_access_token == fb_token
-      #tokens match, authenticated user
+    if auth && auth.token == fb_token
+      user = auth.user
       # get rid of old auth tokens
 
       #user.remove_tokens_for( current_client_application )
