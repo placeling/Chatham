@@ -1,5 +1,8 @@
 Chatham::Application.routes.draw do
 
+  get "authentications/index"
+  get "authentications/create"
+
   get "/feeds/home_timeline",  :to => "home#home_timeline",   :as => :home_feed
   get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
   get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
@@ -12,6 +15,7 @@ Chatham::Application.routes.draw do
 
   devise_for :users
 
+  match '/auth/:provider/callback' => 'authentications#create'
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
   match '/oauth/access_token',  :to => 'oauth#access_token_with_xauth_test',  :as => :access_token
@@ -106,6 +110,7 @@ Chatham::Application.routes.draw do
       collection do
         get :suggested
         get :search
+        get :add_facebook
       end
     end
 
