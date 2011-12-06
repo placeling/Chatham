@@ -285,6 +285,9 @@ class PlacesController < ApplicationController
       @place = Place.find_by_google_id( params[:id] )
     end
 
+    #raise a 404 if the place isn't found
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
+
     if @place.nil? && params['google_ref'] # && current_user
       #not here, and we need to fetch it
       gp = GooglePlaces.new
