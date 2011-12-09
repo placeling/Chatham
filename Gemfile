@@ -15,6 +15,9 @@ gem "bson_ext", "~> 1.3"
 
 gem "oauth", ">= 0.4.4"
 gem "devise", "~> 1.4.2"
+gem "omniauth"
+
+gem "fb_graph"
 
 gem "system_timer"
 gem "httparty"

@@ -5,33 +5,39 @@
       "Movie Theater" : "movie_theater",
       "Night Club" : "night_club"
     },
-  "Government & Religion" : { "Cemetery" : "cemetery",
-      "Church" : "church",
+  "Government" : {
       "City Hall" : "city_hall",
       "Courthouse" : "courthouse",
       "Embassy" : "embassy",
       "Fire Station" : "fire_station",
-      "Hindu Temple" : "hindu_temple",
       "Local Government Office" : "local_government_office",
-      "Mosque" : "mosque",
-      "Place of Worship" : "place_of_worship",
       "Police" : "police",
       "Post Office" : "post_office",
       "School" : "school",
-      "Synagogue" : "synagogue",
       "University" : "university"
     },
-  "Health & Beauty" : { "Beauty Salon" : "beauty_salon",
+  "Religion" : {
+      "Cemetery" : "cemetery",
+      "Church" : "church",
+      "Synagogue" : "synagogue",
+      "Mosque" : "mosque",
+      "Place of Worship" : "place_of_worship",
+      "Hindu Temple" : "hindu_temple"
+  },
+  "Health" : {
       "Dentist" : "dentist",
       "Doctor" : "doctor",
-      "Gym" : "gym",
-      "Hair Care" : "hair_care",
       "Health" : "health",
       "Hospital" : "hospital",
       "Pharmacy" : "pharmacy",
       "Physiotherapist" : "physiotherapist",
-      "Spa" : "spa",
       "Veterinarian" : "veterinary_care"
+    },
+    "Beauty" : {
+      "Beauty Salon" : "beauty_salon",
+      "Gym" : "gym",
+      "Hair Care" : "hair_care",
+      "Spa" : "spa"
     },
   "Interesting & Outdoors" : { "Amusement Park" : "amusement_park",
       "Aquarium" : "aquarium",

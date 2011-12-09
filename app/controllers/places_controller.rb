@@ -128,6 +128,8 @@ class PlacesController < ApplicationController
     category = params[:category]
     socialgraph = params[:socialgraph].downcase == "true"
 
+    barrie = params[:barrie]
+
     n = 100
 
     span = 0.02
@@ -189,7 +191,7 @@ class PlacesController < ApplicationController
       @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
     end
 
-    if false #!socialgraph and @places.count < 5
+    if !barrie.nil? and !socialgraph and @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
@@ -211,7 +213,8 @@ class PlacesController < ApplicationController
       #this doesn't really work
       for place in @google_places
         #add distance to in meters
-        place['_id'] = place.reference
+        place['place_id'] = place.id
+        place['google_ref'] = place.reference
         place.location = [place.geometry.location.lat, place.geometry.location.lng]
       end
 
@@ -290,6 +293,9 @@ class PlacesController < ApplicationController
       @place.client_application = current_client_application unless current_client_application.nil?
       @place.save!
     end
+
+    #raise a 404 if the place isn't found
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
 
     if current_user
       @following_perspectives = current_user.following_perspectives_for_place( @place )

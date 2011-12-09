@@ -109,9 +109,8 @@ class Place
     n = CHATHAM_CONFIG['max_returned_map']
 
     #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    perspectives = Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        and(:uid => user.id).
-        limit( n )
+    perspectives = Perspective.where(:uid => user.id).
+        and(:ploc.within => {"$center" => [[lat,long],span]})
 
     places = []
     for perspective in perspectives

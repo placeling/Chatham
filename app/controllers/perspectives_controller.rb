@@ -67,11 +67,12 @@ class PerspectivesController < ApplicationController
       @place = Place.find_by_google_id( params['place_id'] )
     end
 
-    @perspectives = current_user.following_perspectives_for_place( @place )
-    perspectives_count = @perspectives.count
+    @following_perspectives = current_user.following_perspectives_for_place( @place )
+    perspectives_count = @following_perspectives.count
 
-    for perspective in @perspectives
-      @perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    @perspectives = []
+    for perspective in @following_perspectives
+      @perspectives << perspective unless perspective.empty_perspective?
     end
 
     respond_to do |format|
@@ -102,11 +103,11 @@ class PerspectivesController < ApplicationController
       @place = Place.find_by_google_id( params['place_id'] )
     end
 
-    @perspectives = @place.perspectives
-    perspectives_count = @perspectives.count
-
-    for perspective in @perspectives
-      @perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    @all_perspectives = @place.perspectives
+    perspectives_count = @all_perspectives.count
+    @perspectives = []
+    for perspective in @all_perspectives
+      @perspectives << perspective unless perspective.empty_perspective?
     end
 
     respond_to do |format|

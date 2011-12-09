@@ -1,26 +1,30 @@
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:update, :follow, :unfollow]
+  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook]
 
   def create
     return unless params[:format] == :json
 
-    #intentionally only takes one password (for now)
-    user = User.new(:username =>params[:username].strip,
-                    :email =>params[:email],
-                    :password =>params[:password],
-                    :confirmation_password =>params[:password])
-
     lat = params[:lat].to_f
     long = params[:long].to_f
-    user.location = [lat, long]
 
     if (params[:facebook_access_token])
-      user.facebook_access_token = params[:facebook_access_token]
-      user.facebook_id = params[:facebook_id].to_i
+      user = User.new(:username =>params[:username].strip,
+            :email =>params[:email], :password => Devise.friendly_token[0,20])
+
+      auth = user.authentications.build(:provider => "facebook", :uid =>params[:facebook_id], :token => params[:facebook_access_token])
+    else
+      user = User.new(:username =>params[:username].strip,
+                  :email =>params[:email],
+                  :password =>params[:password],
+                  :confirmation_password =>params[:password])
     end
 
+    user.location = [lat, long]
+
     if user.save
+      auth.save! unless auth.nil?
+
       if current_client_application
         #send back some access keys so user can immediately start
         request_token = current_client_application.create_request_token
@@ -41,6 +45,13 @@ class UsersController < ApplicationController
         format.json { render :json => {:status => "fail", :message => user.errors} }
       end
     end
+  end
+
+  def add_facebook
+    user = current_user
+    user.facebook_access_token = params[:facebook_access_token]
+    user.facebook_id = params[:facebook_id].to_i
+    user.save
   end
 
   def search
