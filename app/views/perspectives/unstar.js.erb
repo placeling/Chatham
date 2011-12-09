@@ -1,0 +1,11 @@
+$("#perspective_<%= @perspective.id %> .interact").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star" %></a>');
+$('#perspective_<%= @perspective.id %> .star_link').hover(
+  function() {
+    $('img', this).attr('src', '/images/starred.png');
+    $('img', this).css({'opacity':'0.4'});
+  }, 
+  function() {
+    $('img', this).attr('src', '/images/unstarred.png');
+    $('img', this).css({'opacity':'1.0'});
+  }
+);

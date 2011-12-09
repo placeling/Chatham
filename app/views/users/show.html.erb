@@ -1,34 +1,22 @@
-
-
-
-  <table>
-    <tr>
-      <td>
-        <%= image_tag @user.thumb_url %>
-      </td>
-      <td>
-        <h1><%= @user.username %></h1>
-        <%= @user.description %>
-      </td>
-      <td>
-        <b><%= t('place.places') %>:</b> <%= @user.perspectives.count %><br>
-        <a href="<%= following_user_path(@user) %>"><b><%= t('user.following') %>:</b> <%= @user.following.count %></a><br>
-        <a href="<%= followers_user_path(@user) %>"><b><%= t('user.followers') %>:</b> <%= @user.followers.count %></a><br>
-      </td>
-
-    </tr>
-
-
-  </table>
-
-
-    <div class="box_content padding">
-        <ul>
-          <% @user.perspectives.order_by([:created_at, :desc]).each do |perspective|%>
-              <li>
-                <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
-               </li>
-          <% end %>
-        </ul>
+<div>
+  <div id="userdetails">
+    <%= render :partial => "detail", :locals => {:user => @user} %>    
+  </div>
+  <div id="perspectives">
+    <div>
+      <div class="image_lead" href="testtest">
+        <%= image_tag "plane.png", :alt=>"Plane" %>
+      </div>
+      <div class="content_type">
+        <p><%=t('user.recent_activity') %></p>
+      </div>
     </div>
-
+    <ul id="perspectives_list">
+      <% @user.perspectives.order_by([:created_at, :desc]).each do |perspective|%>
+          <li>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+           </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,31 +1,56 @@
-<li id="perspective_<%=perspective.id %>">
-
-    <% if source == :user %>
-        <h2><%= link_to perspective.place.name, place_path(perspective.place)   %></h2>
-    <% else %>
-        <h2><%= link_to perspective.user.username, user_path(perspective.user)   %></h2>
-    <% end %>
-
-    <p><%= perspective.memo %></p>
-
-
-    <table width="100%">
-      <tr>
-      <% perspective.pictures.each_with_index do |photo, i|  %>
-        <td width="130px"><%= image_tag photo.thumb_url %></td>
-
-        <% if i % 6 == 5 %>
-            </tr>
-            <tr>
+<li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
+    <div class="interact">
+      <% if current_user != perspective.user %>
+        <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
+          <% if current_user && perspective.su.include?(current_user.id) %>
+            <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link">
+              <%= image_tag "starred.png", :alt=>"Unstar" %>
+            </a>
+          <% else %>
+            <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(perspective) %>" class="star_link">
+              <%= image_tag "unstarred.png", :alt=>"Star" %>
+            </a>
+          <% end %>
         <% end %>
-
       <% end %>
-
-      </tr>
-    </table>
-
-    <ul class="newsinfo">
-        <li><%= perspective.updated_at %></li>
-        <li class="last"> <%= perspective.tags.join(",") unless perspective.tags.nil? %></li>
-    </ul>
+    </div>
+    <div class="detail">
+      <div class="name">
+        <%= link_to perspective.place.name, place_path(perspective.place) %>
+      </div>
+      <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
+        <div class="memo_wrapper">
+          <%= simple_format(perspective.memo, :class=>"memo") %>
+        </div>
+      <% end %>
+      <% if perspective.pictures.length > 0 %>
+        <div class="lightboxGallery">
+        <% perspective.pictures.each_with_index do |photo, i| %>
+          <% if !photo.deleted %>
+            <div class="photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
+          <% end %>
+        <% end %>
+        </div>
+        <div class="image_clear"></div>
+      <% end %>
+      <div class="perspective_footer <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>footer_spacer<% end %>">
+        <span class="footer_elements footer_text_elements updated">
+          <%=t('perspective.last_updated') %> <%= perspective.updated_at.strftime('%B %d, %Y') %>
+        </span>
+        <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
+        <span class="twitter footer_elements">
+          <a href="https://twitter.com/share?url=http://www.placeling.com<%= perspective_path(perspective) %>&text=<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+        </span>
+        <span class="facebook footer_elements">
+          <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= perspective_path(perspective) %>')+'&t='+e('<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
+        </span>
+        <span class="footer_elements">
+          <a href="http://www.placeling.com<%= perspective_path(perspective) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+        </span>
+        <span class="footer_elements footer_text_elements flag">
+          <%= link_to(t('perspective.flag'), flag_perspective_path(perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+        </span>
+        <% end %>
+      </div>
+    </div>
 </li>

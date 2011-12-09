@@ -1,0 +1,4 @@
+$('#follow_action').html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => "follow", :controller => "users") %>"><div class="follow_link">Follow</div></a>');
+var followers = parseInt($('#follower_count').text());
+followers -= 1;
+$('#follower_count').text(followers);

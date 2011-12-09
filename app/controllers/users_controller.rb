@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:id])
-
+    
     #this is the final step in routes, if this doesn't work its a 404 -iMack
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
@@ -133,6 +133,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render :show }
+      format.js
       format.json { render :text => "OK" }
     end
   end
@@ -147,6 +148,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render :show }
+      format.js
       format.json { render :text => "OK" }
     end
   end

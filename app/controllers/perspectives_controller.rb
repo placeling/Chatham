@@ -122,6 +122,7 @@ class PerspectivesController < ApplicationController
     @perspective.save
 
     respond_to do |format|
+      format.js
       format.json { render :json =>{:result => "flagged"} }
     end
   end
@@ -132,6 +133,7 @@ class PerspectivesController < ApplicationController
     @user_perspective = current_user.star( @perspective )
 
     respond_to do |format|
+      format.js
       format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }
     end
   end
@@ -141,6 +143,7 @@ class PerspectivesController < ApplicationController
     current_user.unstar( @perspective )
 
     respond_to do |format|
+      format.js
       format.json { render :json =>{:result => "unstarred"} }
     end
   end

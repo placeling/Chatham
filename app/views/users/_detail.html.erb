@@ -1,0 +1,51 @@
+<div id="profilepic">
+  <div><%= image_tag user.thumb_url, :alt=>"Profile Pic", :class =>"styled_pic" %></div>
+  <div id="follow_action">
+    <% if current_user != user %>
+      <% if current_user && current_user.following.include?(user) %>
+        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'unfollow', :controller => 'users')%>"><div class="follow_link"><%= t('user.unfollow') %></div></a>
+      <% else %>
+        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'follow', :controller => 'users') %>"><div class="follow_link"><%= t('user.follow') %></div></a>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div id="user_overview">
+  <div id="summary">
+    <p class="username"><%= user.username %></p>
+    <p class="description"><%= user.description %></p>
+  </div>
+  <div id="tombstones">
+    <div id="num_places" class="tombstone">
+      <a href="<%= user_path(user) %>">
+        <p class="count"><%= user.perspectives.count %></p>
+        <p class="measure"><%= t('user.places') %></p>
+      </a>
+    </div>
+    <div id="num_following" class="tombstone">
+      <a href="<%= following_user_path(user) %>">
+        <p class="count"><%= user.following.count %></p>
+        <p class="measure"><%= t('user.following') %></p>
+      </a>
+    </div>
+    <div id="num_followers" class="tombstone">
+      <a href="<%= followers_user_path(user) %>">
+        <p class="count" id="follower_count"><%= user.followers.count %></p>
+        <p class="measure"><%= t('user.followers') %></p>
+      </a>
+    </div>
+    <div class="tombstone_clear"></div>
+  </div>
+  <div id="profile_share">
+      <span class="social">
+        <a href="https://twitter.com/share?url=http://www.placeling.com<%= user_path(user) %>&text=<%= u user.username %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+      </span>
+      <span class="social">
+        <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= user_path(user) %>')+'&t='+e('<%= u user.username %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
+      </span>
+      <span class="social">
+        <a href="http://www.placeling.com<%= user_path(user) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+      </span>
+  </div>
+</div>
+
