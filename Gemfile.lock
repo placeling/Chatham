@@ -303,7 +303,7 @@ DEPENDENCIES
   nested_form
   oauth (>= 0.4.4)
   oauth-plugin!
-  omniauth
+  omniauth (~> 0.3.2)
   rails (= 3.0.3)
   rspec-rails (~> 2.6)
   system_timer
