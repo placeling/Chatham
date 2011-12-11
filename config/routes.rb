@@ -16,6 +16,9 @@ Chatham::Application.routes.draw do
   devise_for :users
 
   match '/auth/:provider/callback' => 'authentications#create'
+  match '/auth/:provider/add' => 'authentications#add'
+  match '/auth/:provider/login' => 'authentications#add'
+
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
   match '/oauth/token',         :to => 'oauth#token',         :as => :token
   match '/oauth/access_token',  :to => 'oauth#access_token_with_xauth_test',  :as => :access_token
@@ -26,7 +29,7 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new',      :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
-  
+
   resources :users do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
@@ -97,6 +100,9 @@ Chatham::Application.routes.draw do
     get "/admin/terms_of_service", :to => 'admin#terms_of_service'
     get "/admin/privacy_policy", :to => 'admin#privacy_policy'
     post '/oauth/login_fb',      :to => 'oauth#login_fb',      :as => :login_fb
+    match '/auth/:provider/callback' => 'authentications#create'
+    match '/auth/:provider/add' => 'authentications#add'
+    match '/auth/:provider/login' => 'authentications#add'
 
     resources :users do
       resources :perspectives, :only =>[:index]
