@@ -6,6 +6,7 @@ class Authentication
   field :p, :as => :provider, :type =>String
   field :uid, :type => String
   field :token, :type => String
+  field :expiry, :type =>String
 
   field :dict, :type => Hash
 
