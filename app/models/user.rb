@@ -26,8 +26,6 @@ class User
   field :admin,       :type => Boolean, :default => false
 
   field :url, :type => String, :default => ""
-  field :facebook_access_token, :type => String
-  field :facebook_id, :type => Integer
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
@@ -52,14 +50,13 @@ class User
   validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
   validates_length_of :username, :within => 3..20, :too_long => "pick a shorter username", :too_short => "pick a longer username"
   validates_uniqueness_of :username, :email, :case_sensitive => false
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :facebook_access_token
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description
 
   index :unm
   index :email
   index :pc
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :fp, :background => true
-  index :facebook_id
   index :du
 
   after_save :more_test
@@ -86,10 +83,8 @@ class User
   end
 
   def acceptable_password
-    if !self.facebook_id
-      if SHITTY_PASSWORDS.include? @password
-        errors.add :password, I18n.t('user.shitty_password')
-      end
+    if SHITTY_PASSWORDS.include? @password
+      errors.add :password, I18n.t('user.shitty_password')
     end
   end
 
@@ -150,10 +145,6 @@ class User
 
   def self.find_by_username( username )
     self.where( :du => username.downcase ).first
-  end
-
-  def self.find_by_facebook_id( fid )
-    self.where( :facebook_id => fid ).first
   end
 
   def self.search_by_username( username )
@@ -260,7 +251,12 @@ class User
       #check against raw ids so it doesnt have to go back to db
       following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
       follows_you = self['following_ids'].include?( options[:current_user].id )
-      attributes = attributes.merge(:following => following, :follows_you => follows_you, :email => self.email, :location=>self[:loc])
+      attributes = attributes.merge(:following => following, :follows_you => follows_you, :location=>self[:loc])
+      if self.id == current_user.id
+        for auth in current_user.authentications
+          attributes = attributes.merge(auth.provider => auth)
+        end
+      end
     else
       current_user = nil
     end
@@ -275,7 +271,14 @@ class User
   end
 
   def facebook
-    @fb_user ||= FbGraph::User.me(self.authentications.find_by_provider('facebook').token)
+    for auth in self.authentications
+      if auth.provider == 'facebook'
+        return auth
+      end
+    end
+    return nil
+
+   # @fb_user ||= FbGraph::User.me(self.authentications.find_by_provider('facebook').token)
   end
 
   protected
