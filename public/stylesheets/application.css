@@ -59,7 +59,7 @@ a img {
 }
 
 #logo span {
-  background-image:url(http://localhost:3000/images/logo.png);
+  background-image:url(/images/logo.png);
   background-origin:initial;
   background-position:initial initial;
   background-repeat:no-repeat no-repeat;
@@ -107,7 +107,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 =====================================================================*/
 #container {
   min-height: 100%;
-  background-image: url(http://localhost:3000/images/background_pattern.png);
+  background-image: url(/images/background_pattern.png);
 }
 
 #wrapper {
@@ -116,7 +116,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 }
 
 #footerbottom {
-  background-image:url(http://localhost:3000/images/sidewalk.png);
+  background-image:url(/images/sidewalk.png);
   position: relative;
   margin-top: -41px;
   height:41px;
@@ -133,7 +133,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 /* Profile Page
 =====================================================================*/
 #userdetails {
-  background-image:url(http://localhost:3000/images/top_texture.png);
+  background-image:url(/images/top_texture.png);
   height: 304px;
   -moz-box-shadow: inset 0 0 5px #888;
   -webkit-box-shadow: inset 0 0 5px#888;
@@ -158,7 +158,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 
 .follow_link {
   width: 172px;
-  background-image:url(http://localhost:3000/images/red_background.png);
+  background-image:url(/images/red_background.png);
   padding: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
