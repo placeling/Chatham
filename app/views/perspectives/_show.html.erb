@@ -2,22 +2,37 @@
     <div class="interact">
       <% if current_user != perspective.user %>
         <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
-          <% if current_user && perspective.su.include?(current_user.id) %>
-            <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link">
-              <%= image_tag "starred.png", :alt=>"Unstar" %>
-            </a>
-          <% else %>
-            <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(perspective) %>" class="star_link">
-              <%= image_tag "unstarred.png", :alt=>"Star" %>
-            </a>
+          <% if source == "place_page" %>
+            <div class="placemark_it">
+          <% end %>
+            <% if current_user && perspective.su.include?(current_user.id) %>
+              <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link">
+                <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
+              </a>
+            <% else %>
+              <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(perspective) %>" class="star_link">
+                <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
+              </a>
+            <% end %>
+          <% if source == "place_page" %>
+            </div>
           <% end %>
         <% end %>
       <% end %>
     </div>
     <div class="detail">
+      <% if !(current_user == perspective.user && source == "place_page") %>
       <div class="name">
-        <%= link_to perspective.place.name, place_path(perspective.place) %>
+        <% if source == "place_page" %>
+          <% if source == "place_page" %>
+            <%= image_tag perspective.user.thumb_url, :alt=>"Pic", :class =>"styled_mini" %>
+          <% end %>
+          <%= link_to perspective.user.username, user_path(perspective.user), :class => "username_link" %>
+        <% else %>
+          <%= link_to perspective.place.name, place_path(perspective.place) %>
+        <% end %>
       </div>
+      <% end %>
       <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
         <div class="memo_wrapper">
           <%= simple_format(perspective.memo, :class=>"memo") %>

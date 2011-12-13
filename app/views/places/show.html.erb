@@ -1,31 +1,57 @@
-
-    <table>
-        <tr>
-          <td>
-            <%= render :partial => "home/google_static_map", :locals => {:location =>@place.location} %>
-          </td>
-
-          <td>
-            <h2><%= @place.name %></h2>
-            <div id="address_line"><%= @place.street_address %></div>
-            <div id="city_line"><%= @place.city_data %></div>
-            <div id="loc_line"><%= @place.location[0].to_s + "," + @place.location[1].to_s  %> </div>
-          </td>
-        </tr>
-    </table>
-
-    <h2>Your Network</h2>
-        <% if @following_perspectives %>
-            <ul id="network_perspectives">
-                <% @following_perspectives.each do |perspective|%>
-                    <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>:place} %>
-                <% end %>
-            </ul>
+<div id="placedetails">
+  <%= render :partial => "detail", :locals => {:place => @place, :my_perspective => @my_perspective} %>    
+</div>
+<div id="perspectives">
+  <div>
+    <div class="image_lead">
+      <%= image_tag "plane.png", :alt=>"Plane" %>
+    </div>
+    <div class="content_type">
+      <p><%=t('place.notes_and_photos') %></p>
+    </div>
+    <% if current_user.nil? %>
+      <div class="call_to_action perspective_group header_group">
+        <%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %><%= t'place.call_to_action'%>
+      </div>
+    <% else %>
+      <% if @my_perspective && (!(@my_perspective.memo.nil? || @my_perspective.memo.length == 0) && !(@my_perspective.pictures.nil? || @my_perspective.pictures.length == 0))%>
+        <div id="my_perspective" class="perspective_group">
+          <div id="you_header" class="header_group">
+            <%= image_tag "green_tab.png", :alt=>"you", :class=>"tab" %>
+            <div class="group_title me"><%= t('place.your_notes') %></div>
+          </div>
+          <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page"} %>
+        </div>
+      <% end %>
+      <% if @follow_perspectives_count > 0 %>
+      <div id="following_perspectives" class="perspective_group">
+        <div id="follow_header" class="header_group">
+          <%= image_tag "red_tab.png", :alt=>"following", :class=>"tab" %>
+          <div class="group_title">
+            <div class="others"><%= t('place.following_notes') %></div>
+            <div class="others_count"><%= t('place.place_lead') %><%= @follow_perspectives_count %><% if @follow_perspectives_count == 1 %><%= t('place.singular') %><% else %><%= t('place.plural') %><% end %><%= t('place.place_trail') %></div>
+          </div>
+        </div>
+        <% @following_perspectives.each do |perspective|%>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %>
         <% end %>
-
-    <h2>Everyone</h2>
-    <ul id="everyone_perspectives">
-        <% @all_perspectives.each do |perspective|%>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>:place} %>
+      </div>
+      <% end %>
+    <% end %>
+    <% if @else_perspective_count > 0 %>
+    <div id= "all_perspectives" class="perspective_group">
+      <div id="all_header" class="header_group">
+        <%= image_tag "red_tab.png", :alt=>"everyone",:class=>"tab" %>
+        <% if current_user %>
+          <div class="group_title others"><%= t('place.everyone_else_notes') %></div>
+        <% else %>
+          <div class="group_title others"><%= t('place.everyone_notes') %></div>
         <% end %>
-    </ul>
+      </div>
+      <% @all_perspectives.each do |perspective|%>
+          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+</div>
