@@ -1,4 +1,6 @@
+$('#placemark').fadeOut(100);
 $("#placemark").html("<div class='placemarked'><%= t('place.placemarked') %></div>");
+$('#placemark').fadeIn(200);
 var followers = parseInt($('#placemark_count').text());
 followers += 1;
 $('#placemark_count').text(followers);
