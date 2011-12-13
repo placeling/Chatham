@@ -49,13 +49,14 @@ a img {
 }
 
 #logo{
-  width:160px;
+  width:200px;
   height:62px;
   font-size:12px;
   position:relative;
   overflow:hidden;
   display:inline;
   float:left;
+  margin-left: 10px;
 }
 
 #logo span {
