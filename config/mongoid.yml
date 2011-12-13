@@ -21,7 +21,7 @@ staging:
 
 # set these environment variables on your prod server
 production:
-  host: 10.123.15.145
+  host: ec2-107-22-193-101.compute-1.amazonaws.com
   database: chatham_production
   raise_not_found_error: false
   pool_size: 2
