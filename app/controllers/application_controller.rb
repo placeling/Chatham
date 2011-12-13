@@ -4,6 +4,15 @@ class ApplicationController < ActionController::Base
 
   alias :logged_in? :user_signed_in?
 
+
+  before_filter :log_request
+
+  protected
+
+  def log_request
+    logger.info("Started #{request.method} #{request.url}")
+  end
+
   def api_check
     if params[:api_call]
       oauth_app_required
