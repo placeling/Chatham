@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
 
   def log_request
     logger.info("Started #{request.method} #{request.url}")
+    for header in request.env.select {|k,v| k.match("^HTTP.*")}
+      logger.info("HEADER #{header}")
+    end
   end
 
   def after_sign_in_path_for(resource)
