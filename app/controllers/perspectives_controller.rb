@@ -4,10 +4,13 @@ class PerspectivesController < ApplicationController
   def new
     @place = Place.find(params[:place_id])
     @perspective = Perspective.new
-    @perspective.pictures.build
+    @perspective.user = current_user
+    @perspective.place = @place
+    
+    @perspective.save
     
     respond_to do |format|
-      format.html
+      format.js
     end
   end
   

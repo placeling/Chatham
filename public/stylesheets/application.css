@@ -178,7 +178,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 .username {
   color: #e08574;
   width: 400px;
-  font-size: 60px;
+  font-size: 30px;
 }
 
 #perspectives {
@@ -255,11 +255,6 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   clear: both;
 }
 
-.interact {
-  margin-left: 162px;
-  margin-top: 10px;
-}
-
 #tombstones {
   height: 72px;
 }
@@ -286,7 +281,12 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 }
 
 .interact {
+  margin-left: 193px;
   float: left;
+}
+
+.star_image {
+  height: 96px;
 }
 
 .detail {
@@ -311,7 +311,12 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   width: 600px;
 }
 
+.call_to_action {
+  font-size: 24px;
+}
+
 .lightboxGallery {
+  margin-top: 5px;
   width: 650px;
 }
 
@@ -322,7 +327,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 }
 
 .perspective_photo {
-  max-height: 107px;
+  height: 107px;
 }
 
 .image_clear {
@@ -369,6 +374,11 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   width: 210px;
 }
 
+.inline_profile_pic {
+  margin-left: -15px;
+  margin-bottom: 5px;
+}
+
 /* Followers/following
 =====================================================================*/
 #users {
@@ -407,6 +417,119 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 .user_summary {
   clear: both;
   margin-bottom: 25px;
+}
+
+/* Place Page
+=====================================================================*/
+#placedetails {
+  background-image:url(/images/place_top_texture.png);
+  min-height: 334px;
+  -moz-box-shadow: inset 0 0 5px #888;
+  -webkit-box-shadow: inset 0 0 5px#888;
+  box-shadow: inner 0 0 5px #888;
+}
+
+#map {
+  float: left;
+  padding-top: 50px;
+  padding-left: 50px;
+}
+
+#summary {
+  margin-bottom: 10px;
+}
+
+.placemarked {
+  width: 172px;
+  background-image:url(/images/green_background.png);
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid #376F94;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 14px;
+}
+
+#place_overview {
+  margin-left: 268px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.placename {
+  color: white;
+  width: 800px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.google_url {
+  font-size: 12px;
+}
+
+a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.google_url:focus {
+  color: white;
+}
+
+.address {
+  width: 400px;
+  opacity:.90;
+  filter:alpha(opacity=90);
+  filter: “alpha(opacity=90)”;
+}
+
+.placemark {
+  font-size: 11px;
+}
+
+.tab {
+  float: left;
+}
+
+.header_group {
+  margin-left: 222px;
+  margin-bottom: 20px;
+}
+
+.group_title {
+  margin-left: 45px;
+}
+
+.perspective_group {
+  clear: both;
+  margin-bottom: 20px;
+}
+
+.me {
+  color: #1F8B88;
+  font-size: 24px;
+}
+
+.others {
+  color: #A34837;
+  font-size: 24px;
+}
+
+.others_count {
+  font-size: 12px;
+}
+
+.styled_mini {
+  border: 2px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 1px 0 #888;
+  -webkit-box-shadow: 0 0 1px 0 #888;
+  box-shadow: 0 0 1px 0 #888;
+  max-width:25px;
+  max-height:25px;
+  float:left;
+}
+
+.username_link {
+  margin-left: 5px;
 }
 
 #userpanel #blah .subnav li a  { width:66px; min-width:50px; }

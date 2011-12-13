@@ -297,7 +297,10 @@ class PlacesController < ApplicationController
     #raise a 404 if the place isn't found
     raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
 
+    @follow_perspectives_count = 0
+    
     if current_user
+      @my_perspective = current_user.perspective_for_place(@place)
       @following_perspectives = current_user.following_perspectives_for_place( @place )
       @follow_perspectives_count = @following_perspectives.count
 
@@ -307,12 +310,35 @@ class PlacesController < ApplicationController
     end if
 
     @all_perspectives = @place.perspectives
-    @all_perspectives_count = @all_perspectives.count
-
-    for perspective in @all_perspectives
-      @all_perspectives.delete( perspective ) unless !perspective.empty_perspective?
+    if @all_perspectives:
+      @all_perspectives_count = @all_perspectives.count
+    else
+      @all_perspectives_count = 0
     end
-
+    
+    @else_perspective_count = @all_perspectives_count - @follow_perspectives_count
+    if @my_perspective
+      @else_perspective_count -= 1
+    end
+    
+    perspectives_to_delete = []
+    
+    for perspective in @all_perspectives
+      if perspective.empty_perspective?
+        perspectives_to_delete << perspective
+      elsif @following_perspectives && @following_perspectives.include?(perspective)
+        perspectives_to_delete << perspective
+      end
+    end
+    
+    for perspective in perspectives_to_delete
+      @all_perspectives.delete(perspective)
+    end
+    
+    if @my_perspective and @all_perspectives.include?(@my_perspective)
+      @all_perspectives.delete(@my_perspective)
+    end
+    
     if params['rf']
       @referring_user = User.find_by_username( params['rf'] )
     else
