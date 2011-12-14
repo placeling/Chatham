@@ -115,7 +115,7 @@ class User
     if url
       return url
     else
-      return "/images/default_profile.png"
+      return "http://www.placeling.com/images/default_profile.png"
     end
   end
 
@@ -130,7 +130,7 @@ class User
     if url
       return url
     else
-      return "/images/default_profile.png"
+      return "http://www.placeling.com/images/default_profile.png"
     end
   end
 
