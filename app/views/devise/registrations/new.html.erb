@@ -1,35 +1,29 @@
-<div class="grid_24">
-
-    <div class="box_top">
-
-        <h2 class="icon list"><%= t 'user.sign_up' %></h2>
-
-        <h3 class="right"><a href="#contents">Top</a></h3>
-    </div>
-
-    <div class="box_content padding">
-        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
-
-    <p><%= f.label :username %><br />
-      <%= f.text_field :username %></p>
-
-      <p><%= f.label :email %><br />
-      <%= f.email_field :email %></p>
-
-      <p><%= f.label :password %><br />
-      <%= f.password_field :password %></p>
-
-      <p><%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation %></p>
-
-      <p><%= f.submit t("user.sign_up") %></p>
+<div class="auth_block">
+  <div class="auth_header">
+    <div class="auth_header_callout"><%= t('user.signup_callout') %></div>
+  </div>
+  <div id="auth_form">
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+      <div class="field_group">
+        <p class="auth_label"><%= f.label t('basic.username'), :class=>"emphasize" %></p>
+        <p><%= f.text_field :username, :class=>"auth_field" %></p>
+      </div>
+      <div class="field_group">
+        <p class="auth_label"><%= f.label t('basic.email_field'), :class=>"emphasize" %></p>
+        <p><%= f.text_field :email, :class=>"auth_field" %></p>
+      </div>
+      <div class="field_group">
+        <p class="auth_label"><%= f.label t('basic.password'), :class=>"emphasize" %></p>
+        <p><%= f.password_field :password, :class=>"auth_field" %></p>
+      </div>
+      <div class="field_group">
+        <p class="auth_label"><%= f.label t('basic.password_confirm'), :class=>"emphasize" %></p>
+        <p><%= f.password_field :password_confirmation, :class=>"auth_field" %></p>
+      </div>
+      <div class="action_group">
+        <div class="action_signup"><%= f.submit t("user.sign_up"), :class=>"button" %></div>
+      </div>
     <% end %>
-
-    <%= render :partial => "devise/shared/links" %>
-    </div>
+  </div>
 </div>
-
-
-
-
