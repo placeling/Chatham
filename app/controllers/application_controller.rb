@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery TODO: might want this back
   before_filter :api_check
-
+  before_filter :set_login_return_url
+  
   alias :logged_in? :user_signed_in?
 
   def after_sign_in_path_for(resource)
@@ -26,7 +27,12 @@ class ApplicationController < ActionController::Base
       authenticate_user!
     end
   end
-
+  
+  def set_login_return_url
+    if request.method == "GET"
+      session[:"user.return_to"] = request.referer
+    end
+  end
 
   def admin_required
     #this is the method used in oauth_clients_controller, rename for devise
