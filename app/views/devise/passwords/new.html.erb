@@ -1,12 +1,19 @@
-<h2><%= t("user.forgot_password") %></h2>
-
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
-
-  <p><%= f.submit t("user.send_reset_instructions") %></p>
-<% end %>
-
-<%= render :partial => "devise/shared/links" %>
+<div class="auth_block">
+  <div class="auth_header">
+    <div class="auth_header_callout"><%= t('user.forgot_password_detail') %></div>
+  </div>
+  <div id="auth_form">
+    <%= form_for(resource, :as => resource_name, :url => password_path(resource_name)) do |f| %>
+      
+      <%= devise_error_messages! %>
+      
+      <div class="field_group">
+        <p class="auth_label"><%= t('user.password_reset_instructions') %></p>
+        <p><%= f.email_field :email, :class=>"auth_field" %></p>
+      </div>
+      <div class="action_group">
+        <div class="reset_action"><%= f.submit t("user.send_reset_instructions"), :class=>"button" %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

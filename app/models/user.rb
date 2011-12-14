@@ -48,7 +48,8 @@ class User
   validate :acceptable_password
   validates_presence_of :username
   validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
-  validates_length_of :username, :within => 3..20, :too_long => "pick a shorter username", :too_short => "pick a longer username"
+  validates_format_of :email, :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => "is not valid"
+  validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description
 

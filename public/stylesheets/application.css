@@ -131,6 +131,20 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   font-size: 10px;
 }
 
+/* Flash
+=====================================================================*/
+#alert {
+  margin-left: 30px;
+  margin-top: 30px;
+  font-size: 18px;
+  color: red;
+}
+
+.flash {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
 /* Profile Page
 =====================================================================*/
 #userdetails {
@@ -532,6 +546,92 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
 .username_link {
   margin-left: 5px;
 }
+
+/* Devise
+=====================================================================*/
+.auth_block {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.auth_header_callout {
+  font-size: 36px;
+}
+
+.auth_label {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.auth_field {
+  width: 350px;
+  font-size: 18px;  
+}
+
+.field_group {
+  margin-top: 20px;
+}
+
+.emphasize {
+  font-weight: bold;
+}
+
+.action_group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.action {
+  margin-left: 276px;
+}
+
+.action_signup {
+  margin-left: 268px;
+}
+
+.remember_me {
+  float: left;
+  font-size: 12px;
+  margin-top: 14px;
+}
+
+#user_submit {
+  background-image:url(/images/red_background.png);
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid #bf4f41;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.error_reasons {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+#error_explanation {
+  margin-top: 20px;
+  color: red;
+}
+
+.field_with_errors {
+  border-left: 2px solid red;
+}
+
+.field_with_errors .auth_field:first-child {
+  width: 348px;
+}
+
+.reset_action {
+  margin-left: 166px;
+}
+
+
+
+
 
 #userpanel #blah .subnav li a  { width:66px; min-width:50px; }
 

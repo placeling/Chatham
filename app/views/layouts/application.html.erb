@@ -17,14 +17,18 @@
       <%= render :partial => 'layouts/header' %>
       <div id="content">
         <% if notice %>
+          <div id="notice" class="flash">
           <% notice.each do |key, value| %>
             <%= content_tag :div, value unless value.blank? %>
           <% end %>
+          </div>
         <% end %>
         <% if alert %>
+          <div id="alert" class="flash">
           <% alert.each do |key, value| %>
             <%= content_tag :div, value unless value.blank? %>
           <% end %>
+          </div>
         <% end %>
         <div id="maincontent">
             <%= yield %>
