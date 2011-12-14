@@ -3,7 +3,16 @@ class ApplicationController < ActionController::Base
   before_filter :api_check
 
   alias :logged_in? :user_signed_in?
-  
+  before_filter :log_request
+
+
+  def log_request
+    logger.info("Started #{request.method} #{request.url}")
+    for header in request.env.select {|k,v| k.match("^HTTP.*")}
+      logger.info("HEADER #{header}")
+    end
+  end
+
   def after_sign_in_path_for(resource)
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
   end
@@ -12,7 +21,7 @@ class ApplicationController < ActionController::Base
     session[:"user.return_to"] = request.referer
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
   end
-  
+
   def api_check
     if params[:api_call]
       oauth_app_required
