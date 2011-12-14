@@ -7,7 +7,7 @@
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
       <div class="field_group">
         <p class="auth_label"><%= f.label t('basic.username'), :class=>"emphasize" %></p>
-        <p><%= f.text_field :login, :class=>"auth_field" %></p>
+        <p><%= f.text_field :login, :class=>"auth_field first_field" %></p>
       </div>
       <div class="field_group">
         <p class="auth_label"><%= f.label t('basic.password'), :class=>"emphasize" %> <%= link_to t('user.forgot_password'), new_user_password_path, :class => "reset_password" %></p>

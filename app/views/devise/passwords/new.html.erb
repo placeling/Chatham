@@ -9,7 +9,7 @@
       
       <div class="field_group">
         <p class="auth_label"><%= t('user.password_reset_instructions') %></p>
-        <p><%= f.email_field :email, :class=>"auth_field" %></p>
+        <p><%= f.email_field :email, :class=>"auth_field first_field" %></p>
       </div>
       <div class="action_group">
         <div class="reset_action"><%= f.submit t("user.send_reset_instructions"), :class=>"button" %></div>
