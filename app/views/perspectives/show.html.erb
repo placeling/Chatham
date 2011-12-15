@@ -54,7 +54,7 @@
             <div class="lightboxGallery">
             <% @perspective.pictures.each_with_index do |photo, i| %>
               <% if !photo.deleted %>
-                <div class="photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
+                <div class="narrow_photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
               <% end %>
             <% end %>
             </div>
