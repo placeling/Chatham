@@ -1,5 +1,5 @@
 <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
-    <div class="interact">
+    <div class="interact star">
       <% if current_user != perspective.user %>
         <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
           <% if source == "place_page" %>

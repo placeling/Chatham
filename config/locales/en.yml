@@ -230,6 +230,9 @@ en:
     flag: "Flag"
     flag_confirm: "Flag these notes & photos?"
     flagged: "Flagged"
+    possessive: "'s"
+    possessive_s: "'"
+    thoughts: " thoughts on "
 
 
   errors:

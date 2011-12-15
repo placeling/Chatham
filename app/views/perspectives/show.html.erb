@@ -1,5 +1,96 @@
-
-
-
-<%= render :partial => "perspectives/show", :locals => {:perspective => @perspective, :source => :user} %>
-
+<div>
+  <div class="image_lead">
+    <%= image_tag "plane.png", :alt=>"Plane" %>
+  </div>
+  <div class="thoughts">
+    <p>
+      <a href="<%= user_path(@perspective.user) %>" class="thoughts_url"><%= @perspective.user.username %><% if @perspective.user.username[@perspective.user.username.length-1,0] == "s"%><%= t('perspective.possessive_s') %><% else %><%= t('perspective.possessive') %><% end %></a>
+      <%= t('perspective.thoughts') %>
+      <a href="<%= place_path(@perspective.place) %>" class="thoughts_url"><%= @perspective.place.name %></a>
+    </p>
+    <div id="perspective_share">
+        <span class="social">
+          <a href="https://twitter.com/share?url=http://www.placeling.com<%= perspective_path(@perspective) %>&text=<%= u @perspective.place.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+        </span>
+        <span class="social">
+          <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= perspective_path(@perspective) %>')+'&t='+e('<%= u @perspective.place.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
+        </span>
+        <span class="social">
+          <a href="http://www.placeling.com<%= perspective_path(@perspective) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+        </span>
+    </div>
+  </div>
+  <div class="perspective_and_place">
+    <div id="perspective_well">
+      <div id="perspective_profile_pic">
+        <div class="profile_pic_holder">
+          <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
+        </div>
+        <div class="profile_username">
+          <%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%>
+        </div>
+      </div>
+      <div id="perspective_<%= @perspective.id %>" class="perspective_details">
+        <div class="interact mini_star">
+          <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
+            <% if current_user && @perspective.su.include?(current_user.id) %>
+              <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
+                <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
+              </a>
+            <% else %>
+                <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
+                  <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
+                </a>
+            <% end %>
+          <% end %>
+        </div>
+        <div id="full_details">
+          <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
+            <div class="mini_memo_wrapper">
+              <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
+            </div>
+          <% end %>
+          <% if @perspective.pictures.length > 0 %>
+            <div class="lightboxGallery">
+            <% @perspective.pictures.each_with_index do |photo, i| %>
+              <% if !photo.deleted %>
+                <div class="photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
+              <% end %>
+            <% end %>
+            </div>
+            <div class="image_clear"></div>
+          <% end %>
+          <div class="footer_details">
+            <span class="updated_dark">
+              <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
+            </span>
+            <span class="flag">
+              <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+            </span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div id="place_well_holder">
+    <div id="place_well">
+      <div class="place_name_mini">
+        <%= link_to( @perspective.place.name, @perspective.place, :class=>"place_name_mini") %>
+      </div>
+      <div class="place_details_mini">
+        <% if @perspective.place.street_address || @perspective.place.city_data %>
+          <p class="address_mini"><%= @perspective.place.street_address %><% if @perspective.place.city_data && @perspective.place.street_address %>, <% end %><% if @perspective.place.city_data %><%= @perspective.place.city_data %><% end %></p>
+        <% end %>
+        <div class="mini_map">
+          <div class="map_holder"><img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>&zoom=16&size=258x198&sensor=false&markers=color:blue%7C<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>" alt="map" class="map_perspective"></div>
+          <% if @perspective.place.google_url %>
+            <div class="google_url_holder">
+              <a href="<%= @perspective.place.google_url %>" class="google_url"><%= t('place.google_url') %></a>
+            </div>
+          <% end %>
+        </div>        
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

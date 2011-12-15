@@ -295,7 +295,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   padding-bottom: 50px;
 }
 
-.interact {
+.star {
   margin-left: 193px;
   float: left;
 }
@@ -629,6 +629,143 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   margin-left: 166px;
 }
 
+/* Perspective path
+=====================================================================*/
+.thoughts{
+  padding-left: 268px;
+  color: #b7614b;
+  padding-top: 20px;
+  font-size: 36px;
+}
+
+a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hover, a.thoughts_url:focus {
+  color: #b7614b;
+}
+
+.perspective_and_place {
+  clear: both;
+  margin-left: 200px;
+  margin-bottom: 40px;
+}
+
+#perspective_well {
+  float: left;
+  width: 550px;
+  border: 25px solid white;
+  padding: 10px;
+  background-image:url(/images/top_texture.png);
+  min-height: 400px;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+}
+
+#place_well_holder {
+  margin-left: 620px;
+  padding-top: 15px;
+}
+
+#place_well {
+  background-image:url(/images/place_top_texture.png);
+  width: 280px;
+  min-height: 420px;
+  -moz-box-shadow: inset 0 0 10px #9d554a;
+  -webkit-box-shadow: inset 0 0 10px #9d554a;
+  box-shadow: inner 0 0 10px #9d554a;
+  padding: 10px;
+}
+
+#perspective_profile_pic {
+  margin: 25px;
+}
+
+.profile_pic_holder {
+  float:left;
+}
+
+.styled_perspective_pic {
+  border: 13px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  max-width:100px;
+  max-height: 100px;
+}
+
+.username_perspective_link {
+  font-size: 36px;
+}
+
+a.username_perspective_link, a.username_perspective_link:link, a.username_perspective_link:visited, a.username_perspective_link:hover, a.username_perspective_link:focus {
+  color: white;
+}
+
+.profile_username {
+  margin-left: 136px;
+  padding-top: 76px;
+}
+
+.mini_star {
+  float: left;
+  margin-left: 58px ;
+}
+
+#full_details {
+  margin-left: 151px;
+  padding-left: 10px;
+}
+
+.mini_memo {
+  padding-top: 10px;
+  color: #e7e3db;
+}
+
+.mini_memo_wrapper .mini_memo:first-child {
+  padding-top: 0px;
+}
+
+.updated_dark {
+  color: black;
+}
+
+.footer_details {
+  font-size: 10px;
+}
+
+.place_name_mini {
+  font-size: 36px;
+}
+
+a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_name_mini:hover, a.place_name_mini:focus {
+  color: white;
+}
+
+.mini_map {
+  margin-top: 10px;
+  width: 260px;
+  background: #a14c3a;
+  padding: 10px;
+  -moz-box-shadow: inset 0 0 5px #9d554a;
+  -webkit-box-shadow: inset 0 0 5px #9d554a;
+  box-shadow: inner 0 0 5px #9d554a;  
+}
+
+.address_mini {
+  color: white;
+}
+
+.map_holder {
+  height: 200px;
+}
+
+.map_perspective {
+  border: 1px solid #888;
+}
+
+.google_url_holder {
+  margin-top: 5px;
+}
 
 
 
