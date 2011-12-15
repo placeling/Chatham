@@ -332,6 +332,9 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 
 .lightboxGallery {
   margin-top: 5px;
+}
+
+.perspective_gallery {
   width: 650px;
 }
 
@@ -645,12 +648,11 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
 .perspective_and_place {
   clear: both;
   margin-left: 200px;
-  margin-bottom: 40px;
 }
 
 #perspective_well {
   float: left;
-  width: 550px;
+  width: 560px;
   border: 25px solid white;
   padding: 10px;
   background-image:url(/images/top_texture.png);
@@ -658,10 +660,11 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
+  margin-bottom: 40px;
 }
 
 #place_well_holder {
-  margin-left: 620px;
+  margin-left: 630px;
   padding-top: 15px;
 }
 
@@ -767,6 +770,11 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-top: 5px;
 }
 
+.narrow_photo {
+  float:left;
+  margin-right: 10px;
+  margin-top: 10px;
+}
 
 
 
