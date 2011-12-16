@@ -293,6 +293,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 .perspective_wrapper {
   clear: both;
   padding-bottom: 50px;
+  list-style: none;
 }
 
 .star {
