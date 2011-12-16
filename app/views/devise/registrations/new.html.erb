@@ -22,7 +22,7 @@
         <p><%= f.password_field :password_confirmation, :class=>"auth_field" %></p>
       </div>
       <div class="action_group">
-        <div class="accept">By registering, you agree to our <%= link_to("Privacy Policy", privacy_policy_path) %> and <%= link_to("Terms & Conditions", terms_of_service_path)%>
+        <div class="accept">By registering, you agree to our <%= link_to(t('home.privacy_policy'), privacy_policy_path) %> and <%= link_to(t('home.terms_of_service'), terms_of_service_path)%>
         </div>
         <div class="action_signup"><%= f.submit t("user.sign_up"), :class=>"button" %></div>
       </div>
