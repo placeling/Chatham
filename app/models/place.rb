@@ -105,6 +105,41 @@ class Place
     end
   end
 
+  def thumb_url
+    for type in self.venue_types
+      if type.downcase != "establishment"
+        category = type
+        break
+      end
+    end
+
+    if !category
+      return "http://www.placeling.com/images/quickpicks/EverythingPick.png"
+    end
+
+    if CATEGORIES["Bars & Nightlife"].keys().include?(category) or CATEGORIES["Bars & Nightlife"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/NightLifePick.png"
+    elsif CATEGORIES["Government"].keys().include?(category) or CATEGORIES["Government"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/GovernmentPick.png"
+    elsif CATEGORIES["Shopping"].keys().include?(category) or CATEGORIES["Shopping"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/ShoppingPick.png"
+    elsif CATEGORIES["Beauty"].keys().include?(category) or CATEGORIES["Beauty"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/BeautyPick.png"
+    elsif CATEGORIES["Interesting & Outdoors"].keys().include?(category) or CATEGORIES["Interesting & Outdoors"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/TouristyPick.png"
+    elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
+      return "http://www.placeling.com/images/quickpicks/FoodPick.png"
+    else
+      return "http://www.placeling.com/images/quickpicks/EverythingPick.png"
+
+    #elsif CATEGORIES["Services"].values().include?(category)
+    #elsif CATEGORIES["Travel & Lodging"].values().include?(category)
+    #elsif CATEGORIES["Religion"].values().include?(category)
+    #elsif CATEGORIES["Health"].values().include?(category)
+
+    end
+  end
+
   def self.nearby_for_user( user, lat, long, span )
     n = CHATHAM_CONFIG['max_returned_map']
 
@@ -276,6 +311,7 @@ class Place
 
     attributes = self.attributes.merge(:tags => self.tags)
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
+    attributes = attributes.merge(:thumb_url => self.thumb_url)
 
     attributes.delete(:google_ref)
     attributes.delete(:address_components)

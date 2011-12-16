@@ -210,15 +210,15 @@ class PlacesController < ApplicationController
         end
       end
 
+      @processed_google_places = []
       #this doesn't really work
-      for place in @google_places
+      for gplace in @google_places
         #add distance to in meters
-        place['place_id'] = place.id
-        place['google_ref'] = place.reference
-        place.location = [place.geometry.location.lat, place.geometry.location.lng]
+        place = Place.new_from_google_place( gplace )
+        @processed_google_places << place
       end
 
-      @places = @places + @google_places
+      @places = @places + @processed_google_places
 
     end
 
