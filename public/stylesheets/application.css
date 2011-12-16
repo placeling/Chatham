@@ -633,6 +633,13 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   margin-left: 166px;
 }
 
+.accept {
+  float: left;
+  margin-top: 5px;
+  font-size: 10px;
+  width: 200px;
+}
+
 /* Perspective path
 =====================================================================*/
 .thoughts{
