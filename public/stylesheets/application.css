@@ -825,7 +825,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #promo_holder {
   margin: 20px auto 20px auto;
-  width: 896px;
+  width: 996px;
 }
 
 #promo_text {
@@ -838,20 +838,26 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #promo_logo {
   padding-top: 100px;
+  padding-left: 60px;
 }
 
 #marketing_text {
-  font-size: 24px;
-  width: 344px;
+  font-size: 18px;
+  width: 464px;
   padding-left: 14px;
+  color: #008287;
+  text-align: center;
+  margin-top: -10px;
 }
 
 #marketing_text p {
+  font-family: Georgia, "Times New Roman", serif;
   margin-top: 10px;
 }
 
 #call_to_action {
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-left: 70px;
 }
 
 .download_image {
