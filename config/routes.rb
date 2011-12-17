@@ -30,7 +30,7 @@ Chatham::Application.routes.draw do
   match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
 
-  resources :users do
+  resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
     resources :inprogress do
@@ -74,17 +74,17 @@ Chatham::Application.routes.draw do
       get :search
       get :suggested
     end
-    resources :users, :only =>[:index]
-    resources :perspectives, :except =>[:show, :index]  do
-      collection do
-        resources :photos
-        post :update
-        post :admin_create
-        delete :destroy
-        get :following
-        get :all
+    resources :users
+      resources :perspectives, :except =>[:show, :index]  do
+        collection do
+          resources :photos
+          post :update
+          post :admin_create
+          delete :destroy
+          get :following
+          get :all
+        end
       end
-    end
   end
 
   resources :oauth_clients do
