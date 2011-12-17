@@ -40,7 +40,11 @@ en:
 
   admin:
     required_failed: "This requires admin privileges"
-
+    slogan: "Cities are stories"
+    marketing_text_1: "Bookmark your world without broadcasting your location"
+    marketing_text_2: "Effortlessly share the places you and your friends love"
+    marketing_text_3: "Explore with the experts"
+  
   applications:
     all_applications: "All Applications"
 

@@ -823,6 +823,44 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-top: 10px;
 }
 
+#promo_holder {
+  margin: 20px auto 20px auto;
+  width: 896px;
+}
+
+#promo_text {
+  margin-left: 516px;
+}
+
+#promo_shot {
+  float: left;
+}
+
+#promo_logo {
+  padding-top: 100px;
+}
+
+#marketing_text {
+  font-size: 24px;
+  width: 344px;
+  padding-left: 14px;
+}
+
+#marketing_text p {
+  margin-top: 10px;
+}
+
+#call_to_action {
+  margin-top: 20px;
+}
+
+.download_image {
+  max-width: 344px;
+}
+
+
+
+
 
 
 

@@ -1,25 +1,18 @@
-
-<div id="maincontent">
-  <h1><%= t("user.top_users") %></h1>
-    <ul>
-      <% @top_users.each do |user| %>
-        <li>
-            <%= link_to user.username, user_path(user) %>
-        </li>
-      <% end %>
-    </ul>
-
-    <h1><%= t("place.top_places") %></h1>
-
-    <ul>
-      <% @top_places.each do |place| %>
-        <li>
-            <%= link_to place.name, place_path(place) %>
-        </li>
-      <% end %>
-      </ul>
-</div>
-
-<div id="nav">
-
+<div id="promo_holder">
+  <div id="promo_shot">
+    <%= image_tag "iphone.png", :alt=>"iPhone"%>
+  </div>
+  <div id="promo_text">
+    <div id="promo_logo">
+      <%= image_tag "full_logo.png", :alt=>"Placeling: <%= t('admin.slogan')" %>
+    </div>
+    <div id="marketing_text">
+      <p><%= t('admin.marketing_text_1')%></p>
+      <p><%= t('admin.marketing_text_2')%></p>
+      <p><%= t('admin.marketing_text_3')%></p>
+    </div>
+    <div id="call_to_action">
+      <a href="http://itunes.com/app/placeling"><%= image_tag "download.png", :alt=>"Download", :class=>"download_image" %></a>
+    </div>
+  </div>
 </div>
