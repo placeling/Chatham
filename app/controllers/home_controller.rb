@@ -2,9 +2,9 @@ class HomeController < ApplicationController
   before_filter :login_required, :only =>[:home_timeline]
 
   def index
-
-    @top_users = User.top_users(10)
-    @top_places = Place.top_places(10)
+    respond_to do |format|
+      format.html
+    end
   end
 
   def home_timeline

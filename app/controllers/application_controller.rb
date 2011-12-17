@@ -13,7 +13,12 @@ class ApplicationController < ActionController::Base
     session[:"user.return_to"] = request.referer
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
   end
-
+  
+  def after_create(resource)
+    session[:"user.return_to"] = request.referer
+    return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
+  end
+  
   def api_check
     if params[:api_call]
       oauth_app_required

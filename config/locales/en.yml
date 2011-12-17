@@ -7,7 +7,7 @@ en:
     applications_list: "Oauth Applications"
     users_list: "Users List"
     product_name: "Placeling"
-    copyright: "Copyright Placeling (Internet Services) Inc."
+    copyright: "Placeling (Internet Services) Inc."
     privacy_policy: "Privacy Policy"
     terms_of_service: "Terms of Service"
     contact_us: "Contact"
@@ -40,7 +40,11 @@ en:
 
   admin:
     required_failed: "This requires admin privileges"
-
+    slogan: "Cities are stories"
+    marketing_text_1: "Bookmark your world without broadcasting your location"
+    marketing_text_2: "Effortlessly share the places you and your friends love"
+    marketing_text_3: "Explore with the experts"
+  
   applications:
     all_applications: "All Applications"
 
@@ -270,7 +274,7 @@ en:
       send_paranoid_instructions: 'If your e-mail exists on our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
       confirmed: 'Your account was successfully confirmed. You are now signed in.'
     registrations:
-      signed_up: 'Welcome! You have signed up successfully.'
+      signed_up: ''
       inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
       updated: 'You updated your account successfully.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'

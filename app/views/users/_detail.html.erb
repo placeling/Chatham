@@ -3,9 +3,9 @@
   <div id="follow_action">
     <% if current_user != user %>
       <% if current_user && current_user.following.include?(user) %>
-        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'unfollow', :controller => 'users')%>"><div class="follow_link"><%= t('user.unfollow') %></div></a>
+        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'unfollow', :controller => 'users')%>" class="no_highlight"><div class="follow_link"><%= t('user.unfollow') %></div></a>
       <% else %>
-        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'follow', :controller => 'users') %>"><div class="follow_link"><%= t('user.follow') %></div></a>
+        <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'follow', :controller => 'users') %>" class="no_highlight"><div class="follow_link"><%= t('user.follow') %></div></a>
       <% end %>
     <% end %>
   </div>
@@ -17,22 +17,22 @@
   </div>
   <div id="tombstones">
     <div id="num_places" class="tombstone">
-      <a href="<%= user_path(user) %>">
+      <a href="<%= user_path(user) %>" class="no_highlight">
         <p class="count"><%= user.perspectives.count %></p>
         <p class="measure"><%= t('user.places') %></p>
       </a>
     </div>
     <div id="num_following" class="tombstone">
-      <a href="<%= following_user_path(user) %>">
+      <% if user.following.count > 0 %><a href="<%= following_user_path(user) %>" class="no_highlight"><% end %>
         <p class="count"><%= user.following.count %></p>
         <p class="measure"><%= t('user.following') %></p>
-      </a>
+      <% if user.following.count > 0 %></a><% end %>
     </div>
     <div id="num_followers" class="tombstone">
-      <a href="<%= followers_user_path(user) %>">
+      <% if user.followers.count > 0 %><a href="<%= followers_user_path(user) %>" class="no_highlight"><% end %>
         <p class="count" id="follower_count"><%= user.followers.count %></p>
         <p class="measure"><%= t('user.followers') %></p>
-      </a>
+      <% if user.followers.count > 0 %></a><% end %>
     </div>
     <div class="tombstone_clear"></div>
   </div>
