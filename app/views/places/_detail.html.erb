@@ -26,7 +26,7 @@
   </div>
   <div id="tombstones">
     <div id="num_perspectives" class="tombstone">
-      <a href="<%= place_path(place) %>">
+      <a href="<%= place_path(place) %>" class="no_highlight">
         <p class="count" id="placemark_count"><%= place.perspectives.count %></p>
         <p class="measure placemark">
           <% if place.perspectives.count == 1 %>

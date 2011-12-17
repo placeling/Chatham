@@ -19,6 +19,12 @@ class AdminController < ApplicationController
   end
 
   def about_us
+    @ian = User.where(:username => "imack").first()
+    @lindsay = User.where(:username => "lindsayrgwatt").first()
+    @about_us = t("about_us")
+    respond_to do |format|
+      format.html
+    end
   end
 
   def contact_us

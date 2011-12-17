@@ -27,10 +27,14 @@ ul {
   list-style:none;
 }
 
-a,a:link,a:visited,a:hover { 
+a,a:link,a:visited { 
   color:#1271b0;
   text-decoration:none; 
 }
+
+a.no_highlight:focus, a.no_highlight:hover {
+  text-decoration: none;
+} 
 
 a:focus,a:hover { 
   text-decoration:underline;
@@ -783,6 +787,42 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-right: 10px;
   margin-top: 10px;
 }
+
+/* Admin
+***********************************************/
+#content_holder {
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+#people {
+  float: left;
+}
+
+.lindsay {
+  margin-top: 40px;
+}
+
+#story {
+  margin-left: 200px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 36px;
+  color: #B7614B;
+  padding-top: 10px;
+}
+
+.story_text {
+  min-width: 600px;
+  width: 80%;
+}
+
+.story_text p {
+  margin-top: 10px;
+}
+
 
 
 
