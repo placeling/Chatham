@@ -21,8 +21,8 @@ class Perspective
   field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
   field :su, :as => :starring_users, :type =>Array, :default =>[]
 
-  belongs_to :place, :foreign_key => 'plid' #, :index =>true
-  belongs_to :user, :foreign_key => 'uid' #, :index =>true
+  belongs_to :place, :foreign_key => 'plid', :index =>true
+  belongs_to :user, :foreign_key => 'uid', :index =>true
   belongs_to :client_application
 
   embeds_many :pictures
