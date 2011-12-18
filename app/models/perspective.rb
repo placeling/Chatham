@@ -18,7 +18,7 @@ class Perspective
   field :accuracy,      :type => Float
 
   #contains starred perspectives this user has of on the place
-  field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
+  field :fp, :as => :favourite_perspective_ids,    :type => Array, :default =>[]
   field :su, :as => :starring_users, :type =>Array, :default =>[]
 
   belongs_to :place, :foreign_key => 'plid', :index =>true
@@ -124,7 +124,7 @@ class Perspective
 
   def scrub_stars
     user = self.user
-    for perspective in self.favourite_perspectives
+    for perspective in self.favourite_perspective_ids
       perspective.starring_users.delete( user.id )
     end
   end
@@ -186,6 +186,15 @@ class Perspective
         self.location[1] = self.location[1].to_f
       end
     end
+  end
+
+  def favourite_perspectives
+    favourites = []
+    for perspective_id in self.favourite_perspective_ids
+      favourites << Perspective.find( perspective_id )
+    end
+
+    return favourites
   end
 
   def as_json(options={})

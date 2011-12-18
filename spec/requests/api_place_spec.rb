@@ -120,7 +120,7 @@ describe "API - " do
       perspective2 = Factory.create(:perspective, :memo=>"two", :place =>place, :user =>user3)
       perspective2 = Factory.create(:perspective, :memo=>"three", :place =>place, :user =>user4)
 
-      user2.favourite_perspectives << perspective2.id  #star the third user's perspective
+      user2.star( perspective2 ) #star the third user's perspective
       user2.save
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
@@ -207,7 +207,7 @@ describe "API - " do
       perspective1 = Factory.create(:perspective, :place =>place, :memo=>"Memo2")
       perspective2 = Factory.create(:perspective, :place =>place, :memo=>"Memo3")
 
-      user.favourite_perspectives << perspective1.id
+      user.star( perspective1 )
       user.save
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password

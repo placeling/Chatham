@@ -333,7 +333,11 @@ class Place
       perspective = current_user.perspectives.where( :plid => self.id ).first
       @home_perspectives << perspective unless perspective.nil?
 
-      @starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
+      user_perspective = current_user.perspective_for_place( self )
+      @starred = []
+      @starred = user_perspective.favourite_perspectives unless user_perspective.nil?
+
+      #@starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
       @home_perspectives.concat( @starred )
 
       attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
@@ -347,7 +351,11 @@ class Place
       perspective = referring_user.perspectives.where( :plid => self.id ).first
       @referring_perspectives << perspective unless perspective.nil?
 
-      @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
+      user_perspective = referring_user.perspective_for_place( self )
+      @starred = []
+      @starred = user_perspective.favourite_perspectives unless user_perspective.nil?
+
+      # @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
       @referring_perspectives.concat( @starred )
 
       attributes = attributes.merge( :referring_perspectives => @referring_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )

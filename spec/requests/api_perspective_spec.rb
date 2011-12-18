@@ -83,7 +83,7 @@ describe "API - Perspective" do
      perspective.fav_count.should == 1
 
      user_perspective = user.perspective_for_place(perspective.place)
-     user_perspective.favourite_perspectives.should include(perspective.id)
+     user_perspective.favourite_perspective_ids.should include(perspective.id)
 
    end
 
@@ -99,7 +99,7 @@ describe "API - Perspective" do
      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
      user_perspective = user.perspective_for_place( place )
-     user_perspective.favourite_perspectives.should include(perspective.id)
+     user_perspective.favourite_perspective_ids.should include(perspective.id)
 
      post_via_redirect unstar_perspective_path(perspective), {
        :format => 'json'

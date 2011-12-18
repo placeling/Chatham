@@ -17,7 +17,6 @@ class User
   alias :login :username
   field :email,         :type =>String
   field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
-  field :fp, :as => :favourite_perspectives,    :type => Array, :default =>[]
   field :creation_environment, :type => String, :default => "production"
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
@@ -185,7 +184,7 @@ class User
       user_perspective.skip_feed = true
     end
 
-    user_perspective.favourite_perspectives << perspective.id
+    user_perspective.favourite_perspective_ids << perspective.id
     user_perspective.save
 
     perspective.starring_users << self.id
@@ -201,7 +200,7 @@ class User
     place = perspective.place
     user_perspective = self.perspective_for_place( place )
 
-    user_perspective.favourite_perspectives.delete( perspective.id )
+    user_perspective.favourite_perspective_ids.delete( perspective.id )
     user_perspective.save
 
     perspective.starring_users.delete( self.id )
