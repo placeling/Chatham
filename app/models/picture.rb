@@ -62,7 +62,8 @@ class Picture
 
   def as_json(options={})
     attributes = self.attributes
-    attributes = attributes.merge(:thumb_url => self.thumb_url,
+    #TODO: reset thumb_url to iphone_url after NINA 1.2 fix
+    attributes = attributes.merge(:thumb_url => self.iphone_url,
                                     :iphone_url => self.iphone_url,
                                     :main_url => self.main_url)
     attributes.delete('creation_environment')
