@@ -247,6 +247,8 @@ class PerspectivesController < ApplicationController
     long = params[:lng].to_f
     span = params[:span].to_f #needs to be > 0
 
+    span = span * 2
+
     if long.nil? || long == 0
       long = params[:long].to_f
     end
