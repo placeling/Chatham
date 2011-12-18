@@ -196,9 +196,9 @@ class PlacesController < ApplicationController
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
         categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
-        @google_places = gp.find_nearby(lat, lng, radius, nil, true, categories_array)
+        @google_places = gp.find_nearby(lat, lng, radius, query, true, categories_array)
       else
-        @google_places = gp.find_nearby(lat, lng, radius)
+        @google_places = gp.find_nearby(lat, lng, radius, query)
       end
 
       for gplace in @google_places

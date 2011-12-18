@@ -62,7 +62,7 @@ class GooglePlaces
     if !query.nil?
       #override radius to something larger
       options[:name] = query
-      options[:radius] = 20000
+      options[:radius] = 4000
     else
       #TEST: cap radius at 100m
       radius = [50,[200, radius].min].max

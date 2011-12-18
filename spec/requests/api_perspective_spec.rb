@@ -61,8 +61,12 @@ describe "API - Perspective" do
 
       showPlace = JSON.parse( response.body )
       showPlace['perspectives'].count.should == 2
-      showPlace['perspectives'][0]['starred'].should == true
-      showPlace['perspectives'][1]['starred'].should == false
+
+      if showPlace['perspectives'][0]['starred']
+        showPlace['perspectives'][1]['starred'].should == false
+      else
+        showPlace['perspectives'][1]['starred'].should == true
+      end
 
   end
 
