@@ -19,7 +19,7 @@ describe "API - " do
 
       user2.star( perspective )
 
-      post_via_redirect home_feed_path, 'user[login]' => user.username, 'user[password]' => user.password
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get activity_user_path( user ), {
          :format => 'json'
