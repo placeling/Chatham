@@ -17,6 +17,8 @@ gem "oauth", ">= 0.4.4"
 gem "devise", "~> 1.4.2"
 gem "omniauth", "~> 0.3.2"
 
+gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
+
 gem "fb_graph"
 
 gem "system_timer"

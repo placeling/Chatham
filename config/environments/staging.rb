@@ -47,18 +47,10 @@ Chatham::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address              => "email-smtp.us-east-1.amazonaws.com",
-    :port                 => 465,
-    :domain               => 'placeling.com',
-    :user_name            => 'AKIAJXUH5MEUCXPOGCWA',
-    :password             => 'Avubl1fKSGlx3eTBBEWrhrKpsvIr1NotGnDjkJjPtLEt',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true  }
+  config.action_mailer.delivery_method = :ses
 
     # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Only use best-standards-support built into browsers
 
