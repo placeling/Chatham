@@ -1,3 +1,5 @@
+require 'development_mail_interceptor'
+
 Chatham::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -48,6 +50,7 @@ Chatham::Application.configure do
   config.active_support.deprecation = :notify
 
   config.action_mailer.delivery_method = :ses
+  ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
 
     # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true

@@ -1,3 +1,5 @@
+require 'development_mail_interceptor'
+
 Chatham::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -20,7 +22,17 @@ Chatham::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => '@dev.placeling.com',
+  :user_name            => 'placeling.dev',
+  :password             => 'gmail4placeling',
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  }
+
+  ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
