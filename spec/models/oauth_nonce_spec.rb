@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 require 'oauth/helper'
 describe OauthNonce, :broken => true do
   include OAuth::Helper
