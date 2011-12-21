@@ -13,7 +13,7 @@ task :production do
 end
 
 task :staging do
-  server 'ec2-50-18-132-90.us-west-1.compute.amazonaws.com', :app, :web, :db, :primary => true
+  server 'staging.placeling.com', :app, :web, :db, :primary => true
   ssh_options[:forward_agent] = true
   set :user, 'ubuntu'
   set :port, '11235'
