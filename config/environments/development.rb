@@ -11,9 +11,12 @@ Chatham::Application.configure do
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
+  #uncomment for testing CDN
+  #config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
+
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_view.debug_rjs             = true
+  #config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -32,6 +35,7 @@ Chatham::Application.configure do
   :authentication       => 'plain',
   :enable_starttls_auto => true  }
 
+  #DON'T REMOVE THIS LINE! -Prevents test emails from going to users
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
 
   # Only use best-standards-support built into browsers
