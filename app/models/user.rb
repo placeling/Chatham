@@ -4,9 +4,9 @@ class User
   include Mongoid::Timestamps
 
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  # :token_authenticatable, :encryptable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   #before_validation :fix_location
   before_validation :set_downcase_username
@@ -28,6 +28,8 @@ class User
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
+
+  field :confirmed_at, :type =>DateTime
 
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created

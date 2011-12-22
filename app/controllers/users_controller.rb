@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     if (params[:facebook_access_token])
       user = User.new(:username =>params[:username].strip,
             :email =>params[:email], :password => Devise.friendly_token[0,20])
+      user.confirm! #indicates that it doesn't need a confirmation, since we got email from Facebook
 
       auth = user.authentications.build(:provider => "facebook", :uid =>params[:facebook_id], :token => params[:facebook_access_token])
     else
