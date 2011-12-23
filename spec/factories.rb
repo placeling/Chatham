@@ -102,6 +102,7 @@ FactoryGirl.define do
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
     description "I am the test user with no admin privileges, and nothing interesting"
+    confirmed_at {Time.now}
   end
 
   factory :admin, :class =>User do
@@ -113,6 +114,7 @@ FactoryGirl.define do
     location { [49.2642380,-123.1625990] }
     description "I am a placeling administrator"
     admin true
+    confirmed_at {Time.now}
   end
 end
 
