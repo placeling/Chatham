@@ -91,6 +91,7 @@ FactoryGirl.define do
     fullname "Malcolm Gladwell"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
+    city "New York, NY, USA"
     description "I am the test user interesting things going on"
   end
 
@@ -101,6 +102,7 @@ FactoryGirl.define do
     fullname "Tyler Durden"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
+    city {"Vancouver, BC, Canada"}
     description "I am the test user with no admin privileges, and nothing interesting"
     confirmed_at {Time.now}
   end
@@ -112,6 +114,7 @@ FactoryGirl.define do
     fullname "Placeling Administrator"
     password_confirmation { |u| u.password }
     location { [49.2642380,-123.1625990] }
+    city {"Vancouver, BC, Canada"}
     description "I am a placeling administrator"
     admin true
     confirmed_at {Time.now}

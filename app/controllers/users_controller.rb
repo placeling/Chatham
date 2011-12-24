@@ -89,6 +89,7 @@ class UsersController < ApplicationController
     lng = params[:user_lng].to_f
     if lat and lng
       @user.location = [lat, lng]
+      @user.city = ""
     end
 
     if params[:email] &&  params[:email] != @user.email

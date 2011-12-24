@@ -1,3 +1,5 @@
+require 'cityname_finder'
+
 class User
   include Mongoid::Document
   include Mongoid::Paranoia
@@ -20,6 +22,7 @@ class User
   field :creation_environment, :type => String, :default => "production"
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
+  field :city, :type => String, :default => ""
 
   field :description, :type => String, :default => ""
   field :admin,       :type => Boolean, :default => false
@@ -62,6 +65,13 @@ class User
   index :du
 
   after_save :more_test
+  before_save :get_city
+
+  def get_city
+    if self.location != nil && self.location != [0,0] && self.city == ""
+      self.city =  CitynameFinder.getCity( self.location[0], self.location[1] )
+    end
+  end
 
   def more_test
     if self.changed?
@@ -244,7 +254,7 @@ class User
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = {:username => self['username'],  :perspectives_count =>self['pc'],
                   :url => self.url, :description => self.description,
-                  :thumb_url => thumb_url, :main_url => main_url }
+                  :thumb_url => thumb_url, :main_url => main_url, :city =>self.city }
 
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
 
