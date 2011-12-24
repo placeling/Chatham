@@ -12,7 +12,7 @@
       <td>Username</td>
       <td>Email</td>
       <td>FacebookId</td>
-      <td>Description</td>
+      <td>Loction</td>
       <td>Created_at</td>
       <td>Bookmark Count</td>
     </thead>
@@ -22,7 +22,7 @@
       <td><%= link_to user.username,  user , :target =>"_blank"%></td>
       <td><%= user.email %></td>
       <td><%= user.facebook.nil? ? "" : "true" %></td>
-      <td><%= user.description %></td>
+      <td><%= user.city %></td>
       <td><%= user[:created_at] %></td>
       <td><%= user.perspectives.count %></td>
     </tr>
