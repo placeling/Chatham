@@ -27,6 +27,18 @@ class GoogleReverseGeocode
     
     return found_address
   end
+
+  def raw_reverse_geocode(lat, lng)
+    options = {
+      :sensor => false,
+      :latlng => lat.to_s + "," + lng.to_s
+    }
+
+    result = mashup(self.class.get("/json", :query => options)).results
+
+    return result
+  end
+
   
   protected
     def mashup(response)
