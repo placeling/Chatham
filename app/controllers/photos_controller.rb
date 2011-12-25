@@ -1,4 +1,6 @@
 class PhotosController < ApplicationController
+  before_filter :login_required
+
   def create
 
     #this can also function as a "create", given that a user can only have one perspective for a place
