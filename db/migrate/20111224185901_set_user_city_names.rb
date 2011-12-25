@@ -4,6 +4,7 @@ class SetUserCityNames < Mongoid::Migration
       user.get_city
       puts "#{user.username} - #{user.city}"
       user.save
+      sleep 5
     end
   end
 
