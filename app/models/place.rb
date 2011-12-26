@@ -188,15 +188,18 @@ class Place
     place.google_ref = raw_place.reference
 
     if raw_place.address_components
-      if raw_place.address_components.length > 3
-        #TODO: find out how this scales past north america
-        place.city_data = raw_place.address_components[2].short_name + ", " + raw_place.address_components[3].short_name
+      address_dict = GooglePlaces.getAddressDict(raw_place.address_components)
+
+      if address_dict['number'] and address_dict['street']
+        place.street_address = address_dict['number'] + " " + address_dict['street']
+      elsif address_dict['street']
+         place.street_address = address_dict['street']
       end
 
-      if raw_place.address_components.length > 1
-        #TODO: find out how this scales past north america
-        place.street_address = raw_place.address_components[0].short_name + " " + raw_place.address_components[1].short_name
+      if address_dict['city'] and address_dict['province']
+        place.city_data = address_dict['city'] + ", " + address_dict['province']
       end
+
       place.address_components = raw_place.address_components
     end
     

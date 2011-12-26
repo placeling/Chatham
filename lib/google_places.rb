@@ -11,6 +11,28 @@ class GooglePlaces
     @api_key = CHATHAM_CONFIG['google_api']
   end
 
+
+  def self.getAddressDict( raw_address )
+
+    address_dict = {}
+    for element in raw_address
+      if element.types.include?("locality")
+        address_dict['city'] = element.long_name
+      elsif element.types.include?("administrative_area_level_1")
+        address_dict['province'] = element.short_name
+      elsif element.types.include?("country")
+        address_dict['country'] = element.long_name
+      elsif element.types.include?("street_number")
+        address_dict['number'] = element.short_name
+      elsif element.types.include?("route")
+        address_dict['street'] = element.long_name
+      end
+    end
+
+    return address_dict
+  end
+
+
   def get_place(reference, sensor = true, language ="en")
     #radis is in meters
 
