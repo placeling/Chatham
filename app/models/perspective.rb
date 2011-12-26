@@ -7,13 +7,13 @@ class Perspective
   include Twitter::Extractor
 
   field :memo,        :type => String
-  field :ploc, :as =>:place_location,    :type => Array #for easier indexing
   field :tags,    :type => Array
   field :url,       :type => String
   field :flag_count, :type => Integer, :default =>0
     
   #these are meant for internal use, not immediately visible to user -iMack
   field :loc, :as => :location,    :type => Array
+  field :ploc, :as => :place_location,    :type => Array
   field :flaggers, :type =>Array
   field :accuracy,      :type => Float
 
@@ -26,10 +26,15 @@ class Perspective
   belongs_to :client_application
 
   embeds_many :pictures
+  embeds_one :place_stub
+
   accepts_nested_attributes_for :pictures, :allow_destroy => true
 
+  index [[ "place_stub.loc", Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :ploc, Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index "place_stub.venue_types"
+  index "place_stub.ptg"
   index :tags, :background => true
 
   validates_associated :place
@@ -39,7 +44,7 @@ class Perspective
       :message => "Invalid URL" }
 
   before_validation :fix_location
-  before_save :get_place_location
+  before_save :get_place_data
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
@@ -173,8 +178,11 @@ class Perspective
     end
   end
   
-  def get_place_location
+  def get_place_data
     self.place_location = self.place.location
+    self.place_stub = PlaceStub.new
+    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id')
+    self.place_stub.attributes = place_attributes
   end
 
   def fix_location
@@ -220,7 +228,7 @@ class Perspective
       if current_user
         attributes.merge(:place => self.place.as_json({:current_user => current_user}),:user => self.user.as_json())
       else
-        attributes.merge(:place => self.place.as_json(),:user => self.user.as_json())
+        attributes.merge(:place => self.place_stub.as_json(),:user => self.user.as_json())
       end
     elsif options[:place_view]
       attributes.merge(:user => self.user.as_json())

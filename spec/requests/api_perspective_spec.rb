@@ -35,7 +35,7 @@ describe "API - Perspective" do
 
      perspective = Perspective.find( perspective.id )
      perspective.memo.should include("#breakfast")
-     perspective.place_location.should_not be_nil
+     perspective.place_stub.should_not be_nil
 
   end
 

@@ -57,4 +57,11 @@ describe Perspective do
     perspectives.count.should == 1
     perspectives[0].id.should == perspective.id
   end
+
+  it "should keep it's place's attributes as a sub documnet" do
+    perspective = Factory.create(:perspective, :memo => "#breakfast")
+    perspective.place_stub.name.should == perspective.place.name
+
+  end
+
 end
