@@ -297,7 +297,7 @@ class User
 
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
-    self.any_of({ :username => login }, { :email => login }).first
+    self.any_of({ :du => login.downcase }, { :email => login }).first
   end
 
 end
