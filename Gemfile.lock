@@ -21,10 +21,10 @@ GIT
       xpath (~> 0.1.4)
 
 GIT
-  remote: git://github.com/mzsanford/twitter-text-rb.git
-  revision: df4fd78700b50244a85becf66df68092e7b1c9c1
+  remote: git://github.com/twitter/twitter-text-rb.git
+  revision: cc8b446517c9bc6fa082d50271a13e511769eae9
   specs:
-    twitter-text (1.4.9)
+    twitter-text (1.4.15)
       activesupport
 
 GEM
