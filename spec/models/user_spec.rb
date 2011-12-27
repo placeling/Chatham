@@ -71,4 +71,9 @@ describe User do
 
   end
 
+  it "has User settings" do
+    user = Factory.create(:user)
+    user.user_settings.should_not be(nil)
+  end
+
 end

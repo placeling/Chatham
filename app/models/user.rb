@@ -46,6 +46,7 @@ class User
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application], :foreign_key =>'uid'
 
   embeds_one :activity_feed
+  embeds_one :user_setting
 
   validate :acceptable_name, :on => :create
   validate :acceptable_password
@@ -246,6 +247,16 @@ class User
     activity.thumb1 = self.thumb_url
 
     return activity
+  end
+
+  def user_settings
+
+    if self.user_setting
+      return self.user_setting
+    else
+      self.user_setting = UserSetting.new
+      return self.user_setting
+    end
   end
 
 
