@@ -64,7 +64,11 @@ class Perspective
   end
 
   def self.query_near( loc, span,  query, category )
-    selector = Perspective.where(:ploc.within => {"$center" => [loc,span]})
+    geonear = BSON::OrderedHash.new()
+    geonear["$near"] = loc
+    geonear["$maxDistance"] = span
+
+    selector = Perspective.where( :ploc => geonear )
 
     if category != nil and category.strip != ""
       categories_array = CATEGORIES[category].keys + CATEGORIES[category].values

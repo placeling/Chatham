@@ -131,8 +131,8 @@ class PlacesController < ApplicationController
     barrie = params[:barrie]
     loc = [lat, lng]
 
-    n = 50
-    span = 0.02
+    n = 40
+    span = 0.04
     radius = 1000
 
     #preprocess for query
