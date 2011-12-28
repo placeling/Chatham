@@ -76,7 +76,7 @@ class Perspective
     end
 
     if query != nil and query.strip != ""
-      tags = extract_tag_array( query.downcase.strip )
+      tags = Perspective.extract_tag_array( query.downcase.strip )
       selector = selector.any_in(:tags => tags)
     end
 
@@ -207,9 +207,8 @@ class Perspective
 
   end
 
-  private
 
-  def extract_tag_array( query )
+  def self.extract_tag_array( query )
     tags = []
     for term in query.split
       if term[0,1] == '#'
