@@ -131,37 +131,24 @@ class PlacesController < ApplicationController
     barrie = params[:barrie]
 
     n = 100
+    loc = [lat, lng]
 
     span = 0.02
     radius = 1000
 
     #preprocess for query
-    if query != nil and query.strip != ""
-      if socialgraph and current_user
-        @perspectives = Perspective.query_near_following(current_user, query.downcase.strip, lat, lng, n)
-      else
-        @perspectives = Perspective.query_near(query, lat, lng, n)
-      end
+    if socialgraph and current_user
+      following_ids = current_user[:following_ids] << current_user.id
+      @perspectives = Perspective.query_near( loc, span, query, category ).
+        and(:uid.in => following_ids).limit(20).entries
     else
-      if socialgraph and current_user
-        @perspectives = Perspective.all_near_following(current_user, lat, lng, span, n)
-      else
-        @perspectives = Perspective.all_near(lat, lng, span, n )
-      end
+      @perspectives = Perspective.query_near( loc, span, query, category ).limit(20).entries
     end
 
     @places_dict = {}
 
-
     for perspective in @perspectives.entries
-      place = perspective.place
-
-      if category != nil and category.strip != ""
-        categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
-        if  (categories_array & place.venue_types).empty?
-          next
-        end
-      end
+      place = perspective.place_stub.to_place #saves lookup, effectively casts stub as real, DONT SAVE
 
       if current_user && perspective.user.id == current_user.id
         username = "You"

@@ -25,4 +25,15 @@ class PlaceStub
   embedded_in :perspective
 
 
+  def to_place
+    place = Place.new
+
+    place.attributes = self.attributes.except("gid", "loc", "ptg", "pc")
+    place.google_id = self["gid"]
+    place.location = self["loc"]
+    place.place_tags = self["ptg"]
+    place.perspective_count = self["pc"]
+
+    return place
+  end
 end

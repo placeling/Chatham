@@ -1,7 +1,7 @@
 development:
   host: localhost
   database: chatham_development
-  autocreate_indexes: true
+  #autocreate_indexes: true
   raise_not_found_error: false
   allow_dynamic_fields: false
 

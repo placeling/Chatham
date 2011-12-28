@@ -63,58 +63,21 @@ class Perspective
         entries
   end
 
-  def self.query_near_following(user, query, lat, long, limit=20)
-    tags =[]
-    for term in query.split
-      if term[0,1] == '#'
-        tags << term[1..-1]
-      else
-        tags << term
-      end
+  def self.query_near( loc, span,  query, category )
+    selector = Perspective.where(:ploc.within => {"$center" => [loc,span]})
+
+    if category != nil and category.strip != ""
+      categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
+      selector = selector.any_in("place_stub.venue_types" => categories_array)
     end
 
-    following_ids = user[:following_ids] << user.id
-
-    Perspective.any_in(:tags => tags ).
-        and(:ploc.near => [lat,long]).
-        and(:uid.in => following_ids).
-        limit(limit).
-        entries
-  end
-
-  def self.all_near_following(user, lat, long, span, limit=20)
-    following_ids = user[:following_ids] << user.id
-    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        and(:uid.in => following_ids).
-        limit(limit).
-        entries
-  end
-
-  def self.query_near(query, lat, long, limit=20)
-    #span = 0.02 #params[:span].to_f #needs to be > 0
-
-    tags =[]
-    for term in query.split
-      if term[0,1] == '#'
-        tags << term[1..-1]
-      else
-        tags << term
-      end
+    if query != nil and query.strip != ""
+      tags = extract_tag_array( query.downcase.strip )
+      selector = selector.any_in(:tags => tags)
     end
 
-    Perspective.any_in(:tags => tags ).
-        and(:ploc.near => [lat,long]).limit(limit).
-        entries
+    return selector
   end
-
-  def self.all_near(lat, long, span, limit=20)
-    #this is only necessary for ruby 1.8 since its hash doesn't preserve order, and mongodb requires it
-    Perspective.where(:ploc.within => {"$center" => [[lat,long],span]}).
-        limit(limit).
-        entries
-  end
-
 
   def check_in
     if self.place.google_id and Rails.env.production?
@@ -239,4 +202,21 @@ class Perspective
     end
 
   end
+
+  private
+
+  def extract_tag_array( query )
+    tags = []
+    for term in query.split
+      if term[0,1] == '#'
+        tags << term[1..-1]
+      else
+        tags << term
+      end
+    end
+
+    return tags
+  end
+
+
 end
