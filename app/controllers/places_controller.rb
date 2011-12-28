@@ -129,10 +129,9 @@ class PlacesController < ApplicationController
     socialgraph = params[:socialgraph].downcase == "true"
 
     barrie = params[:barrie]
-
-    n = 100
     loc = [lat, lng]
 
+    n = 50
     span = 0.02
     radius = 1000
 
@@ -140,9 +139,9 @@ class PlacesController < ApplicationController
     if socialgraph and current_user
       following_ids = current_user[:following_ids] << current_user.id
       @perspectives = Perspective.query_near( loc, span, query, category ).
-        and(:uid.in => following_ids).limit(20).entries
+        and(:uid.in => following_ids).limit(n).entries
     else
-      @perspectives = Perspective.query_near( loc, span, query, category ).limit(20).entries
+      @perspectives = Perspective.query_near( loc, span, query, category ).limit(n).entries
     end
 
     @places_dict = {}
