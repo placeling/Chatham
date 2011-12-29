@@ -2,6 +2,13 @@ class AdminController < ApplicationController
 
   before_filter :admin_required, :only => [:dashboard]
 
+  def app
+    track! :app_store
+    respond_to do |format|
+      format.html{ redirect_to "http://itunes.apple.com/ca/app/placeling/id465502398?ls=1&mt=8" }
+    end
+  end
+
   def terms_of_service
     @terms = t("tos")
     respond_to do |format|
@@ -30,7 +37,7 @@ class AdminController < ApplicationController
   def contact_us
   end
 
-  def status
+  def heartbeat
     render :status, :layout =>false
   end
 

@@ -52,6 +52,12 @@ gem "database_cleaner"
 gem 'nested_form'
 gem 'fastercsv'
 
+gem "redis", "~> 2.2"
+#gem 'redis-store'
+gem 'vanity'
+gem 'resque', :require => 'resque/server'
+#gem 'resque-scheduler', :require => 'resque_scheduler/tasks'
+
 group :test, :development do
 
 end

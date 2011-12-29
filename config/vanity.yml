@@ -1,0 +1,9 @@
+development:
+  adapter: redis
+  connection: redis://localhost:6379/0
+staging:
+  adapter: redis
+  connection: redis://ec2-184-72-38-73.us-west-1.compute.amazonaws.com:6379/0
+production:
+  adapter: redis
+  database: redis://ec2-107-22-193-101.compute-1.amazonaws.com:6379/0

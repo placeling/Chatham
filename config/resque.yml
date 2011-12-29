@@ -1,0 +1,4 @@
+development: localhost:6379
+test: localhost:6379
+staging: ec2-184-72-38-73.us-west-1.compute.amazonaws.com:6379
+production: ec2-107-22-193-101.compute-1.amazonaws.com:6379

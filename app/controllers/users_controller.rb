@@ -27,6 +27,7 @@ class UsersController < ApplicationController
       auth.save! unless auth.nil?
 
       if current_client_application
+        track! :signup
         #send back some access keys so user can immediately start
         request_token = current_client_application.create_request_token
         request_token.authorize!( user )

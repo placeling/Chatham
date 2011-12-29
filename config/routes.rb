@@ -8,7 +8,7 @@ Chatham::Application.routes.draw do
   get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
   get "/about", :to => 'admin#about_us', :as => :about_us
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
-  get "/admin/status", :to => 'admin#status',:as => :status
+  get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
 
   root :to => "home#index"
@@ -29,6 +29,9 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new',      :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
+
+  match '/vanity(/:action(/:id(.:format)))', :controller=>:vanity
+  match '/app',   :to =>"admin#app"
 
   resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
@@ -150,7 +153,13 @@ Chatham::Application.routes.draw do
     end
   end
 
+
+  authenticate :user do
+    mount Resque::Server, :at => "/resque"
+  end
+
   match "/:id" => "users#show", :as => :profile
+
 
 
   # Sample resource route within a namespace:
