@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   alias :logged_in? :user_signed_in?
 
-  use_vanity :current_user
+  #use_vanity :current_user
 
   def after_sign_in_path_for(resource)
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
