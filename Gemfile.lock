@@ -291,6 +291,9 @@ GEM
     uuid (2.3.4)
       macaddr (~> 1.0)
     uuidtools (2.1.2)
+    vanity (1.7.1)
+      redis (~> 2.0)
+      redis-namespace (~> 1.0.0)
     vegas (0.1.8)
       rack (>= 1.0.0)
     warden (1.0.4)
@@ -336,3 +339,4 @@ DEPENDENCIES
   system_timer
   twitter-text!
   uuidtools
+  vanity

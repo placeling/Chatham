@@ -54,7 +54,7 @@ gem 'fastercsv'
 
 gem "redis", "~> 2.2"
 #gem 'redis-store'
-#gem 'vanity'
+gem 'vanity'
 gem 'resque', :require => 'resque/server'
 #gem 'resque-scheduler'
 
