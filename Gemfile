@@ -56,7 +56,7 @@ gem "redis", "~> 2.2"
 #gem 'redis-store'
 gem "vanity", :git => "git://github.com/assaf/vanity.git", :tag => "v1.6.1"
 gem 'resque', :require => 'resque/server'
-#gem 'resque-scheduler'
+gem 'resque-scheduler', :git => "https://github.com/bvandenbos/resque-scheduler.git"
 
 group :test, :development do
 

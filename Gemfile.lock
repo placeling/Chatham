@@ -36,6 +36,15 @@ GIT
     twitter-text (1.4.15)
       activesupport
 
+GIT
+  remote: https://github.com/bvandenbos/resque-scheduler.git
+  revision: cbad71432341e0b1c32b280970b3cfd327f66d11
+  specs:
+    resque-scheduler (2.0.0.f)
+      redis (>= 2.0.1)
+      resque (>= 1.19.0)
+      rufus-scheduler
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -280,6 +289,8 @@ GEM
       ruby-openid (>= 2.1.7)
     rubyntlm (0.1.1)
     rubyzip (0.9.4)
+    rufus-scheduler (2.0.16)
+      tzinfo (>= 0.3.23)
     selenium-webdriver (2.0.1)
       childprocess (>= 0.1.9)
       ffi (>= 1.0.7)
@@ -341,6 +352,7 @@ DEPENDENCIES
   rails (= 3.0.10)
   redis (~> 2.2)
   resque
+  resque-scheduler!
   rspec-rails (~> 2.6)
   system_timer
   twitter-text!
