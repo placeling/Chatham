@@ -2,7 +2,6 @@ require 'bundler/capistrano'
 
 
 set :application, "chatham"
-set :repository,  "set your repository location here"
 
 task :production do
   set :gateway, 'beagle.placeling.com:11235'
@@ -65,4 +64,4 @@ end
 require 'config/boot'
 require 'hoptoad_notifier/capistrano'
 
-after :deploy, "deploy:reload_god_config"
+#after :deploy, "deploy:reload_god_config"
