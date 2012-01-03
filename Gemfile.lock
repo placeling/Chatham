@@ -9,9 +9,9 @@ GIT
 
 GIT
   remote: git://github.com/imackinn/oauth-plugin.git
-  revision: c56b80970ebae15c6a473fed199c0d2c25b8afe0
+  revision: e6dd4c7e6f17f6fdfb3c996bcce51e061c32d50d
   specs:
-    oauth-plugin (0.4.0.pre6)
+    oauth-plugin (0.4.0.rc2)
       multi_json
       oauth (~> 0.4.4)
       oauth2
@@ -135,6 +135,7 @@ GEM
       ruby-hmac
     formatador (0.2.1)
     geocoder (1.0.2)
+    god (0.11.0)
     hashie (0.4.0)
     highline (1.6.1)
     hoptoad_notifier (2.4.2)
@@ -336,6 +337,7 @@ DEPENDENCIES
   fb_graph
   fog
   geocoder
+  god
   hashie
   hoptoad_notifier
   httparty
