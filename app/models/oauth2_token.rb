@@ -1,6 +1,6 @@
 class Oauth2Token < AccessToken
 
-  def find_by_token(token_string)
+  def self.find_by_token(token_string)
     where(:token => token_string).first
   end
 
