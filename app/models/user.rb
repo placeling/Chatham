@@ -262,7 +262,7 @@ class User
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-    attributes = {:username => self['username'],  :perspectives_count =>self['pc'],
+    attributes = {:id =>self['_id'], :username => self['username'],  :perspectives_count =>self['pc'],
                   :url => self.url, :description => self.description,
                   :thumb_url => thumb_url, :main_url => main_url, :city =>self.city }
 
