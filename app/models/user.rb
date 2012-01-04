@@ -267,6 +267,8 @@ class User
                   :thumb_url => thumb_url, :main_url => main_url, :city =>self.city }
 
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
+    #photo id is same as user, for now
+    attributes = attributes.merge(:picture => {:id => self['_id'], :thumb_url => thumb_url, :main_url => main_url, :city =>self.city} )
 
     if options[:current_user]
       current_user =options[:current_user]

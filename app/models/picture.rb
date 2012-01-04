@@ -61,15 +61,12 @@ class Picture
 
 
   def as_json(options={})
-    attributes = self.attributes
+    attributes = {:id =>self['_id'], :_id => self['_id'] }
+
     #TODO: reset thumb_url to iphone_url after NINA 1.2 fix
     attributes = attributes.merge(:thumb_url => self.iphone_url,
                                     :iphone_url => self.iphone_url,
                                     :main_url => self.main_url)
-    attributes.delete('creation_environment')
-    attributes.delete('thumb_cache_url')
-    attributes.delete('iphone_cache_url')
-    attributes.delete('main_cache_url')
 
     if options[:current_user] && options[:current_user].id == self.perspective[:uid]
       attributes = attributes.merge(:mine => true)
