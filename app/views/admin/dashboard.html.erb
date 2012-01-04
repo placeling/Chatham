@@ -19,7 +19,7 @@
 
   <% for user in @users %>
     <tr>
-      <td><%= link_to user.username,  user , :target =>"_blank"%></td>
+      <td><%= link_to user.username,  user_path( user ), :target =>"_blank"%></td>
       <td><%= user.email %></td>
       <td><%= user.facebook.nil? ? "" : "true" %></td>
       <td><%= user.city %></td>
