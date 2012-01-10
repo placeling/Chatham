@@ -1,3 +1,111 @@
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.lightboxGallery').each(function(){
+        $('.lightbox', this).lightBox();
+      });
+      
+      $('.star_link').hover(
+        function() {
+          var source = $('img', this).attr('src');
+          if (source.indexOf('/images/unstarred.png') >= 0) {
+            $('img', this).attr('src', '/images/starred.png');
+            $('img', this).css({'opacity':'0.4'});
+          }
+        }, 
+        function() {
+          if ($('img', this).css('opacity') == '0.4') {
+            $('img', this).attr('src', '/images/unstarred.png');
+            $('img', this).css({'opacity':'1.0'});
+          }
+        }
+      );
+      
+      $('.email').each(function() {
+        $(this).qtip({
+          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+           position: {
+             my: 'bottom center',
+             at: 'top center'
+           },
+           show: {
+             event: 'click',
+             solo: true
+           },
+           hide: {
+             event: 'click'
+           },
+           style: {
+             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+           }
+        });
+      });
+
+      function haversine(lat1, lng1, lat2, lng2) {
+        var R = 6371;
+        var dLat = (lat2-lat1) * Math.PI / 180;
+        var dLng = (lng2-lng1) * Math.PI / 180;
+        var lat1 = lat1 * Math.PI / 180;
+        var lat2 = lat2 * Math.PI / 180;
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLng/2) * Math.sin(dLng/2) * Math.cos(lat1) * Math.cos(lat2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        return d;
+      }
+
+      function sortDistance(){
+        var mylist = $('#perspectives_list');
+        var listitems = mylist.children('li').get();
+        listitems.sort(function(a, b) {
+           var compA = parseFloat($(a).find('.distance').first().text());
+           var compB = parseFloat($(b).find('.distance').first().text());
+           return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+        });
+        $.each(listitems, function(idx, itm) { mylist.append(itm); });
+        $('.content_type').html('<span>Nearby Places</span> <a href="/" id="sortTime">Recent Activity</a>');
+
+        $('#sortTime').click(function(e) {
+          e.preventDefault();
+          sortTime();
+        });
+      }
+
+      function sortTime(){
+        var mylist = $('#perspectives_list');
+        var listitems = mylist.children('li').get();
+        listitems.sort(function(a, b) {
+           var compA = parseFloat($(a).find('.counter').first().text());
+           var compB = parseFloat($(b).find('.counter').first().text());
+           return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+        });
+        $.each(listitems, function(idx, itm) { mylist.append(itm); });
+
+        $('.content_type').html('<span>Recent Activity</span> <a href="/" id="sortDistance">Nearby Places</a>');
+        $('#sortDistance').click(function(e) {
+          e.preventDefault();
+          sortDistance();
+        });
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          $('.geo_info').each(function (){
+            var lat = parseFloat($(this).find('.latitude').first().text());
+            var lng = parseFloat($(this).find('.longitude').first().text());
+            var distance = haversine(lat, lng, position.coords.latitude, position.coords.longitude);
+            $(this).find('.distance').first().text(distance);
+
+            $(this).parent().append('<span class="away">' + distance.toFixed(1) + ' km</span>');
+          });
+
+          sortDistance();
+        });
+      };
+    });
+  </script>
+<% end %>
+
 <div>
   <div id="userdetails">
     <%= render :partial => "detail", :locals => {:user => @user} %>    
@@ -8,14 +116,15 @@
         <%= image_tag "plane.png", :alt=>"Plane" %>
       </div>
       <div class="content_type">
-        <p><%=t('user.recent_activity') %></p>
+        <span><%=t('user.recent_activity') %></span>
       </div>
     </div>
     <ul id="perspectives_list">
-      <% @user.perspectives.order_by([:created_at, :desc]).each do |perspective|%>
-          <li>
+      <% @user.perspectives.order_by([:created_at, :desc]).each_with_index do |perspective, index|%>
+          <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
+            <div class="counter"><%= index %></div>
             <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
-           </li>
+          </li>
       <% end %>
     </ul>
   </div>

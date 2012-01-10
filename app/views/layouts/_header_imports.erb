@@ -21,48 +21,6 @@
 <script type="text/javascript" src="/javascripts/jquery.lightbox-0.5.min.js"></script>
 <script type="text/javascript" src="/javascripts/jquery.qtip.js"></script>
 
-<script>
-  $(document).ready(function(){
-    $('.lightboxGallery').each(function(){
-      $('.lightbox', this).lightBox();
-    });
-    $('.star_link').hover(
-      function() {
-        var source = $('img', this).attr('src');
-        if (source.indexOf('/images/unstarred.png') >= 0) {
-          $('img', this).attr('src', '/images/starred.png');
-          $('img', this).css({'opacity':'0.4'});
-        }
-      }, 
-      function() {
-        if ($('img', this).css('opacity') == '0.4') {
-          $('img', this).attr('src', '/images/unstarred.png');
-          $('img', this).css({'opacity':'1.0'});
-        }
-      }
-    );
-    $('.email').each(function() {
-      $(this).qtip({
-        content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
-         position: {
-           my: 'bottom center',
-           at: 'top center'
-         },
-         show: {
-           event: 'click',
-           solo: true
-         },
-         hide: {
-           event: 'click'
-         },
-         style: {
-           classes: 'ui-tooltip-rounded ui-tooltip-shadow',
-         }
-      });
-    });
-    $('.first_field').focus();
-  });
-</script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

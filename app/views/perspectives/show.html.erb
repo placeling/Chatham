@@ -1,3 +1,49 @@
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.lightboxGallery').each(function(){
+        $('.lightbox', this).lightBox();
+      });
+      
+      $('.star_link').hover(
+        function() {
+          var source = $('img', this).attr('src');
+          if (source.indexOf('/images/unstarred.png') >= 0) {
+            $('img', this).attr('src', '/images/starred.png');
+            $('img', this).css({'opacity':'0.4'});
+          }
+        }, 
+        function() {
+          if ($('img', this).css('opacity') == '0.4') {
+            $('img', this).attr('src', '/images/unstarred.png');
+            $('img', this).css({'opacity':'1.0'});
+          }
+        }
+      );
+      
+      $('.email').each(function() {
+        $(this).qtip({
+          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+           position: {
+             my: 'bottom center',
+             at: 'top center'
+           },
+           show: {
+             event: 'click',
+             solo: true
+           },
+           hide: {
+             event: 'click'
+           },
+           style: {
+             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+           }
+        });
+      });
+    });
+  </script>
+<% end %>
+
 <div>
   <div class="image_lead">
     <%= image_tag "plane.png", :alt=>"Plane" %>

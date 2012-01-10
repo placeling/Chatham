@@ -266,7 +266,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   padding-top: 20px;
 }
 
-.content_type p {
+.content_type span {
   font-size: 48px;  
 }
 
@@ -316,6 +316,18 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 .name {
   font-size: 24px;
   line-height: 24px;
+}
+
+.geo_info {
+  display: none;
+}
+
+.counter {
+  display: none;
+}
+
+.away {
+  font-size: 10px;
 }
 
 .memo_wrapper {

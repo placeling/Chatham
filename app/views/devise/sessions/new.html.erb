@@ -1,3 +1,11 @@
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.first_field').focus();
+    });
+  </script>
+<% end %>
+
 <div class="auth_block">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.welcome') %></div>

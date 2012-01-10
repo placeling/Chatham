@@ -1,3 +1,29 @@
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.email').each(function() {
+        $(this).qtip({
+          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+           position: {
+             my: 'bottom center',
+             at: 'top center'
+           },
+           show: {
+             event: 'click',
+             solo: true
+           },
+           hide: {
+             event: 'click'
+           },
+           style: {
+             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+           }
+        });
+      });
+    });
+  </script>
+<% end %>
+
 <div>
   <div id="userdetails">
     <%= render :partial => "detail", :locals => {:user => @user} %>    
@@ -8,7 +34,7 @@
         <%= image_tag "plane.png", :alt=>"Plane" %>
       </div>
       <div class="content_type">
-        <p><%= @title %></p>
+        <span><%= @title %></span>
       </div>
     </div>
     <ul id="users">
