@@ -64,6 +64,9 @@
       "Meal Take-Out" : "meal_takeaway",
       "Restaurant" : "restaurant"
     },
+  "Gas Station" : {
+      "Gas Station" : "gas_station"
+  },
   "Services" : { "ATM" : "atm",
       "Accounting" : "accounting",
       "Bank" : "bank",
@@ -72,7 +75,6 @@
       "Car Wash" : "car_wash",
       "Electrician" : "electrician",
       "Funeral Home" : "funeral_home",
-      "Gas Station" : "gas_station",
       "General Contractor" : "general_contractor",
       "Insurance Agency" : "insurance_agency",
       "Laundry" : "laundry",
