@@ -420,6 +420,10 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   clear: both;
 }
 
+#user_list {
+  padding-bottom: 50px;
+}
+
 .user_thumb {
   float:left;
   padding-top: 10px;
