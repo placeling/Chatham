@@ -6,7 +6,7 @@
     <div id="user_controls">
         <ul>
             <% if current_user %>
-                <li><%= image_tag current_user.thumb_url, :class=>"you", :alt=>"you" %></li>
+                <li><a href="<%= user_path(current_user) %>"><%= image_tag current_user.thumb_url, :class=>"you", :alt=>"you" %></a></li>
                 <li><p class="holder"><%= link_to t("user.you"), (user_path :id=>current_user), :class=>"users" %></p></li>
                 <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
                 <li><p class="holder"><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></p></li>
