@@ -673,9 +673,15 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   color: #b7614b;
 }
 
+.perspective_and_place_wrapper {
+  width: 970px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .perspective_and_place {
   clear: both;
-  margin-left: 200px;
 }
 
 #perspective_well {

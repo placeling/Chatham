@@ -66,77 +66,79 @@
         </span>
     </div>
   </div>
-  <div class="perspective_and_place">
-    <div id="perspective_well">
-      <div id="perspective_profile_pic">
-        <div class="profile_pic_holder">
-          <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
-        </div>
-        <div class="profile_username">
-          <%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%>
-        </div>
-      </div>
-      <div id="perspective_<%= @perspective.id %>" class="perspective_details">
-        <div class="interact mini_star">
-          <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
-            <% if current_user && @perspective.su.include?(current_user.id) %>
-              <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
-                <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
-              </a>
-            <% else %>
-                <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
-                  <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
-                </a>
-            <% end %>
-          <% end %>
-        </div>
-        <div id="full_details">
-          <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
-            <div class="mini_memo_wrapper">
-              <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
-            </div>
-          <% end %>
-          <% if @perspective.pictures.length > 0 %>
-            <div class="lightboxGallery">
-            <% @perspective.pictures.each_with_index do |photo, i| %>
-              <% if !photo.deleted %>
-                <div class="narrow_photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
-              <% end %>
-            <% end %>
-            </div>
-            <div class="image_clear"></div>
-          <% end %>
-          <div class="footer_details">
-            <span class="updated_dark">
-              <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
-            </span>
-            <span class="flag">
-              <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
-            </span>
+  <div class="perspective_and_place_wrapper">
+    <div class="perspective_and_place">
+      <div id="perspective_well">
+        <div id="perspective_profile_pic">
+          <div class="profile_pic_holder">
+            <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
+          </div>
+          <div class="profile_username">
+            <%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%>
           </div>
         </div>
-      </div>
-      
-    </div>
-    <div id="place_well_holder">
-    <div id="place_well">
-      <div class="place_name_mini">
-        <%= link_to( @perspective.place.name, @perspective.place, :class=>"place_name_mini") %>
-      </div>
-      <div class="place_details_mini">
-        <% if @perspective.place.street_address || @perspective.place.city_data %>
-          <p class="address_mini"><%= @perspective.place.street_address %><% if @perspective.place.city_data && @perspective.place.street_address %>, <% end %><% if @perspective.place.city_data %><%= @perspective.place.city_data %><% end %></p>
-        <% end %>
-        <div class="mini_map">
-          <div class="map_holder"><img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>&zoom=16&size=258x198&sensor=false&markers=color:blue%7C<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>" alt="map" class="map_perspective"></div>
-          <% if @perspective.place.google_url %>
-            <div class="google_url_holder">
-              <a href="<%= @perspective.place.google_url %>" class="google_url"><%= t('place.google_url') %></a>
+        <div id="perspective_<%= @perspective.id %>" class="perspective_details">
+          <div class="interact mini_star">
+            <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
+              <% if current_user && @perspective.su.include?(current_user.id) %>
+                <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
+                  <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
+                </a>
+              <% else %>
+                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
+                    <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
+                  </a>
+              <% end %>
+            <% end %>
+          </div>
+          <div id="full_details">
+            <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
+              <div class="mini_memo_wrapper">
+                <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
+              </div>
+            <% end %>
+            <% if @perspective.pictures.length > 0 %>
+              <div class="lightboxGallery">
+              <% @perspective.pictures.each_with_index do |photo, i| %>
+                <% if !photo.deleted %>
+                  <div class="narrow_photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
+                <% end %>
+              <% end %>
+              </div>
+              <div class="image_clear"></div>
+            <% end %>
+            <div class="footer_details">
+              <span class="updated_dark">
+                <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
+              </span>
+              <span class="flag">
+                <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+              </span>
             </div>
-          <% end %>
-        </div>        
+          </div>
+        </div>
+      
       </div>
-    </div>
+      <div id="place_well_holder">
+      <div id="place_well">
+        <div class="place_name_mini">
+          <%= link_to( @perspective.place.name, @perspective.place, :class=>"place_name_mini") %>
+        </div>
+        <div class="place_details_mini">
+          <% if @perspective.place.street_address || @perspective.place.city_data %>
+            <p class="address_mini"><%= @perspective.place.street_address %><% if @perspective.place.city_data && @perspective.place.street_address %>, <% end %><% if @perspective.place.city_data %><%= @perspective.place.city_data %><% end %></p>
+          <% end %>
+          <div class="mini_map">
+            <div class="map_holder"><img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>&zoom=16&size=258x198&sensor=false&markers=color:blue%7C<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>" alt="map" class="map_perspective"></div>
+            <% if @perspective.place.google_url %>
+              <div class="google_url_holder">
+                <a href="<%= @perspective.place.google_url %>" class="google_url"><%= t('place.google_url') %></a>
+              </div>
+            <% end %>
+          </div>        
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 </div>
