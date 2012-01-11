@@ -58,9 +58,11 @@
             <div class="others_count"><%= t('place.place_lead') %><%= @follow_perspectives_count %><% if @follow_perspectives_count == 1 %><%= t('place.singular') %><% else %><%= t('place.plural') %><% end %><%= t('place.place_trail') %></div>
           </div>
         </div>
+        <ul>
         <% @following_perspectives.each do |perspective|%>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %>
+            <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %></li>
         <% end %>
+        </ul>
       </div>
       <% end %>
     <% end %>
@@ -74,9 +76,11 @@
           <div class="group_title others"><%= t('place.everyone_notes') %></div>
         <% end %>
       </div>
+      <ul>
       <% @all_perspectives.each do |perspective|%>
-          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+          <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %></li>
       <% end %>
+      </ul>
     </div>
     <% end %>
   </div>
