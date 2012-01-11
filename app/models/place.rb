@@ -315,6 +315,10 @@ class Place
     attributes = self.attributes.merge(:tags => self.tags)
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
     attributes = attributes.merge(:thumb_url => self.thumb_url)
+    attributes[:id] = attributes['_id']
+    attributes[:categories] = attributes['venue_types']
+
+    attributes = attributes.merge( {:lat => loc[0], :lng=> loc[1] } )
 
     attributes.delete(:google_ref)
     attributes.delete(:address_components)

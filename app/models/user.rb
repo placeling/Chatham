@@ -270,6 +270,8 @@ class User
     #photo id is same as user, for now
     attributes = attributes.merge(:picture => {:id => self['_id'], :thumb_url => thumb_url, :main_url => main_url, :city =>self.city} )
 
+    attributes = attributes.merge( :lat => loc[0], :lng=> loc[1]  )
+
     if options[:current_user]
       current_user =options[:current_user]
       #check against raw ids so it doesnt have to go back to db

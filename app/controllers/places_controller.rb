@@ -126,7 +126,7 @@ class PlacesController < ApplicationController
     lng = params[:lng].to_f
     query = params[:query]
     category = params[:category]
-    socialgraph = params[:socialgraph].downcase == "true"
+    socialgraph = params[:socialgraph].downcase == "true" unless params[:socialgraph].nil?
 
     barrie = params[:barrie]
     loc = [lat, lng]
