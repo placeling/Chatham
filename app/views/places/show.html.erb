@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <title><%= @place.name %></title>
+  <meta name="description" content="<%= t('place.description', {:name => @place.name})%>">
+  <meta property="og:title" content="<%= @place.name %>"/>
+  <meta property="og:url" content="https://www.placeling.com<%= place_path(@place) %>"/>
+  <meta property="og:type" content="place">
+  <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
+<% end %>
+
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){

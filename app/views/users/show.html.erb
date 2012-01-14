@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <title><%= t('user.user_head', {:user => @user.username}) %></title>
+  <meta name="description" content="<%= t('user.description', {:user => @user.username, :desc => @user.description}) %>">
+  <meta property="og:title" content="<%= t('user.user_head', {:user => @user.username}) %>"/>
+  <meta property="og:url" content="https://www.placeling.com<%= user_path(@user) %>"/>
+  <meta property="og:type" content="person">
+  <meta property="og:image" content="<%=  @user.thumb_url %>"/>
+<% end %>
+
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){
@@ -23,7 +32,7 @@
       
       $('.email').each(function() {
         $(this).qtip({
-          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+            content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
            position: {
              my: 'bottom center',
              at: 'top center'
