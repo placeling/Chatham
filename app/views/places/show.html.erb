@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <title><%= @place.name %></title>
+  <meta name="description" content="<%= t('place.description', {:name => @place.name})%>">
+  <meta property="og:title" content="<%= @place.name %>"/>
+  <meta property="og:url" content="https://www.placeling.com<%= place_path(@place) %>"/>
+  <meta property="og:type" content="place">
+  <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
+<% end %>
+
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){
@@ -58,9 +67,11 @@
             <div class="others_count"><%= t('place.place_lead') %><%= @follow_perspectives_count %><% if @follow_perspectives_count == 1 %><%= t('place.singular') %><% else %><%= t('place.plural') %><% end %><%= t('place.place_trail') %></div>
           </div>
         </div>
+        <ul>
         <% @following_perspectives.each do |perspective|%>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %>
+            <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %></li>
         <% end %>
+        </ul>
       </div>
       <% end %>
     <% end %>
@@ -74,9 +85,11 @@
           <div class="group_title others"><%= t('place.everyone_notes') %></div>
         <% end %>
       </div>
+      <ul>
       <% @all_perspectives.each do |perspective|%>
-          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+          <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %></li>
       <% end %>
+      </ul>
     </div>
     <% end %>
   </div>

@@ -12,7 +12,8 @@ en:
     terms_of_service: "Terms of Service"
     contact_us: "Contact"
     about_us: "About us"
-
+    marketing: "Placeling:: Cities are Stories"
+    description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web."
 
   basic:
     update: "Update"
@@ -119,6 +120,7 @@ en:
     remember_me: "Keep me signed in"
     didnt_receive_confirmation: "Didn't receive confirmation instructions?"
     didnt_receive_unlock: "Didn't receive unlock instructions?"
+    user_head: "%{user} at Placeling"
     sign_in_provider: "Sign in with %{provider}"
     resend_unlock: "Resend unlock instructions"
     leave_blank: "leave blank if you don't want to change it"
@@ -142,7 +144,8 @@ en:
     recent_activity: "Recent Activity"
     follow: "Follow"
     unfollow: "Unfollow"
-
+    description: "Sign up for Placeling to follow %{user} :: %{desc}"
+    list_description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts"
 
   oauth:
     registered_successfully: "Registered the information successfully"
@@ -218,6 +221,7 @@ en:
     plural: " people"
     place_trail: " you follow"
     call_to_action: " to see you and your network's notes and photos"
+    description: "The Placeling community's thoughts on %{name}"
 
   perspective:
     fav_places: "%{user}'s favorite places"
@@ -237,6 +241,8 @@ en:
     possessive: "'s"
     possessive_s: "'"
     thoughts: " thoughts on "
+    perspective_head: "%{user} on %{place}"
+    call_to_action: "Sign up to Placeling to follow %{user} and add %{place} to your map"
 
 
   errors:

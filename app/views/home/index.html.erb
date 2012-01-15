@@ -1,3 +1,12 @@
+<% content_for :head do %>
+  <title><%= t('home.marketing') %></title>
+  <meta name="description" content="<%= t('home.description')%>">
+  <meta property="og:title" content="Placeling" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.placeling.com" />
+  <meta property="og:image" content="https://www.placeling.com/images/logo.png" />
+<% end %>
+
 <div id="promo_holder">
   <div id="promo_shot">
     <%= image_tag "iphone.png", :alt=>"iPhone"%>

@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <title><%= @user.username %> :: <%= @title %></title>
+  <meta name="description" content="<%= t('user.list_description') %>">
+<% end %>
+
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){
