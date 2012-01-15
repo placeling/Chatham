@@ -174,6 +174,7 @@ class Perspective
 
   def as_json(options={})
     attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false), :fav_count =>self.fav_count)
+    attributes[:id] = attributes['_id']
 
     if options[:current_user]
       current_user = options[:current_user]
