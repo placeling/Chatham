@@ -157,9 +157,11 @@ class PlacesController < ApplicationController
       if @places_dict.has_key?(place.id)
         place = @places_dict[place.id]
         place.users_bookmarking << username
+        place.placemarks << perspective
       else
         place.users_bookmarking =  [username]
         @places_dict[place.id] = place
+        place.placemarks = [perspective]
       end
     end
 

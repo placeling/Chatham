@@ -68,7 +68,7 @@ class Picture
                                     :iphone_url => self.iphone_url,
                                     :main_url => self.main_url)
 
-    if options[:current_user] && options[:current_user].id == self.perspective[:uid]
+    if options && options[:current_user] && options[:current_user].id == self.perspective[:uid]
       attributes = attributes.merge(:mine => true)
     else
       attributes = attributes.merge(:mine => false)

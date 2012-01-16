@@ -32,6 +32,7 @@ class Place
 
   attr_accessor :users_bookmarking #transient property, shows people following
   attr_accessor :distance #transient property, shows distance to current location
+  attr_accessor :placemarks #perspectives we want to attach to the return value
 
   validates_uniqueness_of :google_id, :allow_nil =>true
   validates :name, :venue_types, :presence => true
@@ -315,6 +316,7 @@ class Place
     attributes = self.attributes.merge(:tags => self.tags)
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
     attributes = attributes.merge(:thumb_url => self.thumb_url)
+    attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
     attributes[:id] = attributes['_id']
     attributes[:categories] = attributes['venue_types']
 
