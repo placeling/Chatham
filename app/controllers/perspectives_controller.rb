@@ -136,6 +136,8 @@ class PerspectivesController < ApplicationController
 
     @user_perspective = current_user.star( @perspective )
 
+    track! :star
+
     respond_to do |format|
       format.js
       format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }
@@ -188,6 +190,7 @@ class PerspectivesController < ApplicationController
     @perspective= current_user.perspective_for_place( @place )
 
     if @perspective.nil?
+      track! :placemark
       @perspective= @place.perspectives.build(params.slice("memo"))
       @perspective.client_application = current_client_application unless current_client_application.nil?
       @perspective.user = current_user

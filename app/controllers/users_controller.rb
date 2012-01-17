@@ -148,6 +148,8 @@ class UsersController < ApplicationController
     @user.save!
     current_user.save!
 
+    track! :follow
+
     respond_to do |format|
       format.html { render :show }
       format.js
