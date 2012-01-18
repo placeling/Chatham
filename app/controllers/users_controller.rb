@@ -202,7 +202,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    follow_filter = params[:follow_filter]
+    follow_filter = params[:filter_follow]
 
     if BSON::ObjectId.legal?( params[:place_id] )
       #it's a direct request for a place in our db
@@ -215,8 +215,10 @@ class UsersController < ApplicationController
 
     if !follow_filter
       @perspectives = @place.perspectives
-    else
+    elsif current_user
       @perspectives = current_user.following_perspectives_for_place( @place )
+    else
+      @perspectives = []
     end
 
     for perspective in @perspectives
