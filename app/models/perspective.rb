@@ -114,7 +114,7 @@ class Perspective
   end
 
   def parse_tags
-    self.tags = extract_hashtags( self.memo )
+    self.tags = extract_hashtags( self.memo.downcase )
   end
 
   def fav_count
