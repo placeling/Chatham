@@ -39,7 +39,7 @@ describe "API - " do
 
       get place_users_path(place), {
         :format => 'json',
-          :follow_filter => true
+          :filter_follow => true
       }
 
       response.status.should be(200)
