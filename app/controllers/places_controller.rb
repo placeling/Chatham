@@ -4,7 +4,29 @@ require 'google_reverse_geocode'
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]
   before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
-
+  
+  def reference
+    if params[:ref].nil?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+    
+    gp = GooglePlaces.new
+    place = gp.get_place(params[:ref])
+    
+    if place.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+    
+    @place = Place.find_by_google_id( place.id )
+    
+    if @place.nil?
+      @place = Place.new_from_google_place( place )
+      @place.save
+    end
+    
+    redirect_to place_path(@place)
+  end
+  
   def nearby
     lat = params[:lat].to_f
     lng = params[:lng].to_f

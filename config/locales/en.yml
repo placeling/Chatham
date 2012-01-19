@@ -37,7 +37,10 @@ en:
     password: "Password"
     email_field: "Email address"
     password_confirm: "Again to confirm"
-
+  
+  search:
+    results: "People and places called "
+    no_results: "We don't know of any people or places called "
 
   admin:
     required_failed: "This requires admin privileges"
