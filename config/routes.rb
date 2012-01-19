@@ -10,7 +10,9 @@ Chatham::Application.routes.draw do
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
   get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
-
+  
+  get "/search", :to => 'search#search', :as => :search
+  
   root :to => "home#index"
 
   devise_for :users
@@ -76,6 +78,7 @@ Chatham::Application.routes.draw do
       get :random
       get :search
       get :suggested
+      get :reference
     end
     resources :users
       resources :perspectives, :except =>[:show, :index]  do
