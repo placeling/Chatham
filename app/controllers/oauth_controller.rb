@@ -46,7 +46,12 @@ class OauthController < ApplicationController
 
       user = User.find_for_database_authentication( { :login => params[:x_auth_username] } )
 
-      if !user.nil? && user.valid_password?( params[:x_auth_password] )
+      if !user.nil? && user.valid_password?( params[:x_auth_password] ) && !user.confirmed_at
+        logger.info "401 - Unconfirmed account"
+        render :text => "UNCONFIRMED: " +t("devise.failure.unconfirmed"), :status => 401, :template=>nil
+        return
+
+      elsif !user.nil? && user.valid_password?( params[:x_auth_password] )
         sign_in (user)
       else
         logger.info "401 - Username/Password not valid"
