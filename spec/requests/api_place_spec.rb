@@ -228,14 +228,13 @@ describe "API - " do
 
   describe "GET nearby_places for JSON request" do
     it "should do show nearby places for a co-ordinate" do
-      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
+      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'100'}
       response.status.should be(200)
-      response.body.should include("Sophie")
 
       nearby = JSON.parse( response.body )
       place_found = false
       for place in nearby['places']
-        if place['id'] == "a648ca9b8af31e9726947caecfd062406dc89440" #Sophie's cosmic cafe
+        if place['id'] == "bb7bcb22882a5676c8dece8aedfef37b2a7d81c1" #Kits lululemon
           place_found = true
           break
         end
