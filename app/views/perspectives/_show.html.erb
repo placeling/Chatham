@@ -17,16 +17,27 @@
         </div>
       <% end %>
     <% end %>
+  <% else %>
+    <a href="<%= edit_perspective_path(perspective) %>"><img src="/images/writer.png"></a>
   <% end %>
 </div>
 <div class="detail">
-  <% if !(current_user == perspective.user && source == "place_page") %>
   <div class="name">
     <% if source == "place_page" %>
-      <% if source == "place_page" %>
+      <% if current_user != perspective.user %>
         <%= image_tag perspective.user.thumb_url, :alt=>"Pic", :class =>"styled_mini" %>
+        <%= link_to perspective.user.username, user_path(perspective.user), :class => "username_link" %>
       <% end %>
-      <%= link_to perspective.user.username, user_path(perspective.user), :class => "username_link" %>
+    <% elsif source == "place_page_empty" %>
+<%
+=begin
+Edge case here: we use the :back symbol to get the user to prior page after an edit
+If user has added text from place page, source will still be "place_page_empty" but content will no longer be empty
+=end
+%>
+      <% if (perspective.memo.nil? || perspective.memo.length == 0) && perspective.pictures.length == 0 %>
+        <%=h t("perspective.enter_text") %> <%=h perspective.place.name %>
+      <% end %>
     <% else %>
       <%= link_to perspective.place.name, place_path(perspective.place) %>
       <div class="geo_info">
@@ -36,7 +47,6 @@
       </div>
     <% end %>
   </div>
-  <% end %>
   <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
     <div class="memo_wrapper">
       <%= simple_format(perspective.memo, :class=>"memo") %>
@@ -66,9 +76,13 @@
     <span class="footer_elements">
       <a href="http://www.placeling.com<%= perspective_path(perspective) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
     </span>
-    <span class="footer_elements footer_text_elements flag">
-      <%= link_to(t('perspective.flag'), flag_perspective_path(perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
-    </span>
     <% end %>
+    <span class="footer_elements footer_text_elements">
+      <% if current_user == perspective.user %>
+          <%= link_to 'Delete', perspective, :confirm => 'Are you sure?', :method => :delete %>
+      <% else %>
+          <%= link_to(t('perspective.flag'), flag_perspective_path(perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+      <% end %>
+    </span>
   </div>
 </div>

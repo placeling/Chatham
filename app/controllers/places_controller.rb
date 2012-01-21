@@ -326,11 +326,6 @@ class PlacesController < ApplicationController
       @all_perspectives_count = 0
     end
     
-    @else_perspective_count = @all_perspectives_count - @follow_perspectives_count
-    if @my_perspective
-      @else_perspective_count -= 1
-    end
-    
     perspectives_to_delete = []
     
     for perspective in @all_perspectives
@@ -348,6 +343,8 @@ class PlacesController < ApplicationController
     if @my_perspective and @all_perspectives.include?(@my_perspective)
       @all_perspectives.delete(@my_perspective)
     end
+    
+    @else_perspective_count = @all_perspectives.count
     
     if params['rf']
       @referring_user = User.find_by_username( params['rf'] )

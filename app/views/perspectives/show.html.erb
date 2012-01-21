@@ -88,15 +88,21 @@
         </div>
         <div id="perspective_<%= @perspective.id %>" class="perspective_details">
           <div class="interact mini_star">
-            <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
-              <% if current_user && @perspective.su.include?(current_user.id) %>
-                <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
-                  <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
-                </a>
-              <% else %>
-                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
-                    <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
+            <% if current_user == @perspective.user %>
+              <div class="edit_button">
+                <a href="<%= edit_perspective_path(@perspective) %>"><img src="/images/writer.png" class="edit_button_image"></a>
+              </div>
+            <% else %>
+              <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
+                <% if current_user && @perspective.su.include?(current_user.id) %>
+                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
+                    <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
                   </a>
+                <% else %>
+                    <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
+                      <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
+                    </a>
+                <% end %>
               <% end %>
             <% end %>
           </div>
@@ -121,7 +127,11 @@
                 <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
               </span>
               <span class="flag">
-                <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+                <% if @perspective.user == current_user %>
+                  <%= link_to 'Delete', @perspective, :confirm => 'Are you sure?', :method => :delete %>
+                <% else %>
+                  <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+                <% end %>
               </span>
             </div>
           </div>

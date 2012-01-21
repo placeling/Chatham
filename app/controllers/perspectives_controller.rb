@@ -1,11 +1,19 @@
+require 'uri'
+
 class PerspectivesController < ApplicationController
   before_filter :login_required, :except =>[:index, :show, :nearby, :all]
 
   def new
     @place = Place.find(params[:place_id])
-    @perspective = Perspective.new
-    @perspective.user = current_user
-    @perspective.place = @place
+    @perspective= current_user.perspective_for_place( @place )
+    
+    if @perspective.nil?
+      track! :placemark
+      @perspective= @place.perspectives.build()
+      @perspective.client_application = current_client_application unless current_client_application.nil?
+      @perspective.user = current_user
+      @perspective.location = @place.location
+    end
     
     @perspective.save
     
@@ -133,11 +141,13 @@ class PerspectivesController < ApplicationController
 
   def star
     @perspective = Perspective.find( params[:id] )
-
+    
     @user_perspective = current_user.star( @perspective )
-
+    
     track! :star
-
+    
+    @path = URI(request.referer).path
+    
     respond_to do |format|
       format.js
       format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }
@@ -177,41 +187,53 @@ class PerspectivesController < ApplicationController
       format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }  }
     end
   end
-
+  
+  def edit
+    @perspective = Perspective.find(params[:id])
+    @url = request.referer
+  end
+  
   def update
-    #this can also function as a "create", given that a user can only have one perspective for a place
-    if BSON::ObjectId.legal?( params['place_id'] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params['place_id'])
+    # if coming from mobile client, will have param 'place_id'
+    # otherwise web client
+    if params['place_id'].nil?
+      @perspective = Perspective.find(params[:id])
+      @perspective.update_attributes(params[:perspective])
     else
-      @place = Place.find_by_google_id( params['place_id'] )
-    end
-
-    @perspective= current_user.perspective_for_place( @place )
-
-    if @perspective.nil?
-      track! :placemark
-      @perspective= @place.perspectives.build(params.slice("memo"))
-      @perspective.client_application = current_client_application unless current_client_application.nil?
-      @perspective.user = current_user
-      if (params[:lat] and params[:long])
-          @perspective.location = [params[:lat].to_f, params[:long].to_f]
-          @perspective.accuracy = params[:accuracy]
+      #this can also function as a "create", given that a user can only have one perspective for a place
+      if BSON::ObjectId.legal?( params['place_id'] )
+        #it's a direct request for a place in our db
+        @place = Place.find( params['place_id'])
       else
-        @perspective.location = @place.location #made raw, these are by definition the same
-        @perspective.accuracy = params[:accuracy]
+        @place = Place.find_by_google_id( params['place_id'] )
+      end
+      
+      @perspective= current_user.perspective_for_place( @place )
+      
+      if @perspective.nil?
+        track! :placemark
+        @perspective= @place.perspectives.build(params.slice("memo"))
+        @perspective.client_application = current_client_application unless current_client_application.nil?
+        @perspective.user = current_user
+        if (params[:lat] and params[:long])
+            @perspective.location = [params[:lat].to_f, params[:long].to_f]
+            @perspective.accuracy = params[:accuracy]
+        else
+          @perspective.location = @place.location #made raw, these are by definition the same
+          @perspective.accuracy = params[:accuracy]
+        end
+      end
+      
+      if params[:memo]
+        @perspective.update_attributes(params.slice("memo"))
       end
     end
-
-    if params[:memo]
-      @perspective.update_attributes(params.slice("memo"))
-    end
-
+    
     if @perspective.save
       @perspective.place.update_tags
       @perspective.place.save
       respond_to do |format|
-        format.html
+        format.html {redirect_to params[:url]}
         format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
       end
     else
@@ -225,21 +247,47 @@ class PerspectivesController < ApplicationController
 
 
   def destroy
-    if BSON::ObjectId.legal?( params['place_id'] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params['place_id'])
+    # if coming from mobile client, will have param 'place_id'
+    # otherwise web client
+    redirect_path = ""
+    
+    if params['place_id'].nil?
+      @perspective = Perspective.find(params[:id])
+      
+      @place = @perspective.place
+      
+      # User can delete on web from Place Page, Perspective Page or User Page; need to redirect to correct one
+      if URI(request.referer).path == place_path(@place)
+        redirect_path = place_path(@place)
+      else
+        redirect_path = user_path(current_user)
+      end
     else
-      @place = Place.find_by_google_id( params['place_id'] )
+      if BSON::ObjectId.legal?( params['place_id'] )
+        #it's a direct request for a place in our db
+        @place = Place.find( params['place_id'])
+      else
+        @place = Place.find_by_google_id( params['place_id'] )
+      end
+      
+      @perspective= current_user.perspective_for_place( @place )
     end
-
-    @perspective= current_user.perspective_for_place( @place )
-
+    
     if !@perspective.nil?
+      all_perps = Perspective.where('plid' => @place._id)
+      
+      all_perps.each do |perp|
+        if perp.su.include?(current_user._id)
+          perp.su.delete(current_user._id)
+          perp.save
+        end  
+      end
+      
       @perspective.delete
     end
-
+    
     respond_to do |format|
-      format.html { render :index }
+      format.html { redirect_to redirect_path }
       format.json { render :json => {:status => 'deleted'} }
     end
   end

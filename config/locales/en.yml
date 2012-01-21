@@ -246,6 +246,11 @@ en:
     thoughts: " thoughts on "
     perspective_head: "%{user} on %{place}"
     call_to_action: "Sign up to Placeling to follow %{user} and add %{place} to your map"
+    edit_call_to_action: "Edit your notes & photos for"
+    cancel: "Cancel"
+    save_changes: "Save Changes"
+    enter_text: "Add some notes & photos to tell the world why you love"
+    
 
 
   errors:
