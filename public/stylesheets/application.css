@@ -8,6 +8,7 @@
 
 html, body {
   height: 100%;
+  min-width: 850px;
 }
 
 /*Opera Fix*/
@@ -516,17 +517,18 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 }
 
 .placemarked {
-  width: 172px;
+  width: 170px;
   background-image:url(/images/green_background.png);
-  padding: 5px;
+  padding: 10px 0 0;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: 2px solid #376F94;
   color: white;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  margin-top: 14px;
+  margin-top: 30px;
+  margin-left: 6px;
+  height: 34px;
 }
 
 #place_overview {
@@ -704,6 +706,7 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   color: #b7614b;
   padding-top: 20px;
   font-size: 36px;
+  margin-right: 80px;
 }
 
 a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hover, a.thoughts_url:focus {
@@ -780,6 +783,19 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
   padding-top: 76px;
 }
 
+.edit_button {
+  margin-left: 30px;
+}
+
+.edit_button_image {
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -moz-box-shadow: 0 0 8px 0 #FFFFFF;
+  -webkit-box-shadow: 0 0 8px 0 #FFFFFF;
+  box-shadow: 0 0 8px 0 #FFFFFF;
+}
+
 .mini_star {
   float: left;
   margin-left: 58px ;
@@ -845,6 +861,34 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   float:left;
   margin-right: 10px;
   margin-top: 10px;
+}
+
+.edit_block {
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+  max-width: 1000px;
+}
+
+.edit_action {
+  font-size:18px;
+  margin-bottom: 15px;
+}
+
+.edit_area {
+  width: 100%;
+  height: 200px;
+}
+
+.actions {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  float: right;
+  margin-right: 20px;
+}
+
+.cancel {
+  padding-right: 10px;
 }
 
 /* Search

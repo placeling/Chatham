@@ -61,7 +61,7 @@ Chatham::Application.routes.draw do
   
   resources :potential_perspectives, :only => [:update, :edit, :destroy]
   
-  resources :perspectives, :only =>[:show]   do
+  resources :perspectives, :only =>[:show, :edit, :update, :destroy]   do
     member do
       post :star
       post :unstar

@@ -49,13 +49,17 @@
         <%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %><%= t'place.call_to_action'%>
       </div>
     <% else %>
-      <% if @my_perspective && (!(@my_perspective.memo.nil? || @my_perspective.memo.length == 0) && !(@my_perspective.pictures.nil? || @my_perspective.pictures.length == 0))%>
+      <% if @my_perspective %>
         <div id="my_perspective" class="perspective_group">
           <div id="you_header" class="header_group">
             <%= image_tag "green_tab.png", :alt=>"you", :class=>"tab" %>
             <div class="group_title me"><%= t('place.your_notes') %></div>
           </div>
-          <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page"} %>
+          <% if (!(@my_perspective.memo.nil? || @my_perspective.memo.length == 0) && !(@my_perspective.pictures.nil? || @my_perspective.pictures.length == 0))%>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page"} %>
+          <% else %>
+            <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"} %>
+          <% end %>
         </div>
       <% end %>
       <% if @follow_perspectives_count > 0 %>
@@ -69,7 +73,7 @@
         </div>
         <ul>
         <% @following_perspectives.each do |perspective|%>
-            <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %></li>
+            <li class="tombstone_clear" id="perspective_<%=perspective.id %>"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %></li>
         <% end %>
         </ul>
       </div>
@@ -87,7 +91,7 @@
       </div>
       <ul>
       <% @all_perspectives.each do |perspective|%>
-          <li class="tombstone_clear"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %></li>
+          <li class="tombstone_clear" id="perspective_<%=perspective.id %>"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %></li>
       <% end %>
       </ul>
     </div>

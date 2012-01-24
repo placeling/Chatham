@@ -1,0 +1,12 @@
+<div class="edit_block">
+  <div class="edit_action"><%= t('perspective.edit_call_to_action') %> <span class="emphasize"><%= @perspective.place.name %></span></div>
+  <%= form_for(@perspective) do |f| %>
+    <div class="field">
+      <%= f.text_area :memo, :class => "edit_area" %>
+    </div>
+    <input type="hidden" name="url" value="<%= request.referer %>">
+    <div class="actions">
+      <span class="cancel"><a href="<%= :back %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
+    </div>
+  <% end %>
+</div>
