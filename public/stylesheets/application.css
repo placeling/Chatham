@@ -820,6 +820,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
 }
 
 .footer_details {
+  margin-top: 5px;
   font-size: 10px;
 }
 
@@ -889,6 +890,27 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 .cancel {
   padding-right: 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.remove {
+  padding-top: 2px;
+}
+
+.picture_holder {
+  margin-left: 10px;
+}
+
+#new_pictures {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.added_photo {
+  margin-top: 10px;
 }
 
 /* Search
