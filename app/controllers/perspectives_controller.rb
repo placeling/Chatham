@@ -199,6 +199,28 @@ class PerspectivesController < ApplicationController
     if params['place_id'].nil?
       @perspective = Perspective.find(params[:id])
       @perspective.update_attributes(params[:perspective])
+      
+      # get each photo. If deleted, set to deleted
+      if params[:perspective].has_key?(:pictures_attributes)
+        params[:perspective][:pictures_attributes].each do |picture|
+          # New picture
+          if picture[1].has_key?("image")
+            photo = Picture.new
+            photo.image = picture[1][:image]
+            if photo.valid?
+              @perspective.pictures.concat([photo])
+            end
+          # Existing picture
+          else
+            if picture[1]["_destroy"] == "1"
+              photo = @perspective.pictures[picture[0].to_i]
+              photo.deleted = true
+              photo.save
+            end
+          end
+        end
+        @perspective.save
+      end
     else
       #this can also function as a "create", given that a user can only have one perspective for a place
       if BSON::ObjectId.legal?( params['place_id'] )
@@ -238,7 +260,7 @@ class PerspectivesController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :new }
+        format.html { render :edit }
         format.json { render :json => {:status => 'fail'} }
       end
     end

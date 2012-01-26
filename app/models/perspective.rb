@@ -28,7 +28,7 @@ class Perspective
   embeds_many :pictures
   embeds_one :place_stub
 
-  accepts_nested_attributes_for :pictures, :allow_destroy => true
+  accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => lambda { |a| a[:content].blank? }
 
   index [[ "place_stub.loc", Mongo::GEO2D ]], :min => -180, :max => 180
   index [[ :ploc, Mongo::GEO2D ]], :min => -180, :max => 180
