@@ -1,5 +1,6 @@
 $(document).ready(function(){
-  $("#term").val("Search for a person or place");
+  var copy = "Find places to explore and people to follow"
+  $("#term").val(copy);
   $("#term").css({'color':'grey'});
   
   $("#term").focus(function() {
@@ -9,7 +10,7 @@ $(document).ready(function(){
   
   $("#term").blur(function() {
     if (this.value == '') {
-      this.value = "Search for a person or place";
+      this.value = copy;
       $(this).css({'color':'grey'});
     }
   })

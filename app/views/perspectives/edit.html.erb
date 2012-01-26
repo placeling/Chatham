@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="actions">
-      <span class="cancel"><a href="<%= :back %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
+      <span class="cancel"><a href="<%= request.referer %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
     </div>
   <% end %>
 </div>

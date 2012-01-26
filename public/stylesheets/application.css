@@ -173,6 +173,10 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   font-size: 10px;
 }
 
+.horizontal_spacer {
+  margin-left: 10px;
+}
+
 /* Flash
 =====================================================================*/
 #alert {
@@ -354,6 +358,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 .name {
   font-size: 24px;
   line-height: 24px;
+  margin-right: 50px;
 }
 
 .geo_info {
@@ -879,6 +884,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 .edit_area {
   width: 100%;
   height: 200px;
+  font-size: 18px;
 }
 
 .actions {

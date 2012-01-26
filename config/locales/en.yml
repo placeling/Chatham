@@ -14,6 +14,7 @@ en:
     about_us: "About us"
     marketing: "Placeling:: Cities are Stories"
     description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web."
+    blog: "Blog"
 
   basic:
     update: "Update"
@@ -248,7 +249,7 @@ en:
     call_to_action: "Sign up to Placeling to follow %{user} and add %{place} to your map"
     edit_call_to_action: "Edit your notes & photos for"
     cancel: "Cancel"
-    save_changes: "Save Changes"
+    save_changes: "Save"
     enter_text: "Add some notes & photos to tell the world why you love"
     edit_title: "Edit"
     remove: "Remove"
