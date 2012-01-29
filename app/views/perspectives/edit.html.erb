@@ -36,9 +36,9 @@
           })
         }
       });
-      $('#user_submit').click(function() {
-        $('#user_submit').attr("disabled", true);
-        $('#form').first().submit();
+      $('input:submit').click(function() {
+        $('input:submit').attr("disabled", true);
+        $(this).parents('form').submit();
       });
     });
   </script>
