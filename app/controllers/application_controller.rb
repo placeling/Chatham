@@ -66,47 +66,22 @@ class ApplicationController < ActionController::Base
   end
   
   def user_location
-    if cookies[:location].nil?
-      location = {
-        "default" => {
-          "lat" => "49.2820",
-          "lng" => "-123.1079"
+    if params[:api_call].nil?
+      if cookies[:location].nil?
+        location = {
+          "default" => {
+            "lat" => "49.2820",
+            "lng" => "-123.1079"
+          }
         }
-      }
-      
-      if current_user && current_user.location.length == 2
-        location["user"] = {
-          "lat" => current_user.location[0],
-          "lng" => current_user.location[1]
-        }
-      end
-      
-      begin
-        response = HTTParty.get('http://freegeoip.net/json/'+request.remote_ip)
-        if response.code == 200
-          geo_json = JSON.parse(response.body)
-          location["remote_ip"] = {
-            "lat" => geo_json["latitude"],
-            "lng" => geo_json["longitude"]
+
+        if current_user && current_user.location.length == 2
+          location["user"] = {
+            "lat" => current_user.location[0],
+            "lng" => current_user.location[1]
           }
         end
-      rescue
-        logger.warn "Request to freegeoip failed"
-      end
-      
-      cookies[:location] = location.to_json
-    else
-      location = JSON.parse(cookies[:location])
-      modified = false
-      if !location.has_key?("user") && current_user && current_user.location.length == 2 
-        location["user"] = {
-          "lat" => current_user.location[0],
-          "lng" => current_user.location[1]
-        }
-        modified = true
-      end
-      
-      if !location.has_key?("remote_ip")
+
         begin
           response = HTTParty.get('http://freegeoip.net/json/'+request.remote_ip)
           if response.code == 200
@@ -115,15 +90,42 @@ class ApplicationController < ActionController::Base
               "lat" => geo_json["latitude"],
               "lng" => geo_json["longitude"]
             }
-            modified = true
           end
         rescue
           logger.warn "Request to freegeoip failed"
         end
-      end
-      
-      if modified == true
+
         cookies[:location] = location.to_json
+      else
+        location = JSON.parse(cookies[:location])
+        modified = false
+        if !location.has_key?("user") && current_user && current_user.location.length == 2 
+          location["user"] = {
+            "lat" => current_user.location[0],
+            "lng" => current_user.location[1]
+          }
+          modified = true
+        end
+
+        if !location.has_key?("remote_ip")
+          begin
+            response = HTTParty.get('http://freegeoip.net/json/'+request.remote_ip)
+            if response.code == 200
+              geo_json = JSON.parse(response.body)
+              location["remote_ip"] = {
+                "lat" => geo_json["latitude"],
+                "lng" => geo_json["longitude"]
+              }
+              modified = true
+            end
+          rescue
+            logger.warn "Request to freegeoip failed"
+          end
+        end
+
+        if modified == true
+          cookies[:location] = location.to_json
+        end
       end
     end
   end
