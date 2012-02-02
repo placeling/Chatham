@@ -83,13 +83,18 @@ class ApplicationController < ActionController::Base
         end
 
         begin
-          response = HTTParty.get('http://freegeoip.net/json/'+request.remote_ip)
+          #http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i=24.85.231.190
+          response = HTTParty.get('http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i='+request.remote_ip)
           if response.code == 200
-            geo_json = JSON.parse(response.body)
-            location["remote_ip"] = {
-              "lat" => geo_json["latitude"],
-              "lng" => geo_json["longitude"]
-            }
+            components = response.body.split(",")
+            # Valid IP address response: CA,BC,Vancouver,49.250000,-123.133301 (line of text)
+            # Invalid IP address response: ,,,,,IP_NOT_FOUND
+            if (components[3].length > 0 && components[4].length > 0)
+              location["remote_ip"] = {
+                "lat" => components[3],
+                "lng" => components[4]
+              }
+            end
           end
         rescue
           logger.warn "Request to freegeoip failed"
@@ -109,14 +114,18 @@ class ApplicationController < ActionController::Base
 
         if !location.has_key?("remote_ip")
           begin
-            response = HTTParty.get('http://freegeoip.net/json/'+request.remote_ip)
+            response = HTTParty.get('http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i='+request.remote_ip)
             if response.code == 200
-              geo_json = JSON.parse(response.body)
-              location["remote_ip"] = {
-                "lat" => geo_json["latitude"],
-                "lng" => geo_json["longitude"]
-              }
-              modified = true
+              components = response.body.split(",")
+              # Valid IP address response: CA,BC,Vancouver,49.250000,-123.133301 (line of text)
+              # Invalid IP address response: ,,,,,IP_NOT_FOUND
+              if (components[3].length > 0 && components[4].length > 0)
+                location["remote_ip"] = {
+                  "lat" => components[3],
+                  "lng" => components[4]
+                }
+                modified = true
+              end
             end
           rescue
             logger.warn "Request to freegeoip failed"
