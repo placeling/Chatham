@@ -198,28 +198,28 @@ class PerspectivesController < ApplicationController
     # otherwise web client
     if params['place_id'].nil?
       @perspective = Perspective.find(params[:id])
-      @perspective.update_attributes(params[:perspective])
       
-      # get each photo. If deleted, set to deleted
-      if params[:perspective].has_key?(:pictures_attributes)
-        params[:perspective][:pictures_attributes].each do |picture|
-          # New picture
-          if picture[1].has_key?("image")
-            photo = Picture.new
-            photo.image = picture[1][:image]
-            if photo.valid?
-              @perspective.pictures.concat([photo])
-            end
-          # Existing picture
-          else
-            if picture[1]["_destroy"] == "1"
-              photo = @perspective.pictures[picture[0].to_i]
-              photo.deleted = true
-              photo.save
+      if @perspective.user == current_user
+        @perspective.update_attributes(params[:perspective])
+        
+        if params[:perspective].has_key?(:pictures_attributes)
+          params[:perspective][:pictures_attributes].each do |picture|
+            if picture[1].has_key?("image")
+              photo = Picture.new
+              photo.image = picture[1][:image]
+              if photo.valid?
+                @perspective.pictures.concat([photo])
+              end
+            else
+              if picture[1]["_destroy"] == "1"
+                photo = @perspective.pictures[picture[0].to_i]
+                photo.deleted = true
+                photo.save
+              end
             end
           end
+          @perspective.save
         end
-        @perspective.save
       end
     else
       #this can also function as a "create", given that a user can only have one perspective for a place
@@ -295,7 +295,7 @@ class PerspectivesController < ApplicationController
       @perspective= current_user.perspective_for_place( @place )
     end
     
-    if !@perspective.nil?
+    if !@perspective.nil? and @perspective.user == current_user
       all_perps = Perspective.where('plid' => @place._id)
       
       all_perps.each do |perp|
