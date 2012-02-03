@@ -40,6 +40,11 @@
         $('input:submit').attr("disabled", true);
         $(this).parents('form').submit();
       });
+      var chars = $('.edit_area').first().val();
+      
+      if (chars.length <= 0) {
+        $('.edit_area').first().focus();
+      }
     });
   </script>
 <% end %>
