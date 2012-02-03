@@ -42,6 +42,7 @@ en:
   search:
     results: "People and places called "
     no_results: "We don't know of any people or places called "
+    empty: "Type a place or a user's name into the search box"
 
   admin:
     required_failed: "This requires admin privileges"

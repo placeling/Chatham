@@ -23,6 +23,10 @@
       </li>
     </ul>
   <% else %>
-    <div id="no_results"><%=t('search.no_results') %> <span id="search_term"><%= @input %></span></div>
+    <% if @valid_params %>
+      <div id="no_results"><%=t('search.no_results') %> <span id="search_term"><%= @input %></span></div>
+    <% else %>
+      <div id="no_results"><%=t('search.empty') %></div>
+    <% end %>
   <% end %>
 </div>
