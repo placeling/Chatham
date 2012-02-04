@@ -234,7 +234,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
         format.html
-        format.json { render :json => {:suggested_places => @places, :ad => Advertisement.new( "Admob" ) } }
+        format.json { render :json => {:suggested_places => @places } }
     end
 
   end
