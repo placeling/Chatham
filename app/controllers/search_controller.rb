@@ -24,7 +24,7 @@ class SearchController < ApplicationController
       lng = params[:lng].to_f
       gpa = GooglePlacesAutocomplete.new
 
-      @input = params[:input].force_encoding("UTF-8")
+      @input = params[:input]
 
       raw_places = gpa.suggest(lat, lng, 10000, @input)
 
