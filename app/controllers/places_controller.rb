@@ -146,22 +146,47 @@ class PlacesController < ApplicationController
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
+
+    radius = params[:radius].to_f unless params[:radius].nil?
+
     query = params[:query]
     category = params[:category]
-    socialgraph = params[:socialgraph].downcase == "true" unless params[:socialgraph].nil?
+
+    if ( params[:socialgraph] && !params[:query_type])
+      socialgraph = params[:socialgraph].downcase == "true"
+      if socialgraph
+        query_type = "following"
+      else
+        query_type =  "popular"
+      end
+
+    elsif ( params[:query_type] )
+      query_type =  params[:query_type].downcase
+    else
+      query_type = "popular"
+    end
 
     barrie = params[:barrie]
     loc = [lat, lng]
 
     n = 40
+    if !radius
+      span = 0.04
+    else
+      span = 0.04
+    end
     span = 0.04
     radius = 1000
 
     #preprocess for query
-    if socialgraph and current_user
+    if query_type == "following" && current_user
       following_ids = current_user[:following_ids] << current_user.id
       @perspectives = Perspective.query_near( loc, span, query, category ).
         and(:uid.in => following_ids).limit(n).entries
+    elsif query_type == "me" && current_user
+      search_ids = [ current_user.id ]
+      @perspectives = Perspective.query_near( loc, span, query, category ).
+        and(:uid.in => search_ids).limit(n).entries
     else
       @perspectives = Perspective.query_near( loc, span, query, category ).limit(n).entries
     end
@@ -234,7 +259,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
         format.html
-        format.json { render :json => {:suggested_places => @places } }
+        format.json { render :json => {:suggested_places => @places, :ad => Advertisement.new( "Admob" ) } }
     end
 
   end
