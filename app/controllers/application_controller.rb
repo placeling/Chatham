@@ -74,32 +74,24 @@ class ApplicationController < ActionController::Base
             "lng" => "-123.1079"
           }
         }
-
+        
         if current_user && current_user.location.length == 2
           location["user"] = {
             "lat" => current_user.location[0],
             "lng" => current_user.location[1]
           }
         end
-
-        begin
-          #http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i=24.85.231.190
-          response = HTTParty.get('http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i='+request.remote_ip)
-          if response.code == 200
-            components = response.body.split(",")
-            # Valid IP address response: CA,BC,Vancouver,49.250000,-123.133301 (line of text)
-            # Invalid IP address response: ,,,,,IP_NOT_FOUND
-            if (components[3].length > 0 && components[4].length > 0)
-              location["remote_ip"] = {
-                "lat" => components[3],
-                "lng" => components[4]
-              }
-            end
-          end
-        rescue
-          logger.warn "Request to freegeoip failed"
+        
+        #geo = GeoIP.new
+        geo = GeoIP.geo_from_ip(request.remote_ip)
+        
+        if !geo.nil?
+          location["remote_ip"] = {
+            "lat" => geo.lat,
+            "lng" => geo.lng
+          }
         end
-
+        
         cookies[:location] = location.to_json
       else
         location = JSON.parse(cookies[:location])
@@ -111,27 +103,19 @@ class ApplicationController < ActionController::Base
           }
           modified = true
         end
-
+        
         if !location.has_key?("remote_ip")
-          begin
-            response = HTTParty.get('http://geoip3.maxmind.com/b?l=SxfLwmF0OHt6&i='+request.remote_ip)
-            if response.code == 200
-              components = response.body.split(",")
-              # Valid IP address response: CA,BC,Vancouver,49.250000,-123.133301 (line of text)
-              # Invalid IP address response: ,,,,,IP_NOT_FOUND
-              if (components[3].length > 0 && components[4].length > 0)
-                location["remote_ip"] = {
-                  "lat" => components[3],
-                  "lng" => components[4]
-                }
-                modified = true
-              end
-            end
-          rescue
-            logger.warn "Request to freegeoip failed"
+          geo = GeoIP.geo_from_ip(request.remote_ip)
+          
+          if !geo.nil?
+            location["remote_ip"] = {
+              "lat" => geo.lat,
+              "lng" => geo.lng
+            }
+            modified = true
           end
         end
-
+        
         if modified == true
           cookies[:location] = location.to_json
         end
