@@ -207,7 +207,7 @@ $.widget( "ui.autocomplete", {
 					}
 				}
 			})
-			.zIndex( this.element.zIndex() + 1 )
+			.zIndex( this.element.zIndex() + 10004 ) // UPDATED BY LINDSAY TO BE 10004 INSTEAD OF 1
 			// workaround for jQuery bug #5781 http://dev.jquery.com/ticket/5781
 			.css({ top: 0, left: 0 })
 			.hide()
@@ -362,7 +362,7 @@ $.widget( "ui.autocomplete", {
 	_suggest: function( items ) {
 		var ul = this.menu.element
 			.empty()
-			.zIndex( this.element.zIndex() + 1 );
+			.zIndex( this.element.zIndex() + 10004 ); // UPDATED BY LINDSAY TO BE 10004 INSTEAD OF 1;
 		this._renderMenu( ul, items );
 		// TODO refresh should check if the active item is still in the dom, removing the need for a manual deactivate
 		this.menu.deactivate();

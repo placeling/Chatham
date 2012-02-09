@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PerspectivesController do
 
-  it "should return a place with an embedde perspective for its 'show'" do
+  it "should return a place with an embedded perspective for its 'show'" do
     #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
     user = Factory.create(:user)
     place = Factory.create(:place)
@@ -16,10 +16,8 @@ describe PerspectivesController do
 
     json_place['referring_perspectives'].should_not be(nil)
     json_place['_id'].should ==  place.id.to_s
-
   end
-
-
+  
   it "returns parent perspective after a starring" do
     user = Factory.create(:user)
     perspective = Factory.create(:perspective)

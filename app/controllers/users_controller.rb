@@ -1,3 +1,5 @@
+require 'json'
+
 class UsersController < ApplicationController
 
   before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook]
@@ -75,13 +77,56 @@ class UsersController < ApplicationController
     
     #this is the final step in routes, if this doesn't work its a 404 -iMack
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
-
+    
+    #for map view on web, get current page state
+    if params[:api_call].nil?
+      # spatial vs. time-based view
+      if params[:recent].nil?
+        @location = true
+      else
+        @location = false
+        
+      end
+      
+      @current_location = []
+      if !cookies[:page_state].nil?
+        page_state = JSON.parse(cookies[:page_state])
+        if page_state.has_key?(@user.username)
+          @current_location << page_state[@user.username]['lat']
+          @current_location << page_state[@user.username]['lng']
+        end
+      end
+    end
+    
     respond_to do |format|
-      format.html
+      if params[:recent].nil?
+        format.html
+      else
+        format.html { render :template => "users/recent" }
+      end
       format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
     end
   end
-
+  
+  def recent
+    @user = User.find_by_username(params[:id])
+    
+    if params[:start].nil?
+      params[:start] = 0
+    end
+    
+    start_pos = params[:start].to_i
+    count = 20
+    
+    @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count )
+    
+    respond_to do |format|
+      format.html
+      format.js
+    end
+    
+  end
+  
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id

@@ -151,7 +151,9 @@ en:
     unfollow: "Unfollow"
     description: "Sign up for Placeling to follow %{user} :: %{desc}"
     list_description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts"
-
+    nearby: "Nearby"
+    recent: "Recent"
+    
   oauth:
     registered_successfully: "Registered the information successfully"
     updated_client_info: "Updated the client information successfully"
@@ -254,8 +256,11 @@ en:
     enter_text: "Add some notes & photos to tell the world why you love"
     edit_title: "Edit"
     remove: "Remove"
-    
-
+    web_link: "More on the web"
+    no_categories: "Alas, no categories or tags here"
+    show_all: "show all"
+    no_places: "Alas, no places to show you here"
+    no_photos: "Alas, no photos to show you here"
 
   errors:
     messages:
