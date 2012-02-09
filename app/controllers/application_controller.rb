@@ -66,8 +66,8 @@ class ApplicationController < ActionController::Base
   end
   
   def user_location
-    if params[:api_call].nil?
-      if cookies[:location].nil?
+    if !params[:api_call] && Rails.env != "test"
+      if !cookies[:location]
         location = {
           "default" => {
             "lat" => "49.2820",

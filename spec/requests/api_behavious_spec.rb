@@ -214,6 +214,30 @@ describe "API - " do
       perspective = Perspective.find(perspective.id)
       perspective.should_not be(nil)
     end
+
+
+    it "only deletes the one perspective on a place" do
+      user = Factory.create(:user)
+      user2 = Factory.create(:user, :username=>"otherperson")
+      perspective = Factory.create(:perspective, :user =>user)
+      place = perspective.place
+      perspective2 = Factory.create(:perspective, :user => user2, :place => place)
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      delete place_perspectives_path(perspective.place), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      #reget from db
+      perspective = Perspective.find(perspective.id)
+      perspective.should be(nil)
+
+      perspective = Perspective.find(perspective2.id)
+      perspective.should_not be(nil)
+    end
   end
 
 end
