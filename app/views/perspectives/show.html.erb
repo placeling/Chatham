@@ -112,6 +112,11 @@
                 <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
               </div>
             <% end %>
+            <% if !@perspective.url.nil? && @perspective.url.length > 0 %>
+              <div class="url_wrapper">
+                <%= link_to t('perspective.web_link'), @perspective.url, :class=>"perspective_url", :target=>"_blank" %>
+              </div>
+            <% end %>
             <% if @perspective.pictures.length > 0 %>
               <div class="lightboxGallery">
               <% @perspective.pictures.each_with_index do |photo, i| %>

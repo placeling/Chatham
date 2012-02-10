@@ -749,6 +749,10 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   width: 600px;
 }
 
+.url_wrapper {
+  margin-top: 5px;
+}
+
 .call_to_action {
   font-size: 24px;
 }
@@ -1249,6 +1253,33 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-top: 10px;
 }
 
+.errorExplanation {
+  margin-bottom: 20px;
+}
+
+.errorExplanation h2 {
+  color: red;
+}
+
+.errorExplanation ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.url_space {
+  margin-top: 20px;
+}
+
+.url_hint {
+  font-size: 12px;
+  color: gray;
+}
+
+.url_area {
+  width: 500px;
+  font-size: 18px;
+}
+
 .edit_block {
   margin-top: 30px;
   margin-left: 50px;
@@ -1287,7 +1318,11 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 }
 
 .picture_holder {
-  margin-left: 10px;
+  margin-top: 20px;
+}
+
+#existing_pictures {
+  margin-left: 5px;
 }
 
 #new_pictures {

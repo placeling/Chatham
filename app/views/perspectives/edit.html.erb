@@ -36,10 +36,6 @@
           })
         }
       });
-      $('input:submit').click(function() {
-        $('input:submit').attr("disabled", true);
-        $(this).parents('form').submit();
-      });
       var chars = $('.edit_area').first().val();
       
       if (chars.length <= 0) {
@@ -52,16 +48,17 @@
 <div class="edit_block">
   <div class="edit_action"><%= t('perspective.edit_call_to_action') %> <span class="emphasize"><%= @perspective.place.name %></span></div>
   <%= form_for @perspective, :html => {:multipart => true} do |f| %>
-    <div class="field">
-      <%= f.text_area :memo, :class => "edit_area" %>
-    </div>
+    <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
+    <%= f.text_area :memo, :class => "edit_area" %>
+    <div class="url_space"><%= t('perspective.edit_web_link')%> <span class="url_hint"><%= t('perspective.url_hint') %></span></div>
+    <%= f.url_field :url, :class => "url_area" %>
     <input type="hidden" name="url" value="<%= request.referer %>">
     <div class="picture_holder">
       <div id="existing_pictures">
         <% f.fields_for :pictures do |builder| %>
-            <div class="hidden_image narrow_photo"><%= builder.hidden_field :deleted, :class => "hidden_status" %><%= builder.hidden_field :thumb_url, :class => "hidden_url" %>
-              <p class="center"><%= builder.check_box :_destroy %> <%= builder.label :_destroy, "Remove" %></p>
-            </div>
+          <div class="hidden_image narrow_photo"><%= builder.hidden_field :deleted, :class => "hidden_status" %><%= builder.hidden_field :thumb_url, :class => "hidden_url" %>
+            <p class="center"><%= builder.check_box :_destroy %> <%= builder.label :_destroy, "Remove" %></p>
+          </div>
         <% end %>
       </div>
       <div class="image_clear"></div>
