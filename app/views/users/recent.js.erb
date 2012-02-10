@@ -5,7 +5,12 @@ var new_count = <%= @perspectives.length %>;
   $('#loading').html('');
   $(window).data('ajaxready', false);
 <% else %>
-  $('#loading').hide();
+  <% if @noscroll.nil? %>
+    $('#loading').hide();
+  <% else %>
+    $('#loading').html('');
+    $(window).data('ajaxready', false);
+  <% end %>
   var html = '';
   <% @perspectives.each_with_index do |perspective, index|%>
     html += '<li class="perspective_wrapper" id="perspective_<%=perspective.id %>">';

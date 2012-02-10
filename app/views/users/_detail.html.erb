@@ -69,18 +69,8 @@
     <p class="description"><%= user.description %></p>
   </div>
 </div>
-
 <div id="type_toggle">
-  <% if @location %>
-    <ul class="location_types">
-      <li class="left inactive">
-        <span class="type"><%= t('user.nearby') %></span>
-      </li>
-      <li class="right active">
-        <a class="active" href="<%= recent_user_path(user) %>"><span class="type"><%= t('user.recent') %></span></a>
-      </li>
-    </ul>
-  <% else %>
+  <% if request.env['PATH_INFO'] == recent_user_path(user) %>
     <ul class="location_types">
       <li class="left active">
         <a class="active" href="<%= user_path(user) %>"><span class="type"><%= t('user.nearby') %></span></a>
@@ -89,5 +79,14 @@
         <span class="type"><%= t('user.recent') %></span>
       </li>
     </ul>
+  <% else %>
+  <ul class="location_types">
+    <li class="left inactive">
+      <span class="type"><%= t('user.nearby') %></span>
+    </li>
+    <li class="right active">
+      <a class="active" href="<%= recent_user_path(user) %>"><span class="type"><%= t('user.recent') %></span></a>
+    </li>
+  </ul>
   <% end %>
 </div>

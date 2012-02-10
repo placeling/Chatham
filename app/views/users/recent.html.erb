@@ -51,6 +51,7 @@
         });
       });
       $('#loading').hide()
+      <% if @noscroll.nil? %>
       $(window).data('ajaxready', true).scroll(function(e) {
         if ($(window).data('ajaxready') == false) return;
         
@@ -66,6 +67,7 @@
           });
         }
       });
+      <% end %>
     });
   </script>
 <% end %>
@@ -77,7 +79,7 @@
   <div class="image_lead">
     <%= image_tag "plane.png", :alt=>"Plane" %>
   </div>
-  <% unless @perspectives.blank? %>
+  <% if @perspectives.length > 0 %>
     <ul id="recent_perspectives_list" start="<%= @perspectives.length %>">
       <% @perspectives.each_with_index do |perspective, index|%>
         <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
@@ -86,12 +88,7 @@
       <% end %>
     </ul>
     <div id="loading"><img id="spinner" src="/images/spinner.gif"></div>
+  <% else %>
+    <div class="detail nothing">I haven't placemarked anything yet...</div>
   <% end %>
-</div>
-<div id="whimsy">
-  <div>
-    <img class="street_scene" src="/images/street_scene.png"/>
-  </div>
-  <div class="concrete">
-  </div>
 </div>

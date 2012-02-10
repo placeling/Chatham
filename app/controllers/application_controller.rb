@@ -82,7 +82,6 @@ class ApplicationController < ActionController::Base
           }
         end
         
-        #geo = GeoIP.new
         geo = GeoIP.geo_from_ip(request.remote_ip)
         
         if !geo.nil?
@@ -90,9 +89,11 @@ class ApplicationController < ActionController::Base
             "lat" => geo.lat,
             "lng" => geo.lng
           }
+        else
+          location["no_ip"] = true
         end
         
-        cookies[:location] = location.to_json
+        cookies[:location] = {:value => location.to_json, :expires => 1.day.from_now}
       else
         location = JSON.parse(cookies[:location])
         modified = false
@@ -104,7 +105,7 @@ class ApplicationController < ActionController::Base
           modified = true
         end
         
-        if !location.has_key?("remote_ip")
+        if !location.has_key?("remote_ip") && !location.has_key?("no_ip")
           geo = GeoIP.geo_from_ip(request.remote_ip)
           
           if !geo.nil?
@@ -117,7 +118,7 @@ class ApplicationController < ActionController::Base
         end
         
         if modified == true
-          cookies[:location] = location.to_json
+          cookies[:location] = {:value => location.to_json, :expires => 1.day.from_now}
         end
       end
     end

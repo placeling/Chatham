@@ -80,14 +80,6 @@ class UsersController < ApplicationController
     
     #for map view on web, get current page state
     if params[:api_call].nil?
-      # spatial vs. time-based view
-      if params[:recent].nil?
-        @location = true
-      else
-        @location = false
-        
-      end
-      
       @current_location = []
       if !cookies[:page_state].nil?
         page_state = JSON.parse(cookies[:page_state])
@@ -99,11 +91,7 @@ class UsersController < ApplicationController
     end
     
     respond_to do |format|
-      if params[:recent].nil?
-        format.html
-      else
-        format.html { render :template => "users/recent" }
-      end
+      format.html
       format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
     end
   end
@@ -120,11 +108,14 @@ class UsersController < ApplicationController
     
     @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count )
     
+    if @perspectives.length < count
+      @noscroll = true
+    end
+    
     respond_to do |format|
       format.html
       format.js
     end
-    
   end
   
   def update
