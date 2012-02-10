@@ -21,4 +21,10 @@ class Authentication
     self.where(:uid =>id).and(:p=>provider).first
   end
 
+  def as_json(options={})
+    attributes = {:provider =>self['p'], :uid => self['uid'],  :token =>self['token'],
+                    :expiry => self.expiry }
+    attributes
+  end
+
 end

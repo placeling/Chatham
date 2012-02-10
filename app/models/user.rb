@@ -282,6 +282,7 @@ class User
         for auth in current_user.authentications
           attributes = attributes.merge(auth.provider => auth)
         end
+        attributes = attributes.merge(:auths => self.authentications)
       end
     else
       current_user = nil
