@@ -6,6 +6,27 @@
       $(window).resize(function() {
         $('#type_toggle').css({'left':$(window).width()/2 - $('#type_toggle').outerWidth(true)/2});
       });
+      
+      $('.email_user').each(function() {
+        $(this).qtip({
+          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+           position: {
+             my: 'bottom right',
+             at: 'top center'
+           },
+           show: {
+             event: 'click',
+             solo: true
+           },
+           hide: {
+             event: 'click'
+           },
+           style: {
+             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+           }
+        });
+      });
+      
     });
   </script>
 <% end %>

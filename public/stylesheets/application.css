@@ -1076,12 +1076,21 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
 
 /* Perspective path
 =====================================================================*/
+.plane {
+  float:left;
+  margin-left: 120px;
+  margin-top: 22px;
+}
+
 .thoughts{
   padding-left: 268px;
-  color: #b7614b;
   padding-top: 20px;
-  font-size: 36px;
   margin-right: 80px;
+}
+
+.thoughts p {
+  color: #b7614b;
+  font-size: 36px;
 }
 
 a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hover, a.thoughts_url:focus {
@@ -1179,6 +1188,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
 #full_details {
   margin-left: 151px;
   padding-left: 10px;
+  margin-right: 25px;
 }
 
 .mini_memo {
