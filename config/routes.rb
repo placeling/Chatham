@@ -109,7 +109,7 @@ Chatham::Application.routes.draw do
     post '/users/resend',      :to => 'users#resend'
     match '/auth/:provider/callback' => 'authentications#create'
     match '/auth/:provider/add' => 'authentications#add'
-    match '/auth/:provider/login' => 'authentications#add'
+    match '/auth/:provider/login' => 'authentications#login'
 
     resources :users do
       resources :perspectives, :only =>[:index]

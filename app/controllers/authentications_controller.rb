@@ -5,6 +5,20 @@ class AuthenticationsController < ApplicationController
     @authentications = current_user.authentications if current_user
   end
 
+  def login
+    provider = params['provider']
+    uid = params['uid']
+    token = params["token"]
+    expiry = params["expiry"]
+
+    auth = Authentication.find_by_provider_and_uid(provider, uid)
+
+    if auth && auth.token == token
+      render :text => generate_keys_for( auth.user )
+    else
+      render :text =>"FAIL"
+    end
+  end
 
   def add
     provider = params['provider']
@@ -15,19 +29,19 @@ class AuthenticationsController < ApplicationController
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
     if current_user && auth && current_user.id != auth.user.id  && auth.token == token
-      render :text => "Facebook id already in use", :status=>400
-    elsif auth && auth.token == token
-      render :text => generate_keys_for( auth.user )
+      render :json => "Facebook id already in use", :status=>400
+    elsif current_user && auth && auth.token == token
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
     elsif current_user && auth
       #update tokens
-      render :text =>"FAIL"
+      render :json =>{:status => "FAIL"}
     elsif current_user
       #some update
       auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token =>token, :expiry=>expiry)
       auth.save
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     else
-      render :text =>"FAIL"
+      render :json =>{:status => "FAIL"}
     end
   end
 
