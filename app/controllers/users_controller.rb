@@ -96,6 +96,115 @@ class UsersController < ApplicationController
     end
   end
   
+  def bounds
+    @user = User.find_by_username(params[:id])
+    
+    @perspectives = []
+    
+    valid_params = true
+    
+    if params[:top_lat].nil? || params[:bottom_lat].nil? || params[:left_lng].nil? || params[:right_lng].nil?
+      valid_params = false
+    else
+      top_lat = params[:top_lat].to_f
+      if top_lat > 90 or top_lat < -90
+        valid_params = false
+      end
+      
+      if valid_params
+        bottom_lat = params[:bottom_lat].to_f
+        if bottom_lat > 90 or top_lat < -90 or bottom_lat > top_lat
+          valid_params = false
+        end
+        
+        if valid_params
+          left_lng = params[:left_lng].to_f
+          if left_lng < -180 || left_lng > 180
+            valid_params = false
+          end
+          
+          if valid_params
+            right_lng = params[:right_lng].to_f
+            if right_lng > 180 || right_lng < -180
+              valid_params = false
+            end
+          end
+        end
+      end
+    end
+    
+    if valid_params
+      # Can't figure out how to do mongoid search for correct location parameters so instead
+      # get all perspectives and iterate over 'em. Bad code, I know
+      perspectives = @user.perspectives
+      
+      perspectives.each do |persp|
+        valid = false
+        if persp.loc[0] >= bottom_lat && persp.loc[0] <= top_lat
+          if right_lng > left_lng
+            if persp.loc[1] <= right_lng && persp.loc[1] >= left_lng
+              valid = true
+            end
+          else
+            if (persp.loc[1] >= left_lng || persp.loc[1] <= right_lng)
+              valid = true
+            end
+          end
+        end
+        
+        if valid
+          temp = {}
+          temp["name"] = persp.place_stub.name
+          temp["name_encoded"] = u(persp.place_stub.name)
+          temp["uid"] = persp._id
+          temp["lowername"] = persp.place_stub.name.downcase
+          temp["url"] = perspective_path(persp)
+          temp["lat"] = persp.place_stub.loc[0]
+          temp["lng"] = persp.place_stub.loc[1]
+          
+          if !persp.place_stub.street_address.nil? && persp.place_stub.street_address.length > 0
+            temp["address"] = persp.place_stub.street_address
+          end
+          
+          temp["categories"] = []
+          temp["tags"] = []
+          temp["photos"] = []
+          temp["modified"] = persp.updated_at.strftime('%B %e, %Y')
+          
+          if !persp.memo.nil? && persp.memo.length > 0
+            temp["memo"] = simple_format(perspective.memo)
+          end
+          
+          if !persp.url.nil? && persp.url.length > 0
+            temp["remote_url"] = persp.url
+          end
+          
+          if current_user = @user
+            temp["edit"] = edit_perspective_path(persp)
+            temp["delete"] = link_to("Delete", persp, :confirm => t("basic.are_you_sure"), :method => :delete, :class => "info_act")
+          else
+            temp["flag"] = link_to(t("perspective.flag"), flag_perspective_path(persp), :confirm =>t("perspective.flag_confirm"), :method=>"post", :remote=>"true", :class=>"info_act")
+            if !persp.memo.nil? || persp.pictures.length > 0
+              if current_user && persp.su.include?(current_user.id)
+                temp["star"] = unstar_perspective_path(persp)
+                temp["starred"] = true
+              else
+                temp["star"] = star_perspective_path(persp)
+                temp["starred"] = false
+              end
+            end
+          end
+          
+          @perspectives << temp
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.json {render @perspectives}
+    end
+  end
+  
   def recent
     @user = User.find_by_username(params[:id])
     
