@@ -108,9 +108,10 @@ Chatham::Application.routes.draw do
     get "/admin/terms_of_service", :to => 'admin#terms_of_service'
     get "/admin/privacy_policy", :to => 'admin#privacy_policy'
     post '/oauth/login_fb',      :to => 'oauth#login_fb',      :as => :login_fb
+    post '/users/resend',      :to => 'users#resend'
     match '/auth/:provider/callback' => 'authentications#create'
     match '/auth/:provider/add' => 'authentications#add'
-    match '/auth/:provider/login' => 'authentications#add'
+    match '/auth/:provider/login' => 'authentications#login'
 
     resources :users do
       resources :perspectives, :only =>[:index]
