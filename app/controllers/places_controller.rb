@@ -203,7 +203,11 @@ class PlacesController < ApplicationController
       end
       if @places_dict.has_key?(place.id)
         place = @places_dict[place.id]
-        place.users_bookmarking << username
+        if username == "You"
+          place.users_bookmarking.insert(0, username )
+        else
+          place.users_bookmarking << username
+        end
         place.placemarks << perspective
       else
         place.users_bookmarking =  [username]
