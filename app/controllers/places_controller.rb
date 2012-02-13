@@ -223,12 +223,7 @@ class PlacesController < ApplicationController
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
     end
 
-    if current_user and socialgraph
-      #TEST: sort by distance rather than popularity
-      @places = @places.sort_by { |place| place.distance }
-    else
-      @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
-    end
+    @places = @places.sort_by { |place| place.distance }
 
     if !barrie.nil? and query_type ==  "popular" and !socialgraph and @places.count < 5
       gp = GooglePlaces.new
