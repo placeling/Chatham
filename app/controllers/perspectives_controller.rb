@@ -310,6 +310,8 @@ class PerspectivesController < ApplicationController
       end
       
       @perspective.delete
+      @place.perspective_count -= 1
+      @place.save
     end
     
     respond_to do |format|
