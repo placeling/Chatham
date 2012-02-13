@@ -226,7 +226,7 @@ class PlacesController < ApplicationController
       @places = @places.sort_by { |place| -1*place.users_bookmarking.count }
     end
 
-    if !barrie.nil? and !socialgraph and @places.count < 5
+    if !barrie.nil? and query_type ==  "popular" and !socialgraph and @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
