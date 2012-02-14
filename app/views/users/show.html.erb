@@ -730,8 +730,6 @@
     
       var coords = JSON.parse($.cookie('location'));
       if ((typeof coords['remote_ip'] !== "undefined") || (typeof coords['browser'] !== "undefined") || navigator.geolocation) {
-        // Create the icon
-        
         $('#map_holder').append('<div id="current_location"><a href="/" class="pan"><img class="pan_img" src="/images/pan.png"></a></div>');
         $('#current_location').width(30);
         $('#current_location').css({
