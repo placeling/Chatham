@@ -13,7 +13,7 @@
     src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
   </script>
   <script type="text/javascript">
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var DEFAULT_ZOOM = 15;
     
     function compare(a,b) {
       if (a.lower_name < b.lower_name)
@@ -45,105 +45,14 @@
       }
     }
     
-    var persps = [];
-    <% @user.perspectives.each_with_index do |perspective, index| %>
-      perp = {
-        "name" : "<%= perspective.place.name %>",
-        "name_encoded" : "<%= u perspective.place.name %>",
-        "uid" : "<%= perspective.id %>",
-        "lower_name" : "<%= perspective.place.name.downcase %>",
-        "url": "<%= perspective_path(perspective) %>",
-        "lat" : <%= perspective.place.location[0] %>,
-        "lng" : <%= perspective.place.location[1] %>,
-        <% if perspective.place.street_address %>
-          "address" : "<%= perspective.place.street_address %>",
-        <% end %>
-        "categories" : [],
-        "tags" : [],
-        "photos" : [],
-        "modified" : "<%= perspective.updated_at.strftime('%B %e, %Y') %>",
-        <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
-          "memo" : '<%= escape_javascript(simple_format(perspective.memo))  %>',
-        <% end %>
-        <% if !perspective.url.nil? && perspective.url.length > 0 %>
-          "remote_url" : '<%= perspective.url %>',
-        <% end %>
-        <% if current_user == @user %>
-          "edit" : '<%= edit_perspective_path(perspective) %>',
-          "delete" : '<%= link_to "Delete", perspective, :confirm => t("basic.are_you_sure"), :method => :delete, :class => "info_act" %>',
-        <% else %>
-          "flag" : '<%= link_to(t("perspective.flag"), flag_perspective_path(perspective), :confirm =>t("perspective.flag_confirm"), :method=>"post", :remote=>"true", :class=>"info_act")%>',
-          <% if (!perspective.memo.nil?) || (perspective.pictures.length > 0) %>
-            <% if current_user && perspective.su.include?(current_user.id) %>
-              "star" : '<%= unstar_perspective_path(perspective) %>',
-              "starred" : true,
-            <% else %>
-              "star" : '<%= star_perspective_path(perspective) %>',
-              "starred" : false,
-            <% end %>
-          <% end %>
-        <% end %>
-      }
-      
-      <% perspective.place.venue_types.each do |type| %>
-        <% if type.downcase != 'establishment' %>
-          perp.categories.push("<%= type.downcase %>");
-        <% end %>
-      <% end %>
-      
-      <% if perspective.tags %>
-        <% perspective.tags.each do |tag| %>
-          perp.tags.push("<%= tag.downcase %>")
-        <% end %>
-      <% end %>
-      
-      <% perspective.pictures.each do |pic| %>
-        <% if !pic.deleted %>
-          perp.photos.push({"thumb" : "<%= pic.thumb_url %>", "main" : "<%= pic.main_url %>"});
-        <% end %>
-      <% end %>
-      
-      persps.push(perp)
-    <% end %>
-    
-    persps = persps.sort(compare);
-    
-    function checkMarker(persp, pageState) {
-      if (typeof pageState['filterValue'] === "undefined") {
-        return true;
-      }
-      
-      var filterTerm = pageState['filterValue'];
-      var filterType = pageState['filterType'];
-      
-      var pass = false;
-      
-      if (filterType === 'tag') {
-        if (persp.tags.length > 0) {
-          for (var j=0; j<persp.tags.length; j++) {
-            if (persp.tags[j] === filterTerm) {
-              pass = true;
-            }
-          }
-        }
-      } else if (filterType === 'category') {
-        if (persp.categories.length > 0) {
-          for (var j=0; j<persp.categories.length; j++) {
-            if (persp.categories[j] === filterTerm) {
-              pass = true;
-            }
-          }
-        }
-      }
-      
-      if (pass === true) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    
     function initialize() {
+      var persps = {};
+      var topLat;
+      var bottomLat;
+      var rightLng;
+      var leftLng;
+      var requests = 0;
+      
       var loadState = JSON.parse($.cookie('page_state'));
       if (loadState === null) {
         loadState = {};
@@ -161,16 +70,8 @@
           var lat = <%= @user.location[0] %>;
           var lng = <%= @user.location[1] %>;
         <% else %>
-          // If no lat/lng, send to the location of their first perspective
-          var lat = 0;
-          var lng = 0;
-          if (persps.length > 0) {
-            lat = persps[0].lat;
-            lng = persps[0].lng;
-          } else {
-            lat = 49.2;
-            lng = -123.2;
-          }
+          var lat = <%= @default_location[0] %>;
+          var lng = <%= @default_location[1] %>;
         <% end %>
       <% end %>
       
@@ -179,7 +80,7 @@
         'tags' : []
       }
       
-      var zoom = 15;
+      var zoom = DEFAULT_ZOOM;
       
       if (typeof loadState["<%= @user.username %>"]['zoom'] !== "undefined") {
         zoom = loadState["<%= @user.username %>"]['zoom'];
@@ -242,6 +143,7 @@
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           } else {
+            loadState["<%= @user.username %>"]['infowindow'] = perspective['uid'];
             var infoWindowHTML = '<div class="info_window">';
             
             // Edit vs. star
@@ -259,7 +161,7 @@
               infoWindowHTML += action;
             }
             
-            infoWindowHTML += '<div class="info_name">' + perspective.name + '</div>';
+            infoWindowHTML += '<div class="info_name"><a href="' + perspective.place_url + '">' + perspective.name + '</a></div>';
             
             if (perspective.categories.length > 0 || perspective.tags.length > 0) {
               infoWindowHTML += '<div class="info_cat_and_tags">';
@@ -355,25 +257,18 @@
         return marker;
       }
       
-      for (var i=0; i < persps.length; i++) {
-        persps[i]["marker"] = createMarker(persps[i]);
-        
-        // Check for filters
-        if (checkMarker(persps[i], loadState["<%= @user.username %>"]) === true) {
-          persps[i]["marker"].setVisible(true);
-        } else {
-          persps[i]["marker"].setVisible(false);
-        };
-        
-        if (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") {
-          if (persps[i]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
-            google.maps.event.trigger(persps[i]["marker"], 'click');
+      function updatePerspectives(perspectiveList) {
+        for (var i=0; i < perspectiveList.length; i++) {
+          if (typeof persps[perspectiveList[i]['uid']] === "undefined") {
+            persps[perspectiveList[i]['uid']] = perspectiveList[i];
+            persps[perspectiveList[i]['uid']]['marker'] = createMarker(perspectiveList[i]);
           }
         }
+        updateMap();
       }
       
-      google.maps.event.addListener(map, 'idle', function() {
-        var bounds = map.getBounds();
+      function updateMap() {
+        var currentBounds = map.getBounds();
         
         loadState["<%= @user.username %>"]['lat'] = map.getCenter().lat();
         loadState["<%= @user.username %>"]['lng'] = map.getCenter().lng();
@@ -381,46 +276,46 @@
         
         var filterTerm = loadState["<%= @user.username %>"]['filterValue'];
         var filterType = loadState["<%= @user.username %>"]['filterType'];
-        for (var i=0; i < persps.length; i++) {
-          if (bounds.contains(persps[i]["marker"].getPosition())) {
+        
+        for (var persp in persps) {
+          if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
             if (typeof filterTerm === "undefined") {
-              if (persps[i]["marker"].getVisible() === false) {
-                persps[i]["marker"].setVisible(true);
+              if (persps[persp]["marker"].getVisible() === false) {
+                persps[persp]["marker"].setVisible(true);
               }
             } else {
               var pass = false;
               if (filterType === 'tag') {
-                if (persps[i].tags.length > 0) {
-                  for (var j=0; j<persps[i].tags.length; j++) {
-                    if (persps[i].tags[j] === filterTerm) {
+                if (persps[persp].tags.length > 0) {
+                  for (var j=0; j<persps[persp].tags.length; j++) {
+                    if (persps[persp].tags[j] === filterTerm) {
                       pass = true;
                     }
                   }
                 }
               } else if (filterType === 'category') {
-                if (persps[i].categories.length > 0) {
-                  for (var j=0; j<persps[i].categories.length; j++) {
-                    if (persps[i].categories[j] === filterTerm) {
+                if (persps[persp].categories.length > 0) {
+                  for (var j=0; j<persps[persp].categories.length; j++) {
+                    if (persps[persp].categories[j] === filterTerm) {
                       pass = true;
                     }
                   }
                 }
               }
-              
-              if (pass === true && persps[i]["marker"].getVisible() === false) {
-                persps[i]["marker"].setVisible(true);
-              } else if (pass === false && persps[i]["marker"].getVisible() === true) {
-                persps[i]["marker"].setVisible(false);
-                if (persps[i]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
+              if (pass === true && persps[persp]["marker"].getVisible() === false) {
+                persps[persp]["marker"].setVisible(true);
+              } else if (pass === false && persps[persp]["marker"].getVisible() === true) {
+                persps[persp]["marker"].setVisible(false);
+                if (persps[persp]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
                   infowindow.close();
                   delete loadState["<%= @user.username %>"]['infowindow'];
                 }
               }
             }
           } else {
-            if (persps[i]["marker"].getVisible() === true) {
-              persps[i]["marker"].setVisible(false);
-              if (persps[i]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
+            if (persps[persp]["marker"].getVisible() === true) {
+              persps[persp]["marker"].setVisible(false);
+              if (persps[persp]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
                 infowindow.close();
                 delete loadState["<%= @user.username %>"]['infowindow'];
               }
@@ -429,10 +324,12 @@
         }
         
         if (infowindow.getMap()) {
-          if (bounds.contains(infowindow.getPosition()) === false) {
+          if (currentBounds.contains(infowindow.getPosition()) === false) {
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           }
+        } else if   (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") {
+            google.maps.event.trigger(persps[loadState["<%= @user.username %>"]['infowindow']]["marker"], 'click');
         }
         
         $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
@@ -452,6 +349,93 @@
         } else if (loadState["<%= @user.username %>"]['location'] === 'photos') {
           updatePhotos();
         }        
+      };
+      
+      google.maps.event.addListener(map, 'idle', function() {
+        var callServer = false;
+        var bounds = map.getBounds();
+        
+        if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+          callServer = true;
+        }
+        
+        if (callServer === false) {
+          var updatedTopLat = bounds.getNorthEast().lat();
+          var updatedBottomLat = bounds.getSouthWest().lat();
+          var updatedRightLng = bounds.getNorthEast().lng();
+          var updatedLeftLng = bounds.getSouthWest().lng();
+          
+          if ((updatedTopLat > topLat) || (updatedBottomLat < bottomLat)) {
+            callServer = true;
+          }
+          
+          if (callServer === false) {
+            if (updatedRightLng > rightLng || updatedLeftLng < leftLng) {
+              callServer = true;
+            }
+          }
+        }
+        
+        if (callServer == true) {
+          requests += 1;
+          if (requests > 0) {
+            $('#spinner').show();
+          }
+          
+          if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+            var updatedTopLat = bounds.getNorthEast().lat() + 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
+            var updatedBottomLat = bounds.getSouthWest().lat() - 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
+            var updatedRightLng = bounds.getNorthEast().lng() + (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
+            var updatedLeftLng = bounds.getSouthWest().lng() - (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
+          } else {
+            var updatedTopLat = bounds.getNorthEast().lat();
+            var updatedBottomLat = bounds.getSouthWest().lat();
+            var updatedRightLng = bounds.getNorthEast().lng();
+            var updatedLeftLng = bounds.getSouthWest().lng();
+          }
+          
+          
+          $.ajax({
+            url:'<%= bounds_user_path(@user) %>',
+            data: {
+              top_lat: updatedTopLat,
+              bottom_lat: updatedBottomLat,
+              right_lng: updatedRightLng,
+              left_lng: updatedLeftLng
+            },
+            dataType:"script",
+            type:"GET",
+            success: function(data) {
+              requests -= 1;
+              if (requests <= 0) {
+                $('#spinner').hide();
+              }
+              if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+                topLat = updatedTopLat,
+                bottomLat = updatedBottomLat,
+                rightLng = updatedRightLng,
+                leftLng = updatedLeftLng
+              } else {
+                if (updatedTopLat > topLat) {
+                  topLat = updatedTopLat;
+                }
+                if (updatedBottomLat < bottomLat) {
+                  bottomLat = updatedBottomLat;
+                }
+                if (updatedRightLng > rightLng) {
+                  rightLng = updatedRightLng;
+                }
+                if (updatedLeftLng < leftLng) {
+                  leftLng = updatedLeftLng;
+                }
+              }
+              
+              eval(data);
+            }
+          });
+        } else {
+          updateMap();
+        }
       });
       
       function updateFilters(sortDown) {
@@ -459,25 +443,25 @@
         filters['tags'] = {};
         
         var bounds = map.getBounds();
-        for (var i=0; i < persps.length; i++) {
-          if (bounds.contains(persps[i]["marker"].getPosition())) {
+        for (var persp in persps) {
+          if (bounds.contains(persps[persp]["marker"].getPosition())) {
             // Create categories
-            if (persps[i].categories.length > 0) {
-              for (var j=0; j < persps[i].categories.length; j++) {
-                if (filters['categories'][persps[i].categories[j]]) {
-                  filters['categories'][persps[i].categories[j]] += 1;
+            if (persps[persp].categories.length > 0) {
+              for (var j=0; j < persps[persp].categories.length; j++) {
+                if (filters['categories'][persps[persp].categories[j]]) {
+                  filters['categories'][persps[persp].categories[j]] += 1;
                 } else {
-                  filters['categories'][persps[i].categories[j]] = 1;
+                  filters['categories'][persps[persp].categories[j]] = 1;
                 }
               }
             }
             
-            if (persps[i].tags.length > 0) {
-              for (var j=0; j <persps[i].tags.length; j++) {
-                if (filters['tags'][persps[i].tags[j]]) {
-                  filters['tags'][persps[i].tags[j]] += 1;
+            if (persps[persp].tags.length > 0) {
+              for (var j=0; j <persps[persp].tags.length; j++) {
+                if (filters['tags'][persps[persp].tags[j]]) {
+                  filters['tags'][persps[persp].tags[j]] += 1;
                 } else {
-                  filters['tags'][persps[i].tags[j]] = 1;
+                  filters['tags'][persps[persp].tags[j]] = 1;
                 }
               }
             }
@@ -595,24 +579,30 @@
       }
       
       function updatePlaces() {
+        var placePerspectives = [];
         var count = 0;
         var locationHTML = "";
-        for (var i=0; i<persps.length; i++) {
-          if (persps[i]["marker"].getVisible() === true) {
-            var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + i + '"><div>' + persps[i]["name"];
-            if (persps[i]["address"]) {
-              html += '<div class="map_address">';
-              html += persps[i]["address"];
-              html += '</div>'
-            }
-            html += '</div></a></div>';
-            locationHTML += html;
+        for (var persp in persps) {
+          if (persps[persp]["marker"].getVisible() === true) {
+            placePerspectives.push(persps[persp]);
             count += 1;
           }
         }
         
         if (count == 0) {
           locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
+        } else {
+          placePerspectives = placePerspectives.sort(compare);
+          for (var i=0; i<placePerspectives.length; i++) {
+            var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["uid"] + '"><div>' + placePerspectives[i]["name"];
+            if (placePerspectives[i]["address"]) {
+              html += '<div class="map_address">';
+              html += placePerspectives[i]["address"];
+              html += '</div>'
+            }
+            html += '</div></a></div>';
+            locationHTML += html;
+          }
         }
         
         $('#locations').html(locationHTML);
@@ -629,13 +619,13 @@
       function updatePhotos() {
         var count = 0;
         var locationHTML = "";
-        for (var i=0; i<persps.length; i++) {
-          if (persps[i]["marker"].getVisible() === true) {
-            if (persps[i].photos.length > 0) {
+        for (var persp in persps) {
+          if (persps[persp]["marker"].getVisible() === true) {
+            if (persps[persp].photos.length > 0) {
               var pics = '';
               
-              for (var j=0; j<persps[i].photos.length; j++) {
-                pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + i + '" src="' + persps[i].photos[j].thumb + '"></div>';
+              for (var j=0; j<persps[persp].photos.length; j++) {
+                pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].thumb + '"></div>';
               }
               locationHTML += pics;
               count += 1;
@@ -754,30 +744,67 @@
           if (typeof coords['browser'] !== "undefined") {
             var center = new google.maps.LatLng(parseFloat(coords['browser']['lat']), parseFloat(coords['browser']['lng']));
             map.setCenter(center);
+            map.setZoom(DEFAULT_ZOOM);
           } else if (typeof coords['remote_ip'] !== "undefined") {
+            if (navigator.geolocation && typeof coords['denied'] === "undefined") {
+              navigator.geolocation.getCurrentPosition(
+                function(position) {
+                  coords['browser'] = {}
+                  coords['browser']['lat'] = position.coords.latitude;
+                  coords['browser']['lng'] = position.coords.longitude;
+                  
+                  $.cookie('location', JSON.stringify(coords), {path:'/'});
+                  
+                  var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                  map.setCenter(center);
+                },
+                function(error) {
+                  switch(error.code)
+                  {
+                    case error.PERMISSION_DENIED:
+                      coords['denied'] = true;
+                      $.cookie('location', JSON.stringify(coords), {path:'/'});
+                      break;
+                  }
+                }
+              );
+            }
+            
             var center = new google.maps.LatLng(parseFloat(coords['remote_ip']['lat']), parseFloat(coords['remote_ip']['lng']));
             map.setCenter(center);
+            map.setZoom(DEFAULT_ZOOM);
           } else {
-            navigator.geolocation.getCurrentPosition(function(position) {
-              coords['browser'] = {}
-              coords['browser']['lat'] = position.coords.latitude;
-              coords['browser']['lng'] = position.coords.longitude;
-              
-              $.cookie('location', JSON.stringify(coords), {path:'/'});
-              
-              var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-              map.setCenter(center);
-            });
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                coords['browser'] = {}
+                coords['browser']['lat'] = position.coords.latitude;
+                coords['browser']['lng'] = position.coords.longitude;
+                
+                $.cookie('location', JSON.stringify(coords), {path:'/'});
+                
+                var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(center);
+              });
+            }
           }
           return false;
         });
       }
+      
     }
     
     $(document).ready(function(){
       initialize();
             
       $('#filters').css({top: $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#toggle_filters').outerHeight(true)});
+      
+      $('#map_holder').append('<div id="spinner"><img class="spinner" src="/images/spinner.gif"></div>');
+      $('#spinner').width(30);
+      $('#spinner').css({
+        'position':'absolute',
+        'z-index':'10003',
+      });
+      $('#spinner').hide();
       
       $(window).resize(function() {
         $('#main_map').width($(window).width);
@@ -798,6 +825,11 @@
           'left': 3,
           'top': $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 32,
         });
+        
+        $('#spinner').css({
+          'left': 3,
+          'top': $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 62
+        })
       });
       
       $(window).resize();

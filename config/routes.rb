@@ -48,6 +48,7 @@ Chatham::Application.routes.draw do
       end
     end
     member do
+      get :bounds
       get :recent
       get :followers
       get :following

@@ -424,6 +424,10 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   background-image:url(/images/concrete_mini.png);
 }
 
+.spinner {
+  max-height: 30px;
+  max-width: 30px;
+}
 
 #filter_drawer {
   position: absolute;

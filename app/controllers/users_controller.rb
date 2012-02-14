@@ -88,6 +88,15 @@ class UsersController < ApplicationController
           @current_location << page_state[@user.username]['lng']
         end
       end
+      
+      @default_location = []
+      if !@user.perspectives.nil? && @user.perspectives.length > 0
+        @default_location << @user.perspectives[0].place_stub.loc[0]
+        @default_location << @user.perspectives[0].place_stub.loc[1]
+      else
+        @default_location << 49.2
+        @default_location << -123.2
+      end
     end
     
     respond_to do |format|
@@ -140,68 +149,26 @@ class UsersController < ApplicationController
       
       perspectives.each do |persp|
         valid = false
-        if persp.loc[0] >= bottom_lat && persp.loc[0] <= top_lat
+        if persp.place_stub.loc[0] >= bottom_lat && persp.place_stub.loc[0] <= top_lat
           if right_lng > left_lng
-            if persp.loc[1] <= right_lng && persp.loc[1] >= left_lng
+            if persp.place_stub.loc[1] <= right_lng && persp.place_stub.loc[1] >= left_lng
               valid = true
             end
           else
-            if (persp.loc[1] >= left_lng || persp.loc[1] <= right_lng)
+            if (persp.place_stub.loc[1] >= left_lng || persp.place_stub.loc[1] <= right_lng)
               valid = true
             end
           end
         end
         
         if valid
-          temp = {}
-          temp["name"] = persp.place_stub.name
-          temp["name_encoded"] = u(persp.place_stub.name)
-          temp["uid"] = persp._id
-          temp["lowername"] = persp.place_stub.name.downcase
-          temp["url"] = perspective_path(persp)
-          temp["lat"] = persp.place_stub.loc[0]
-          temp["lng"] = persp.place_stub.loc[1]
-          
-          if !persp.place_stub.street_address.nil? && persp.place_stub.street_address.length > 0
-            temp["address"] = persp.place_stub.street_address
-          end
-          
-          temp["categories"] = []
-          temp["tags"] = []
-          temp["photos"] = []
-          temp["modified"] = persp.updated_at.strftime('%B %e, %Y')
-          
-          if !persp.memo.nil? && persp.memo.length > 0
-            temp["memo"] = simple_format(perspective.memo)
-          end
-          
-          if !persp.url.nil? && persp.url.length > 0
-            temp["remote_url"] = persp.url
-          end
-          
-          if current_user = @user
-            temp["edit"] = edit_perspective_path(persp)
-            temp["delete"] = link_to("Delete", persp, :confirm => t("basic.are_you_sure"), :method => :delete, :class => "info_act")
-          else
-            temp["flag"] = link_to(t("perspective.flag"), flag_perspective_path(persp), :confirm =>t("perspective.flag_confirm"), :method=>"post", :remote=>"true", :class=>"info_act")
-            if !persp.memo.nil? || persp.pictures.length > 0
-              if current_user && persp.su.include?(current_user.id)
-                temp["star"] = unstar_perspective_path(persp)
-                temp["starred"] = true
-              else
-                temp["star"] = star_perspective_path(persp)
-                temp["starred"] = false
-              end
-            end
-          end
-          
-          @perspectives << temp
+          @perspectives << persp
         end
       end
     end
     
     respond_to do |format|
-      format.json {render @perspectives}
+      format.js
     end
   end
   
