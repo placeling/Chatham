@@ -52,6 +52,11 @@ If user has added text from place page, source will still be "place_page_empty" 
       <%= simple_format(perspective.memo, :class=>"memo") %>
     </div>
   <% end %>
+  <% if !perspective.url.nil? && perspective.url.length > 0 %>
+    <div class="url_wrapper">
+      <%= link_to t('perspective.web_link'), perspective.url, :class=>"perspective_url", :target=>"_blank" %>
+    </div>
+  <% end %>
   <% if perspective.pictures.length > 0 %>
     <div class="lightboxGallery perspective_gallery">
     <% perspective.pictures.each_with_index do |photo, i| %>

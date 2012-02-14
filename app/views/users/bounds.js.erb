@@ -1,0 +1,63 @@
+var perspsList = [];
+<% @perspectives.each do |perspective| %>
+  perp = {
+    "name" : "<%= perspective.place_stub.name %>",
+    "name_encoded" : "<%= u perspective.place_stub.name %>",
+    "uid" : "<%= perspective.id %>",
+    "lower_name" : "<%= perspective.place_stub.name.downcase %>",
+    "url": "<%= perspective_path(perspective) %>",
+    "place_url": "<%= place_path(perspective.place) %>",
+    "lat" : <%= perspective.place_stub.loc[0] %>,
+    "lng" : <%= perspective.place_stub.loc[1] %>,
+    <% if perspective.place_stub.street_address %>
+      "address" : "<%= perspective.place_stub.street_address %>",
+    <% end %>
+    "categories" : [],
+    "tags" : [],
+    "photos" : [],
+    "modified" : "<%= perspective.updated_at.strftime('%B %e, %Y') %>",
+    <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
+      "memo" : '<%= escape_javascript(simple_format(perspective.memo))  %>',
+    <% end %>
+    <% if !perspective.url.nil? && perspective.url.length > 0 %>
+      "remote_url" : '<%= perspective.url %>',
+    <% end %>
+    <% if current_user == @user %>
+      "edit" : '<%= edit_perspective_path(perspective) %>',
+      "delete" : '<%= link_to "Delete", perspective, :confirm => t("basic.are_you_sure"), :method => :delete, :class => "info_act" %>',
+    <% else %>
+      "flag" : '<%= link_to(t("perspective.flag"), flag_perspective_path(perspective), :confirm =>t("perspective.flag_confirm"), :method=>"post", :remote=>"true", :class=>"info_act")%>',
+      <% if (!perspective.memo.nil?) || (perspective.pictures.length > 0) %>
+        <% if current_user && perspective.su.include?(current_user.id) %>
+          "star" : '<%= unstar_perspective_path(perspective) %>',
+          "starred" : true,
+        <% else %>
+          "star" : '<%= star_perspective_path(perspective) %>',
+          "starred" : false,
+        <% end %>
+      <% end %>
+    <% end %>
+  }
+  
+  <% perspective.place_stub.venue_types.each do |type| %>
+    <% if type.downcase != 'establishment' %>
+      perp.categories.push("<%= type.downcase %>");
+    <% end %>
+  <% end %>
+  
+  <% if perspective.tags %>
+    <% perspective.tags.each do |tag| %>
+      perp.tags.push("<%= tag.downcase %>")
+    <% end %>
+  <% end %>
+  
+  <% perspective.pictures.each do |pic| %>
+    <% if !pic.deleted %>
+      perp.photos.push({"thumb" : "<%= pic.thumb_url %>", "main" : "<%= pic.main_url %>"});
+    <% end %>
+  <% end %>
+  
+  perspsList.push(perp)
+<% end %>
+
+updatePerspectives(perspsList);

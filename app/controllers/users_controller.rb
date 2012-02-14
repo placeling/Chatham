@@ -1,3 +1,5 @@
+require 'json'
+
 class UsersController < ApplicationController
 
   before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook]
@@ -75,13 +77,123 @@ class UsersController < ApplicationController
     
     #this is the final step in routes, if this doesn't work its a 404 -iMack
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
-
+    
+    #for map view on web, get current page state
+    if params[:api_call].nil?
+      @current_location = []
+      if !cookies[:page_state].nil?
+        page_state = JSON.parse(cookies[:page_state])
+        if page_state.has_key?(@user.username)
+          @current_location << page_state[@user.username]['lat']
+          @current_location << page_state[@user.username]['lng']
+        end
+      end
+      
+      @default_location = []
+      if !@user.perspectives.nil? && @user.perspectives.length > 0
+        @default_location << @user.perspectives[0].place_stub.loc[0]
+        @default_location << @user.perspectives[0].place_stub.loc[1]
+      else
+        @default_location << 49.2
+        @default_location << -123.2
+      end
+    end
+    
     respond_to do |format|
       format.html
       format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
     end
   end
-
+  
+  def bounds
+    @user = User.find_by_username(params[:id])
+    
+    @perspectives = []
+    
+    valid_params = true
+    
+    if params[:top_lat].nil? || params[:bottom_lat].nil? || params[:left_lng].nil? || params[:right_lng].nil?
+      valid_params = false
+    else
+      top_lat = params[:top_lat].to_f
+      if top_lat > 90 or top_lat < -90
+        valid_params = false
+      end
+      
+      if valid_params
+        bottom_lat = params[:bottom_lat].to_f
+        if bottom_lat > 90 or top_lat < -90 or bottom_lat > top_lat
+          valid_params = false
+        end
+        
+        if valid_params
+          left_lng = params[:left_lng].to_f
+          if left_lng < -180 || left_lng > 180
+            valid_params = false
+          end
+          
+          if valid_params
+            right_lng = params[:right_lng].to_f
+            if right_lng > 180 || right_lng < -180
+              valid_params = false
+            end
+          end
+        end
+      end
+    end
+    
+    if valid_params
+      # Can't figure out how to do mongoid search for correct location parameters so instead
+      # get all perspectives and iterate over 'em. Bad code, I know
+      perspectives = @user.perspectives
+      
+      perspectives.each do |persp|
+        valid = false
+        if persp.place_stub.loc[0] >= bottom_lat && persp.place_stub.loc[0] <= top_lat
+          if right_lng > left_lng
+            if persp.place_stub.loc[1] <= right_lng && persp.place_stub.loc[1] >= left_lng
+              valid = true
+            end
+          else
+            if (persp.place_stub.loc[1] >= left_lng || persp.place_stub.loc[1] <= right_lng)
+              valid = true
+            end
+          end
+        end
+        
+        if valid
+          @perspectives << persp
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def recent
+    @user = User.find_by_username(params[:id])
+    
+    if params[:start].nil?
+      params[:start] = 0
+    end
+    
+    start_pos = params[:start].to_i
+    count = 20
+    
+    @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count )
+    
+    if @perspectives.length < count
+      @noscroll = true
+    end
+    
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id

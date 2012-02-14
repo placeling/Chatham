@@ -2,6 +2,11 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  mongoid:
+    attributes:
+      perspective:
+        url: "Web link:"
+  
   home:
     admin_links: "Admin Links"
     applications_list: "Oauth Applications"
@@ -152,7 +157,9 @@ en:
     unfollow: "Unfollow"
     description: "Sign up for Placeling to follow %{user} :: %{desc}"
     list_description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts"
-
+    nearby: "Nearby"
+    recent: "Recent"
+    
   oauth:
     registered_successfully: "Registered the information successfully"
     updated_client_info: "Updated the client information successfully"
@@ -250,13 +257,18 @@ en:
     perspective_head: "%{user} on %{place}"
     call_to_action: "Sign up to Placeling to follow %{user} and add %{place} to your map"
     edit_call_to_action: "Edit your notes & photos for"
+    edit_web_link: "Add a web link"
+    url_hint: "must start with http://"
     cancel: "Cancel"
     save_changes: "Save"
     enter_text: "Add some notes & photos to tell the world why you love"
     edit_title: "Edit"
     remove: "Remove"
-    
-
+    web_link: "More on the web"
+    no_categories: "Alas, no categories or tags here"
+    show_all: "show all"
+    no_places: "Alas, no places to show you here"
+    no_photos: "Alas, no photos to show you here"
 
   errors:
     messages:

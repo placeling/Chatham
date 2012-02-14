@@ -31,8 +31,9 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new',      :to => 'potential_perspectives#new',  :via => :get
   match '/bulkupload/new',      :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process',  :to => 'potential_perspectives#potential_to_real', :via => :post
+  
   post 'oauth/revoke',          :to => 'oauth#revoke',         :as => :oauth
-
+  
   match '/vanity(/:action(/:id(.:format)))', :controller=>:vanity
   match '/app',   :to =>"admin#app"
 
@@ -48,6 +49,8 @@ Chatham::Application.routes.draw do
       end
     end
     member do
+      get :bounds
+      get :recent
       get :followers
       get :following
       post :follow

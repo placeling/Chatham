@@ -54,7 +54,7 @@
 <% end %>
 
 <div>
-  <div class="image_lead">
+  <div class="plane">
     <%= image_tag "plane.png", :alt=>"Plane" %>
   </div>
   <div class="thoughts">
@@ -110,6 +110,11 @@
             <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
               <div class="mini_memo_wrapper">
                 <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
+              </div>
+            <% end %>
+            <% if !@perspective.url.nil? && @perspective.url.length > 0 %>
+              <div class="url_wrapper">
+                <%= link_to t('perspective.web_link'), @perspective.url, :class=>"perspective_url", :target=>"_blank" %>
               </div>
             <% end %>
             <% if @perspective.pictures.length > 0 %>

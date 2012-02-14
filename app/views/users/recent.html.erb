@@ -1,0 +1,94 @@
+<% content_for :head do %>
+  <title><%= t('user.user_head', {:user => @user.username}) %></title>
+  <meta name="description" content="<%= t('user.description', {:user => @user.username, :desc => @user.description}) %>">
+  <meta property="og:title" content="<%= t('user.user_head', {:user => @user.username}) %>"/>
+  <meta property="og:url" content="https://www.placeling.com<%= user_path(@user) %>"/>
+  <meta property="og:type" content="person">
+  <meta property="og:image" content="<%=  @user.thumb_url %>"/>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<% end %>
+
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.lightboxGallery').each(function(){
+        $('.lightbox', this).lightBox();
+      });
+      
+      $('.star_link').hover(
+        function() {
+          var source = $('img', this).attr('src');
+          if (source.indexOf('/images/unstarred.png') >= 0) {
+            $('img', this).attr('src', '/images/starred.png');
+            $('img', this).css({'opacity':'0.4'});
+          }
+        }, 
+        function() {
+          if ($('img', this).css('opacity') == '0.4') {
+            $('img', this).attr('src', '/images/unstarred.png');
+            $('img', this).css({'opacity':'1.0'});
+          }
+        }
+      );
+      
+      $('.email').each(function() {
+        $(this).qtip({
+            content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
+           position: {
+             my: 'bottom center',
+             at: 'top center'
+           },
+           show: {
+             event: 'click',
+             solo: true
+           },
+           hide: {
+             event: 'click'
+           },
+           style: {
+             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+           }
+        });
+      });
+      $('#loading').hide()
+      <% if @noscroll.nil? %>
+      $(window).data('ajaxready', true).scroll(function(e) {
+        if ($(window).data('ajaxready') == false) return;
+        
+        if ($(window).scrollTop() >= ($(document).height() - 200 - $(window).height())) {
+          $('#loading').show();
+          $(window).data('ajaxready', false);
+          $.ajax({
+            url: '<%= recent_user_path(@user) %>',
+            data: {
+              start: $('#recent_perspectives_list').attr('start')
+            },
+            dataType: 'script',
+          });
+        }
+      });
+      <% end %>
+    });
+  </script>
+<% end %>
+
+<div id="userdetails">
+  <%= render :partial => "detail", :locals => {:user => @user} %>    
+</div>
+<div id="perspectives">
+  <div class="image_lead">
+    <%= image_tag "plane.png", :alt=>"Plane" %>
+  </div>
+  <% if @perspectives.length > 0 %>
+    <ul id="recent_perspectives_list" start="<%= @perspectives.length %>">
+      <% @perspectives.each_with_index do |perspective, index|%>
+        <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
+          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+        </li>
+      <% end %>
+    </ul>
+    <div id="loading"><img id="spinner" src="/images/spinner.gif"></div>
+  <% else %>
+    <div class="detail nothing">I haven't placemarked anything yet...</div>
+  <% end %>
+</div>
