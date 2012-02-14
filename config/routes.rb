@@ -10,6 +10,7 @@ Chatham::Application.routes.draw do
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
   get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
+  get "/admin/investors", :to => 'admin#investors',:as => :investors
   
   get "/search", :to => 'search#search', :as => :search
   

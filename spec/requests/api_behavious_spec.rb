@@ -183,6 +183,7 @@ describe "API - " do
     it "can be done by the user who created it" do
       user = Factory.create(:user)
       perspective = Factory.create(:perspective, :user =>user)
+      pid = perspective.place.id
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
@@ -195,6 +196,9 @@ describe "API - " do
       #reget from db
       perspective = Perspective.find(perspective.id)
       perspective.should be(nil)
+
+      place = Place.find( pid )
+      place.perspective_count.should == 0
     end
 
     it "cannot be done by the user who did not create it" do

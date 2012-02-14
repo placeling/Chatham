@@ -34,7 +34,8 @@ class AdminController < ApplicationController
     end
   end
 
-  def contact_us
+  def investors
+
   end
 
   def heartbeat

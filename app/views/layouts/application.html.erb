@@ -7,6 +7,8 @@
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
   <%= render(:partial =>"layouts/header_imports") %>
+  <%= yield :javascript_includes %>
+  <%= yield :css %>
   <!--[if !IE 7]>
     <style type="text/css">
       #wrap {display:table;height:100%}

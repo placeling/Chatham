@@ -66,6 +66,7 @@ class User
 
   after_save :more_test
   before_save :get_city
+  after_create :follow_defaults
 
   def get_city
     if self.location != nil && self.location != [0,0] && self.city == ""
@@ -77,6 +78,13 @@ class User
     if self.changed?
       #added cache urls
       self.save
+    end
+  end
+
+  def follow_defaults
+    other = User.find_by_username( 'citysnapshots' )
+    if other
+      self.follow other
     end
   end
 

@@ -32,7 +32,7 @@ describe PerspectivesController do
     json_perspective = JSON.parse( response.body )
 
     json_perspective['perspective'].should_not be(nil)
-    json_perspective['perspective']['plid'].should == perspective.place.id.to_s
+    json_perspective['perspective']['place_id'].should == perspective.place.id.to_s
 
    end
 

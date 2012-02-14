@@ -360,6 +360,8 @@ class UsersController < ApplicationController
   def resend
     @user = User.find_by_username( params[:username] )
 
+    Devise::Mailer.confirmation_instructions(@user).deliver
+
     respond_to do |format|
       format.json { render :json => {:status => "OK" } }
     end
