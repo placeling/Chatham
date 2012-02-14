@@ -31,6 +31,7 @@ gem 'carrierwave'
 gem 'fog'
 
 gem "geocoder"
+gem "geoip"
 
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"

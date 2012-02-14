@@ -135,6 +135,7 @@ GEM
       ruby-hmac
     formatador (0.2.1)
     geocoder (1.0.2)
+    geoip (1.1.2)
     god (0.11.0)
     hashie (0.4.0)
     highline (1.6.1)
@@ -337,6 +338,7 @@ DEPENDENCIES
   fb_graph
   fog
   geocoder
+  geoip
   god
   hashie
   hoptoad_notifier
