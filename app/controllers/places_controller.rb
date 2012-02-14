@@ -218,7 +218,12 @@ class PlacesController < ApplicationController
 
     @places = @places_dict.values
 
-    @places.delete_if { |place| place.location.nil? }
+    @places.delete_if do |place|
+      if place.location.nil?
+        Rails.logger.warn "NULL LOCATION - #{place.name}, #{place.id}"
+        true
+      end
+    end
 
     for place in @places
       #add distance to in meters
