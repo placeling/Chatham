@@ -218,6 +218,13 @@ class PlacesController < ApplicationController
 
     @places = @places_dict.values
 
+    @places.delete_if do |place|
+      if place.location.nil?
+        Rails.logger.warn "NULL LOCATION - #{place.name}, #{place.id}"
+        true
+      end
+    end
+
     for place in @places
       #add distance to in meters
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor

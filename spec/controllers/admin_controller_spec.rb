@@ -42,9 +42,9 @@ describe AdminController do
     end
   end
 
-  describe "GET 'contact_us'" do
+  describe "GET 'investors'" do
     it "should be successful" do
-      get 'contact_us'
+      get 'investors'
       response.should be_success
     end
   end

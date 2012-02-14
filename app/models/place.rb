@@ -36,6 +36,7 @@ class Place
 
   validates_uniqueness_of :google_id, :allow_nil =>true
   validates :name, :venue_types, :presence => true
+  validates_presence_of :location
 
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
   index :ptg, :background => true
