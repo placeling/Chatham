@@ -2,7 +2,6 @@ require 'json'
 
 class ApplicationController < ActionController::Base
   include HTTParty
-  debug_output $stdout
   
   # protect_from_forgery TODO: might want this back
   before_filter :api_check
@@ -82,6 +81,18 @@ class ApplicationController < ActionController::Base
           }
         end
         
+        geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
+        c = geo.city(request.remote_ip)
+        
+        if !c.nil?
+          location["remote_ip"] = {
+            "lat" => c.latitude,
+            "lng" => c.longitude
+          }
+        else
+          location["no_ip"] = true
+        end
+        
         cookies[:location] = {:value => location.to_json, :expires => 1.day.from_now}
       else
         location = JSON.parse(cookies[:location])
@@ -92,6 +103,19 @@ class ApplicationController < ActionController::Base
             "lng" => current_user.location[1]
           }
           modified = true
+        end
+        
+        if !location.has_key?("remote_ip") && !location.has_key?("no_ip")
+          geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
+          c = geo.city(request.remote_ip)
+          
+          if !c.nil?
+            location["remote_ip"] = {
+            "lat" => c.latitude,
+            "lng" => c.longitude
+            }
+            modified = true
+          end
         end
         
         if modified == true

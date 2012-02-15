@@ -194,7 +194,10 @@ class PerspectivesController < ApplicationController
   
   def edit
     @perspective = Perspective.find(params[:id])
-    @url = request.referer
+    # handle case where user refreshes page from browser bar => no referer
+    if request.referer != "/"
+      session[:referring_url] = request.referer
+    end
   end
   
   def update
@@ -259,7 +262,7 @@ class PerspectivesController < ApplicationController
       @perspective.place.update_tags
       @perspective.place.save
       respond_to do |format|
-        format.html {redirect_to params[:url]}
+        format.html {redirect_to session[:referring_url]}
         format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
       end
     else
@@ -270,8 +273,7 @@ class PerspectivesController < ApplicationController
     end
 
   end
-
-
+  
   def destroy
     # if coming from mobile client, will have param 'place_id'
     # otherwise web client
