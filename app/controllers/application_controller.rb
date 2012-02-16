@@ -76,8 +76,8 @@ class ApplicationController < ActionController::Base
         
         if current_user && current_user.location.length == 2
           location["user"] = {
-            "lat" => current_user.location[0],
-            "lng" => current_user.location[1]
+            "lat" => (current_user.location[0] * 10).round().to_f/10,
+            "lng" => (current_user.location[1] * 10).round().to_f/10
           }
         end
         
@@ -99,8 +99,8 @@ class ApplicationController < ActionController::Base
         modified = false
         if !location.has_key?("user") && current_user && current_user.location.length == 2 
           location["user"] = {
-            "lat" => current_user.location[0],
-            "lng" => current_user.location[1]
+            "lat" => (current_user.location[0]*10).round().to_f/10,
+            "lng" => (current_user.location[1]*10).round().to_f/10
           }
           modified = true
         end
