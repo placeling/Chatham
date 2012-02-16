@@ -17,7 +17,8 @@ $('.star_link').hover(
     }
   }
 );
-$("#placemark").html("<div class='placemarked'><%= t('place.placemarked') %></div>");
+$("#placemark").html("<span class='placemarked'><%= t('place.placemarked') %></span>");
+$("#placemark").addClass("placemark_it");
 var followers = parseInt($('#placemark_count').text());
 followers += 1;
 $('#placemark_count').text(followers);
