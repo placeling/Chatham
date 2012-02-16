@@ -149,11 +149,13 @@
             // Edit vs. star
             if (typeof perspective.edit === "undefined") {
               if (typeof perspective.memo !== "undefined" || perspective.photos.length > 0) {
+                var action = '<div class="info_action"><a href="/" id="star"><img class="info_img" src="/images/';
                 if (perspective.starred == true) {
-                  var action = '<div class="info_action"><a href="' + perspective.star + '" data-method="post" data-remote="true" rel="nofollow"><img class="info_img" src="/images/starred.png"></a></div>';
+                  action += "starred.png";
                 } else {
-                  var action = '<div class="info_action"><a href="' + perspective.star + '" data-method="post" data-remote="true" rel="nofollow"><img class="info_img" src="/images/unstarred.png"></a></div>';
+                  action += "unstarred.png";
                 }
+                action += '"></a></div>';
                 infoWindowHTML += action;
               }
             } else {
@@ -222,8 +224,8 @@
             
             infoWindowHTML += '</div>';
             
-            infowindow.setContent(infoWindowHTML);
             infowindow.open(map, marker);
+            infowindow.setContent(infoWindowHTML);
             loadState["<%= @user.username %>"]['infowindow'] = perspective["uid"];
             infowindow.setPosition(marker.getPosition());
             google.maps.event.trigger(map, 'idle');
@@ -250,6 +252,46 @@
                    classes: 'ui-tooltip-rounded ui-tooltip-shadow',
                  }
               });
+            });
+            
+            $('#star').click(function(e){
+              e.preventDefault();
+              if (perspective.starred == true) {
+                $.ajax({
+                  url: perspective.unstar,
+                  dataType:"script",
+                  type:"POST",
+                  success: function(data) {
+                    perspective.starred = false;
+                    $('.info_img').attr("src", "/images/unstarred.png");
+                  },
+                  error: function(request, error) {
+                    console.log(error);
+                    console.log(request.status);
+                    if (request.status === 401) {
+                      location.href = "/users/sign_in";
+                    }
+                  }
+                });
+              } else {
+                $.ajax({
+                  url: perspective.star,
+                  dataType:"script",
+                  type:"POST",
+                  success: function(data) {
+                    perspective.starred = true;
+                    $('.info_img').attr("src", "/images/starred.png");
+                  },
+                  error: function(request, error) {
+                    console.log(error);
+                    console.log(request.status);
+                    if (request.status === 401) {
+                      location.href = "/users/sign_in";
+                    }
+                  }
+                });
+              }
+              return false;
             });
           }
         });
@@ -393,7 +435,6 @@
             var updatedRightLng = bounds.getNorthEast().lng();
             var updatedLeftLng = bounds.getSouthWest().lng();
           }
-          
           
           $.ajax({
             url:'<%= bounds_user_path(@user) %>',
