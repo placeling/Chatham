@@ -127,7 +127,7 @@ en:
     log_out: "Log Out"
     forgot_password: "Forgot it?"
     forgot_password_detail: "Forgot Your Password?"
-    register_prompt: "New here? Download the app to register"
+    register_prompt: "New here?"
     remember_me: "Keep me signed in"
     didnt_receive_confirmation: "Didn't receive confirmation instructions?"
     didnt_receive_unlock: "Didn't receive unlock instructions?"

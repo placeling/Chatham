@@ -9,7 +9,7 @@
 <div class="auth_block">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.welcome') %></div>
-    <div><%= link_to t('user.register_prompt'), "http://itunes.apple.com/ca/app/placeling/id465502398?ls=1&mt=8", :class=>"register_link" %></div>
+     <div><%= t('user.register_prompt') %> <%= link_to t('user.sign_up'), new_user_registration_path, :class=>"register_link" %></div>
   </div>
   <div id="auth_form">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
