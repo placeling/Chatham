@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
       else
         location = JSON.parse(cookies[:location])
         modified = false
-        if !location.has_key?("user") && current_user && current_user.location.length == 2 
+        if !location.has_key?("user") && current_user && current_user.location && current_user.location.length == 2
           location["user"] = {
             "lat" => current_user.location[0],
             "lng" => current_user.location[1]
