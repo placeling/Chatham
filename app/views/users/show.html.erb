@@ -69,8 +69,8 @@
       <% else %>
         <% if @user.location && @user.location.length == 2 %>
           var test = "test";
-          var lat = <%= (@user.location[0] * 10).round().to_f/10 %>;
-          var lng = <%= (@user.location[1] * 10).round().to_f/10 %>;
+          var lat = <%= (@user.location[0] * 100).round().to_f/100 %>;
+          var lng = <%= (@user.location[1] * 100).round().to_f/100 %>;
         <% else %>
           var test = "default";
           var lat = <%= @default_location[0] %>;
