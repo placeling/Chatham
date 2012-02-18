@@ -305,6 +305,33 @@ class User
     end
   end
 
+  def apply_omniauth( omniauth )
+    self.email = omniauth['user_info']['email'] if email.blank?
+
+    if username.blank?
+
+      if omniauth['provider'] == "facebook" && omniauth['user_info']['nickname']
+        username = omniauth['user_info']['nickname'].gsub(/\W+/, "")
+      else
+        username = omniauth['user_info']['name'].gsub(/\W+/, "")
+      end
+
+      user = User.find_by_username(username)
+      i = 1
+      baseusername = username
+
+      while user
+        username = baseusername + i
+        user = User.find_by_username(username)
+        i += 1
+      end
+
+      self.username = username
+    end
+
+    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+  end
+
   def facebook
     for auth in self.authentications
       if auth.provider == 'facebook'
