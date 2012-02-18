@@ -76,14 +76,14 @@ class ApplicationController < ActionController::Base
         
         if current_user && current_user.location && current_user.location.length == 2
           location["user"] = {
-            "lat" => current_user.location[0],
-            "lng" => current_user.location[1]
+            "lat" => (current_user.location[0] * 100).round().to_f/100,
+            "lng" => (current_user.location[1] * 100).round().to_f/100
           }
         end
-
+        
         geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
         c = geo.city(request.remote_ip)
-
+        
         if !c.nil?
           location["remote_ip"] = {
             "lat" => c.latitude,
@@ -99,16 +99,16 @@ class ApplicationController < ActionController::Base
         modified = false
         if !location.has_key?("user") && current_user && current_user.location && current_user.location.length == 2
           location["user"] = {
-            "lat" => current_user.location[0],
-            "lng" => current_user.location[1]
+            "lat" => (current_user.location[0]*100).round().to_f/100,
+            "lng" => (current_user.location[1]*100).round().to_f/100
           }
           modified = true
         end
-
+        
         if !location.has_key?("remote_ip") && !location.has_key?("no_ip")
           geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
           c = geo.city(request.remote_ip)
-
+          
           if !c.nil?
             location["remote_ip"] = {
             "lat" => c.latitude,

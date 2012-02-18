@@ -52,7 +52,6 @@
     <%= f.text_area :memo, :class => "edit_area" %>
     <div class="url_space"><%= t('perspective.edit_web_link')%> <span class="url_hint"><%= t('perspective.url_hint') %></span></div>
     <%= f.url_field :url, :class => "url_area" %>
-    <input type="hidden" name="url" value="<%= request.referer %>">
     <div class="picture_holder">
       <div id="existing_pictures">
         <% f.fields_for :pictures do |builder| %>
@@ -67,7 +66,7 @@
       </div>
     </div>
     <div class="actions">
-      <span class="cancel"><a href="<%= request.referer %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
+      <span class="cancel"><a href="<%= session[:referring_url] %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
     </div>
   <% end %>
 </div>

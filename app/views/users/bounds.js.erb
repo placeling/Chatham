@@ -28,11 +28,11 @@ var perspsList = [];
     <% else %>
       "flag" : '<%= link_to(t("perspective.flag"), flag_perspective_path(perspective), :confirm =>t("perspective.flag_confirm"), :method=>"post", :remote=>"true", :class=>"info_act")%>',
       <% if (!perspective.memo.nil?) || (perspective.pictures.length > 0) %>
+        "unstar" : '<%= unstar_perspective_path(perspective) %>',
+        "star" : '<%= star_perspective_path(perspective) %>',
         <% if current_user && perspective.su.include?(current_user.id) %>
-          "star" : '<%= unstar_perspective_path(perspective) %>',
           "starred" : true,
         <% else %>
-          "star" : '<%= star_perspective_path(perspective) %>',
           "starred" : false,
         <% end %>
       <% end %>
