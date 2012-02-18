@@ -50,9 +50,10 @@ class AuthenticationsController < ApplicationController
     omniauth = request.env["omniauth.auth"]
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
+      sign_in( authentication.user )
       flash[:notice] = "Signed in successfully."
       respond_to do |format|
-        format.html {sign_in_and_redirect(:user, authentication.user)}
+        format.html { redirect_to( authentication.user ) }
         format.json {
           render :text => generate_keys_for( authentication.user )
         }
