@@ -77,9 +77,9 @@
       <span id="follow_action">
         <% if current_user != user %>
           <% if current_user && current_user.following.include?(user) %>
-            <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'unfollow', :controller => 'users')%>" class="no_highlight"><span class="follow_link"><%= t('user.unfollow') %></span></a>
+            <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'unfollow', :controller => 'users')%>" class="no_highlight"><span class="follow_link"><%= t('user.unfollow') %></span></a>
           <% else %>
-            <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => 'follow', :controller => 'users') %>" class="no_highlight"><span class="follow_link"><%= t('user.follow') %></span></a>
+            <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'follow', :controller => 'users') %>" class="no_highlight"><span class="follow_link"><%= t('user.follow') %></span></a>
           <% end %>
         <% end %>
       </span>
