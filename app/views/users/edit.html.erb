@@ -1,0 +1,18 @@
+
+<% content_for :head do %>
+  <title><%= t('user.edit_title') %></title>
+<% end %>
+
+
+<div class="edit_block">
+  <div class="edit_action"><%= t('user.edit_title') %> <span class="emphasize"><%= @user.username %></span></div>
+  <%= form_for @user, :html => {:multipart => true} do |f| %>
+    <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
+    <%= f.label :username %><%= f.text_field :username %><br/>
+    <%= f.label :description %><%= f.text_area :description, :class => "edit_area" %>
+
+    <div class="actions">
+      <span class="cancel"><a href="<%= session[:referring_url] %>"><%= t ('perspective.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('perspective.save_changes') %>" name="commit">
+    </div>
+  <% end %>
+</div>

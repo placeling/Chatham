@@ -2,7 +2,22 @@ require 'json'
 
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook]
+  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook, :edit, :update]
+
+  def edit
+    @user = User.find_by_username(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
+
+    if current_user.id != @user.id
+      redirect_to edit_user_path( current_user )
+    else
+      respond_to do |format|
+        format.html
+        format.json
+      end
+    end
+
+  end
 
   def create
     return unless params[:format] == :json
@@ -198,6 +213,13 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id
 
+    if params[:user]
+      #handles case where it's an HTML edit
+      params[:description] = params[:user][:description]
+      params[:username] = params[:user][:username]
+
+    end
+
     #intentionally only takes one password (for now)
     @user.description = params[:description]
     @user.url = params[:url]
@@ -218,10 +240,12 @@ class UsersController < ApplicationController
 
     if @user.save
       respond_to do |format|
+        format.html { redirect_to :action => "show", :id => @user.id }
         format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
       end
     else
       respond_to do |format|
+        format.html { render :action => "edit" }
         format.json { render :json => {:status => "fail", :message => @user.errors} }
       end
     end

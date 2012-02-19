@@ -159,6 +159,7 @@ en:
     list_description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts"
     nearby: "Nearby"
     recent: "Recent"
+    edit_title: "Edit My Profile"
     
   oauth:
     registered_successfully: "Registered the information successfully"
