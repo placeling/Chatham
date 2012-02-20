@@ -56,6 +56,7 @@ Chatham::Application.routes.draw do
       post :follow
       post :unfollow
       get :activity
+      get :account
     end
     collection do
       get :suggested

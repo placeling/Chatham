@@ -8,7 +8,7 @@
 
 html, body {
   height: 100%;
-  min-width: 850px;
+  min-width: 1020px;
 }
 
 /*Opera Fix*/
@@ -1382,6 +1382,59 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #search_term {
   font-weight: bold;
+}
+
+/* My Account
+***********************************************/
+.account_holder {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 600px;
+}
+
+.account_title {
+  color: #E08574;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.account_info_holder {
+  clear: both;
+  margin-bottom: 8px;
+}
+
+.account_label {
+  float: left;
+  font-weight: bold;
+  text-transform: lowercase;
+}
+
+.account_value {
+  margin-left: 100px;
+}
+
+.account_value input {
+  font-size: 14px;
+  width: 300px;
+}
+
+.account_value textarea {
+  font-size; 14px;
+  width: 300px;
+  height: 50px;
+}
+
+.account_profile_pic {
+  margin-top: 20px;
+}
+
+.edit_account {
+  font-size: 14px;
+}
+
+.account_edit_image {
+  max-width: 25px;
+  max-height: 25px;
 }
 
 /* Admin

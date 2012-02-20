@@ -2,7 +2,7 @@ require 'json'
 
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook, :edit, :update]
+  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook, :edit, :update, :account]
 
   def edit
     @user = User.find_by_username(params[:id])
@@ -209,10 +209,18 @@ class UsersController < ApplicationController
     end
   end
   
+  def account
+    @user = User.find_by_username(params[:id])
+    
+    respond_to do |format|
+      format.html { render :account}
+    end
+  end
+  
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id
-
+    
     if params[:user]
       #handles case where it's an HTML edit
       params[:description] = params[:user][:description]
@@ -390,5 +398,4 @@ class UsersController < ApplicationController
       format.json { render :json => {:status => "OK" } }
     end
   end
-
 end

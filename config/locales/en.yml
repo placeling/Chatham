@@ -93,6 +93,19 @@ en:
     wrong: "Wrong address or location on map?"
     new: "Create a new place"
 
+  account:
+    title: "My Account"
+    username: "username"
+    location: "location"
+    description: "description"
+    url: "url"
+    profile_pic: "picture"
+    edit: "edit"
+    no_description: "You haven't yet told us interesting you are"
+    no_city: "You haven't told us where you're located"
+    cancel: "Cancel"
+    save_changes: "Save"
+    
   inprogress:
     start_submit: "Start Upload"
     bulk: "Bulk Upload A Bunch of Perspectives"
@@ -119,7 +132,8 @@ en:
     wrong_place: "Wrong place?"
 
   user:
-    you: "You"
+    you: "My Map"
+    your_account: "My Account"
     welcome: "Welcome Back"
     sign_in: "Sign In"
     sign_up: "Register"
