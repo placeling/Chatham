@@ -4,8 +4,7 @@ class ApplicationController < ActionController::Base
   include HTTParty
   
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check
-  before_filter :set_login_return_url
+  before_filter :api_check, :set_session_return_path
   
   helper_method :user_location
   
@@ -18,13 +17,20 @@ class ApplicationController < ActionController::Base
   end
   
   def after_sign_out_path_for(resource)
-    session[:"user.return_to"] = request.referer
-    return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
+    return (session[:"user.return_to"].nil?) ? request.referer : session[:"user.return_to"].to_s
   end
   
   def after_create(resource)
-    session[:"user.return_to"] = request.referer
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
+  end
+  
+  def set_session_return_path
+    if request.path == new_user_session_path && URI(request.referer).path != new_user_session_path
+      session[:"user.return_to"] = URI(request.referer).path
+    # Following line handles user attaching 3rd party auth to their account
+    elsif current_user && request.path == account_user_path(current_user)
+      session[:"user.return_to"] = URI(request.referer).path
+    end
   end
   
   def api_check
@@ -36,17 +42,10 @@ class ApplicationController < ActionController::Base
   def login_required
     login_or_oauth_required
     if current_user.nil?
-      session[:"user.return_to"] = request.referer
       authenticate_user!
     end
   end
   
-  def set_login_return_url
-    if request.method == "GET"
-      session[:"user.return_to"] = request.referer
-    end
-  end
-
   def admin_required
     #this is the method used in oauth_clients_controller, rename for devise
     authenticate_user!
