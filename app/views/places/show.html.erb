@@ -5,6 +5,10 @@
   <meta property="og:url" content="https://www.placeling.com<%= place_path(@place) %>"/>
   <meta property="og:type" content="place">
   <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
+
+  <META NAME="geo.placename" content="<%= @place.name %>" />
+  <META NAME="geo.position" content="<%= @place.location[0] %>;<%= @place.location[1] %>" />
+  <meta name=”ICBM” content=”<%= @place.location[0] %>,<%= @place.location[1] %>″>
 <% end %>
 
 <% content_for :javascript_includes do %>
