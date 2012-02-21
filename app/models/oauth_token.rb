@@ -20,7 +20,11 @@ class OauthToken
   validates_presence_of :client_application, :token
   before_validation :generate_keys, :on => :create
 
-  def find_by_token(token_string)
+  def self.find_by_token(token_string)
+    where(:token => token_string).first
+  end
+
+  def self.find_by_token!(token_string)
     where(:token => token_string).first
   end
 

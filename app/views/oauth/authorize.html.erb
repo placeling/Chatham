@@ -1,14 +1,26 @@
-<h1><%= t("oauth.auth_access_account") %></h1>
-<p><%= t("oauth.would_you_authorize", {:app_name=>link_to(@token.client_application.name,@token.client_application.url) , :app_url=>link_to(@token.client_application.url,@token.client_application.url)}) %></p>
-<% form_tag authorize_url do %>
-  <%= hidden_field_tag "oauth_token", @token.token %>
-  <%- if params[:oauth_callback] -%>
-  <%= hidden_field_tag "oauth_callback", params[:oauth_callback] %>
-<%- end -%>
-<p>
-  <%= check_box_tag 'authorize' %> <%= t("oauth.authorize_access") %>
-</p>
-<p>
-  <%= submit_tag %>
-</p>
+<% content_for :head do %>
+  <title><%= t("oauth.auth_access_account") %></title>
 <% end %>
+
+<div id="content_holder">
+    <div class="title"><%= t("oauth.auth_access_account") %></div>
+    <%= raw t("oauth.would_you_authorize", {:app_name=>link_to( @token.client_application.name,@token.client_application.url )}) %>
+    <p><%= t("oauth.access_to") %></p>
+    <ul>
+        <li><%= t("oauth.access.edit_placemarks") %></li>
+        <li><%= t("oauth.access.followers") %></li>
+    </ul>
+
+    <% form_tag authorize_url do %>
+      <%= hidden_field_tag "oauth_token", @token.token %>
+      <%- if params[:oauth_callback] -%>
+      <%= hidden_field_tag "oauth_callback", params[:oauth_callback] %>
+      <%= hidden_field_tag "authorize", '1' %>
+    <%- end -%>
+
+    <div class="actions" style="float:left;">
+      <input id="user_submit" type="submit" value="<%= t("oauth.authorize_access") %>" name="commit">
+    </div>
+    <% end %>
+</div>
+

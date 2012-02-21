@@ -172,8 +172,9 @@ en:
     callback_url: "Callback URL"
     support_url: "Support URL"
     authorize_access: "authorize access"
+    reject_access: "reject access"
     auth_access_account: "Authorize access to your account"
-    would_you_authorize: "Would you like to authorize %{app_name} (%{app_url}) to access your account?"
+    would_you_authorize: "Would you like to authorize %{app_name} to access your account?"
     allowed_this_request: "You have allowed this request"
     rejected_this_request: "You have disallowed this request"
     oauth_details: "OAuth details for %{app_name}"
@@ -195,8 +196,13 @@ en:
     access_token_key: "Access Token Key"
     access_token_secret: "Access Token Secret"
     xauth_enabled: "XAuth Enabled"
-    token_creation_lock: "Lock Creation of New Aceess Tokens?"
+    token_creation_lock: "Lock Creation of New Access Tokens?"
     generate_user_token: "Generate application access token for user:"
+    access_to: "Application will be authorized to:"
+    access:
+      edit_placemarks: "Modify your placemarks"
+      followers: "See and modify users you follow"
+
 
   place:
     places: "Places"
