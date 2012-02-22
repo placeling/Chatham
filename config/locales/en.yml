@@ -44,6 +44,19 @@ en:
     password: "Password"
     email_field: "Email address"
     password_confirm: "Again to confirm"
+    facebook: "Connect with Facebook"
+  
+  auth:
+    fail: "We couldn't connect you"
+    standout: "We couldn't connect you via"
+    reason: "There are two reasons why this could have happened:"
+    case1: "You already have an account at Placeling and haven't connected it to"
+    resolution1_1: "If so,"
+    resolution1_2: "sign in"
+    resolution1_3: "with your username and then connect with"
+    resolution1_4: "from the Account page"
+    case2: "You don't have a Placeling account but someone has registered with your email address."
+    resolution2: "If you believe this is the case, get in touch so we can help:"
   
   search:
     results: "People and places called "
@@ -93,6 +106,30 @@ en:
     wrong: "Wrong address or location on map?"
     new: "Create a new place"
 
+  account:
+    title: "My Account"
+    username: "username"
+    email: "email"
+    location: "location"
+    description: "description"
+    url: "url"
+    profile_pic: "picture"
+    edit: "edit"
+    no_description: "You haven't yet told us about yourself"
+    no_city: "Use the iPhone app to add your location to your account"
+    no_url: "You haven't linked your account to a web page"
+    cancel: "Cancel"
+    save_changes: "Save"
+    notify: "Notifications"
+    yes_new_follower_notify: "Yes, send me an email when someone follows me"
+    no_new_follower_notify: "No, do not send me an email when someone follows me"
+    new_pic: "Change Your Profile Picture"
+    pic_choose: "Select a .png, .jpeg or .gif file"
+    change_pic: "Change your profile picture"
+    authentications: "authentications"
+    fb_connected: "Your account is connected to Facebook"
+    update: "Update"
+    
   inprogress:
     start_submit: "Start Upload"
     bulk: "Bulk Upload A Bunch of Perspectives"
@@ -119,7 +156,8 @@ en:
     wrong_place: "Wrong place?"
 
   user:
-    you: "You"
+    you: "Map"
+    your_account: "Account"
     welcome: "Welcome Back"
     sign_in: "Sign In"
     sign_up: "Register"
@@ -160,6 +198,7 @@ en:
     nearby: "Nearby"
     recent: "Recent"
     edit_title: "Edit My Profile"
+    pick_username: "Pick your username"
     
   oauth:
     registered_successfully: "Registered the information successfully"

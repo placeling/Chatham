@@ -1,0 +1,30 @@
+<% content_for :javascript_includes do %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      function updatePreview(){
+        $('#username').text($('#user_username').val());
+      }
+      
+      $('#user_username').bind('keypress', function(){
+        setTimeout(updatePreview, 1);
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :head do %>
+  <title><%= t('user.pick_username') %></title>
+<% end %>
+
+<div class="username_container">
+  <p class="username_standout">Congrats! You're now signed up for Placeling</p>
+  <p class="username_instruct">Please confirm your username:</p>
+  <%= form_for @user, :url => { :action => "update_username" } do |f| %>
+    <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
+    <%= f.text_field :username, :class=>"auth_field first_field" %>
+    <p class="username_details">Your places will live at placeling.com/<span id="username"><%= @user.username %></span></p>
+    <div class="action">
+      <%= f.submit t('account.update') %>
+    </div>
+  <% end %>
+</div>
