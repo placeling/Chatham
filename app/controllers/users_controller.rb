@@ -2,7 +2,40 @@ require 'json'
 
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:update, :follow, :unfollow, :add_facebook, :edit, :update]
+  before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :edit, :update]
+
+  def me
+    @user = current_user
+
+    #this is the final step in routes, if this doesn't work its a 404 -iMack
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
+
+    #for map view on web, get current page state
+    if params[:api_call].nil?
+      @current_location = []
+      if !cookies[:page_state].nil?
+        page_state = JSON.parse(cookies[:page_state])
+        if page_state.has_key?(@user.username)
+          @current_location << page_state[@user.username]['lat']
+          @current_location << page_state[@user.username]['lng']
+        end
+      end
+
+      @default_location = []
+      if !@user.perspectives.nil? && @user.perspectives.length > 0
+        @default_location << @user.perspectives[0].place_stub.loc[0]
+        @default_location << @user.perspectives[0].place_stub.loc[1]
+      else
+        @default_location << 49.2
+        @default_location << -123.2
+      end
+    end
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render :json => @user.as_json({:current_user => current_user, :perspectives => :created_by}) }
+    end
+  end
 
   def edit
     @user = User.find_by_username(params[:id])

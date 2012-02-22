@@ -60,6 +60,7 @@ Chatham::Application.routes.draw do
     collection do
       get :suggested
       get :search
+      get :me
     end
   end
   
@@ -128,6 +129,7 @@ Chatham::Application.routes.draw do
         get :suggested
         get :search
         get :add_facebook
+        get :me
       end
     end
 
@@ -166,6 +168,7 @@ Chatham::Application.routes.draw do
     mount Resque::Server, :at => "/resque"
   end
 
+  match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile
 
 
