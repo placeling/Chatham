@@ -1,0 +1,18 @@
+<% content_for :head do %>
+  <title><%= t('auth.fail') %></title>
+<% end %>
+
+<div class="auth_inset">
+  <p class="auth_standout"><%= t('auth.standout')%> <span class="auth_provider"><%= @provider %><span></p>
+  <p><%= t('auth.reason') %></p>
+  <ol class="auth_notice">
+    <li class="auth_notice">
+      <p><%= t('auth.case1') %> <%= @provider %></p>
+      <p class="auth_emsmallen"><%= t('auth.resolution1_1') %> <%= link_to t('auth.resolution1_2'), new_user_session_path %> <%= t('auth.resolution1_3') %> <%= @provider %> <%= t('auth.resolution1_4')%></p>
+    </li>
+    <li class="auth_notice">
+      <p><%= t('auth.case2') %></p>
+      <p class="auth_emsmallen"><%= t('auth.resolution2') %> <%= mail_to "contact@placeling.com" %></p>
+    </li>
+  </ol>
+</div>

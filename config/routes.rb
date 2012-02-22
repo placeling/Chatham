@@ -57,6 +57,12 @@ Chatham::Application.routes.draw do
       post :unfollow
       get :activity
       get :account
+      get :pic
+      put :pic, :to => :upload_pic, :as => :upload_pic
+      get :username, :to => :confirm_username, :as => :confirm_username
+      put :username, :to => :update_username, :as => :update_username
+      get :edit_pic
+      put :edit_pic, :to => :edit_upload_pic, :as => :edit_upload_pic
     end
     collection do
       get :suggested

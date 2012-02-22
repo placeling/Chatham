@@ -30,7 +30,9 @@ class User
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
-
+  
+  field :new_follower_notify, :type => Boolean, :default => true
+  
   field :confirmed_at, :type =>DateTime
 
   has_many :perspectives, :foreign_key => 'uid'
@@ -38,6 +40,7 @@ class User
   has_many :authentications
 
   mount_uploader :avatar, AvatarUploader
+  mount_uploader :temp_avatar, TempAvatarUploader
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
@@ -56,7 +59,7 @@ class User
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description
-
+  
   index :unm
   index :email
   index :pc
@@ -307,29 +310,28 @@ class User
 
   def apply_omniauth( omniauth )
     self.email = omniauth['user_info']['email'] if email.blank?
-
+    
     if username.blank?
-
       if omniauth['provider'] == "facebook" && omniauth['user_info']['nickname']
         username = omniauth['user_info']['nickname'].gsub(/\W+/, "")
       else
         username = omniauth['user_info']['name'].gsub(/\W+/, "")
       end
-
+      
       user = User.find_by_username(username)
       i = 1
       baseusername = username
-
+      
       while user
-        username = baseusername + i
+        username = baseusername + i.to_s
         user = User.find_by_username(username)
         i += 1
       end
-
+      
       self.username = username
     end
-
-    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+    
+    
   end
 
   def facebook

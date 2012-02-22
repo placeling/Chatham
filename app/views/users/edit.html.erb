@@ -3,22 +3,33 @@
 <% end %>
 
 <div class="account_holder">
-  <%= form_for @user, :html => {:multipart => true} do |f| %>
+  <%= form_for @user, :url => { :action => "update" } do |f| %>
     <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
     <div class="account_info_holder">
-      <div class="account_label"><%= f.label :username %></div><div class="account_value"><%= f.text_field :username %></div>
+      <div class="account_label"><%= t('account.username') %></div><div class="account_value" id="username"><%= f.text_field :username %></div>
     </div>
     
     <div class="account_info_holder">
-      <div class="account_label"><%= f.label :description %></div><div class="account_value"><%= f.text_area :description %></div>
+      <div class="account_label"><%= t('account.email') %></div><div class="account_value" id="email"><%= f.email_field :email %></div>
     </div>
     
     <div class="account_info_holder">
-      <div class="account_label"><%= f.label :url %></div><div class="account_value"><%= f.url_field :url %> <div class="url_hint"><%= t('perspective.url_hint') %></div></div>
+      <div class="account_label"><%= t('account.description') %></div><div class="account_value"><%= f.text_area :description %></div>
+    </div>
+    
+    <div class="account_info_holder">
+      <div class="account_label"><%= t('account.url') %></div><div class="account_value"><%= f.url_field :url %> <div class="url_hint"><%= t('perspective.url_hint') %></div></div>
+    </div>
+    
+    <div class="account_info_holder">
+      <div class="account_label"><%= t('account.notify') %></div><div class="account_value">
+        <%= f.radio_button :new_follower_notify, true %> Yes
+        <%= f.radio_button :new_follower_notify, false %> No
+      </div>
     </div>
     
     <div class="actions">
-      <span class="cancel"><a href="<%= account_user_path(@user) %>"><%= t ('account.cancel') %></a></span> <input id="user_submit" type="submit" value="<%= t('account.save_changes') %>" name="commit">
+      <span class="cancel"><a href="<%= account_user_path(@user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes') %>
     </div>
   <% end %>
 </div>

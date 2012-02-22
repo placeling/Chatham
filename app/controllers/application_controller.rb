@@ -25,11 +25,12 @@ class ApplicationController < ActionController::Base
   end
   
   def set_session_return_path
-    if request.path == new_user_session_path && URI(request.referer).path != new_user_session_path
+    # Last case is for use case where user fails to connect via 3rd party auth so signs in manually
+    if request.path == new_user_session_path && URI(request.referer).path != new_user_session_path && URI(request.referer).path[0..4] != "/auth"
       session[:"user.return_to"] = URI(request.referer).path
     # Following line handles user attaching 3rd party auth to their account
     elsif current_user && request.path == account_user_path(current_user)
-      session[:"user.return_to"] = URI(request.referer).path
+      session[:"user.return_to"] = account_user_path(current_user)
     end
   end
   

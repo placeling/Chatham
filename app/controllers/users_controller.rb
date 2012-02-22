@@ -211,9 +211,77 @@ class UsersController < ApplicationController
   
   def account
     @user = User.find_by_username(params[:id])
+    if @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
+    
+    @facebook = false
+    @user.authentications.each do |auth|
+      if auth.p == "facebook"
+        @facebook = true
+      end
+    end
     
     respond_to do |format|
       format.html { render :account}
+    end
+  end
+  
+  def pic
+    @user = User.find_by_username(params[:id])
+    
+    respond_to do |format|
+      format.html { render :pic}
+    end
+  end
+  
+  def confirm_username
+    @user = User.find_by_username(params[:id])
+    
+    respond_to do |format|
+      format.html { render :username}
+    end
+  end
+  
+  def update_username
+    @user = User.find_by_username(params[:id])
+    
+    if @user.update_attributes(params[:user])
+      redirect_to session[:"user.return_to"]
+    else
+      render :username
+    end
+  end
+  
+  def upload_pic
+    @user = User.find_by_username(params[:id])
+    
+    if params[:user][:temp_avatar].nil? || params[:user][:temp_avatar] == ""
+      redirect_to pic_user_path(@user)
+    else
+      if @user.update_attributes(params[:user])
+        flash[:notice] = "Successfully updated user."
+        redirect_to edit_pic_user_path(@user)
+      else
+        render :pic
+      end
+      
+      #
+      #@user.temp_avatar = params[:user][:temp_avatar]
+      #
+      #if @user.save
+      #  redirect_to edit_pic_user_path(@user)
+      #else
+      #  render :pic
+      #end
+    end
+  end
+  
+  def edit_pic
+    @user = User.find_by_username(params[:id])
+    
+    respond_to do |format|
+      format.html { render :edit_pic}
     end
   end
   
@@ -221,39 +289,40 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id
     
-    if params[:user]
-      #handles case where it's an HTML edit
-      params[:description] = params[:user][:description]
-      params[:username] = params[:user][:username]
-
+    if params[:api_call]
+      #intentionally only takes one password (for now)
+      @user.description = params[:description]
+      @user.url = params[:url]
+      lat = params[:user_lat].to_f
+      lng = params[:user_lng].to_f
+      if lat and lng
+        @user.location = [lat, lng]
+        @user.city = ""
+      end
+      
+      if params[:email] &&  params[:email] != @user.email
+        #update email logic coming soon
+      end
+      
+      if params[:image]
+        @user.avatar = params[:image]
+      end
+    else
+      @user.description = params[:user][:description]
+      @user.username = params[:user][:username]
+      @user.email = params[:user][:email]
+      @user.url = params[:user][:url]
+      @user.new_follower_notify = params[:user][:new_follower_notify]
     end
-
-    #intentionally only takes one password (for now)
-    @user.description = params[:description]
-    @user.url = params[:url]
-    lat = params[:user_lat].to_f
-    lng = params[:user_lng].to_f
-    if lat and lng
-      @user.location = [lat, lng]
-      @user.city = ""
-    end
-
-    if params[:email] &&  params[:email] != @user.email
-      #update email logic coming soon
-    end
-
-    if params[:image]
-      @user.avatar = params[:image]
-    end
-
+    
     if @user.save
       respond_to do |format|
-        format.html { redirect_to :action => "show", :id => @user.id }
+        format.html { redirect_to account_user_path(@user) }
         format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
       end
     else
       respond_to do |format|
-        format.html { render :action => "edit" }
+        format.html { render :edit }
         format.json { render :json => {:status => "fail", :message => @user.errors} }
       end
     end
@@ -387,7 +456,6 @@ class UsersController < ApplicationController
     end
 
   end
-
 
   def resend
     @user = User.find_by_username( params[:username] )

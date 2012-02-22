@@ -51,31 +51,35 @@ class AuthenticationsController < ApplicationController
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
       sign_in( authentication.user )
-      flash[:notice] = "Signed in successfully."
       respond_to do |format|
-        format.html { redirect_to( authentication.user ) }
+        format.html { redirect_to session[:"user.return_to"] }
         format.json {
           render :text => generate_keys_for( authentication.user )
         }
       end
-
     elsif current_user
-      current_user.authentications.create!(:p => omniauth['provider'], :uid => omniauth['uid'])
-      flash[:notice] = "Authentication successful."
-      redirect_to authentications_url
+      # Only occurs if already logged in and try to add your Facebook account
+      current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+      redirect_to session[:"user.return_to"]
     else
       @user = User.new
       @user.password = Devise.friendly_token[0,20]
       @user.apply_omniauth( omniauth )
-
-      @user.save! #save more/less has to occur
-      flash[:notice] = "Signed in successfully."
-      sign_in( @user )
-      respond_to do |format|
-        format.html { redirect_to( edit_user_path( @user ) ) }
-        format.json {
-          render :text => generate_keys_for( authentication.user )
-        }
+      
+      if @user.save
+        @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+        sign_in( @user )
+        respond_to do |format|
+          format.html { redirect_to( confirm_username_user_path( @user ) ) }
+          format.json {
+            render :text => generate_keys_for( authentication.user )
+          }
+        end
+      else
+        @provider = omniauth['provider']
+        respond_to do |format|
+          format.html {render :auth_fail}
+        end
       end
     end
   end

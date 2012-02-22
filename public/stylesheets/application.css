@@ -1082,6 +1082,33 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   width: 200px;
 }
 
+.auth_inset {
+  margin-top: 50px;
+  margin-left: 50px;
+  width: 800px;
+}
+
+.auth_standout {
+  font-size: 24px;
+}
+
+.auth_provider {
+  font-weight: bold;
+}
+
+ol.auth_notice {
+  list-style-position:inside;
+  margin-top: 10px;
+}
+
+li.auth_notice {
+  margin-bottom: 20px;
+}
+
+.auth_emsmallen {
+  font-size: 12px;
+}
+
 /* Perspective path
 =====================================================================*/
 .plane {
@@ -1384,6 +1411,29 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   font-weight: bold;
 }
 
+/* Username Validation
+***********************************************/
+.username_container {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 600px;
+}
+
+.username_standout {
+  font-size: 24px;
+}
+
+.username_instruct {
+  margin-top: 10px;
+}
+
+.username_details {
+  font-size: 12px;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+
+
 /* My Account
 ***********************************************/
 .account_holder {
@@ -1410,7 +1460,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 }
 
 .account_value {
-  margin-left: 100px;
+  margin-left: 130px;
 }
 
 .account_value input {
@@ -1435,6 +1485,19 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 .account_edit_image {
   max-width: 25px;
   max-height: 25px;
+}
+
+.account_change_pic {
+  max-width: 15px;
+  max-height: 15px;
+}
+
+#user_new_follower_notify_true {
+  width: 20px;
+}
+
+#user_new_follower_notify_false {
+  width: 20px;
 }
 
 /* Admin
