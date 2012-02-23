@@ -271,6 +271,10 @@ class UsersController < ApplicationController
   def confirm_username
     @user = User.find_by_username(params[:id])
     
+    if @user != current_user
+      return redirect_to edit_user_path( current_user )
+    end
+    
     respond_to do |format|
       format.html { render :username}
     end
@@ -278,6 +282,10 @@ class UsersController < ApplicationController
   
   def update_username
     @user = User.find_by_username(params[:id])
+    
+    if @user != current_user
+      return redirect_to edit_user_path( current_user )
+    end
     
     if @user.update_attributes(params[:user])
       redirect_to session[:"user.return_to"]

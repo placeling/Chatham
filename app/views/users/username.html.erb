@@ -3,9 +3,8 @@
     $(document).ready(function() {
       function updatePreview(){
         $('#username').text($('#user_username').val());
-      }
-      
-      $('#user_username').bind('keypress', function(){
+      }      
+      $('#user_username').bind('keyup', function(){
         setTimeout(updatePreview, 1);
       });
     });
