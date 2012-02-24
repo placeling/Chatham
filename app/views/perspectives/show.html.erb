@@ -4,6 +4,11 @@
   <meta property="og:title" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %>"/>
   <meta property="og:url" content="https://www.placeling.com<%= perspective_path(@perspective) %>"/>
   <meta property="og:type" content="perspective">
+  <% @perspective.pictures.each do |picture| %>
+    <% if !picture.deleted %>
+      <meta property="og:image" content="<%= picture.main_url %>">
+    <% end %>
+  <% end %>
   <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
 <% end %>
 
