@@ -29,7 +29,7 @@
     </div>
     
     <div class="actions">
-      <span class="cancel"><a href="<%= account_user_path(@user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes') %>
+      <span class="cancel"><a href="<%= account_user_path(current_user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes') %>
     </div>
   <% end %>
 </div>

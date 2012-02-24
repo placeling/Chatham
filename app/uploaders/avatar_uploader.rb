@@ -10,8 +10,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
     model.cache_urls
   end
 
-  # Include RMagick or ImageScience support:
-  # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
   if Rails.env.test?
@@ -26,24 +24,29 @@ class AvatarUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{model.id}"
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
-
-  # Process files as they are uploaded:
-  # process :scale => [200, 300]
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
-
   # Create different versions of your uploaded files:
    version :thumb do
+     process :manualcrop
      process :resize_to_fill => [160, 160]
    end
 
    version :main do
-     process :resize_to_fit => [960, 960]
+     process :manualcrop
+     process :resize_to_fill => [960, 960]
    end
-
+   
+   process :resize_to_fit => [960, 960]
+   
+   def manualcrop
+     return unless model.cropping?
+     manipulate! do |img|
+       # This bizarre code is courtesy of Minimagick: https://github.com/jnicklas/carrierwave/issues/436
+       img.crop("#{model.w}x#{model.h}+#{model.x}+#{model.y}")
+       img = yield(img) if block_given?
+       img
+     end
+   end
+   
    # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
    def extension_white_list
      %w(jpg jpeg gif png)

@@ -3,7 +3,8 @@ require 'json'
 class UsersController < ApplicationController
 
   before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :edit, :update, :account]
-
+  
+  
   def me
     @user = current_user
 
@@ -44,9 +45,13 @@ class UsersController < ApplicationController
     if current_user.id != @user.id
       redirect_to edit_user_path( current_user )
     else
-      respond_to do |format|
-        format.html
-        format.json
+      if params[:avatar]
+        render :pic
+      else
+        respond_to do |format|
+          format.html
+          format.json
+        end
       end
     end
 
@@ -260,14 +265,6 @@ class UsersController < ApplicationController
     end
   end
   
-  def pic
-    @user = User.find_by_username(params[:id])
-    
-    respond_to do |format|
-      format.html { render :pic}
-    end
-  end
-  
   def confirm_username
     @user = User.find_by_username(params[:id])
     
@@ -294,38 +291,6 @@ class UsersController < ApplicationController
     end
   end
   
-  def upload_pic
-    @user = User.find_by_username(params[:id])
-    
-    if params[:user][:temp_avatar].nil? || params[:user][:temp_avatar] == ""
-      redirect_to pic_user_path(@user)
-    else
-      if @user.update_attributes(params[:user])
-        flash[:notice] = "Successfully updated user."
-        redirect_to edit_pic_user_path(@user)
-      else
-        render :pic
-      end
-      
-      #
-      #@user.temp_avatar = params[:user][:temp_avatar]
-      #
-      #if @user.save
-      #  redirect_to edit_pic_user_path(@user)
-      #else
-      #  render :pic
-      #end
-    end
-  end
-  
-  def edit_pic
-    @user = User.find_by_username(params[:id])
-    
-    respond_to do |format|
-      format.html { render :edit_pic}
-    end
-  end
-  
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id
@@ -349,22 +314,62 @@ class UsersController < ApplicationController
         @user.avatar = params[:image]
       end
     else
-      @user.description = params[:user][:description]
-      @user.username = params[:user][:username]
-      @user.email = params[:user][:email]
-      @user.url = params[:user][:url]
-      @user.new_follower_notify = params[:user][:new_follower_notify]
+      if params[:avatar]
+        if params[:user].blank?
+          return redirect_to edit_avatar_user_path(@user)
+        else
+          @user.avatar = params[:user][:avatar]
+        end
+      else
+        # Couldn't use update_attributes here as Mongoid wouldn't create new objects
+        # where previously <nil>
+        if params[:user][:description]
+          @user.description = params[:user][:description]
+        end
+        if params[:user][:username]
+          @user.username = params[:user][:username]
+        end
+        if params[:user][:email]
+          @user.email = params[:user][:email]
+        end
+        if params[:user][:url]
+          @user.url = params[:user][:url]
+        end
+        if params[:user][:new_follower_notify]
+          @user.new_follower_notify = params[:user][:new_follower_notify]
+        end
+        if params[:user][:x]
+          @user.x = 2 * params[:user][:x].to_f
+        end
+        if params[:user][:y]
+          @user.y = 2 * params[:user][:y].to_f
+        end
+        if params[:user][:w]
+          @user.w = 2 * params[:user][:w].to_f
+        end
+        if params[:user][:h]
+          @user.h = 2 * params[:user][:h].to_f
+        end
+      end
     end
     
     if @user.save
-      respond_to do |format|
-        format.html { redirect_to account_user_path(@user) }
-        format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
+      if params[:avatar]
+        render :crop_pic
+      else
+        respond_to do |format|
+          format.html { redirect_to account_user_path(@user) }
+          format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
+        end
       end
     else
-      respond_to do |format|
-        format.html { render :edit }
-        format.json { render :json => {:status => "fail", :message => @user.errors} }
+      if params[:avatar]
+        render :pic
+      else
+        respond_to do |format|
+          format.html { render :edit }
+          format.json { render :json => {:status => "fail", :message => @user.errors} }
+        end
       end
     end
   end

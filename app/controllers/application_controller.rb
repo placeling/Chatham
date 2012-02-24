@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
       oauth_app_required
     end
   end
-
+  
   def login_required
     login_or_oauth_required
     if current_user.nil?

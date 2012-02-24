@@ -1,0 +1,57 @@
+<% content_for :head do %>
+  <title><%= t('user.crop_photo') %></title>
+  <link href="/stylesheets/jquery/jquery.Jcrop.css" rel="stylesheet" type="text/css">
+<% end %>
+
+<% content_for :javascript_includes do %>
+  <script type="text/javascript" src="/javascripts/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript">
+<%
+=begin
+Note that function used $(window).load not $(document).ready
+This is because we need images to be fully loaded before showing cropping lines
+=end
+%>
+    $(window).load(function() {
+      if ($('#pic').width() > $('#pic').height()) {
+        var x1 = $('#pic').width()/2 - $('#pic').height()/4;
+        var y1 = $('#pic').height()/4;
+        var x2 = $('#pic').width()/2 + $('#pic').height()/4;
+        var y2 = 3 * $('#pic').height()/4;
+      } else {
+        var x1 = $('#pic').width()/4;
+        var y1 = $('#pic').height()/2 - $('#pic').width()/4;
+        var x2 = 3 * $('#pic').width()/4;
+        var y2 = $('#pic').height()/2 + $('#pic').width()/4;
+      }
+      
+      $('#pic').Jcrop({
+        setSelect: [ x1, y1, x2, y2 ],
+        addClass: 'jcrop-dark',
+        onChange: showCoords,
+        onSelect: showCoords,
+        aspectRatio: 1
+      });
+      
+      function showCoords(c)
+      {
+        $('#x').val(c.x);
+        $('#y').val(c.y);
+        $('#w').val(c.w);
+        $('#h').val(c.h);
+      };
+    });
+  </script>
+<% end %>
+
+<div id="pic_form_holder">
+  <p class="account_title"><%= t('user.crop_instructions') %></p>
+  <%= form_for @user, :url => user_path(@user) do |f| %>
+    <%= f.error_messages %>
+    <%= image_tag @user.avatar_url.to_s, :class => 'crop_pic', :id => 'pic' %>
+    <% for attribute in [:x, :y, :w, :h] %>
+      <%= f.hidden_field attribute, :id => attribute %>
+    <% end %>
+    <p class="submit_holder"><%= f.submit t('user.save_crop_changes') %></p>
+  <% end %>
+</div>

@@ -1433,6 +1433,41 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-bottom: 10px;
 }
 
+/* Change Profile Pic
+***********************************************/
+.upload {
+  margin-top: 10px;
+  margin-left: 220px;
+}
+
+.cancel_spacer {
+  margin-right: 10px;
+}
+
+.account_instruction {
+  margin-bottom: 10px;
+}
+
+#pic_form_holder {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.submit_holder {
+  margin-top: 10px;
+  margin-left: 340px;
+  margin-bottom: 20px;
+}
+
+.crop_pic {
+  border: 9px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  max-width:480px;
+  max-height: 480px;
+}
 
 /* My Account
 ***********************************************/

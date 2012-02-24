@@ -199,6 +199,11 @@ en:
     recent: "Recent"
     edit_title: "Edit My Profile"
     pick_username: "Pick your username"
+    crop_instructions: "Crop your new profile picture"
+    crop_photo: "Crop your new profile picture"
+    save_crop_changes: "Save changes"
+    upload_pic: "Upload photo"
+    cancel: "Cancel"
     
   oauth:
     registered_successfully: "Registered the information successfully"
