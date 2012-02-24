@@ -287,6 +287,8 @@ class PerspectivesController < ApplicationController
       # User can delete on web from Place Page, Perspective Page or User Page; need to redirect to correct one
       if URI(request.referer).path == place_path(@place)
         redirect_path = place_path(@place)
+      elsif URI(request.referer).path == recent_user_path(current_user)
+        redirect_path = recent_user_path(current_user)
       else
         redirect_path = user_path(current_user)
       end
