@@ -338,6 +338,9 @@ class UsersController < ApplicationController
         if params[:user][:new_follower_notify]
           @user.new_follower_notify = params[:user][:new_follower_notify]
         end
+        if params[:user][:remark_notify]
+          @user.remark_notify = params[:user][:remark_notify]
+        end
         if params[:user][:x]
           @user.x = 2 * params[:user][:x].to_f
         end

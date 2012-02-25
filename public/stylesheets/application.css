@@ -1479,7 +1479,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 .account_holder {
   margin-top: 20px;
   margin-left: 20px;
-  width: 600px;
+  width: 700px;
 }
 
 .account_title {
@@ -1494,6 +1494,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 }
 
 .account_label {
+  width: 120px;
   float: left;
   font-weight: bold;
   text-transform: lowercase;
@@ -1539,6 +1540,15 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 #user_new_follower_notify_false {
   width: 20px;
 }
+
+#user_remark_notify_true {
+  width: 20px;
+}
+
+#user_remark_notify_false {
+  width: 20px;
+}
+
 
 /* Admin
 ***********************************************/

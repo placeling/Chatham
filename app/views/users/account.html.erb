@@ -55,6 +55,14 @@
       <%= t('account.no_new_follower_notify' )%>
     <% end %>
     </div>
+    <div class="account_value">
+    <% if @user.remark_notify %>
+      <%= t('account.yes_remark_notify')%>
+    <% else %>
+      <%= t('account.no_remark_notify' )%>
+    <% end %>
+    </div>
+    
   </div>
   <div class="account_info_holder">
     <div class="account_label"><%= t('account.authentications') %></div>

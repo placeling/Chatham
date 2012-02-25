@@ -46,6 +46,7 @@ class User
   field :main_cache_url, :type => String
   
   field :new_follower_notify, :type => Boolean, :default => true
+  field :remark_notify, :type => Boolean, :default => true
   
   field :confirmed_at, :type =>DateTime
   
