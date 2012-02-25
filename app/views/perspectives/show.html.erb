@@ -114,7 +114,7 @@
           <div id="full_details">
             <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
               <div class="mini_memo_wrapper">
-                <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
+                <%= simple_format_with_tags(@perspective.memo, :class=>"mini_memo") %>
               </div>
             <% end %>
             <% if !@perspective.url.nil? && @perspective.url.length > 0 %>

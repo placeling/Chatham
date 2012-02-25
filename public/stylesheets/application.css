@@ -753,6 +753,11 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   width: 600px;
 }
 
+.tag {
+  color: #E08574;
+  font-weight: 500;
+}
+
 .url_wrapper {
   margin-top: 5px;
 }
