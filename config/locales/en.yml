@@ -286,6 +286,7 @@ en:
     place_trail: " you follow"
     call_to_action: " to see you and your network's notes and photos"
     description: "The Placeling community's thoughts on %{name}"
+    no_notes: "Be the first to placemark this location!"
 
   perspective:
     fav_places: "%{user}'s favorite places"
