@@ -172,17 +172,14 @@ class PerspectivesController < ApplicationController
     @user = User.find_by_username( params[:user_id] )
     start_pos = params[:start].to_i
 
-    lat = params[:lat].to_f
-    long = params[:lng].to_f
-
     count = 20
-    if long.nil? || long == 0
-      long = params[:long].to_f
-    end
 
-    if (lat && long)
+    if (params[:lat] && params[:lng])
       span =1
+      lat = params[:lat].to_f
+      long = params[:lng].to_f
       location = [lat, long]
+
       @perspectives = Perspective.find_nearby_for_user( @user, location, span, start_pos, count )
     else
       @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
