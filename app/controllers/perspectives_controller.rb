@@ -181,15 +181,16 @@ class PerspectivesController < ApplicationController
     end
 
     if (lat && long)
+      span =1
       location = [lat, long]
+      @perspectives = Perspective.find_nearby_for_user( @user, location, span, start_pos, count )
+    else
+      @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
     end
-
-    @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
 
     respond_to do |format|
       format.html
       format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
-      #format.jsonp { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
   

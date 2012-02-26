@@ -63,6 +63,18 @@ class Perspective
         entries
   end
 
+  def self.find_nearby_for_user( user, loc, span, start, count )
+    geonear = BSON::OrderedHash.new()
+    geonear["$near"] = loc
+    geonear["$maxDistance"] = span
+
+    Perspective.where( :ploc => geonear ).
+        and(:uid => user.id).
+        skip( start ).
+        limit( count ).
+        entries
+  end
+
   def self.query_near( loc, span,  query, category )
     geonear = BSON::OrderedHash.new()
     geonear["$near"] = loc
