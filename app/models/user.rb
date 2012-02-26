@@ -11,7 +11,21 @@ class User
 
   #before_validation :fix_location
   before_validation :set_downcase_username
-
+  # For updating avatar see http://railscasts.com/episodes/182-cropping-images
+  after_update :process_avatar, :if => :cropping?
+  
+  def cropping?
+    !x.blank? && !y.blank? && ! w.blank? && !h.blank?
+  end
+  
+  def process_avatar
+    self.avatar.recreate_versions!
+    self.x = nil
+    self.y = nil
+    self.w = nil
+    self.h = nil
+  end
+  
   field :username,      :type =>String
   field :du, :as => :downcase_username, :type => String
   field :fullname,      :type =>String
@@ -32,15 +46,22 @@ class User
   field :main_cache_url, :type => String
   
   field :new_follower_notify, :type => Boolean, :default => true
+  field :remark_notify, :type => Boolean, :default => true
   
   field :confirmed_at, :type =>DateTime
-
+  
+  # For avatar cropping
+  # Initial position of cropping + dimensions
+  field :x, :type => Float
+  field :y, :type => Float
+  field :w, :type => Float
+  field :h, :type => Float
+  
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
   has_many :authentications
 
   mount_uploader :avatar, AvatarUploader
-  mount_uploader :temp_avatar, TempAvatarUploader
 
   has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
@@ -54,6 +75,7 @@ class User
   validate :acceptable_name, :on => :create
   validate :acceptable_password
   validates_presence_of :username
+  validates_presence_of :email
   validates_format_of :username, :with => /\A[a-zA-Z0-9]+\Z/, :message => "must only contain letters and number"
   validates_format_of :email, :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => "is not valid"
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
@@ -155,7 +177,7 @@ class User
       return "http://www.placeling.com/images/default_profile.png"
     end
   end
-
+  
   def self.top_users( top_n )
     self.desc( :pc ).limit( top_n )
   end

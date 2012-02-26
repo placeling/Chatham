@@ -43,8 +43,8 @@
     </div>
   </div>
   <div class="account_info_holder account_profile_pic">
-    <div class="account_label"><%= t('account.profile_pic') %> <!--<a href="<%= pic_user_path(@user) %>"><%= image_tag "/images/writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a>--></div>
-    <div class="account_value"><!--<a href="<%= pic_user_path(@user) %>">--><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %><!--</a>--></div>
+    <div class="account_label"><%= t('account.profile_pic') %> <a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag "/images/writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a></div>
+    <div class="account_value"><a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %></a></div>
   </div>
   <div class="account_info_holder">
     <div class="account_label"><%= t('account.notify') %></div>
@@ -55,6 +55,14 @@
       <%= t('account.no_new_follower_notify' )%>
     <% end %>
     </div>
+    <div class="account_value">
+    <% if @user.remark_notify %>
+      <%= t('account.yes_remark_notify')%>
+    <% else %>
+      <%= t('account.no_remark_notify' )%>
+    <% end %>
+    </div>
+    
   </div>
   <div class="account_info_holder">
     <div class="account_label"><%= t('account.authentications') %></div>

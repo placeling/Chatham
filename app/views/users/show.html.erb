@@ -171,16 +171,16 @@
             if (perspective.categories.length > 0 || perspective.tags.length > 0) {
               infoWindowHTML += '<div class="info_cat_and_tags">';
               if (perspective.categories.length > 0) {
-                infoWindowHTML += '<span class="info_cat">';
-                infoWindowHTML += perspective.categories.join('</span>, <span class="info_cat">');
+                infoWindowHTML += '<span class="tag">';
+                infoWindowHTML += perspective.categories.join('</span>, <span class="tag">');
                 infoWindowHTML += '</span>';
                 if (perspective.tags.length > 0) {
                   infoWindowHTML += ' | ';
                 }
               }
               if (perspective.tags.length > 0) {
-                infoWindowHTML += '<span class="info_tag">#';
-                infoWindowHTML += perspective.tags.join('</span>, <span class="info_tag">#');
+                infoWindowHTML += '<span class="tag">#';
+                infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
                 infoWindowHTML += '</span>';
               }
               infoWindowHTML += '</div>';
@@ -685,7 +685,9 @@
         
         $('.map_photo').each(function() {
           $(this).click(function() {
-            google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+            if (typeof loadState["<%= @user.username %>"]['infowindow'] === undefined || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
+              google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+            }
           })
         });
       }

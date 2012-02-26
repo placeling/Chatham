@@ -320,7 +320,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 }
 
 .content_type span {
-  font-size: 48px;  
+  font-size: 36px;  
 }
 
 #perspectives_list {
@@ -751,6 +751,11 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 .memo {
   padding-top:10px;
   width: 600px;
+}
+
+.tag {
+  color: #E08574;
+  font-weight: 500;
 }
 
 .url_wrapper {
@@ -1433,13 +1438,48 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-bottom: 10px;
 }
 
+/* Change Profile Pic
+***********************************************/
+.upload {
+  margin-top: 10px;
+  margin-left: 220px;
+}
+
+.cancel_spacer {
+  margin-right: 10px;
+}
+
+.account_instruction {
+  margin-bottom: 10px;
+}
+
+#pic_form_holder {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.submit_holder {
+  margin-top: 10px;
+  margin-left: 340px;
+  margin-bottom: 20px;
+}
+
+.crop_pic {
+  border: 9px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  max-width:480px;
+  max-height: 480px;
+}
 
 /* My Account
 ***********************************************/
 .account_holder {
   margin-top: 20px;
   margin-left: 20px;
-  width: 600px;
+  width: 700px;
 }
 
 .account_title {
@@ -1454,6 +1494,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 }
 
 .account_label {
+  width: 120px;
   float: left;
   font-weight: bold;
   text-transform: lowercase;
@@ -1499,6 +1540,15 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 #user_new_follower_notify_false {
   width: 20px;
 }
+
+#user_remark_notify_true {
+  width: 20px;
+}
+
+#user_remark_notify_false {
+  width: 20px;
+}
+
 
 /* Admin
 ***********************************************/

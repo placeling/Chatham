@@ -1,0 +1,15 @@
+<% content_for :head do %>
+  <title><%= t('account.new_pic') %></title>
+<% end %>
+
+<div class="account_holder">
+  <div class="account_title"><%= t('account.new_pic') %></div>
+  <div class="account_instruction"><%= t('account.pic_choose') %></div>
+  <%= form_for @user, :url => upload_avatar_user_path(@user), :html => {:multipart => true} do |f| %>
+    <%= f.error_messages %>
+    <p>
+      <%= f.file_field :avatar %>
+    </p>
+    <p class="upload"><%= link_to t('user.cancel'), account_user_path(@user), :class => "cancel_spacer" %> <%= f.submit t("user.upload_pic") %></p>
+  <% end %>
+</div>

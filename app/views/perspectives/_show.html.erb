@@ -49,7 +49,7 @@ If user has added text from place page, source will still be "place_page_empty" 
   </div>
   <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
     <div class="memo_wrapper">
-      <%= simple_format(perspective.memo, :class=>"memo") %>
+      <%= simple_format_with_tags(perspective.memo, :class=>"memo") %>
     </div>
   <% end %>
   <% if !perspective.url.nil? && perspective.url.length > 0 %>

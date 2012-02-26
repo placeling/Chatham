@@ -4,6 +4,11 @@
   <meta property="og:title" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %>"/>
   <meta property="og:url" content="https://www.placeling.com<%= perspective_path(@perspective) %>"/>
   <meta property="og:type" content="perspective">
+  <% @perspective.pictures.each do |picture| %>
+    <% if !picture.deleted %>
+      <meta property="og:image" content="<%= picture.main_url %>">
+    <% end %>
+  <% end %>
   <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
 <% end %>
 
@@ -109,7 +114,7 @@
           <div id="full_details">
             <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
               <div class="mini_memo_wrapper">
-                <%= simple_format(@perspective.memo, :class=>"mini_memo") %>
+                <%= simple_format_with_tags(@perspective.memo, :class=>"mini_memo") %>
               </div>
             <% end %>
             <% if !@perspective.url.nil? && @perspective.url.length > 0 %>

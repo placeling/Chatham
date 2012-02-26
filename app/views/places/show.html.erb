@@ -50,9 +50,14 @@
       <%= image_tag "plane.png", :alt=>"Plane" %>
     </div>
     <div class="content_type">
-      <span><%=t('place.notes_and_photos') %></span>
+      <% if @place.perspectives.count > 0 %>
+        <span><%=t('place.notes_and_photos') %></span>
+      <% else %>
+        <span><%=t('place.no_notes') %></span>
+      <% end %>
     </div>
-    <% if current_user.nil? %>
+    
+    <% if current_user.nil? && @place.perspectives.count > 0 %>
       <div class="call_to_action perspective_group header_group">
         <%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %><%= t'place.call_to_action'%>
       </div>
