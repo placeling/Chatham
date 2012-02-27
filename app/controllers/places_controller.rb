@@ -77,6 +77,13 @@ class PlacesController < ApplicationController
   
   def search
     @user = current_user
+
+    lat = params[:lat].to_f
+    lng = params[:lng].to_f
+
+    if ( params[:long] )
+      lng = params[:long]
+    end
     
     if params[:lat] && params[:long] && params[:query] && params[:query].length > 0
       lat = params[:lat].to_f
@@ -127,6 +134,7 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html
+      format.json { render :json => {:perspectives => @places.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
 
@@ -385,7 +393,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
+      format.json { render :json => @place.as_json(), :callback => params[:callback]  }
     end
   end
 
