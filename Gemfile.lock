@@ -8,16 +8,6 @@ GIT
       redis-namespace (~> 1.0.0)
 
 GIT
-  remote: git://github.com/imackinn/oauth-plugin.git
-  revision: e6dd4c7e6f17f6fdfb3c996bcce51e061c32d50d
-  specs:
-    oauth-plugin (0.4.0.rc2)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2
-      rack
-
-GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: 6641fddcfc337a3ddaa84ac59272e884090332c3
   specs:
@@ -44,6 +34,15 @@ GIT
       redis (>= 2.0.1)
       resque (>= 1.19.0)
       rufus-scheduler
+
+PATH
+  remote: ../oauth-plugin
+  specs:
+    oauth-plugin (0.4.0.rc2)
+      multi_json
+      oauth (~> 0.4.4)
+      oauth2
+      rack
 
 GEM
   remote: http://rubygems.org/
