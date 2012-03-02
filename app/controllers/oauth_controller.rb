@@ -31,13 +31,13 @@ class OauthController < ApplicationController
 
   def access_token_with_xauth_test
 
-    if current_client_application.nil?
-      render :text => t("oauth.invalid"), :status => 401, :template=>nil
-      logger.info "401 - Got invalid Oauth Request"
-      return
-    end
-
     if params[:x_auth_mode] == "client_auth"
+      if current_client_application.nil?
+        render :text => t("oauth.invalid"), :status => 401, :template=>nil
+        logger.info "401 - Got invalid Oauth Request"
+        return
+      end
+
       if ! current_client_application.xauth_enabled
         logger.info "401 - xauth request for app that doesn't have xauth enabled'"
         render :text => t("oauth.no_xauth"), :status => 401, :template=>nil
