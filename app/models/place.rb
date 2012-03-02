@@ -331,6 +331,7 @@ class Place
     attributes[:place_tags] = attributes.delete('ptg')
     attributes[:google_id] = attributes.delete('gid')
     attributes[:perspective_count] = attributes.delete('pc')
+    attributes[:map_url] = "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=color:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
 
     if options[:current_user]
       current_user = options[:current_user]
