@@ -393,7 +393,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => @place.as_json(), :callback => params[:callback]  }
+      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}), :callback => params[:callback]  }
     end
   end
 
