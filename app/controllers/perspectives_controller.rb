@@ -240,7 +240,7 @@ class PerspectivesController < ApplicationController
       
       if @perspective.nil?
         track! :placemark
-        @perspective= @place.perspectives.build(params.slice("memo"))
+        @perspective= @place.perspectives.build(params.slice("memo", "url"))
         @perspective.client_application = current_client_application unless current_client_application.nil?
         @perspective.user = current_user
         if (params[:lat] and params[:long])
@@ -255,6 +255,11 @@ class PerspectivesController < ApplicationController
       if params[:memo]
         @perspective.update_attributes(params.slice("memo"))
       end
+
+      if params[:url]
+        @perspective.update_attributes(params.slice("url"))
+      end
+
     end
     
     if @perspective.save
@@ -262,7 +267,7 @@ class PerspectivesController < ApplicationController
       @perspective.place.save
       respond_to do |format|
         format.html {redirect_to session[:referring_url]}
-        format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
+        format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true})  }
       end
     else
       respond_to do |format|

@@ -120,7 +120,6 @@ describe "API - Perspective" do
 
 
   describe "can be added" do
-    
     # Marked broken as will otherwise attempt to write to Google Places API. Use lib/google_places_spec.rb instead
     it "to a completely new place", :broken => true do
       user = Factory.create(:user)
@@ -204,6 +203,37 @@ describe "API - Perspective" do
       perspective.memo.should include("da bomb")
 
     end
+
+    it "with a url that gets returned" do
+      user = Factory.create(:user)
+      place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
+
+      #make sure place already exists
+      Place.find_by_google_id(place.google_id).should be_valid
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post_via_redirect place_perspectives_path( place ), {
+        :format => 'json',
+        :memo => "This place is out of this world #breakfast",
+        :lat => 49.268547,
+        :url => "http://www.lunarluau.ca",
+        :long => -123.15279,
+        :accuracy=>'500'
+      }
+
+      response.status.should be(200)
+
+      #make sure perspective has been added, but place count is still 1
+      place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      Place.count.should be(1)
+
+      perspective = user.perspective_for_place( place )
+      perspective.url.should include("lunarluau")
+
+    end
+
+
   end
 
   describe "can be shown nearby from" do
