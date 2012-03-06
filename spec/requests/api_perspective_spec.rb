@@ -233,6 +233,85 @@ describe "API - Perspective" do
 
     end
 
+    it "with photos from urls" do
+      user = Factory.create(:user)
+      place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
+
+      #make sure place already exists
+      Place.find_by_google_id(place.google_id).should be_valid
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      #phots urls are from Ian's placemark on Growlab
+      post_via_redirect place_perspectives_path( place ), {
+        :format => 'json',
+        :memo => "This place is out of this world #breakfast",
+        :lat => 49.268547,
+        :long => -123.15279,
+        :accuracy=>'500',
+        :photo_urls =>'https://chatham-production.s3.amazonaws.com/uploads/picture/4e80e470a6f1ca6219000042/thumb_01aae49a-dad0-4319-a865-253425ed6151.jpg,https://chatham-production.s3.amazonaws.com/uploads/picture/4eb211876dd9561ad3000008/thumb_020e2393-105f-4cdc-a6a4-d3a36e77a94d.jpg'
+      }
+
+      response.status.should be(200)
+
+      #make sure perspective has been added, but place count is still 1
+      place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      Place.count.should be(1)
+
+      perspective = user.perspective_for_place( place )
+      perspective.pictures.count.should == 2
+
+    end
+
+    it "with additional photos from urls without causing duplicates" do
+      user = Factory.create(:user)
+      place = Factory.create(:place, :google_id =>"a648ca9b8af31e9726947caecfd062406dc89440")
+
+      #make sure place already exists
+      Place.find_by_google_id(place.google_id).should be_valid
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+
+      #phots urls are from Ian's placemark on Growlab
+      post_via_redirect place_perspectives_path( place ), {
+        :format => 'json',
+        :memo => "This place is out of this world #breakfast",
+        :lat => 49.268547,
+        :long => -123.15279,
+        :accuracy=>'500',
+        :photo_urls =>'https://chatham-production.s3.amazonaws.com/uploads/picture/4eb211876dd9561ad3000008/thumb_020e2393-105f-4cdc-a6a4-d3a36e77a94d.jpg'
+      }
+
+      response.status.should be(200)
+
+      #make sure perspective has been added, but place count is still 1
+      place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      Place.count.should be(1)
+
+      perspective = user.perspective_for_place( place )
+      perspective.pictures.count.should == 1
+
+      #phots urls are from Ian's placemark on Growlab
+      post_via_redirect place_perspectives_path( place ), {
+        :format => 'json',
+        :memo => "This place is out of this world #breakfast",
+        :lat => 49.268547,
+        :long => -123.15279,
+        :accuracy=>'500',
+        :photo_urls =>'https://chatham-production.s3.amazonaws.com/uploads/picture/4e80e470a6f1ca6219000042/thumb_01aae49a-dad0-4319-a865-253425ed6151.jpg,https://chatham-production.s3.amazonaws.com/uploads/picture/4eb211876dd9561ad3000008/thumb_020e2393-105f-4cdc-a6a4-d3a36e77a94d.jpg'
+      }
+
+      response.status.should be(200)
+
+      #make sure perspective has been added, but place count is still 1
+      place = Place.find_by_google_id("a648ca9b8af31e9726947caecfd062406dc89440")
+      Place.count.should be(1)
+
+      perspective = user.perspective_for_place( place )
+      perspective.pictures.count.should == 2
+
+    end
 
   end
 

@@ -260,6 +260,27 @@ class PerspectivesController < ApplicationController
         @perspective.update_attributes(params.slice("url"))
       end
 
+      if params[:photo_urls]
+        photo_urls = params[:photo_urls].split(',')
+
+        for photo_url in photo_urls
+          found = false
+          for picture in @perspective.pictures
+            if picture.remote_url && picture.remote_url == photo_url
+              found = true
+              break
+            end
+          end
+
+          if !found
+            picture = @perspective.pictures.build()
+            picture.remote_image_url = photo_url
+            picture.remote_url = photo_url # for us, to keep track
+            picture.save
+          end
+        end
+      end
+
     end
     
     if @perspective.save
