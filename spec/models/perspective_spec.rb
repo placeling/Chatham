@@ -64,4 +64,14 @@ describe Perspective do
 
   end
 
+  it "should accept a funky url" do
+    perspective = Factory.create(:perspective, :url => "http://localhost:3000/~imack/?p=238")
+    perspective.should be_valid
+  end
+
+  it "should reject invalid url" do
+    perspective = Factory.build(:perspective, :url => "aae3")
+    perspective.should_not be_valid
+  end
+
 end

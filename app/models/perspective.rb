@@ -40,8 +40,7 @@ class Perspective
   validates_associated :place
   validates_associated :user
 
-  validates :url, :format => { :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix,
-      :message => "Invalid URL" }
+  validates_format_of :url, :with => URI::regexp, :message => "Invalid URL", :allow_nil =>true
 
   before_validation :fix_location
   before_save :get_place_data
