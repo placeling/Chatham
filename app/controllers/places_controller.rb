@@ -82,12 +82,10 @@ class PlacesController < ApplicationController
     lng = params[:lng].to_f
 
     if ( params[:long] )
-      lng = params[:long]
+      lng = params[:long].to_f
     end
     
     if lat && lng && params[:query] && params[:query].length > 0
-      lat = params[:lat].to_f
-      long = params[:long].to_f
       radius = 50.0
       gp = GooglePlaces.new
       
@@ -99,7 +97,7 @@ class PlacesController < ApplicationController
       @places = []
       
       # Google Places
-      @raw_places = gp.find_nearby(lat, long, radius, query)
+      @raw_places = gp.find_nearby(lat, lng, radius, query)
       if @raw_places.length > 0
         @raw_places.each do |place|
           @place = Place.find_by_google_id( place.id )
