@@ -85,7 +85,7 @@ class PlacesController < ApplicationController
       lng = params[:long]
     end
     
-    if params[:lat] && params[:long] && params[:query] && params[:query].length > 0
+    if lat && lng && params[:query] && params[:query].length > 0
       lat = params[:lat].to_f
       long = params[:long].to_f
       radius = 50.0
@@ -134,7 +134,7 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.json { render :json => {:perspectives => @places.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
+      format.json { render :json => {:places => @places.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
 
