@@ -17,6 +17,7 @@ class PotentialPerspectivesController < ApplicationController
       perp.user = perspec.user
       perp.place = perspec.place
       perp.url = perspec.url
+      perp.pictures = perspec.pictures
       
       perp.save
       
@@ -142,6 +143,23 @@ class PotentialPerspectivesController < ApplicationController
             perp.url = nil
           end
           perp.save
+          
+          # Try to add photos -  but skip any errors
+          if row.length > 10
+            row[10, row.length].each do |potential_picture|
+              begin
+                puts "Created picture:"
+                puts potential_picture
+                picture = perp.pictures.build()
+                picture.remote_image_url = potential_picture
+                picture.remote_url = potential_picture # for us, to keep track
+                picture.save
+              rescue
+                puts "Invalid url"
+              end
+            end
+          end
+          
         end
         format.html {redirect_to user_potential_perspectives_path(@potential_perspective.user)}
       else

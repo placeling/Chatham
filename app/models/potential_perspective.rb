@@ -24,6 +24,8 @@ class PotentialPerspective
   belongs_to :user
   belongs_to :place
   
+  embeds_many :pictures
+  
   before_save :set_status
   
   validates :url, :format => { :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix,
