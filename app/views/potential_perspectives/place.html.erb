@@ -17,7 +17,27 @@
     <p class="instruction"><%= t'potential_perspective.question_1' %> <span class="emphasize"><%= @potential_perspective.name %></span> <%= t'potential_perspective.question_2' %></p>
     <ul>
     <% @places.each do |place| %>
-      <li class="existing"><%= link_to place.name, potential_perspective_path(:id => @potential_perspective.id, :place => place.id, :ref => place.reference), :method => :put, :class => "existing" %></li>
+      <!-- Mix of our place objects and Google Place objects -->
+      <li class="existing">
+      <% if place.is_a? Place %>
+        <%= link_to place.name, potential_perspective_path(:id => @potential_perspective.id, :place => place.gid, :ref => place.google_ref), :method => :put, :class => "existing" %> (int)
+        <%= haversine_distance(place.loc[0], place.loc[1], @potential_perspective.loc[0], @potential_perspective.loc[1])['m'].round %>
+      <% else %>
+        <%= link_to place.name, potential_perspective_path(:id => @potential_perspective.id, :place => place.id, :ref => place.reference), :method => :put, :class => "existing" %> 
+        <%= haversine_distance(place.geometry.location.lat, place.geometry.location.lng, @potential_perspective.loc[0], @potential_perspective.loc[1])['m'].round %>
+      <% end %>
+      m</li>
+      <% if !place.is_a? Place %>
+        <% if place.types %>
+          <li class="away">
+          <% place.types.each do |type| %>
+            <% if type != "establishment" %>
+              <%= type %>,
+            <% end %> 
+          <% end %>
+          </li>
+        <% end %>
+      <% end %>
     <% end %>
     </ul>
   <% end %>

@@ -1,6 +1,7 @@
 require 'google_geocode'
 
 class PotentialPerspective
+  include ApplicationHelper
   include Mongoid::Document
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -27,6 +28,8 @@ class PotentialPerspective
   
   validates :url, :format => { :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix,
       :message => "Invalid URL" }
+  
+  RADIUS = 250
   
   def username
     if !self.user.nil?
@@ -93,7 +96,15 @@ class PotentialPerspective
       if self.place.nil?
         placer = GooglePlaces.new
         results = placer.find_nearby(self.location[0], self.location[1], 100, self.name)
+        # Can only be sure if exact match
+        # If length == 1
+        # And name is same
+        # And within 250 m 
         if results.length == 1
+          delta = haversine_distance(results[0].geometry.location.lat, results[0].geometry.location.lng, self.location[0], self.location[1])['m']
+        end
+        
+        if results.length == 1 && results[0].name == self.name && delta < RADIUS
           place = Place.find_by_google_id( results[0].id )
         
           if place.nil?

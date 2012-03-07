@@ -40,14 +40,14 @@ Chatham::Application.routes.draw do
   resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
-    resources :inprogress do
-      member do
-        get :map
-      end
-      collection do
-        get :convert
-      end
-    end
+    #resources :inprogress do
+    #  member do
+    #    get :map
+    #  end
+    #  collection do
+    #    get :convert
+    #  end
+    #end
     member do
       get :bounds
       get :recent
