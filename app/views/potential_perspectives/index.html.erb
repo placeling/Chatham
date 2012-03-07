@@ -97,7 +97,14 @@
         <td class="locations place_name"><%= entry.name %></td>
         <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
         <td class="locations action"><%= link_to "Edit", edit_potential_perspective_path(entry) %></td>
-        <td class="locations"><%= simple_format(entry.notes) %></td>
+        <td class="locations">
+          <%= simple_format(entry.notes) %>
+          <% if entry.pictures.length > 0 %>
+            <% entry.pictures.each_with_index do |photo, i| %>
+              <p><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></p>
+            <% end %>
+          <% end %>
+        </td>
         <td class="locations"><% if entry.url %><a href="<%= entry.url %>"><%= t'potential_perspective.index_url' %></a><% end %></td>
         <td class="locations remove"><%= link_to "Remove", potential_perspective_path(entry), {:confirm => "Are you sure you want to delete this?\n\nThere's no undo", :method => :delete} %></td>
       </tr>

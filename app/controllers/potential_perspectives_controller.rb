@@ -1,6 +1,8 @@
 require 'faster_csv'
 require 'google_places'
 
+GOOGLE_RADIUS = 150
+
 class PotentialPerspectivesController < ApplicationController
   before_filter :admin_required
 
@@ -15,6 +17,7 @@ class PotentialPerspectivesController < ApplicationController
       perp.user = perspec.user
       perp.place = perspec.place
       perp.url = perspec.url
+      perp.pictures = perspec.pictures
       
       perp.save
       
@@ -55,9 +58,42 @@ class PotentialPerspectivesController < ApplicationController
     elsif @potential_perspective.status == "yellow"
       gp = GooglePlaces.new
       
-      # BAD: hard-coded arbitrary radius
-      # Don't include name of place as query as Google does exact string matching. Instead shrink radius
-      @places = gp.find_nearby(@potential_perspective.location[0], @potential_perspective.location[1], 150)
+      # Return 3 sets of places:
+      # 1. Places with that exact name that are in our database
+      # 2. Places with that exact title nearby found by Google
+      #    This will frequently miss the place proper as Google does exact string matching
+      # 3. Top 20 places nearby as returned by Google.
+      #    Should reduce this by doing some from of fuzzy matching
+      
+      @places = []
+      gids = []
+      
+      # 1
+      match_places = Place.where('name'=>@potential_perspective.name)
+      match_places.each do |place|
+        @places << place
+        if !gids.include?(place.google_id)
+          gids << place.google_id
+        end
+      end
+      
+      # 2
+      places = gp.find_nearby(@potential_perspective.location[0], @potential_perspective.location[1], GOOGLE_RADIUS, @potential_perspective.name)
+      places.each do |place|
+        if !gids.include?(place.id)
+          @places << place
+          gids << place.id
+        end
+      end
+      
+      # 3
+      places = gp.find_nearby(@potential_perspective.location[0], @potential_perspective.location[1], GOOGLE_RADIUS)
+      places.each do |place|
+        if !gids.include?(place.id)
+          @places << place
+          gids << place.id
+        end
+      end
       
       @categories = CATEGORIES
       
@@ -102,12 +138,28 @@ class PotentialPerspectivesController < ApplicationController
           perp.country = row[4]
           perp.postal_code = row[5]
           perp.url = row[9]
-          puts row[9]
           perp.valid?
           if perp.errors[:url].length > 0
             perp.url = nil
           end
           perp.save
+          
+          # Try to add photos -  but skip any errors
+          if row.length > 10
+            row[10, row.length].each do |potential_picture|
+              begin
+                puts "Created picture:"
+                puts potential_picture
+                picture = perp.pictures.build()
+                picture.remote_image_url = potential_picture
+                picture.remote_url = potential_picture # for us, to keep track
+                picture.save
+              rescue
+                puts "Invalid url"
+              end
+            end
+          end
+          
         end
         format.html {redirect_to user_potential_perspectives_path(@potential_perspective.user)}
       else
@@ -118,13 +170,6 @@ class PotentialPerspectivesController < ApplicationController
 
   def update
     @potential_perspective = PotentialPerspective.find(params[:id])
-    
-    params.each do |key, value|
-      puts key
-      puts value
-    end
-    
-    #return
     
     # Fixing address
     if params.include?("location")
@@ -152,10 +197,10 @@ class PotentialPerspectivesController < ApplicationController
     end
     
     # Fixing place - user picked existing
-    if params.include?("id") and params.include?("ref")
-      place = Place.find_by_google_id( params[:id] )
+    if params.include?("place") and params.include?("ref")
+      place = Place.find_by_google_id( params[:place] )
       
-      if @place.nil?
+      if place.nil?
         gp = GooglePlaces.new
         place = Place.new_from_google_place( gp.get_place( params[:ref] ) )
         place.user = current_user
@@ -189,7 +234,6 @@ class PotentialPerspectivesController < ApplicationController
         end
         
         if !params[:potential_perspective].has_key?(:venue_types) or params[:potential_perspective][:venue_types].length == 0
-          puts "I'm adding a venue-type error"
           @potential_perspective.errors.add_to_base "Please pick at least one venue type"
         elsif params[:potential_perspective][:name].length > 0
           @place = Place.new
@@ -202,6 +246,7 @@ class PotentialPerspectivesController < ApplicationController
             @place.user = current_user
             @place.client_application = current_client_application unless current_client_application.nil?
             @place.save
+            @potential_perspective.place = @place
           end
         end
       #Fixing place - change notes
