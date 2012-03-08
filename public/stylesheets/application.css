@@ -763,9 +763,12 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   width: 600px;
 }
 
+.mini_memo .tag {
+  color: #DAABA2;
+}
+
 .tag {
-  color: #E08574;
-  font-weight: 500;
+  color: #BE6958;
 }
 
 .url_wrapper {
