@@ -82,12 +82,10 @@ class PlacesController < ApplicationController
     lng = params[:lng].to_f
 
     if ( params[:long] )
-      lng = params[:long]
+      lng = params[:long].to_f
     end
     
-    if params[:lat] && params[:long] && params[:query] && params[:query].length > 0
-      lat = params[:lat].to_f
-      long = params[:long].to_f
+    if lat && lng && params[:query] && params[:query].length > 0
       radius = 50.0
       gp = GooglePlaces.new
       
@@ -99,7 +97,7 @@ class PlacesController < ApplicationController
       @places = []
       
       # Google Places
-      @raw_places = gp.find_nearby(lat, long, radius, query)
+      @raw_places = gp.find_nearby(lat, lng, radius, query)
       if @raw_places.length > 0
         @raw_places.each do |place|
           @place = Place.find_by_google_id( place.id )
@@ -134,7 +132,7 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.json { render :json => {:perspectives => @places.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
+      format.json { render :json => {:places => @places.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
 
