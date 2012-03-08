@@ -1,5 +1,7 @@
 require 'json'
 
+NEARBY_RADIUS = 0.0035
+
 class UsersController < ApplicationController
 
   before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :edit, :update, :account]
@@ -133,12 +135,36 @@ class UsersController < ApplicationController
     
     #for map view on web, get current page state
     if params[:api_call].nil?
+      # Use following logic to determine what lat/lng to show to viewer:
+      # 1. If already have a lat/lng for @user, go there
+      # 2. Else, if have viewer's lat/lng and @user has places near there, return that
+      # 3. Else, return first place on user's map
+      # 4. Else, return default lat/lng
       @current_location = []
       if !cookies[:page_state].nil?
         page_state = JSON.parse(cookies[:page_state])
         if page_state.has_key?(@user.username)
           @current_location << page_state[@user.username]['lat']
           @current_location << page_state[@user.username]['lng']
+        end
+      end
+      
+      if @current_location.length == 0 && !cookies[:location].nil? && !@user.perspectives.nil? && @user.perspectives.length > 0
+        location = JSON.parse(cookies[:location])
+        if location.has_key?("browser") or location.has_key?("remote_ip")
+          if location.has_key?("browser")
+            loc = [location["browser"]["lat"], location["browser"]["lng"]]
+          else
+            loc = [location["remote_ip"]["lat"], location["remote_ip"]["lng"]]
+          end
+          
+          places = Place.where(:loc.within => {"$center" => [loc,NEARBY_RADIUS]})
+          @user.perspectives.each do |perp|
+            if places.include?(perp.place)
+              @current_location = loc
+              break
+            end
+          end
         end
       end
       

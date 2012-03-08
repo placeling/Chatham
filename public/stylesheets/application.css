@@ -382,6 +382,16 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   text-align: center;
 }
 
+a.home, a.home:link, a.home:visited, a.home:focus {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.home:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
 a.active, a.active:link, a.active:hover, a.active:visited {
   color: #b7614b;
 }
@@ -753,9 +763,12 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   width: 600px;
 }
 
+.mini_memo .tag {
+  color: #DAABA2;
+}
+
 .tag {
-  color: #E08574;
-  font-weight: 500;
+  color: #BE6958;
 }
 
 .url_wrapper {

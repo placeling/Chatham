@@ -15,6 +15,10 @@
   <script type="text/javascript">
     var DEFAULT_ZOOM = 15;
     
+    <% if @user.location && @user.location.length == 2 %>
+      var user_lat = <%= @user.location[0] %>
+      var user_lng = <%= @user.location[1] %>
+    <% end %>
     function compare(a,b) {
       if (a.lower_name < b.lower_name)
          return -1;
@@ -63,16 +67,13 @@
       }
       
       <% if @current_location.length > 0 %>
-        var test = "current_location";
         var lat = <%= @current_location[0] %>;
         var lng = <%= @current_location[1] %>;
       <% else %>
         <% if @user.location && @user.location.length == 2 %>
-          var test = "test";
           var lat = <%= (@user.location[0] * 100).round().to_f/100 %>;
           var lng = <%= (@user.location[1] * 100).round().to_f/100 %>;
         <% else %>
-          var test = "default";
           var lat = <%= @default_location[0] %>;
           var lng = <%= @default_location[1] %>;
         <% end %>
@@ -773,7 +774,15 @@
         google.maps.event.trigger(map, 'idle');
         return false;
       });
-    
+      
+      $('.home').click(function(e){
+        e.preventDefault();
+        var center = new google.maps.LatLng(user_lat, user_lng);
+        map.setCenter(center);
+        map.setZoom(DEFAULT_ZOOM);
+        return false;
+      });
+      
       var coords = JSON.parse($.cookie('location'));
       if ((typeof coords['remote_ip'] !== "undefined") || (typeof coords['browser'] !== "undefined") || navigator.geolocation) {
         $('#map_holder').append('<div id="current_location"><a href="/" class="pan"><img class="pan_img" src="/images/pan.png"></a></div>');

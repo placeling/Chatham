@@ -73,7 +73,7 @@
   
   <div id="summary">
     <p class="username_holder">
-      <span class="username"><%= user.username %></span>
+      <% if user.location && user.location.length == 2 %><a href="" class="home"><% end %><span class="username"><%= user.username %></span><% if user.location && user.location.length == 2 %></a><% end %>
       <span id="follow_action">
         <% if current_user != user %>
           <% if current_user && current_user.following.include?(user) %>
@@ -85,7 +85,7 @@
       </span>
     </p>
     <% if user.city %>
-    <p class="city"><%= user.city %></p>
+      <% if user.location && user.location.length == 2 %><a href="" class="home"><% end %><p class="city"><%= user.city %></p><% if user.location && user.location.length == 2 %></a><% end %>
     <% end %>
     <p class="description"><%= user.description %></p>
   </div>
