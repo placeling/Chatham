@@ -7,6 +7,7 @@ Chatham::Application.routes.draw do
   get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
   get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
   get "/about", :to => 'admin#about_us', :as => :about_us
+  get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
   get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
