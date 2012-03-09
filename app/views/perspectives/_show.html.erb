@@ -1,9 +1,6 @@
 <div class="interact star">
   <% if current_user != perspective.user %>
     <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
-      <% if source == "place_page" %>
-        <div class="placemark_it">
-      <% end %>
         <% if current_user && perspective.su.include?(current_user.id) %>
           <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link">
             <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
@@ -13,9 +10,6 @@
             <%= image_tag "unstarred.png", :alt=>"Star", :class=>"star_image" %>
           </a>
         <% end %>
-      <% if source == "place_page" %>
-        </div>
-      <% end %>
     <% end %>
   <% else %>
     <a href="<%= edit_perspective_path(perspective) %>"><img src="/images/writer.png"></a>

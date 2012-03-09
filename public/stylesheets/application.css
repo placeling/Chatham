@@ -719,7 +719,7 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .star_image {
-  height: 96px;
+  height: 50px;
 }
 
 .detail {
@@ -1235,7 +1235,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
 
 .mini_star {
   float: left;
-  margin-left: 58px ;
+  margin-left: 100px ;
 }
 
 #full_details {
