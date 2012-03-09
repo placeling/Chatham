@@ -36,7 +36,14 @@ class ApplicationController < ActionController::Base
   
   def api_check
     if params[:api_call]
-      oauth_app_required
+      if params[:key] && request.get?
+        if ClientApplication.find_by_key( params[:key] ).nil?
+          oauth_app_required
+        end
+      else
+        oauth_app_required
+      end
+
     end
   end
   
