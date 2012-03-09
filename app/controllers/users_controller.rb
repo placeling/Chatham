@@ -358,8 +358,15 @@ class UsersController < ApplicationController
         if params[:user][:email]
           @user.email = params[:user][:email]
         end
-        if params[:user][:url]
+        if params[:user][:city] && params[:user][:city].length > 0
+          @user.city = params[:user][:city]
+        else
+          @user.city = nil
+        end
+        if params[:user][:url] && params[:user][:url].length > 0
           @user.url = params[:user][:url]
+        else
+          @user.url = nil
         end
         if params[:user][:new_follower_notify]
           @user.new_follower_notify = params[:user][:new_follower_notify]

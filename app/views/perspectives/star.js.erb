@@ -1,5 +1,5 @@
 $('#perspective_<%= @perspective.id %> .interact').fadeOut(100);
-$("#perspective_<%= @perspective.id %> .interact").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar" %></a>');
+$("#perspective_<%= @perspective.id %> .interact").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar", :class=>"button_image" %></a>');
 $('#perspective_<%= @perspective.id %> .interact').fadeIn(100);
 $('.star_link').unbind('hover');
 $('.star_link').hover(

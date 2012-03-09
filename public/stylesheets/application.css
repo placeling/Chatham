@@ -718,10 +718,6 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   float: left;
 }
 
-.star_image {
-  height: 96px;
-}
-
 .detail {
   padding-left: 268px;
 }
@@ -1220,11 +1216,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
   padding-top: 76px;
 }
 
-.edit_button {
-  margin-left: 30px;
-}
-
-.edit_button_image {
+.button_image {
   border-radius: 25px;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
@@ -1235,7 +1227,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
 
 .mini_star {
   float: left;
-  margin-left: 58px ;
+  margin-left: 100px ;
 }
 
 #full_details {
