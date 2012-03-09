@@ -99,14 +99,15 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find( params[:id] )
     not_found unless !@perspective.nil?
     @place = @perspective.place
-
+    
     @referring_user = @perspective.user
-
+    
     respond_to do |format|
       format.html
       format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user =>@referring_user}) }
     end
   end
+  
 
   def all
     if BSON::ObjectId.legal?( params['place_id'] )
@@ -207,6 +208,11 @@ class PerspectivesController < ApplicationController
       
       if @perspective.user == current_user
         @perspective.update_attributes(params[:perspective])
+        
+        if @perspective.url == ""
+          @perspective.url = nil
+          @perspective.save
+        end
         
         if params[:perspective].has_key?(:pictures_attributes)
           params[:perspective][:pictures_attributes].each do |picture|

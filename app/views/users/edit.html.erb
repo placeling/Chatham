@@ -14,9 +14,13 @@
     </div>
     
     <div class="account_info_holder">
-      <div class="account_label"><%= t('account.description') %></div><div class="account_value"><%= f.text_area :description %></div>
+      <div class="account_label"><%= t('account.location') %></div><div class="account_value"><%= f.text_field :city %></div>
     </div>
     
+    <div class="account_info_holder">
+      <div class="account_label"><%= t('account.description') %></div><div class="account_value"><%= f.text_area :description %></div>
+    </div>
+        
     <div class="account_info_holder">
       <div class="account_label"><%= t('account.url') %></div><div class="account_value"><%= f.url_field :url %> <div class="url_hint"><%= t('perspective.url_hint') %></div></div>
     </div>

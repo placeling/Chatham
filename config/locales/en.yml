@@ -116,7 +116,7 @@ en:
     profile_pic: "picture"
     edit: "edit"
     no_description: "You haven't yet told us about yourself"
-    no_city: "Use the iPhone app to add your location to your account"
+    no_city: "You haven't told us your city"
     no_url: "You haven't linked your account to a web page"
     cancel: "Cancel"
     save_changes: "Save"
