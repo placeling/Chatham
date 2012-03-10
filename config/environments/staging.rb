@@ -34,7 +34,7 @@ Chatham::Application.configure do
   config.serve_static_assets = false
 
   #this has to be the amazon url, or will fail SSL
-  config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
+  #config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
