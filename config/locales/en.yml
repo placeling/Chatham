@@ -219,7 +219,7 @@ en:
     main_app_url: "Main Application URL"
     callback_url: "Callback URL"
     support_url: "Support URL"
-    authorize_access: "authorize access"
+    authorize_access: "Authorize Access"
     reject_access: "reject access"
     auth_access_account: "Authorize access to your account"
     would_you_authorize: "Would you like to authorize %{app_name} to access your account?"
@@ -249,7 +249,7 @@ en:
     access_to: "Application will be authorized to:"
     access:
       edit_placemarks: "Modify your placemarks"
-      followers: "See and modify users you follow"
+      followers: "Modify whom you follow"
 
 
   place:
