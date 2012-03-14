@@ -11,9 +11,7 @@ class GooglePlacesAutocomplete
     @api_key = CHATHAM_CONFIG['google_api']
   end
 
-  def suggest(x, y, radius, input, sensor = true, type_array = "establishment", language ="en")
-    #radius is in meters
-    
+  def suggest(x, y, input, sensor = true, type_array = "establishment", language ="en")
     location = [x,y].join(',')
     
     options = {
@@ -21,7 +19,6 @@ class GooglePlacesAutocomplete
       :sensor => sensor,
       :types => type_array,
       :input => input,
-      :radius => radius
     }
     
     results = mashup( self.class.get("/json", :query => options.merge(self.default_options)) ).predictions
