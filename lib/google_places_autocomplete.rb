@@ -10,18 +10,16 @@ class GooglePlacesAutocomplete
   def initialize()
     @api_key = CHATHAM_CONFIG['google_api']
   end
-
-  def suggest(x, y, radius, input, sensor = true, type_array = "establishment", language ="en")
-    #radius is in meters
-    
+  
+  
+  # NOTE: need to keep following synced with what we do in the mobile client
+  def suggest(x, y, input, sensor = true, language ="en")
     location = [x,y].join(',')
     
     options = {
       :location => location,
       :sensor => sensor,
-      :types => type_array,
       :input => input,
-      :radius => radius
     }
     
     results = mashup( self.class.get("/json", :query => options.merge(self.default_options)) ).predictions
@@ -55,12 +53,7 @@ class GooglePlacesAutocomplete
           end
         end
         
-        puts "HASH STATUS"
-        puts hash.status
-        puts hash
-        
         if hash.status == "OK" or hash.status == "ZERO_RESULTS"
-          puts "Going to return hash"
           return hash
         elsif hash.status == "REQUEST_DENIED"
           raise "Bad Google Places Request - request denied"

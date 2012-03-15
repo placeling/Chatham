@@ -55,7 +55,7 @@ If user has added text from place page, source will still be "place_page_empty" 
     <div class="lightboxGallery perspective_gallery">
     <% perspective.pictures.each_with_index do |photo, i| %>
       <% if !photo.deleted %>
-        <div class="photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "styled_pic perspective_photo" %></a></div>
+        <div class="photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "perspective_photo" %></a></div>
       <% end %>
     <% end %>
     </div>

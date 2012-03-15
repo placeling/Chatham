@@ -790,7 +790,13 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .perspective_photo {
-  height: 107px;
+  border: 9px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  height: 97px;
+  max-width: 500px;
 }
 
 .image_clear {
