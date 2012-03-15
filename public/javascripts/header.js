@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var copy = "Find places to explore and people to follow"
+  var copy = "Find places to explore and people to guide you"
   $("#term").val(copy);
   $("#term").css({'color':'grey'});
   

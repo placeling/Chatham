@@ -90,6 +90,7 @@
     <p class="description"><%= user.description %></p>
   </div>
 </div>
+<% if request.env['PATH_INFO'] != followers_user_path(user) && request.env['PATH_INFO'] != following_user_path(user) %>
 <div id="type_toggle">
   <% if request.env['PATH_INFO'] == recent_user_path(user) %>
     <ul class="location_types">
@@ -111,3 +112,4 @@
   </ul>
   <% end %>
 </div>
+<% end %>
