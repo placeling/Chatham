@@ -26,21 +26,24 @@ class SearchController < ApplicationController
 
       @input = params[:input]
 
-      raw_places = gpa.suggest(lat, lng, 10000, @input)
+      raw_places = gpa.suggest(lat, lng, @input)
 
       if !raw_places.nil?
         raw_places.each do |place|
           interstitial = {}
-          interstitial['name'] = place.terms[0].value
-          interstitial['url'] = reference_places_path + "?ref=" + place.reference
-          location = []
-          place.terms.each_with_index do |term, index|
-            if index != 0
-              location << term.value
+          # Need to remove "political" and "route" types to stay in sync with mobile client
+          if !place.types.include?("political") and !place.types.include?("route")
+            interstitial['name'] = place.terms[0].value
+            interstitial['url'] = reference_places_path + "?ref=" + place.reference
+            location = []
+            place.terms.each_with_index do |term, index|
+              if index != 0
+                location << term.value
+              end
             end
+            interstitial['location'] = location.join(", ")
+            @results << interstitial
           end
-          interstitial['location'] = location.join(", ")
-          @results << interstitial
         end
       end
 
