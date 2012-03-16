@@ -331,7 +331,7 @@ class Place
     attributes[:place_tags] = attributes.delete('ptg')
     attributes[:google_id] = attributes.delete('gid')
     attributes[:perspective_count] = attributes.delete('pc')
-    attributes[:map_url] = "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=color:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+    attributes[:map_url] = "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
 
     if options[:current_user]
       current_user = options[:current_user]
@@ -359,12 +359,11 @@ class Place
 
       @referring_perspectives = [] #perspectives to be returned in detail view
 
-      perspective = referring_user.perspectives.where( :plid => self.id ).first
+      perspective = referring_user.perspective_for_place( self )
       @referring_perspectives << perspective unless perspective.nil?
 
-      user_perspective = referring_user.perspective_for_place( self )
       @starred = []
-      @starred = user_perspective.favourite_perspectives unless user_perspective.nil?
+      @starred = perspective.favourite_perspectives unless perspective.nil?
 
       # @starred = self.perspectives.where(:_id.in => referring_user.favourite_perspectives).excludes(:uid => referring_user.id)
       @referring_perspectives.concat( @starred )
