@@ -17,6 +17,7 @@
   <![endif]-->
 </head>
 <body <%= yield :body %>>
+  <!--[if lte IE 7]><script src="javascripts/ie6/warning.js"></script><script>window.onload=function(){e("javascripts/ie6/")}</script><![endif]-->
   <div id="container">
     <div id="wrapper">
       <%= render :partial => 'layouts/header' %>
