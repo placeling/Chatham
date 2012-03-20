@@ -858,7 +858,7 @@
       $('#spinner').hide();
       
       $(window).resize(function() {
-        $('#main_map').width($(window).width);
+        $('#main_map').width($(window).width());
         $('#main_map').height($(window).height() - $('#header').outerHeight(true) - $('#footerbottom').height() - $('#userdetails').outerHeight(true));
 
         $('#location_drawer').css('left', $(window).width() - $('#location_drawer').outerWidth(true));
