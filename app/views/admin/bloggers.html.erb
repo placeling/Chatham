@@ -1,11 +1,98 @@
-<div id="content_holder">
-  <div id="people">
+<% content_for :head do %>
+  <title>Placeling for Bloggers: Wordpress Plugin</title>
+  <meta name="description" content="The details behind the Placeling Wordpress plugin for bloggers. Turn your blog into an interactive, map-based, iPhone-enabled guide" />
+  <meta property="og:title" content="Placeling for Bloggers: Wordpress Plugin" />
+<% end %>
 
-  </div>
-  <div id="story">
-    <div class="title">Bloggers</div>
-    <div class="story_text">
-      <p>This page is for support of bloggers and the wordpress plugin</p>
-    </div>
+
+<div id="content_holder">
+  <div class="story_text"><a href="#faq">Skip to FAQ</a></div>
+  <div class="title">Turn Your Blog Into an iPhone-Enabled City Guide</div>
+  <div class="story_text">
+    <p>Do you write about places?</p>
+    <p>Food? Fashion? Family-friendly? Travel? Heck, anything.</p>
+    <p>At least once you're probably wished that you could just give your blog to someone as a map and let them see nearby places you've written about.</p>
+    <p>Now you can, with <a href="http://wordpress.org/extend/plugins/placeling/">Placeling's Wordpress plugin</a>.</p>
+    <p>Your blog posts can be automatically pushed to Placeling's iPhone app and web-based map - where they'll link back to your blog.</p>
+    <p>
+      <img src="/images/admin/bloggers/blog_tool_overview.png" alt="Blog tool overview" class="blog_image">
+    </p>
+    <p class="heading"><a name="faq">FAQ</a></p>
+    <p><a href="#requirements">What do I need to use the plugin?</a></p>
+    <p><a href="#install">How do I install the plugin?</a></p>
+    <p><a href="#tag">How I do I tag my post with a location?</a></p>
+    <p><a href="#summary">Why do I need a summary?</a></p>
+    <p><a href="#footer">What is the footer for?</a></p>
+    <p class="heading"><a name="requirements">What do I need to use the plugin?</a></p>
+    <p>You'll need:
+      <ul class="specific">
+        <li>A <a href="http://wordpress.com/">Wordpress</a>-based blog that you can install plugins on</li>
+        <li>A <%= link_to "Placeling account", new_user_registration_path %></li>
+      </ul>
+    </p>
+    <p class="heading"><a name="install">How do I install the plugin?</a></p>
+    <p>
+      <ul class="specific">
+        <li>Log into your blog</li>
+        <li>Go to the "Plugins" tab</li>
+        <li>Select the "Add New" option</li>
+        <li>Search for the term "Placeling"</li>
+        <li>Click the link to install and then activate the Placeling plugin</li>
+      </ul>
+    </p> 
+    <p class="heading"><a name="tag">How I do I tag my post with a location?</a></p>
+    <p>After you install the Placeling plugin, you'll notice two new things when you go to write a post:</p>
+    <p>
+      <ul class="specific">
+        <li>A little place marker next to the upload photo button</li>
+        <li>A new box called "Placeling" below the main editor</li>
+      </ul>
+    </p>
+    <p>
+      <img src="/images/admin/bloggers/untagged.png" alt="Untagged post" class="blog_image">
+    </p>
+    <p>Click either.</p>
+    <p>A pop-up window will appear.</p>
+    <p>The first time you do this, you'll be asked to log in to Placeling (remember - you must have an account). If you've any issues doing this, <a href="mailto:support@placeling.com">drop us a line</a>.</p>
+    <p>When you're logged in, the pop-up will contain a search box plus any recent locations you've placemarked via Placeling.</p>
+    <p>
+      <img src="/images/admin/bloggers/recent_places.png" alt="Untagged post" class="blog_image">
+    </p>
+    <p>If your blog post is about a recent location, simply click the one you want. Otherwise, type the name of the location your blog post is about. As you type, you'll see the list of locations update.</p>
+    <p>Tips:
+      <ul class="specific">
+        <li>If you're typing a name like "Starbucks" with multiple locations, include a city or street name e.g., "Starbucks Robson"</li>
+        <li>If you don't see any locations that match your term, make sure your spelling is correct</li>
+      </ul>
+    </p>
+    <p>Once you see your location, click it and you'll see a footer appear, with a map. If this is the right place, click "Save".</p>
+    <p>
+      <img src="/images/admin/bloggers/footer_preview.png" alt="Untagged post" class="blog_image">
+    </p>
+    <p>The name of the location you tagged will appear above the main editor. The Placeling plugin box contains a map of the location plus its name and address.</p>
+    <p>Write your blog post and add a summary, then publish it. If you try to publish without adding a summary, an error will appear.</p>
+    <p>
+      <img src="/images/admin/bloggers/add_summary.png" alt="Untagged post" class="blog_image">
+    </p>
+    <p>When you publish the following will happen:</p>
+    <p>
+      <ul class="specific">
+        <li>The location you selected will be added to your Placeling map, if it's not already there</li>
+        <li>The summary, a link to this blog post and any photos in the post (if you selected the option) will be used to describe this location on your Placeling map</li>
+      </ul>
+    </p>
+    <p>Since it's in Placeling it's now available within the <a href="/app">Placeling iPhone app</a>.</p>
+    <p class="heading"><a name="summary">Why do I need a summary?</a></p>
+    <p>In order to link your blog post to Placeling, we require you to write a brief summary. This is so that when someone looks at a location you've added on Placeling, they can see why you think it's interesting.</p>
+    <p>A good summary is a sentence or two that outlines what you liked about a location and encourages the user to click through to your blog for more.</p>
+    <p class="heading"><a name="footer">What is the footer for?</a></p>
+    <p>The Placeling plugin puts a little footer at the bottom of each blog post where you tag a location.</p>
+    <p>The footer contains a link to your map on Placeling, so that your readers can explore all the locations you've placemarked. It also contains a link where readers can get more info about each location.</p>
+    <p>
+      <img src="/images/admin/bloggers/footer.png" alt="Untagged post" class="blog_image">      
+    </p>
+    <p>If you ever uninstall the Placeling plugin, the footer will be removed from all posts.</p>
+    <p><a name="more">Unanswered questions? Need more help?</a></p>
+    <p class="last"><a href="mailto:support@placeling.com">Drop us a line</a>. We try to answer every question within one business day.</p>
   </div>
 </div>

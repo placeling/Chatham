@@ -8,6 +8,10 @@
 <% end %>
 
 <div id="promo_holder">
+  <div id="blogger">
+    <p class="tease"><%= t('admin.blogger')%>?</p>
+    <p class="promo"><%= t('admin.tool')%>. <%= link_to(t('admin.learn'), bloggers_path) %></p>
+  </div>
   <div id="promo_shot">
     <%= image_tag "iphone.png", :alt=>"iPhone"%>
   </div>
