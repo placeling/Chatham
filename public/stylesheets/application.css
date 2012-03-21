@@ -1598,7 +1598,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #blogger {
   position: absolute;
-  left: 50px;
+  left: 40px;
   top: 80px;
   padding: 5px 10px;
   background: #F9F7F5;
@@ -1606,7 +1606,7 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  width: 280px;
+  width: 320px;
   height: 100px;
   text-align: center;
 }
@@ -1684,4 +1684,10 @@ li.specific {
 
 .last {
   margin-bottom: 20px;
+}
+
+.promo {
+  font-size: 18px;
+  margin-top: 10px;
+  font-family: Georgia,"Times New Roman",serif;
 }
