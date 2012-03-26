@@ -1,10 +1,10 @@
 <% content_for :head do %>
   <title><%= t('user.user_head', {:user => @user.username}) %></title>
-  <meta name="description" content="<%= t('user.description', {:user => @user.username, :desc => @user.description}) %>">
-  <meta property="og:title" content="<%= t('user.user_head', {:user => @user.username}) %>"/>
-  <meta property="og:url" content="https://www.placeling.com<%= user_path(@user) %>"/>
-  <meta property="og:type" content="person">
-  <meta property="og:image" content="<%=  @user.thumb_url %>"/>
+  <meta name="description" content="<%= t('user.description', {:user => @user.username, :desc => @user.description}) %>" />
+  <meta property="og:title" content="<%= t('user.user_head', {:user => @user.username}) %>" />
+  <meta property="og:url" content="https://www.placeling.com<%= user_path(@user) %>" />
+  <meta property="og:type" content="person" />
+  <meta property="og:image" content="<%=  @user.thumb_url %>" />
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <% end %>
 
@@ -219,7 +219,7 @@
             if (typeof perspective.edit === "undefined") {
               mod_action += perspective.flag;
             } else {
-              mod_action += perspective.delete;
+              mod_action += perspective["delete"];
             }
             
             mod_action += '</div>';
@@ -728,8 +728,6 @@
           $('#filters').slideDown('fast');
         }
         
-        //updateFilters();
-        
         google.maps.event.trigger(map, 'idle');
         
         return false;
@@ -860,7 +858,7 @@
       $('#spinner').hide();
       
       $(window).resize(function() {
-        $('#main_map').width($(window).width);
+        $('#main_map').width($(window).width());
         $('#main_map').height($(window).height() - $('#header').outerHeight(true) - $('#footerbottom').height() - $('#userdetails').outerHeight(true));
 
         $('#location_drawer').css('left', $(window).width() - $('#location_drawer').outerWidth(true));

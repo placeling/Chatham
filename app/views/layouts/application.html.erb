@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <%= yield :head %>
   <%= favicon_link_tag %>
   <%= javascript_include_tag :defaults %>
@@ -17,6 +17,7 @@
   <![endif]-->
 </head>
 <body <%= yield :body %>>
+  <!--[if lte IE 7]><script src="javascripts/ie6/warning.js"></script><script>window.onload=function(){e("javascripts/ie6/")}</script><![endif]-->
   <div id="container">
     <div id="wrapper">
       <%= render :partial => 'layouts/header' %>

@@ -10,6 +10,7 @@ en:
   home:
     admin_links: "Admin Links"
     applications_list: "Oauth Applications"
+    bloggers: "Tools for Bloggers"
     users_list: "Users List"
     product_name: "Placeling"
     copyright: "Placeling (Internet Services) Inc."
@@ -18,7 +19,7 @@ en:
     contact_us: "Contact"
     about_us: "About Us"
     marketing: "Placeling :: Cities are Stories"
-    description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web."
+    description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web. If you're a Wordpress blogger, use Placeling to turn your blog into an iPhone-enabled city guide"
     blog: "Blog"
     investors: "Investors"
 
@@ -69,6 +70,9 @@ en:
     marketing_text_1: "Bookmark your world without broadcasting your location"
     marketing_text_2: "Effortlessly share the places you and your friends love"
     marketing_text_3: "Explore with the experts"
+    learn: "Learn more"
+    blogger: "Blogger"
+    tool: "Turn your Wordpress blog into an iPhone-enabled city guide"
   
   applications:
     all_applications: "All Applications"
