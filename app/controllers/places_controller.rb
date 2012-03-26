@@ -86,7 +86,7 @@ class PlacesController < ApplicationController
     end
     
     if lat && lng && params[:query] && params[:query].length > 0
-      radius = 50.0
+      radius = 500
       gp = GooglePlaces.new
       
       query = params[:query]

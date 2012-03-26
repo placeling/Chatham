@@ -152,9 +152,11 @@ Chatham::Application.routes.draw do
 
     resources :places, :except =>[:index] do
       collection do
-        get :suggested
         get :nearby
         get :random
+        get :search
+        get :suggested
+        get :reference
       end
       resources :users, :only =>[:index]
       resources :perspectives, :except =>[:show] do
