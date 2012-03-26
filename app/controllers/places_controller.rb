@@ -3,7 +3,7 @@ require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
   before_filter :admin_required, :only => [:new]
-  before_filter :login_required, :only => [:create, :new, :update, :destroy, :search]
+  before_filter :login_required, :only => [:create, :new, :update, :destroy]
   
   def reference
     if params[:ref].nil?
@@ -106,7 +106,7 @@ class PlacesController < ApplicationController
             #not here, and we need to fetch it
             gp = GooglePlaces.new
             @place = Place.new_from_google_place( gp.get_place( place.reference ) )
-            @place.user = current_user
+            @place.user = current_user unless current_user.nil?
             @place.client_application = current_client_application unless current_client_application.nil?
             @place.save!
           end
