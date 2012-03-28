@@ -18,7 +18,7 @@ class GoogleReverseGeocode
     found_address = nil
     if result.status == "OK"
       result.results.each do |entry|
-        if entry.types.include? "street_address":
+        if entry.types.include? "street_address"
           found_address = entry
           break
         end

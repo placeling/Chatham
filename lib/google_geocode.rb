@@ -20,7 +20,7 @@ class GoogleGeocode
     found_geocode = nil
     if result.status == "OK"
       result.results.each do |entry|
-        if entry.geometry.include? "location":
+        if entry.geometry.include? "location"
           found_geocode = entry
           break
         end
