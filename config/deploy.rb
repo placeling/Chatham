@@ -52,11 +52,14 @@ namespace :deploy do
     run "touch #{current_release}/tmp/restart.txt"
   end
 
-  desc "Hot-reload God configuration for the Resque worker"
-  task :reload_god_config do
-    sudo "god stop resque"
-    sudo "god load #{File.join(deploy_to, 'current', 'config', 'resque-' + rails_env + '.god')}"
-    sudo "god start resque"
+  desc "Restart Resque Workers"
+  task :restart_workers, :roles => :app do
+    run_remote_rake "resque:restart_workers"
+  end
+
+  desc "Restart Resque scheduler"
+  task :restart_scheduler, :roles => :db do
+    run_remote_rake "resque:restart_scheduler"
   end
 
 
