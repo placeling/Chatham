@@ -21,7 +21,6 @@ gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 
 gem "fb_graph"
 
-gem "system_timer"
 gem "httparty"
 gem "hashie"
 gem 'uuidtools'
@@ -57,7 +56,7 @@ gem "redis", "~> 2.2"
 #gem 'redis-store'
 gem "vanity", :git => "git://github.com/assaf/vanity.git", :tag => "v1.6.1"
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', :git => "https://github.com/bvandenbos/resque-scheduler.git"
+#gem 'resque-scheduler', :git => "https://github.com/bvandenbos/resque-scheduler.git"
 
 group :test, :development do
 
@@ -66,7 +65,8 @@ end
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem 'god'
+gem "capistrano-ext"
+gem "rvm-capistrano", :require => false
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'

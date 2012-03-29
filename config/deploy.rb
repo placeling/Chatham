@@ -1,7 +1,13 @@
 require 'bundler/capistrano'
 
-
 set :application, "chatham"
+
+set :rvm_ruby_string, "ruby-1.9.3-p125"
+require "rvm/capistrano"                               # Load RVM's capistrano plugin.
+
+before 'deploy:setup', 'rvm:install_rvm'
+before 'deploy:setup', 'rvm:install_ruby'
+
 
 task :production do
   set :gateway, 'beagle.placeling.com:11235'

@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/imackinn/oauth-plugin.git
-  revision: ecb7c2d500a7e5efcabc66b586cc28b48260a529
+  revision: d967f1dced19f5854664d7e15413a4f828768fc5
   specs:
     oauth-plugin (0.4.0.rc2)
       multi_json
@@ -35,15 +35,6 @@ GIT
   specs:
     twitter-text (1.4.15)
       activesupport
-
-GIT
-  remote: https://github.com/bvandenbos/resque-scheduler.git
-  revision: cbad71432341e0b1c32b280970b3cfd327f66d11
-  specs:
-    resque-scheduler (2.0.0.f)
-      redis (>= 2.0.1)
-      resque (>= 1.19.0)
-      rufus-scheduler
 
 GEM
   remote: http://rubygems.org/
@@ -77,7 +68,7 @@ GEM
       activemodel (= 3.0.10)
       activesupport (= 3.0.10)
     activesupport (3.0.10)
-    addressable (2.2.6)
+    addressable (2.2.7)
     arel (2.0.10)
     attr_required (0.0.3)
     aws-ses (0.4.4)
@@ -95,6 +86,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    capistrano-ext (1.2.1)
+      capistrano (>= 1.0.0)
     carrierwave (0.5.6)
       activesupport (~> 3.0)
     childprocess (0.2.0)
@@ -115,10 +108,10 @@ GEM
     factory_girl_rails (1.1.rc1)
       factory_girl (~> 2.0.0.rc)
       railties (>= 3.0.0)
-    faraday (0.7.4)
-      addressable (~> 2.2.6)
-      multipart-post (~> 1.1.0)
-      rack (>= 1.1.0, < 2)
+    faraday (0.7.6)
+      addressable (~> 2.2)
+      multipart-post (~> 1.1)
+      rack (~> 1.1)
     fastercsv (1.5.4)
     fb_graph (2.2.3)
       httpclient (>= 2.2.0.2)
@@ -136,7 +129,6 @@ GEM
     formatador (0.2.1)
     geocoder (1.0.2)
     geoip (1.1.2)
-    god (0.11.0)
     hashie (0.4.0)
     highline (1.6.1)
     hoptoad_notifier (2.4.2)
@@ -175,9 +167,9 @@ GEM
       bundler (>= 1.0.0)
       rails (>= 3.0.0)
       railties (>= 3.0.0)
-    multi_json (1.0.3)
+    multi_json (1.0.4)
     multi_xml (0.4.1)
-    multipart-post (1.1.3)
+    multipart-post (1.1.5)
     nested_form (0.1.1)
     net-ldap (0.2.2)
     net-scp (1.0.4)
@@ -217,9 +209,9 @@ GEM
       rack-openid (~> 1.3.1)
       ruby-openid-apps-discovery (~> 1.2.0)
     oauth (0.4.5)
-    oauth2 (0.5.0)
-      faraday (>= 0.6.1, < 0.8)
-      multi_json (~> 1.0.0)
+    oauth2 (0.5.2)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
     omniauth (0.3.2)
       oa-basic (= 0.3.2)
       oa-core (= 0.3.2)
@@ -230,7 +222,7 @@ GEM
     orm_adapter (0.0.5)
     polyglot (0.3.3)
     pyu-ruby-sasl (0.0.3.3)
-    rack (1.2.4)
+    rack (1.2.5)
     rack-mount (0.6.14)
       rack (>= 1.0.0)
     rack-oauth2 (0.11.0)
@@ -291,8 +283,8 @@ GEM
       ruby-openid (>= 2.1.7)
     rubyntlm (0.1.1)
     rubyzip (0.9.4)
-    rufus-scheduler (2.0.16)
-      tzinfo (>= 0.3.23)
+    rvm-capistrano (1.0.1)
+      capistrano (>= 2.0.0)
     selenium-webdriver (2.0.1)
       childprocess (>= 0.1.9)
       ffi (>= 1.0.7)
@@ -302,7 +294,6 @@ GEM
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
     subexec (0.0.4)
-    system_timer (1.2.4)
     systemu (2.4.1)
     thor (0.14.6)
     tilt (1.3.3)
@@ -328,6 +319,7 @@ DEPENDENCIES
   aws-ses (~> 0.4.4)
   bson_ext (~> 1.3)
   capistrano
+  capistrano-ext
   capybara!
   carrierwave
   ci_reporter
@@ -339,7 +331,6 @@ DEPENDENCIES
   fog
   geocoder
   geoip
-  god
   hashie
   hoptoad_notifier
   httparty
@@ -356,9 +347,8 @@ DEPENDENCIES
   rails (= 3.0.10)
   redis (~> 2.2)
   resque
-  resque-scheduler!
   rspec-rails (~> 2.6)
-  system_timer
+  rvm-capistrano
   twitter-text!
   uuidtools
   vanity!
