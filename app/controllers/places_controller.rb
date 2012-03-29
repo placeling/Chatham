@@ -357,7 +357,7 @@ class PlacesController < ApplicationController
     end if
 
     @all_perspectives = @place.perspectives.entries
-    if @all_perspectives:
+    if @all_perspectives
       @all_perspectives_count = @all_perspectives.count
     else
       @all_perspectives_count = 0
