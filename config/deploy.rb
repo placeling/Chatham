@@ -8,6 +8,7 @@ require "rvm/capistrano"                               # Load RVM's capistrano p
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
+after "deploy:symlink", "deploy:restart_workers"
 
 task :production do
   set :gateway, 'beagle.placeling.com:11235'
