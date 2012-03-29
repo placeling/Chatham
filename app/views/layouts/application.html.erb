@@ -24,16 +24,12 @@
       <div id="content">
         <% if notice %>
           <div id="notice" class="flash">
-          <% notice.each do |key, value| %>
-            <%= content_tag :div, value unless value.blank? %>
-          <% end %>
+            <%= content_tag :div, notice unless notice.blank? %>
           </div>
         <% end %>
         <% if alert %>
           <div id="alert" class="flash">
-          <% alert.each do |key, value| %>
-            <%= content_tag :div, value unless value.blank? %>
-          <% end %>
+            <%= content_tag :div, alert unless alert.blank? %>
           </div>
         <% end %>
         <div id="maincontent">
