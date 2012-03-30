@@ -224,31 +224,33 @@ class UsersController < ApplicationController
           end
         end
       end
+      # Query fails if at exact edge, so reassign limits
+      if top_lat == 90.0
+        top_lat = 89.999999
+      end
+      if bottom_lat == -90.0
+        bottom_lat = -89.999999
+      end
+      if right_lng == 180.0
+        right_lng = 179.999999
+      end
+      if right_lng == -180.0
+        right_lng = -179.999999
+      end
+      if left_lng == 180.0
+        left_lng = 179.999999
+      end
+      if left_lng == -180
+        left_lng = -179.999999
+      end
+      # Edge case where user zooms so far out on map that multiple earths are visible
+      if valid_params && right_lng < left_lng
+        right_lng, left_lng = left_lng, right_lng
+      end
     end
     
     if valid_params
-      # Can't figure out how to do mongoid search for correct location parameters so instead
-      # get all perspectives and iterate over 'em. Bad code, I know
-      perspectives = @user.perspectives
-      
-      perspectives.each do |persp|
-        valid = false
-        if persp.place_stub.loc[0] >= bottom_lat && persp.place_stub.loc[0] <= top_lat
-          if right_lng > left_lng
-            if persp.place_stub.loc[1] <= right_lng && persp.place_stub.loc[1] >= left_lng
-              valid = true
-            end
-          else
-            if (persp.place_stub.loc[1] >= left_lng || persp.place_stub.loc[1] <= right_lng)
-              valid = true
-            end
-          end
-        end
-        
-        if valid
-          @perspectives << persp
-        end
-      end
+      @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id)
     end
     
     respond_to do |format|

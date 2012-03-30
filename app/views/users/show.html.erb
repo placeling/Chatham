@@ -429,10 +429,22 @@
           }
           
           if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
-            var updatedTopLat = bounds.getNorthEast().lat() + 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
-            var updatedBottomLat = bounds.getSouthWest().lat() - 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
+            var updatedTopLat = Math.min(bounds.getNorthEast().lat() + 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), 90);
+            var updatedBottomLat = Math.max(bounds.getSouthWest().lat() - 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), -90);
             var updatedRightLng = bounds.getNorthEast().lng() + (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
             var updatedLeftLng = bounds.getSouthWest().lng() - (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
+            if (updatedRightLng > 0) {
+              updatedRightLng = Math.min(180, updatedRightLng);
+            }
+            if (updatedRightLng < 0) {
+              updatedRightLng = Math.max(-180, updatedRightLng);
+            }
+            if (updatedLeftLng > 0) {
+              updatedLeftLng = Math.min(180, updatedLeftLng);
+            }
+            if (updatedLeftLng < 0) {
+              updatedLeftLng = Math.max(-180, updatedLeftLng);
+            }
           } else {
             var updatedTopLat = bounds.getNorthEast().lat();
             var updatedBottomLat = bounds.getSouthWest().lat();
