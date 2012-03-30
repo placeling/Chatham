@@ -37,7 +37,7 @@ gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
 
 gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 
-gem 'hoptoad_notifier'
+gem 'airbrake'
 
 
 gem "rspec-rails", "~> 2.6"  #needs these outside to prevent rake break
