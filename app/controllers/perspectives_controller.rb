@@ -187,7 +187,6 @@ class PerspectivesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html
       format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
@@ -280,9 +279,13 @@ class PerspectivesController < ApplicationController
 
           if !found
             picture = @perspective.pictures.build()
-            picture.remote_image_url = photo_url
-            picture.remote_url = photo_url # for us, to keep track
-            picture.save
+            begin
+              picture.remote_image_url = photo_url
+              picture.remote_url = photo_url # for us, to keep track
+              picture.save
+            rescue => ex
+              notify_airbrake(ex)
+            end
           end
         end
       end

@@ -69,6 +69,9 @@ GEM
       activesupport (= 3.0.10)
     activesupport (3.0.10)
     addressable (2.2.7)
+    airbrake (3.0.9)
+      activesupport
+      builder
     arel (2.0.10)
     attr_required (0.0.3)
     aws-ses (0.4.4)
@@ -131,9 +134,6 @@ GEM
     geoip (1.1.2)
     hashie (0.4.0)
     highline (1.6.1)
-    hoptoad_notifier (2.4.2)
-      activesupport
-      builder
     httparty (0.7.8)
       crack (= 0.1.8)
     httpclient (2.2.3)
@@ -316,6 +316,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   aws-ses (~> 0.4.4)
   bson_ext (~> 1.3)
   capistrano
@@ -332,7 +333,6 @@ DEPENDENCIES
   geocoder
   geoip
   hashie
-  hoptoad_notifier
   httparty
   jquery-rails
   json

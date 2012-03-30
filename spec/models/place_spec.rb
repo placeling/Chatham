@@ -1,6 +1,6 @@
 require "spec_helper"
 require 'hashie/mash'
-require 'JSON'
+require 'json'
 
 describe Place do
 
@@ -75,7 +75,8 @@ describe Place do
 
   it "should be able to create a record from a Google places hash" do
     file = File.open(Rails.root.join("spec/fixtures/cosmic_cafe_google_place_detail.json"), 'r')
-    json = file.readlines.to_s
+    json = file.readlines.join(" ")
+
     hash = Hashie::Mash.new( JSON.parse(json) ).result
 
     place = Place.new_from_google_place( hash )
@@ -92,7 +93,7 @@ describe Place do
 
   it "should be able to create a record from a Google places hash without address information" do
     file = File.open(Rails.root.join("spec/fixtures/usermade_growlab_google_place_detail.json"), 'r')
-    json = file.readlines.to_s
+    json = file.readlines.join(" ")
     hash = Hashie::Mash.new( JSON.parse(json) ).result
     
     place = Place.new_from_google_place( hash )

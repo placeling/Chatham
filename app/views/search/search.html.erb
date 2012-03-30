@@ -5,14 +5,14 @@
       <% @results.each do |result|%>
         <li class="result">
           <% if result["pic"].nil? %>
-            <div><%= link_to (result["name"], result["url"], :class =>"result_name") %></div>
+            <div><%= link_to result["name"], result["url"], :class =>"result_name" %></div>
             <div class="result_location"><%= result["location"] %></div>
           <% else %>
             <div class="result_image_holder">
               <img src='<%= result["pic"] %>' class="result_image"/>
             </div>
             <div class="result_description">
-              <div><%= link_to (result["name"], result["url"], :class =>"result_name") %></div>
+              <div><%= link_to result["name"], result["url"], :class =>"result_name" %></div>
               <div class="result_location"><%= result["location"] %></div>
             </div>
           <% end %>
