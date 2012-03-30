@@ -187,7 +187,6 @@ class PerspectivesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html
       format.json { render :json => {:perspectives => @perspectives.as_json( {:current_user => current_user, :user_view => true} ) }, :callback => params[:callback]  }
     end
   end
