@@ -14,14 +14,14 @@ class GooglePlacesAutocomplete
   
   # NOTE: need to keep following synced with what we do in the mobile client
   def suggest(x, y, input, sensor = true, language ="en")
-    location = [x,y].join(',')
+    location = [x.round(4),y.round(4)].join(',')
     
     options = {
       :location => location,
       :sensor => sensor,
       :input => input,
     }
-    
+
     results = mashup( self.class.get("/json", :query => options.merge(self.default_options)) ).predictions
     
     return results
