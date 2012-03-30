@@ -94,7 +94,7 @@ namespace :db do
   end
 end
 
-require 'hoptoad_notifier/capistrano'
+require 'airbrake/capistrano'
 
 #after :deploy, "deploy:reload_god_config"
         require './config/boot'
