@@ -94,7 +94,7 @@ describe GooglePlaces do
       end
     end
     
-    if place_found == true:
+    if place_found == true
       goner = @gp.delete(reference)
       goner.status.should == "OK"
     end
