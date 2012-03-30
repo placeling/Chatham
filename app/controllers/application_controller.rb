@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include HTTParty
   
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_session_return_path, :set_p3p
+  before_filter :api_check, :set_p3p
   
   helper_method :user_location
   
@@ -24,16 +24,6 @@ class ApplicationController < ActionController::Base
     return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
   end
   
-  def set_session_return_path
-    # Last case is for use case where user fails to connect via 3rd party auth so signs in manually
-    if request.path == new_user_session_path && URI(request.referer).path != new_user_session_path && URI(request.referer).path[0..4] != "/auth"
-      session[:"user.return_to"] = URI(request.referer).path
-    # Following line handles user attaching 3rd party auth to their account
-    elsif current_user && request.path == account_user_path(current_user)
-      session[:"user.return_to"] = account_user_path(current_user)
-    end
-  end
-  
   def api_check
     if params[:api_call]
       if params[:key] && request.get?
@@ -50,6 +40,11 @@ class ApplicationController < ActionController::Base
   def login_required
     login_or_oauth_required
     if current_user.nil?
+      if request.method == "GET"
+        session[:"user.return_to"] = request.fullpath
+      else
+        session[:"user.return_to"] = URI(request.referer).path
+      end
       authenticate_user!
     end
   end
