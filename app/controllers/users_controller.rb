@@ -547,12 +547,18 @@ class UsersController < ApplicationController
   end
 
   def resend
-    @user = User.find_by_username( params[:username] )
+    @user = User.find_for_database_authentication( params[:username] )
 
-    Devise::Mailer.confirmation_instructions(@user).deliver
+    if @user
+      Devise::Mailer.confirmation_instructions(@user).deliver
 
-    respond_to do |format|
-      format.json { render :json => {:status => "OK" } }
+      respond_to do |format|
+        format.json { render :json => {:status => "OK" } }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => {:status => "INVALID EMAIL" } }
+      end
     end
   end
 end
