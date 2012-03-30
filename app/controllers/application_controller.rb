@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   def login_required
     login_or_oauth_required
     if current_user.nil?
-      if request.method == "GET"
+      if request.get?
         session[:"user.return_to"] = request.fullpath
       else
         session[:"user.return_to"] = URI(request.referer).path
