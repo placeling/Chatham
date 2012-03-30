@@ -15,24 +15,23 @@ $(document).ready(function(){
     }
   })
   
-  var location = JSON.parse($.cookie('location'));
+  var userLocation = JSON.parse($.cookie('location'));
   
-  var user_lat = -1000.0;
-  var user_lng = -1000.0;
+  var user_lat = 49.2;
+  var user_lng = -123.2;
   
-  if (typeof location !== "undefined") {
-    if (typeof location["remote_ip"] !== "undefined") {
-      user_lat = parseFloat(location["remote_ip"]["lat"]);
-      user_lng = parseFloat(location["remote_ip"]["lng"]);
-    } else if (typeof location["user"] !== "undefined") {
-      user_lat = parseFloat(location["user"]["lat"]);
-      user_lng = parseFloat(location["user"]["lng"]);
+  if ((typeof userLocation !== "undefined") && (userLocation !== null)) {
+    if (typeof userLocation["remote_ip"] !== "undefined") {
+      user_lat = parseFloat(userLocation["remote_ip"]["lat"]);
+      user_lng = parseFloat(userLocation["remote_ip"]["lng"]);
+    } else if (typeof userLocation["user"] !== "undefined") {
+      user_lat = parseFloat(userLocation["user"]["lat"]);
+      user_lng = parseFloat(userLocation["user"]["lng"]);
     } else {
-      user_lat = parseFloat(location["default"]["lat"]);
-      user_lng = parseFloat(location["default"]["lng"]);
+      user_lat = parseFloat(userLocation["default"]["lat"]);
+      user_lng = parseFloat(userLocation["default"]["lng"]);
     }
   }
-  
   
   $("#term").autocomplete({
     minLength: 3,

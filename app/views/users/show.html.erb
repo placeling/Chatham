@@ -686,7 +686,7 @@
         
         $('.map_photo').each(function() {
           $(this).click(function() {
-            if (typeof loadState["<%= @user.username %>"]['infowindow'] === undefined || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
+            if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
               google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
             }
           })
