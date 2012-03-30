@@ -97,3 +97,5 @@ end
 require 'hoptoad_notifier/capistrano'
 
 #after :deploy, "deploy:reload_god_config"
+        require './config/boot'
+        require 'airbrake/capistrano'
