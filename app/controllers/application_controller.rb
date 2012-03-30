@@ -71,34 +71,40 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def get_location
+    location = {
+      "default" => {
+        "lat" => "49.2820",
+        "lng" => "-123.1079"
+      }
+    }
+    
+    if current_user && current_user.location && current_user.location.length == 2
+      location["user"] = {
+        "lat" => (current_user.location[0] * 100).round().to_f/100,
+        "lng" => (current_user.location[1] * 100).round().to_f/100
+      }
+    end
+    
+    geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
+    c = geo.city(request.remote_ip)
+    
+    if !c.nil?
+      location["remote_ip"] = {
+        "lat" => c.latitude,
+        "lng" => c.longitude
+      }
+    else
+      location["no_ip"] = true
+    end
+    
+    return location
+  end
+  
   def user_location
     if !params[:api_call] && Rails.env != "test"
       if !cookies[:location]
-        location = {
-          "default" => {
-            "lat" => "49.2820",
-            "lng" => "-123.1079"
-          }
-        }
-        
-        if current_user && current_user.location && current_user.location.length == 2
-          location["user"] = {
-            "lat" => (current_user.location[0] * 100).round().to_f/100,
-            "lng" => (current_user.location[1] * 100).round().to_f/100
-          }
-        end
-        
-        geo = GeoIP.new("#{Rails.root}/config/GeoIPCity.dat")
-        c = geo.city(request.remote_ip)
-        
-        if !c.nil?
-          location["remote_ip"] = {
-            "lat" => c.latitude,
-            "lng" => c.longitude
-          }
-        else
-          location["no_ip"] = true
-        end
+        location = get_location
         
         cookies[:location] = {:value => location.to_json, :expires => 1.day.from_now}
       else

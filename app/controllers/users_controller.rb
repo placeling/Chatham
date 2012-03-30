@@ -137,9 +137,10 @@ class UsersController < ApplicationController
     if params[:api_call].nil?
       # Use following logic to determine what lat/lng to show to viewer:
       # 1. If already have a lat/lng for @user, go there
-      # 2. Else, if have viewer's lat/lng and @user has places near there, return that
-      # 3. Else, return first place on user's map
+      # 2. Else, if have viewer's lat/lng and @user has places near there, return location of first place near there that @user has
+      # 3. Else, return first place on @user's map
       # 4. Else, return default lat/lng
+      
       @current_location = []
       if !cookies[:page_state].nil?
         page_state = JSON.parse(cookies[:page_state])
@@ -149,8 +150,14 @@ class UsersController < ApplicationController
         end
       end
       
-      if @current_location.length == 0 && !cookies[:location].nil? && !@user.perspectives.nil? && @user.perspectives.length > 0
-        location = JSON.parse(cookies[:location])
+      if @current_location.length == 0 && !@user.perspectives.nil? && @user.perspectives.length > 0
+        # Won't have location cookie if visiting site for first time
+        if cookies[:location].nil?
+          location = get_location
+        else
+          location = JSON.parse(cookies[:location])
+        end
+        
         if location.has_key?("browser") or location.has_key?("remote_ip")
           if location.has_key?("browser")
             loc = [location["browser"]["lat"], location["browser"]["lng"]]
@@ -158,13 +165,11 @@ class UsersController < ApplicationController
             loc = [location["remote_ip"]["lat"], location["remote_ip"]["lng"]]
           end
           
-          places = Place.where(:loc.within => {"$center" => [loc,NEARBY_RADIUS]})
-          @user.perspectives.each do |perp|
-            if places.include?(perp.place)
-              @current_location = loc
-              break
-            end
-          end
+          perps = Perspective.where(:ploc.within => {"$center" => [loc,0.05]}, :uid => @user.id)
+          
+          if perps.length > 0
+            @current_location = perps[0].ploc
+          end          
         end
       end
       
