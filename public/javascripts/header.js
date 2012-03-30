@@ -20,10 +20,10 @@ $(document).ready(function(){
   var user_lat = -1000.0;
   var user_lng = -1000.0;
   
-  if (location["remote_ip"]) {
+  if (typeof location["remote_ip"] !== "undefined") {
     user_lat = parseFloat(location["remote_ip"]["lat"]);
     user_lng = parseFloat(location["remote_ip"]["lng"]);
-  } else if (location["user"]) {
+  } else if (typeof location["user"] !== "undefined") {
     user_lat = parseFloat(location["user"]["lat"]);
     user_lng = parseFloat(location["user"]["lng"]);
   } else {
