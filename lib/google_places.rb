@@ -73,7 +73,7 @@ class GooglePlaces
   def find_nearby(x, y, radius, query = nil, sensor = true, type_array =[], language ="en")
     #radius is in meters
 
-    location = [x,y].join(',')
+    location = [x.round(4),y.round(4)].join(',')
 
     options = {
       :location => location,
