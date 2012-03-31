@@ -7,13 +7,22 @@ class ApplicationController < ActionController::Base
   before_filter :api_check, :set_p3p
   
   helper_method :user_location
+  helper_method :return_to_link
   
   alias :logged_in? :user_signed_in?
 
   use_vanity :current_user
 
+  def return_to_link
+    if session[:"user_return_to"]
+      session[:"user_return_to"]
+    else
+      "/"
+    end
+  end
+
   def after_sign_in_path_for(resource)
-    return (session[:"user_return_to"].nil?) ? "/" : session[:"user_return_to"].to_s
+    return return_to_link
   end
   
   def after_sign_out_path_for(resource)
@@ -21,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
   
   def after_create(resource)
-    return (session[:"user_return_to"].nil?) ? "/" : session[:"user_return_to"].to_s
+    return return_to_link
   end
   
   def api_check
