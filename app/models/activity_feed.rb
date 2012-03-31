@@ -8,50 +8,19 @@ class ActivityFeed
   has_many :activity_feed_chunks, :foreign_key => "aid"
 
   def self.add_follow(actor1, actor2)
-    activity = actor1.build_activity
-
-    activity.activity_type = "FOLLOW"
-
-    activity.actor2 = actor2.id
-    activity.username2 = actor2.username
-    activity.save
+    Resque.enqueue(FollowActivity, actor1.id, actor2.id)
   end
 
-  def self.add_new_perspective(actor1, perspective)
-    activity = actor1.build_activity
-
-    activity.activity_type = "NEW_PERSPECTIVE"
-
-    activity.subject = perspective.id
-    activity.subject_title = perspective.place.name
-
-    activity.save
+  def self.add_new_perspective(actor, perspective)
+    Resque.enqueue(PlacemarkActivity, actor.id, perspective.id)
   end
 
-  def self.add_update_perspective(actor1, perspective)
-    if perspective.updated_at < 1.day.ago
-      activity = actor1.build_activity
-
-      activity.activity_type = "UPDATE_PERSPECTIVE"
-
-      activity.subject = perspective.id
-      activity.subject_title = perspective.place.name
-
-      activity.save
-    end
+  def self.add_update_perspective(actor, perspective)
+     Resque.enqueue(UpdatePlacemarkActivity, actor.id, perspective.id)
   end
 
   def self.add_star_perspective(actor1, actor2, perspective)
-    activity = actor1.build_activity
-
-    activity.activity_type = "STAR_PERSPECTIVE"
-
-    activity.actor2 = actor2.id
-    activity.username2 = actor2.username
-
-    activity.subject = perspective.id
-    activity.subject_title = perspective.place.name
-    activity.save
+    Resque.enqueue(StarActivity, actor1.id, actor2.id, perspective.id)
   end
 
   def head_chunk
