@@ -295,6 +295,7 @@ class PerspectivesController < ApplicationController
               picture.save
             rescue => ex
               notify_airbrake(ex)
+              @perspective.pictures.delete(picture)
             end
           end
         end
