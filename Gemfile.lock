@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/assaf/vanity.git
-  revision: 8ac6bea7a39992027d284022c7df3aef7b3b95af
-  tag: v1.6.1
-  specs:
-    vanity (1.6.1)
-      redis (~> 2.0)
-      redis-namespace (~> 1.0.0)
-
-GIT
   remote: git://github.com/imackinn/oauth-plugin.git
   revision: d967f1dced19f5854664d7e15413a4f828768fc5
   specs:
@@ -308,6 +299,9 @@ GEM
     uuid (2.3.4)
       macaddr (~> 1.0)
     uuidtools (2.1.2)
+    vanity (1.8.0)
+      redis (~> 2.0)
+      redis-namespace (~> 1.0.0)
     vegas (0.1.8)
       rack (>= 1.0.0)
     warden (1.0.4)
@@ -356,4 +350,4 @@ DEPENDENCIES
   rvm-capistrano
   twitter-text!
   uuidtools
-  vanity!
+  vanity
