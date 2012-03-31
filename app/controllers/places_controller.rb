@@ -172,7 +172,6 @@ class PlacesController < ApplicationController
       query_type = "popular"
     end
 
-    barrie = params[:barrie]
     loc = [lat, lng]
 
     n = 40
@@ -238,7 +237,7 @@ class PlacesController < ApplicationController
 
     @places = @places.sort_by { |place| place.distance }
 
-    if !barrie.nil? and query_type ==  "popular" and !socialgraph and @places.count < 5
+    if query_type ==  "popular" and !socialgraph and @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
