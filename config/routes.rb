@@ -171,7 +171,7 @@ Chatham::Application.routes.draw do
     end
   end
 
-  mount Resque::Server, :at => "/resque"
+  #mount Resque::Server, :at => "/resque"
 
   match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile
