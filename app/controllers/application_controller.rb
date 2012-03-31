@@ -41,9 +41,10 @@ class ApplicationController < ActionController::Base
     login_or_oauth_required
     if current_user.nil?
       if request.get?
-        session[:"user.return_to"] = request.fullpath
+        session[:"user_return_to"] = request.fullpath
       else
-        session[:"user.return_to"] = URI(request.referer).path
+        test =  URI(request.referer).path
+        session[:"user_return_to"] = test
       end
       authenticate_user!
     end
@@ -51,6 +52,11 @@ class ApplicationController < ActionController::Base
   
   def admin_required
     #this is the method used in oauth_clients_controller, rename for devise
+    if request.get?
+      session[:"user_return_to"] = request.fullpath
+    else
+      session[:"user_return_to"] = URI(request.referer).path
+    end
     authenticate_user!
     if !current_user.is_admin?
       flash[:message] = t 'admin.required_failed'
