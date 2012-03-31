@@ -1,5 +1,5 @@
 $('#follow_action').fadeOut(100);
-$('#follow_action').html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for (:action => "follow", :controller => "users") %>" class="no_highlight"><div class="follow_link">Follow</div></a>');
+$('#follow_action').html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= follow_user_path(@user) %>" class="no_highlight"><div class="follow_link">Follow</div></a>');
 $('#follow_action').fadeIn(100);
 var followers = parseInt($('#follower_count').text());
 followers -= 1;
