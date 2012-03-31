@@ -1,4 +1,4 @@
- require 'carrierwave/orm/mongoid'
+ require 'carrierwave/mongoid'
 
 CarrierWave.configure do |config|
     config.fog_public     = true         # optional, defaults to true

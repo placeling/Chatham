@@ -28,6 +28,7 @@ gem 'uuidtools'
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'fog'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 
 gem "geocoder"
 gem "geoip"
