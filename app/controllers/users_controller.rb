@@ -318,7 +318,7 @@ class UsersController < ApplicationController
     end
     
     if @user.update_attributes(params[:user])
-      redirect_to session[:"user.return_to"]
+      redirect_to session[:"user_return_to"]
     else
       render :username
     end

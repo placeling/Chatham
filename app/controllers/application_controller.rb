@@ -13,15 +13,15 @@ class ApplicationController < ActionController::Base
   use_vanity :current_user
 
   def after_sign_in_path_for(resource)
-    return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
+    return (session[:"user_return_to"].nil?) ? "/" : session[:"user_return_to"].to_s
   end
   
   def after_sign_out_path_for(resource)
-    return (session[:"user.return_to"].nil?) ? request.referer : session[:"user.return_to"].to_s
+    return (session[:"user_return_to"].nil?) ? request.referer : session[:"user_return_to"].to_s
   end
   
   def after_create(resource)
-    return (session[:"user.return_to"].nil?) ? "/" : session[:"user.return_to"].to_s
+    return (session[:"user_return_to"].nil?) ? "/" : session[:"user_return_to"].to_s
   end
   
   def api_check

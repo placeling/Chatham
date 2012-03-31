@@ -52,7 +52,7 @@ class AuthenticationsController < ApplicationController
     if authentication
       sign_in( authentication.user )
       respond_to do |format|
-        format.html { redirect_to session[:"user.return_to"] }
+        format.html { redirect_to session[:"user_return_to"] }
         format.json {
           render :text => generate_keys_for( authentication.user )
         }
@@ -60,7 +60,7 @@ class AuthenticationsController < ApplicationController
     elsif current_user
       # Only occurs if already logged in and try to add your Facebook account
       current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
-      redirect_to session[:"user.return_to"]
+      redirect_to session[:"user_return_to"]
     else
       @user = User.new
       @user.password = Devise.friendly_token[0,20]
