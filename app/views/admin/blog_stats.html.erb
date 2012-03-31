@@ -1,0 +1,27 @@
+
+<h1>Pinta Stats</h1>
+
+<b>Pinta Placemarks:</b> <%= @perspectives.count %>
+
+
+<table border="1">
+    <thead>
+      <tr>
+      <td>Username</td>
+      <td>Place</td>
+      <td>Memo</td>
+      <td>Url</td>
+      <td>Created_at</td>
+    </thead>
+
+  <% for perspective in @perspectives %>
+    <tr>
+      <td><%= link_to perspective.user.username,  perspective_path( perspective.user ), :target =>"_blank"%></td>
+      <td><%= link_to perspective.place.name,  place_path( perspective.place ), :target =>"_blank" %></td>
+      <td><%= perspective.memo %></td>
+      <td><%= link_to perspective.url,  perspective.url, :target =>"_blank" %></td>
+      <td><%= perspective[:created_at] %></td>
+    </tr>
+  <% end %>
+
+</table>

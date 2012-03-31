@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter :admin_required, :only => [:dashboard]
+  before_filter :admin_required, :only => [:dashboard, :blog_stats]
 
   def app
     track! :app_store
@@ -52,6 +52,16 @@ class AdminController < ApplicationController
     @user_count = User.count
     @users = User.descending(:created_at).limit(200)
     @past_day_bookmarks = Perspective.where(:created_at.gt =>1.day.ago)
+
+  end
+
+  def blog_stats
+    @past_day_bookmarks = Perspective.where(:created_at.gt =>1.day.ago)
+
+    ca = ClientApplication.find('4f298a1057b4e33324000003')
+
+    @perspectives = ca.perspectives.descending(:created_at).limit(200)
+
 
   end
 
