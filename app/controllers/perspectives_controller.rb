@@ -256,6 +256,16 @@ class PerspectivesController < ApplicationController
           @perspective.accuracy = params[:accuracy]
         end
       end
+
+      if current_client_application && current_client_application.id.to_s == "4f298a1057b4e33324000003"
+        #is a pinta
+        if @perspective[:pinta_flag].nil?
+          @perspective[:pinta_flag]= true
+          track! :wordpress_post
+        end
+        #pinta supercedes all for now, when it comes to tracking
+        @perspective.client_application = current_client_application unless current_client_application.nil?
+      end
       
       if params[:memo]
         @perspective.update_attributes(params.slice("memo"))
