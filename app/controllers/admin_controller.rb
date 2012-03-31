@@ -56,12 +56,9 @@ class AdminController < ApplicationController
   end
 
   def blog_stats
-    @past_day_bookmarks = Perspective.where(:created_at.gt =>1.day.ago)
 
     ca = ClientApplication.find('4f298a1057b4e33324000003')
-
     @perspectives = ca.perspectives.descending(:created_at).limit(200)
-
 
   end
 
