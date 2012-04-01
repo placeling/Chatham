@@ -288,15 +288,7 @@ class PerspectivesController < ApplicationController
           end
 
           if !found
-            picture = @perspective.pictures.build()
-            begin
-              picture.remote_image_url = photo_url
-              picture.remote_url = photo_url # for us, to keep track
-              picture.save
-            rescue => ex
-              notify_airbrake(ex)
-              @perspective.pictures.delete(picture)
-            end
+            Resque.enqueue(GetPerspectivePicture, @perspective.id, photo_url)
           end
         end
       end
