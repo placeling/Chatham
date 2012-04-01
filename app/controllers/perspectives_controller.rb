@@ -276,21 +276,8 @@ class PerspectivesController < ApplicationController
       end
 
       if params[:photo_urls]
-        photo_urls = params[:photo_urls].split(',')
-
-        for photo_url in photo_urls
-          found = false
-          for picture in @perspective.pictures
-            if picture.remote_url && picture.remote_url == photo_url
-              found = true
-              break
-            end
-          end
-
-          if !found
-            Resque.enqueue(GetPerspectivePicture, @perspective.id, photo_url)
-          end
-        end
+        #we don't know how slow their server is, so do this async
+        Resque.enqueue(GetPerspectivePicture, @perspective.id, params[:photo_urls].split(','))
       end
 
     end
