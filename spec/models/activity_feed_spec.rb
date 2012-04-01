@@ -15,6 +15,9 @@ describe ActivityFeed do
     user2 = Factory.create(:user)
     user.follow( user2 )
 
+    user.reload #necessary since the activity stuff happens in another environment-ish
+    user2.reload
+
     activity_feed = user.activity_feed
 
     activity_feed.activities.count.should == 1
@@ -33,6 +36,10 @@ describe ActivityFeed do
     user = Factory.create(:user)
     place = Factory.create(:place)
     perspective = Factory.create(:perspective, :user => user, :place =>place)
+
+    user.reload #necessary since the activity stuff happens in another environment-ish
+    perspective.reload
+    place.reload
 
     activity_feed = user.activity_feed
 
@@ -56,6 +63,10 @@ describe ActivityFeed do
     perspective.memo = "new memo"
     perspective.save
 
+    user.reload #necessary since the activity stuff happens in another environment-ish
+    perspective.reload
+    place.reload
+
     activity_feed = user.activity_feed
 
     activity_feed.activities.count.should == 1 #don't show update within' 1 day
@@ -76,6 +87,11 @@ describe ActivityFeed do
     perspective = Factory.create(:perspective, :user => user2, :place =>place)
 
     user.star( perspective )
+
+    user.reload #necessary since the activity stuff happens in another environment-ish
+    user2.reload
+    perspective.reload
+    place.reload
 
     activity_feed = user.activity_feed
 

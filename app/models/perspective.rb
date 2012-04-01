@@ -48,8 +48,8 @@ class Perspective
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
   after_create :check_in
-  before_create :notify_feed_create
-  before_update :notify_feed_update
+  after_create :notify_feed_create
+  after_update :notify_feed_update
   before_destroy :scrub_stars
 
   attr_accessor :skip_feed

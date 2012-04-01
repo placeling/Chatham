@@ -34,3 +34,5 @@ Chatham::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 end
+
+Resque.inline = true #makes resque syncronous for the tests
