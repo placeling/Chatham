@@ -226,6 +226,7 @@ class User
     if user_perspective.nil?
       user_perspective= place.perspectives.build()
       user_perspective.user = self
+      user_perspective.modified_at = Time.now #prevents being sent to feed, covered in "star activity" below
     end
 
     user_perspective.favourite_perspective_ids << perspective.id
