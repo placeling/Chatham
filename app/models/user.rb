@@ -226,7 +226,6 @@ class User
     if user_perspective.nil?
       user_perspective= place.perspectives.build()
       user_perspective.user = self
-      user_perspective.skip_feed = true
     end
 
     user_perspective.favourite_perspective_ids << perspective.id

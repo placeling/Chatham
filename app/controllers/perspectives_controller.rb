@@ -281,6 +281,8 @@ class PerspectivesController < ApplicationController
       end
 
     end
+
+    @perspective.notify_modified
     
     if @perspective.save
       @perspective.place.update_tags

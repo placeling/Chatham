@@ -10,6 +10,7 @@ class Perspective
   field :tags,    :type => Array
   field :url,       :type => String
   field :flag_count, :type => Integer, :default =>0
+  field :modified_at, :type => DateTime
     
   #these are meant for internal use, not immediately visible to user -iMack
   field :loc, :as => :location,    :type => Array
@@ -43,6 +44,7 @@ class Perspective
   validates_format_of :url, :with => URI::regexp, :message => "Invalid URL", :allow_nil =>true
 
   before_validation :fix_location
+  before_create :notify_modified
   before_save :get_place_data
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
@@ -52,7 +54,7 @@ class Perspective
   after_update :notify_feed_update
   before_destroy :scrub_stars
 
-  attr_accessor :skip_feed
+  attr_accessor :post_feed
 
   def self.find_recent_for_user( user, start, count )
     Perspective.where(:uid => user.id).
@@ -113,11 +115,20 @@ class Perspective
   end
 
   def notify_feed_create
-    ActivityFeed.add_new_perspective(self.user, self) unless self.skip_feed
+    ActivityFeed.add_new_perspective(self.user, self) unless !self.post_feed
+    self.post_feed = false
   end
 
   def notify_feed_update
-    ActivityFeed.add_update_perspective(self.user, self) unless self.skip_feed
+    ActivityFeed.add_update_perspective(self.user, self) unless !self.post_feed
+    self.post_feed = false
+  end
+
+  def notify_modified
+    if self.modified_at.nil? || self.modified_at < 1.day.ago
+      self.post_feed = true
+    end
+    self.modified_at = Time.now
   end
 
   def empty_perspective?
