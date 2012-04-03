@@ -547,7 +547,7 @@ class UsersController < ApplicationController
   end
 
   def resend
-    @user = User.find_for_database_authentication( params[:username] )
+    @user = User.find_for_database_authentication( {:login => params['username']} )
 
     if @user
       Devise::Mailer.confirmation_instructions(@user).deliver

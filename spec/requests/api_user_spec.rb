@@ -143,4 +143,20 @@ describe "Users signup" , :broken => true do
       response_dict['message']['username'].should include("can't be blank")
 
     end
+end
+
+
+describe "User" do
+  it "password should be resent when requested" do
+    user = Factory.create(:user)
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    post resend_password_path, { :username => user.username, :format => 'json' }
+
+    response.status.should be(200)
+
+    ActionMailer::Base.deliveries.empty?.should be_false
+
   end
+end

@@ -38,6 +38,7 @@ Chatham::Application.routes.draw do
   
   match '/vanity(/:action(/:id(.:format)))', :controller=>:vanity
   match '/app',   :to =>"admin#app"
+  post '/users/resend',      :to => 'users#resend', :as => :resend_password
 
   resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
