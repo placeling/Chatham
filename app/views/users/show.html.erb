@@ -70,7 +70,7 @@
         var lat = <%= @current_location[0] %>;
         var lng = <%= @current_location[1] %>;
       <% else %>
-        <% if @user.location && @user.location.length == 2 %>
+        <% if @user.location && @user.location.length == 2 && @user.location[0] != 0.0 && @user.location[1] != 0.0 %>
           var lat = <%= (@user.location[0] * 100).round().to_f/100 %>;
           var lng = <%= (@user.location[1] * 100).round().to_f/100 %>;
         <% else %>
