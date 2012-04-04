@@ -19,6 +19,12 @@
       var user_lat = <%= @user.location[0] %>
       var user_lng = <%= @user.location[1] %>
     <% end %>
+    
+    function openWindow(url)
+    {
+      window.open(url, '_blank');
+    }
+    
     function compare(a,b) {
       if (a.lower_name < b.lower_name)
          return -1;
@@ -192,7 +198,7 @@
             }
             
             if (typeof perspective.remote_url !== "undefined") {
-              infoWindowHTML += '<div class="info_url"><a href="' + perspective.remote_url + '"><%= t('perspective.web_link') %></a></div>';
+              infoWindowHTML += '<div class="info_url"><a href="' + perspective.remote_url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
             }
             
             if (perspective.photos.length > 0) {
