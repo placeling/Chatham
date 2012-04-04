@@ -848,6 +848,30 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   margin-bottom: 5px;
 }
 
+.perspective_details {
+  clear: both;
+}
+
+.all_places_holder {
+  margin-top: 10px;
+}
+
+.all_places {
+  margin-top: 10px;
+  background-image: url("/images/red_background.png");
+  border: 2px solid #BF4F41;
+  border-radius: 5px 5px 5px 5px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px;
+}
+
+a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:visited {
+  color: white;
+  text-decoration: none;
+}
+
 /* Followers/following
 =====================================================================*/
 #users {
@@ -1219,7 +1243,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
 
 .profile_username {
   margin-left: 136px;
-  padding-top: 76px;
+  padding-top: 36px;
 }
 
 .button_image {
