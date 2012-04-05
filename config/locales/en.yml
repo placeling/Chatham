@@ -315,6 +315,7 @@ en:
     possessive_s: "'"
     thoughts: " thoughts on "
     perspective_head: "%{user} on %{place}"
+    count: "See my %{count} places"
     call_to_action: "Sign up to Placeling to follow %{user} and add %{place} to your map"
     edit_call_to_action: "Edit your notes & photos for"
     edit_web_link: "Add a web link"
