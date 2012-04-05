@@ -63,8 +63,8 @@ class User
 
   mount_uploader :avatar, AvatarUploader
 
-  has_and_belongs_to_many :followers, :class_name =>"User", :inverse_of => nil
-  has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
+  has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
+  has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   has_many :client_applications, :foreign_key =>'uid'
   has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc", :foreign_key =>'uid'
@@ -246,19 +246,19 @@ class User
     perspective.save
   end
 
-  def follows?( other_user )
-    following.include?( other_user )
+  def follows?( user )
+    following.include?( user )
   end
 
-  def follow( other_user )
-    other_user.followers << self
-    self.following << other_user
-    ActivityFeed.add_follow( self, other_user)
+  def follow( user )
+    if self.id != user.id && !self.following.include?(user)
+      self.following << user
+    end
+    ActivityFeed.add_follow( self, user)
   end
 
-  def unfollow( other_user )
-    other_user.followers.delete( self )
-    self.following.delete( other_user )
+  def unfollow( user )
+    self.following.delete(user)
   end
 
   def build_activity

@@ -26,13 +26,16 @@ describe User do
   it "should be able to unfollow another user" do
     ian = Factory.create(:user, :username => 'imack')
     lindsay = Factory.create(:user, :username => 'lindsay')
+
     ian.follow( lindsay )
-    ian.save
+
+    lindsay.followers.should include(ian)
+    ian.following.should include(lindsay)
 
     ian.unfollow( lindsay )
 
-    lindsay.followers.should_not include(ian)
     ian.following.should_not include(lindsay)
+    lindsay.followers.should_not include(ian)
 
     lindsay = User.find(lindsay.id) #make sure was unfollowed, not deleted
     lindsay.should be_valid
