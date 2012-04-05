@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.10'
+gem 'rails', '3.1.3'
 #TODO: unpackage this to not include active record
 
 # Bundle edge Rails instead:
@@ -8,13 +8,13 @@ gem 'rails', '3.0.10'
 
 gem "jquery-rails"
 
-gem "mongoid", "~> 2.0"
+gem "mongoid", ">= 2.3.3"
 gem "mongoid_rails_migrations", "~> 0.0.13"
 
 gem "bson_ext", "~> 1.3"
 
 gem "oauth", ">= 0.4.4"
-gem "devise", "~> 1.4.2"
+gem "devise", "~> 1.4.7"
 gem "omniauth", "~> 0.3.2"
 
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
@@ -41,7 +41,7 @@ gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 gem 'airbrake'
 
 
-gem "rspec-rails", "~> 2.6"  #needs these outside to prevent rake break
+gem "rspec-rails", "2.7"  #needs these outside to prevent rake break
 gem 'ci_reporter'
 
 gem 'mocha'
