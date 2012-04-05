@@ -151,8 +151,6 @@ class PerspectivesController < ApplicationController
     
     track! :star
     
-    @path = URI(request.referer).path
-    
     respond_to do |format|
       format.js
       format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }

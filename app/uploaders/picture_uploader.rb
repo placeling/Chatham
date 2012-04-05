@@ -7,13 +7,6 @@ class PictureUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
-  after :store, :set_model_urls
-
-  def set_model_urls(file)
-    model.creation_environment = Rails.env
-    model.cache_urls
-  end
-
   if Rails.env.test?
       storage :file
   else

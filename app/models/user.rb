@@ -67,7 +67,7 @@ class User
   has_and_belongs_to_many :following, :class_name =>"User", :inverse_of => nil
 
   has_many :client_applications, :foreign_key =>'uid'
-  has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc",:include=>[:client_application], :foreign_key =>'uid'
+  has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc", :foreign_key =>'uid'
 
   embeds_one :activity_feed
   embeds_one :user_setting
@@ -89,20 +89,13 @@ class User
   index :fp, :background => true
   index :du
 
-  after_save :more_test
+  before_save :cache_urls
   before_save :get_city
   after_create :follow_defaults
 
   def get_city
     if self.location != nil && self.location != [0,0] && self.city == ""
       self.city =  CitynameFinder.getCity( self.location[0], self.location[1] )
-    end
-  end
-
-  def more_test
-    if self.changed?
-      #added cache urls
-      self.save
     end
   end
 
@@ -144,6 +137,7 @@ class User
   end
 
   def cache_urls
+    self.creation_environment = Rails.env
     self.thumb_cache_url = self.avatar_url(:thumb)
     self.main_cache_url =  self.avatar_url(:main)
   end
@@ -263,8 +257,8 @@ class User
   end
 
   def unfollow( other_user )
-    other_user.followers.delete self
-    self.following.delete other_user
+    other_user.followers.delete( self )
+    self.following.delete( other_user )
   end
 
   def build_activity

@@ -3,13 +3,6 @@
 
 class AvatarUploader < CarrierWave::Uploader::Base
 
-  after :store, :set_model_urls
-
-  def set_model_urls(file)
-    model.creation_environment = Rails.env
-    model.cache_urls
-  end
-
   include CarrierWave::MiniMagick
 
   if Rails.env.test?

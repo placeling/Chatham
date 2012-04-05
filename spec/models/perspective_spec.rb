@@ -15,7 +15,7 @@ describe Perspective do
 
       pic.save!
 
-      perspective = Perspective.find( perspective.id )
+      perspective.reload
       perspective.pictures.count.should be(1)
       pic = perspective.pictures.first
       pic.image.thumb.should be_no_larger_than(160, 160)

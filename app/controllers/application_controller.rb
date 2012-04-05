@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
     if request.get?
       session[:"user_return_to"] = request.fullpath
     else
-      session[:"user_return_to"] = URI(request.referer).path
+      session[:"user_return_to"] = URI(request.referer).path unless request.referer.nil?
     end
     authenticate_user!
     if !current_user.is_admin?
