@@ -106,8 +106,8 @@ describe "API - " do
       response.status.should be(200)
 
       #need to refresh from db
-      @lindsay = User.find(@lindsay.id)
-      @ian = User.find(@ian.id)
+      @lindsay.reload
+      @ian.reload
 
       @lindsay.followers.should include(@ian)
       @ian.following.should include(@lindsay)
@@ -116,11 +116,11 @@ describe "API - " do
       response.status.should be(200)
 
       #need to refresh from db
-      @lindsay = User.find(@lindsay.id)
-      @ian = User.find(@ian.id)
+      @lindsay.reload
+      @ian.reload
 
-      @lindsay.followers.should_not include(@ian)
-      @ian.following.should_not include(@lindsay)
+      @lindsay.followers.should_not include( @ian )
+      @ian.following.should_not include( @lindsay )
     end
 
     it "have a list of their followers returned" do

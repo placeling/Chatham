@@ -29,10 +29,16 @@ describe User do
 
     ian.follow( lindsay )
 
+    ian.reload
+    lindsay.reload
+
     lindsay.followers.should include(ian)
     ian.following.should include(lindsay)
 
     ian.unfollow( lindsay )
+
+    ian.reload
+    lindsay.reload
 
     ian.following.should_not include(lindsay)
     lindsay.followers.should_not include(ian)

@@ -258,7 +258,8 @@ class User
   end
 
   def unfollow( user )
-    self.following.delete(user)
+    self.following.to_a #hack to ensure in memory, not a problem for mongodb 2.0  https://github.com/mongoid/mongoid/issues/1369
+    self.following.delete( user )
   end
 
   def build_activity
