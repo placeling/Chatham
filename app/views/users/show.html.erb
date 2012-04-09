@@ -13,7 +13,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
   </script>
   <script type="text/javascript">
-    var DEFAULT_ZOOM = 15;
+    var DEFAULT_ZOOM = 13;
     
     <% if @user.location && @user.location.length == 2 %>
       var user_lat = <%= @user.location[0] %>
