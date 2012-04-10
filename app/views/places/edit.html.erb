@@ -1,20 +1,5 @@
-<div class="grid_24">
-
-     <div class="box_top">
-         <h2 class="icon list"><%= t'basic.edit' %></h2>
-
-         <h3 class="right"><a href="#contents"><%= t'basic.top' %></a></h3>
-     </div>
-
-     <div class="box_content padding">
-       <% form_for :client_application, @client_application, :url => oauth_client_path(@client_application), :html => {:method => :put}  do |f| %>
-              <%= render :partial => "form", :locals => { :f => f } %>
-              <%= submit_tag t("basic.edit") %>
-       <% end %>
-       <%= link_to t("basic.show"), oauth_client_path(@client_application) %> |
-       <%= link_to t("basic.back"), oauth_clients_path %>
-
-     </div>
- </div>
+<div id="edit_place_form">
+  <%= render 'form' %>
+</div>
 
 

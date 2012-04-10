@@ -1,5 +1,18 @@
-<%= error_messages_for :client_application %>
-<%= form_for(@place) do |f| %>
+
+<% content_for :javascript_includes do %>
+
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+    </script>
+<% end %>
+
+
+<% content_for :css do %>
+
+
+<% end %>
+
+<%= form_for @place, :url =>{:action => "confirm"} do |f| %>
   <% if @place.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
@@ -17,12 +30,16 @@
     <%= f.text_field :name, :class => "place_input" %>
   </div>
   <div class="standout">
-    <p><%= t'place.address_latlng' %></p>
-    <p><input id="map_source" class="place_input"/><a href="http://www.placeling.com", id="map_updated">Update map</a></p>
+    <p><%= t'place.address' %></p>
+    <p><input id="map_source" type="text" size="50" class="place_input"/></p>
   </div>
-  <div class="standout">
-    <div id="ambiguous"></div>
+
+  <div id="selector_map" style="height:300px; width: 300px;">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+    <div id="latlng"></div>
   </div>
+  <br>
+
   <div class="field">
     <% if @place.location %>
       <% @place.location.each_with_index do |location, index| %>
@@ -38,18 +55,129 @@
     <% end %>
   </div>
   <div id="map"></div>
-  <div id="accordion">
-    <% @categories.keys().sort.each do |category| %>
-      <h3><a href="#"><%= category %></a></h3>
-      <div>
-        <% @categories[category].keys().sort.each do |friendly_term|%>
-          <p><input class="radio" type="checkbox" name="place[venue_types][]" value="<%= friendly_term %>"/><span class="radio_text"><%= friendly_term %></span></p>
-        <% end %>
-      </div>
-    <% end %>  
-    
-  </div>
+  <p><%= t'place.category' %></p>
+  <input type="hidden" name="category_selector" />
   <div id="create">
-    <%= f.submit :class => 'button', :value => 'create'%>
+
   </div>
+<% end %>
+
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+    var main_map;
+    var t;
+
+     function updateGeocode(){
+        clearTimeout( t );
+         var latlng = main_map.getCenter()
+         geocoder = new google.maps.Geocoder();
+
+         geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+
+            if(status !== google.maps.GeocoderStatus.OK){
+                alert(status);
+            }
+            // This is checking to see if the Geoeode Status is OK before proceeding
+            if (status == google.maps.GeocoderStatus.OK) {
+                //This is placing the marker at the returned address
+                if (results[0]) {
+                    //This is placing the returned address in the 'Address' field on the HTML form
+                    $("#map_source").val( results[0].formatted_address );
+                }
+            }
+        });
+
+    }
+
+    function centerReticle(){
+        clearTimeout( t );
+        lat = main_map.getCenter().lat();
+        lng = main_map.getCenter().lng();
+        $("#lat").val(lat);
+        $("#lng").val(lng);
+        $("#latlng").html( lat.toFixed(4) +","+lng.toFixed(4) );
+        reticleMarker.setPosition(main_map.getCenter());
+        t = setTimeout("updateGeocode()",2000);
+    }
+
+    $(document).ready(function(){
+
+        var options = {empty_value: -1, select_class: 'category_select'};
+
+        $('input[name=category_selector]').optionTree(<%= raw @categories.to_json %>, options);
+        var reticleImage = new google.maps.MarkerImage(
+            '/images/cross-hairs.gif',            // marker image
+            new google.maps.Size(27, 27),    // marker size
+            new google.maps.Point(0,0),      // marker origin
+            new google.maps.Point(13, 13));  // marker anchor point
+          var reticleShape = {
+            coords: [32,32,32,32],           // 1px
+            type: 'rect'                     // rectangle
+          };
+
+
+        latlng = new google.maps.LatLng(default_lat, default_lng)
+        var myOptions = {
+          center: latlng,
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        main_map = new google.maps.Map(document.getElementById("map_canvas"),
+            myOptions);
+
+        reticleMarker = new google.maps.Marker({
+            position: latlng,
+            map: main_map,
+            icon: reticleImage,
+            shape: reticleShape,
+            optimized: false,
+            zIndex: 5
+          });
+        google.maps.event.addListener(main_map, 'bounds_changed',centerReticle);
+        setTimeout( clearTimeout( t ) );//don't want to run on first go
+
+        var input = document.getElementById('map_source');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.bindTo('bounds',main_map);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (place.geometry.viewport) {
+            main_map.fitBounds(place.geometry.viewport);
+          } else {
+            main_map.setCenter(place.geometry.location);
+            main_map.setZoom(18);  // Why 17? Because it looks good.
+          }
+
+          var image = new google.maps.MarkerImage(
+              place.icon,
+              new google.maps.Size(71, 71),
+              new google.maps.Point(0, 0),
+              new google.maps.Point(17, 34),
+              new google.maps.Size(35, 35));
+
+          var address = '';
+          if (place.address_components) {
+            address = [(place.address_components[0] &&
+                        place.address_components[0].short_name || ''),
+                       (place.address_components[1] &&
+                        place.address_components[1].short_name || ''),
+                       (place.address_components[2] &&
+                        place.address_components[2].short_name || '')
+                      ].join(' ');
+          }
+        });
+
+     });
+
+    function updateMapFactory(latLngObject) {
+      return function(event) {
+        event.preventDefault();
+        updateMap(latLngObject);
+      }
+    }
+
+  </script>
 <% end %>
