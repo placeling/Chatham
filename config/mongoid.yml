@@ -4,6 +4,7 @@ development:
   #autocreate_indexes: true
   raise_not_found_error: false
   allow_dynamic_fields: false
+  identity_map_enabled: true
 
 
 test:
@@ -12,11 +13,13 @@ test:
   autocreate_indexes: true
   raise_not_found_error: false
   allow_dynamic_fields: false
+  identity_map_enabled: true
 
 staging:
   host: ec2-184-72-38-73.us-west-1.compute.amazonaws.com
   database: chatham_staging
   raise_not_found_error: false
+  identity_map_enabled: true
   pool_size: 2
 
 # set these environment variables on your prod server
@@ -24,6 +27,7 @@ production:
   host: ec2-107-22-193-101.compute-1.amazonaws.com
   database: chatham_production
   raise_not_found_error: false
+  identity_map_enabled: true
   pool_size: 2
   #   - host: slave1.local
   #     port: 27018

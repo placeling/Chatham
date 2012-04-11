@@ -250,7 +250,7 @@ class UsersController < ApplicationController
     end
     
     if valid_params
-      @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id)
+      @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id).includes(:place, :user)
     end
     
     respond_to do |format|
