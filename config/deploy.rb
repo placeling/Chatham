@@ -81,7 +81,7 @@ namespace :ubuntu do
     run 'sudo apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl libtool libpcre3 libpcre3-dev'
   end
 
-  task :servie_gems, :roles => :app do
+  task :service_gems, :roles => :app do
     run 'gem install bundler passenger scout request-log-analyzer'
   end
 

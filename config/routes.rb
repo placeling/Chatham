@@ -92,6 +92,7 @@ Chatham::Application.routes.draw do
       get :search
       get :suggested
       get :reference
+      post :confirm
     end
     resources :users
       resources :perspectives, :except =>[:show, :index]  do

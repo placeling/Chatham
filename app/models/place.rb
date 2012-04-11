@@ -6,7 +6,7 @@ class Place
   include Mongoid::Timestamps
   include Mongoid::Paranoia
   
-  before_validation :fix_location
+  before_validation :fix_location, :remove_blank_categories, :parse_address
   
   field :loc, :as => :location, :type => Array
   field :name, :type => String
@@ -90,7 +90,12 @@ class Place
     self.place_tags = sorted_tag_tally.last( n ).collect!{|value| value[0]}
 
   end
-  
+
+  def remove_blank_categories
+    self.venue_types.delete_if {|x| x == "" }
+  end
+
+
   def fix_location
     begin
       if self.location[0].is_a? String
@@ -178,6 +183,23 @@ class Place
     Place.where(:gid => google_id).first
   end
 
+  def parse_address
+    if self.address_components && !self.street_address && !self.city_data
+      address_dict = GooglePlaces.getAddressDict(self.address_components)
+
+      if address_dict['number'] and address_dict['street']
+        self.street_address = address_dict['number'] + " " + address_dict['street']
+      elsif address_dict['street']
+         self.street_address = address_dict['street']
+      end
+
+      if address_dict['city'] and address_dict['province']
+        self.city_data = address_dict['city'] + ", " + address_dict['province']
+      end
+
+    end
+  end
+
   def self.new_from_google_place( raw_place )
     place = Place.new
     place.name = raw_place.name
@@ -185,25 +207,9 @@ class Place
     place.google_url = raw_place.url
     place.vicinity = raw_place.vicinity
     place.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
-
-    place.phone_number = raw_place.formatted_phone_number unless !raw_place.formatted_phone_number?
+    place.address_components = raw_place.address_components unless raw_place.address_components.nil?
+    place.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
     place.google_ref = raw_place.reference
-
-    if raw_place.address_components
-      address_dict = GooglePlaces.getAddressDict(raw_place.address_components)
-
-      if address_dict['number'] and address_dict['street']
-        place.street_address = address_dict['number'] + " " + address_dict['street']
-      elsif address_dict['street']
-         place.street_address = address_dict['street']
-      end
-
-      if address_dict['city'] and address_dict['province']
-        place.city_data = address_dict['city'] + ", " + address_dict['province']
-      end
-
-      place.address_components = raw_place.address_components
-    end
     
     # TODO This is hacky and ignores i18n
     @categories = CATEGORIES
@@ -242,6 +248,11 @@ class Place
     return place
   end
 
+
+  def map_url
+    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+  end
+
   def self.new_from_user_input( old_place, radius=10 )
     gp = GooglePlaces.new
     
@@ -255,58 +266,23 @@ class Place
       end
     end
     
-    venue_type = google_mapping[old_place.venue_types[0]]
-    
-    raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, venue_type)
-    
-    grg = GoogleReverseGeocode.new
-    
-    raw_address = grg.reverse_geocode(old_place.location[0], old_place.location[1])
-    
+    venue_type = google_mapping[old_place.venue_types[0]] || old_place.venue_types[0]
+
     place = Place.new
+
+    unless !Rails.env.production?
+      raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, venue_type)
+      grg = GoogleReverseGeocode.new
+      raw_address = grg.reverse_geocode(old_place.location[0], old_place.location[1])
+      place.google_id = raw_place.id
+      place.google_ref = raw_place.reference
+    end
     
     place.name = old_place.name
-    place.google_id = raw_place.id
     place.location = old_place.location
-    
-    place.google_ref = raw_place.reference
     
     place.venue_types = old_place.venue_types
     place.place_type = "USER_CREATED"
-    
-    if !raw_address.nil?
-      street_number = nil
-      route = nil
-      locality = nil
-      admin_area_level_1 = nil
-      
-      raw_address.address_components.each do |component|
-        if component["types"].include? "street_number"
-          street_number = component["short_name"]
-        end
-        if component["types"].include? "route"
-          route = component["short_name"]
-        end
-        if component["types"].include? "locality"
-          locality = component["long_name"]
-        end
-        if component["types"].include? "administrative_area_level_1"
-          admin_area_level_1 = component["short_name"]
-        end
-      end
-      
-      if !street_number.nil? and !route.nil?
-        place.address_components = street_number + " " + route
-      elsif street_number.nil? and !route.nil?
-        place.address_components = route
-      end
-      
-      if !locality.nil? and !admin_area_level_1.nil?
-        place.city_data = locality + ", " + admin_area_level_1
-      elsif locality.nil? and !admin_area_level_1.nil?
-        place.city_data = admin_area_level_1
-      end
-    end
     
     return place
   end
@@ -331,7 +307,7 @@ class Place
     attributes[:place_tags] = attributes.delete('ptg')
     attributes[:google_id] = attributes.delete('gid')
     attributes[:perspective_count] = attributes.delete('pc')
-    attributes[:map_url] = "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+    attributes[:map_url] = self.map_url
 
     if options[:current_user]
       current_user = options[:current_user]

@@ -4,8 +4,7 @@ class ApplicationController < ActionController::Base
   include HTTParty
   
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_p3p
-  
+  before_filter :api_check, :set_p3p, :set_location
   helper_method :user_location
   helper_method :return_to_link
   
@@ -145,6 +144,21 @@ class ApplicationController < ActionController::Base
           cookies[:location] = {:value => location.to_json, :expires => 1.day.from_now}
         end
       end
+    end
+  end
+
+  def set_location
+    location =  get_location
+
+    if current_user && current_user.location && current_user.location.length == 2
+      @default_lat = (current_user.location[0]*100).round().to_f/100
+      @default_lng = (current_user.location[1]*100).round().to_f/100
+    elsif location.has_key?("remote_ip") && location["remote_ip"]
+      @default_lat = location["remote_ip"]["lat"]
+      @default_lng = location["remote_ip"]["lng"]
+    else
+      @default_lat = "49.2820"
+      @default_lng = "-123.1079"
     end
   end
   

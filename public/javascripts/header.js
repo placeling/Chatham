@@ -32,7 +32,8 @@ $(document).ready(function(){
       user_lng = parseFloat(userLocation["default"]["lng"]);
     }
   }
-  
+
+    /*
   $("#term").autocomplete({
     minLength: 3,
     html: true,
@@ -69,7 +70,7 @@ $(document).ready(function(){
         add(suggestions);
       });
     }
-  });
+  });  */
   
   $("#search_submit").click(function(){
     if ($("#term").val() != "") {
