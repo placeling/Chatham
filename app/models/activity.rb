@@ -1,6 +1,9 @@
+require 'redis_helper'
+
 class Activity
   include Mongoid::Document
   include Mongoid::Timestamps
+  include RedisHelper
 
   field :activity_type, :type => String
 
@@ -17,6 +20,20 @@ class Activity
   embedded_in :activity_feed_chunk
 
   validates_presence_of :actor1, :username1
+
+  # push status to a specific feed
+  def push(id, location="feed")
+    $redis.zadd key(location, id), timestamp, encoded
+  end
+
+  # push to followers (assumes an array of follower ids)
+  def push_to_followers( user )
+    user.followers.each do |follower|
+      push( follower.id )
+    end
+    #push onto the superfeed
+    $redis.zadd "FIREHOSEFEED", timestamp, encoded
+  end
 
 
   def as_json(options={})

@@ -12,5 +12,6 @@ class FollowActivity
     activity.actor2 = actor2.id
     activity.username2 = actor2.username
     activity.save
+    activity.push_to_followers( actor1 )
   end
 end
