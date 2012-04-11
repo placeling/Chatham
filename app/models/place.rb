@@ -207,8 +207,8 @@ class Place
     place.google_url = raw_place.url
     place.vicinity = raw_place.vicinity
     place.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
-
-    place.phone_number = raw_place.formatted_phone_number unless !raw_place.formatted_phone_number?
+    place.address_components = raw_place.address_components unless raw_place.address_components.nil?
+    place.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
     place.google_ref = raw_place.reference
     
     # TODO This is hacky and ignores i18n
