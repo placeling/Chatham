@@ -62,6 +62,7 @@
       var rightLng;
       var leftLng;
       var requests = 0;
+      var runCount = 0;
       
       var loadState = JSON.parse($.cookie('page_state'));
       if (loadState === null) {
@@ -114,7 +115,7 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("main_map"), myOptions);
-            
+      
       var placemark = new google.maps.MarkerImage(
         '/images/placemarker.png',
         new google.maps.Size(30,32),
@@ -321,7 +322,7 @@
       
       function updateMap() {
         var currentBounds = map.getBounds();
-        
+                
         loadState["<%= @user.username %>"]['lat'] = map.getCenter().lat();
         loadState["<%= @user.username %>"]['lng'] = map.getCenter().lng();
         loadState["<%= @user.username %>"]['zoom'] = map.getZoom();
@@ -380,7 +381,7 @@
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           }
-        } else if   (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") {
+        } else if ((typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && (typeof persps[loadState["<%= @user.username %>"]['infowindow']]["marker"] !== "undefined")) {
             google.maps.event.trigger(persps[loadState["<%= @user.username %>"]['infowindow']]["marker"], 'click');
         }
         
@@ -407,6 +408,14 @@
         var callServer = false;
         var bounds = map.getBounds();
         
+        if ((typeof loadState["<%= @user.username %>"]['server'] !== "undefined") && (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && loadState["<%= @user.username %>"]['server'] === true) {
+          var mapTop = map.getBounds().getNorthEast().lat();
+          var mapBottom = map.getBounds().getSouthWest().lat();
+          var newCenter = new google.maps.LatLng(mapTop - 0.25*(mapTop - mapBottom), map.getCenter().lng());
+          map.setCenter(newCenter);
+          loadState["<%= @user.username %>"]['server'] = false;
+        }
+                
         if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
           callServer = true;
         }
@@ -859,7 +868,6 @@
           return false;
         });
       }
-      
     }
     
     $(document).ready(function(){
