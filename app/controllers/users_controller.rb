@@ -103,6 +103,7 @@ class UsersController < ApplicationController
         end
       end
     else
+      Airbrake.notify( params )
       respond_to do |format|
         format.json { render :json => {:status => "fail", :message => user.errors} }
       end
