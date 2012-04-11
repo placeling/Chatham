@@ -136,13 +136,25 @@ class UsersController < ApplicationController
     #for map view on web, get current page state
     if params[:api_call].nil?
       # Use following logic to determine what lat/lng to show to viewer:
-      # 1. If already have a lat/lng for @user, go there
-      # 2. Else, if have viewer's lat/lng and @user has places near there, return location of first place near there that @user has
-      # 3. Else, return first place on @user's map
-      # 4. Else, return default lat/lng
+      # 1. If valid lat/lng in parameters, use that
+      # 2. Else, if already have a lat/lng for @user, go there
+      # 3. Else, if have viewer's lat/lng and @user has places near there, return location of first place near there that @user has
+      # 4. Else, return first place on @user's map
+      # 5. Else, return default lat/lng
       
       @current_location = []
-      if !cookies[:page_state].nil?
+      
+      if !params[:lat].nil? && !params[:lng].nil?
+        lat = params[:lat].to_f
+        lng = params[:lng].to_f
+        
+        if lat <= 90.0 && lat >= -90.0 && lng <= 180.0 && lng >= -180.0
+          @current_location << lat
+          @current_location << lng
+        end
+      end
+      
+      if @current_location.length == 0 && !cookies[:page_state].nil?
         page_state = JSON.parse(cookies[:page_state])
         if page_state.has_key?(@user.username)
           @current_location << page_state[@user.username]['lat']
