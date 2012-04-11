@@ -2,8 +2,7 @@ require 'google_places'
 require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
-  before_filter :admin_required, :only => [:new]
-  before_filter :login_required, :only => [:create, :new, :update, :destroy]
+  before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy]
   
   def reference
     if params[:ref].nil?
@@ -138,6 +137,7 @@ class PlacesController < ApplicationController
 
   def new
     @place = Place.new
+    @place.venue_types = [""]
     
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()
@@ -145,6 +145,47 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html
+    end
+  end
+
+  def confirm
+
+    unless params['place']['address_components'].nil?
+      params['place']['address_components'] =JSON.parse( params['place']['address_components'] )
+      params['place']['address_components'] = params['place']['address_components'].each{|item| Hashie::Mash.new(item)}
+
+      address_array = []
+      for component in params['place']['address_components']
+         address_array <<  Hashie::Mash.new( component )
+      end
+
+      address_dict = GooglePlaces.getAddressDict( address_array )
+
+      if address_dict['number'] and address_dict['street']
+        params['place']['street_address'] = address_dict['number'] + " " + address_dict['street']
+      elsif address_dict['street']
+         params['place']['street_address'] = address_dict['street']
+      end
+
+      if address_dict['city'] and address_dict['province']
+        params['place']['city_data'] = address_dict['city'] + ", " + address_dict['province']
+      end
+
+      params['place'].delete( 'address_components' )
+    end
+
+    @place = Place.new( params[:place] )
+
+    if @place.valid?
+      render :action => :confirm
+    else
+      file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
+      content = file.read()
+      @categories = JSON(content)
+      if @place.venue_types.length ==0
+        @place.venue_types = [""]
+      end
+      render :action => :new
     end
   end
 
@@ -277,7 +318,6 @@ class PlacesController < ApplicationController
 
 
   def create
-    return unless (params[:format] == :json or params[:format] == 'json' or current_user.is_admin? == true)
     
     if params[:google_ref]  #check to see what place data is based on
       if @place = Place.find_by_google_id( params[:google_id] )

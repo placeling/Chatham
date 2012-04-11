@@ -1,0 +1,48 @@
+<% content_for :head do %>
+  <title><%= t('place.confirm_place') %></title>
+<% end %>
+
+<%= form_for @place do |f| %>
+    <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
+    <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
+    <div class="account_holder">
+      <div class="account_title"><%= t('place.confirm_place') %> </div>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('place.name') %></div>
+        <div class="account_value"><%= f.text_field :name %></div>
+      </div>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('place.street_address') %></div>
+        <div class="account_value"><%= f.text_field :street_address %></div>
+      </div>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('place.city_data') %></div>
+        <div class="account_value"><%= f.text_field :city_data %></div>
+      </div>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('place.location') %></div>
+        <div class="account_value"><%= image_tag @place.map_url %></div>
+      </div>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('place.category_label') %></div>
+        <input id="venue_type" name="place[venue_types][]" type="hidden" value="<%= @place.venue_types[0] %>">
+        <div class="account_value"><%= @place.venue_types.join(",") %></div>
+      </div>
+      <div id="create">
+            <input id="save_place_button" name="commit" type="button" value="Save">
+      </div>
+    </div>
+<% end %>
+
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $("#save_place_button").click(function(){
+            $("#new_place").submit();
+        });
+    });
+
+  </script>
+
+<% end %>

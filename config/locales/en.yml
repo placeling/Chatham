@@ -268,6 +268,7 @@ en:
     top_places: "Top Places"
     name: "Place Name:"
     category: "Pick the category that best describes this place:"
+    category_label: "Category"
     search_name: "Enter a place name"
     search_no_result: "We couldn't find a place called"
     search_tip: "Tips"
@@ -278,6 +279,8 @@ en:
     add_perspective: "Add perspective"
     add_1: "Not the"
     add_2: "you're looking for"
+    street_address: "Street Address"
+    city_data: "City"
     address_latlng: "Enter a lat/lng decimal pair or an address:"
     placemarks: "Placemarks"
     placemark: "Placemark"
@@ -295,6 +298,7 @@ en:
     call_to_action: " to see you and your network's notes and photos"
     description: "The Placeling community's thoughts on %{name}"
     no_notes: "Be the first to placemark this location!"
+    confirm_place: "Confirm New Place"
 
   perspective:
     fav_places: "%{user}'s favorite places"

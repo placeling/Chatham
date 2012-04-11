@@ -8,59 +8,71 @@
 
 
 <% content_for :css do %>
-
+    #latlng{
+        width:100%;
+        text-align: right;
+    }
 
 <% end %>
 
-<%= form_for @place, :url =>{:action => "confirm"} do |f| %>
-  <% if @place.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
+<div id="content_holder">
+    <div id="story">
+    <div class="title"><%= t 'place.add_new' %></div>
+    <div class="story_text">
 
-      <ul>
-      <% @place.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <%= form_for @place, :url =>{:action => "confirm"} do |f| %>
+          <% if @place.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
 
-  <div class="standout">
-    <p><%= t'place.name' %></p>
-    <%= f.text_field :name, :class => "place_input" %>
-  </div>
-  <div class="standout">
-    <p><%= t'place.address' %></p>
-    <p><input id="map_source" type="text" size="50" class="place_input"/></p>
-  </div>
+              <ul>
+              <% @place.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-  <div id="selector_map" style="height:300px; width: 300px;">
-    <div id="map_canvas" style="width:100%; height:100%"></div>
-    <div id="latlng"></div>
-  </div>
-  <br>
+          <div class="standout">
+            <p><%= t'place.name' %></p>
+            <%= f.text_field :name, :class => "place_input" %>
+          </div>
 
-  <div class="field">
-    <% if @place.location %>
-      <% @place.location.each_with_index do |location, index| %>
-        <% if index == 0 %>
-          <input id="lat" name="place[location][]" type="hidden" value="<%= location %>">
-        <% elsif index == 1 %>
-          <input id="lng" name="place[location][]" type="hidden" value="<%= location %>">
+          <%= f.hidden_field :address_components, :id=>"address_components" %>
+          <div class="standout">
+            <p><%= t'place.address' %></p>
+            <p><input id="map_source" name="address" type="text" size="100" class="place_input"/></p>
+          </div>
+
+          <div id="selector_map" style="height:300px; width: 300px;">
+            <div id="map_canvas" style="width:100%; height:100%"></div>
+            <div id="latlng"></div>
+          </div>
+          <br>
+
+          <div class="field">
+            <% if @place.location %>
+              <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
+              <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
+            <% else %>
+              <input id="lat" name="place[location][]" type="hidden" value="" />
+              <input id="lng" name="place[location][]" type="hidden" value="" />
+            <% end %>
+          </div>
+          <div id="map"></div>
+          <p><%= t'place.category' %></p>
+
+          <%  @place.venue_types.each do |venue| %>
+            <%= hidden_field_tag "place[venue_types][]", venue, :id => "place_venue_type" %>
+          <% end %>
+
+          <div id="create">
+            <input id="save_place_button" name="commit" type="button" value="Save">
+          </div>
         <% end %>
-      <% end %>
-    <% else %>
-      <input id="lat" name="place[location][]" type="hidden" value="empty" />
-      <input id="lng" name="place[location][]" type="hidden" value="empty" />
-    <% end %>
+      </div>
   </div>
-  <div id="map"></div>
-  <p><%= t'place.category' %></p>
-  <input type="hidden" name="category_selector" />
-  <div id="create">
-
-  </div>
-<% end %>
+</div>
 
 <% content_for :javascript do %>
 
@@ -70,21 +82,16 @@
 
      function updateGeocode(){
         clearTimeout( t );
-         var latlng = main_map.getCenter()
+         var latlng = main_map.getCenter();
          geocoder = new google.maps.Geocoder();
 
          geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 
-            if(status !== google.maps.GeocoderStatus.OK){
-                alert(status);
-            }
             // This is checking to see if the Geoeode Status is OK before proceeding
-            if (status == google.maps.GeocoderStatus.OK) {
-                //This is placing the marker at the returned address
-                if (results[0]) {
-                    //This is placing the returned address in the 'Address' field on the HTML form
-                    $("#map_source").val( results[0].formatted_address );
-                }
+            if (status == google.maps.GeocoderStatus.OK && results[0]){
+                $("#address_components").val( JSON.stringify( results[0].address_components ) );
+                //This is placing the returned address in the 'Address' field on the HTML form
+                $("#map_source").val( results[0].formatted_address );
             }
         });
 
@@ -98,14 +105,19 @@
         $("#lng").val(lng);
         $("#latlng").html( lat.toFixed(4) +","+lng.toFixed(4) );
         reticleMarker.setPosition(main_map.getCenter());
-        t = setTimeout("updateGeocode()",2000);
+        t = setTimeout("updateGeocode()",1500);
     }
 
     $(document).ready(function(){
 
-        var options = {empty_value: -1, select_class: 'category_select'};
+        $("#save_place_button").click(function(){
+            $(".category_select").remove();  //necessary to prevent rack weirdness
+            $("#new_place").submit();
+        });
 
-        $('input[name=category_selector]').optionTree(<%= raw @categories.to_json %>, options);
+        var options = {empty_value: "", select_class: 'category_select', preselect: $("#place_venue_type").val() };
+
+        $('#place_venue_type').optionTree(<%= raw @categories.to_json %>, options);
         var reticleImage = new google.maps.MarkerImage(
             '/images/cross-hairs.gif',            // marker image
             new google.maps.Size(27, 27),    // marker size
@@ -116,8 +128,12 @@
             type: 'rect'                     // rectangle
           };
 
+        if ( $("#lat").val() != "" && $("#lng").val() != "" ){
+            latlng = new google.maps.LatLng($("#lat").val(), $("#lng").val())
+        } else {
+            latlng = new google.maps.LatLng(default_lat, default_lng)
+        }
 
-        latlng = new google.maps.LatLng(default_lat, default_lng)
         var myOptions = {
           center: latlng,
           zoom: 15,
@@ -135,7 +151,6 @@
             zIndex: 5
           });
         google.maps.event.addListener(main_map, 'bounds_changed',centerReticle);
-        setTimeout( clearTimeout( t ) );//don't want to run on first go
 
         var input = document.getElementById('map_source');
         var autocomplete = new google.maps.places.Autocomplete(input);
@@ -144,7 +159,7 @@
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
           var place = autocomplete.getPlace();
-          if (place.geometry.viewport) {
+          if (place.geometry && place.geometry.viewport) {
             main_map.fitBounds(place.geometry.viewport);
           } else {
             main_map.setCenter(place.geometry.location);
