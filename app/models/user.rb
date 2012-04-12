@@ -1,9 +1,11 @@
 require 'cityname_finder'
+require 'redis_helper'
 
 class User
   include Mongoid::Document
   include Mongoid::Paranoia
   include Mongoid::Timestamps
+  include RedisHelper
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :lockable, :timeoutable and :omniauthable
@@ -13,6 +15,9 @@ class User
   before_validation :set_downcase_username
   # For updating avatar see http://railscasts.com/episodes/182-cropping-images
   after_update :process_avatar, :if => :cropping?
+
+  FEED_COUNT=30
+  FEED_LENGTH=240
   
   def cropping?
     !x.blank? && !y.blank? && ! w.blank? && !h.blank?
@@ -317,9 +322,9 @@ class User
     end
 
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).as_json({:user_view=>true,:current_user =>current_user })  )
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).includes(:place).as_json({:user_view=>true,:current_user =>current_user })  )
     elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:created_at).limit(10).as_json({:user_view=>true,:current_user =>current_user }) )
+      attributes.merge(:perspectives => self.perspectives.descending(:created_at).includes(:place).limit(10).as_json({:user_view=>true,:current_user =>current_user }) )
     else
       attributes
     end
@@ -360,6 +365,41 @@ class User
     return nil
 
    # @fb_user ||= FbGraph::User.me(self.authentications.find_by_provider('facebook').token)
+  end
+
+  # get latest feed using reverse range lookup of sorted set
+  # then decode raw JSON back into Ruby objects
+  def feed(obj=true, count=FEED_COUNT)
+    results=$redis.zrevrange key(:feed), 0, count
+    if obj && results.size > 0
+      results.collect {|r| Activity.decode(r)}
+    else
+      results
+    end
+  end
+
+  # get older statuses by using reverse range by score lookup
+  def ofeed(max, obj=true, id=self.id_s, limit=FEED_COUNT, scores=false)
+    results=$redis.zrevrangebyscore(key(:feed), "(#{max}", "-inf", :limit => [0, limit], :with_scores => scores)
+    if obj && results.size > 0
+      results.collect {|r| Activity.decode(r)}
+    else
+      results
+    end
+  end
+
+  # there may be a more efficient way to do this
+  # but I check the length of the set
+  # then I get the score of the last value I want to keep
+  # then remove all keys with a lower score
+  def trim_feed(id=self.id_s, location="feed", indx=FEED_LENGTH)
+    k = key(:feed)
+    if ( $redis.zcard k ) >= indx
+      n = indx - 1
+      if (r = $redis.zrevrange k, n, n, :with_scores => true)
+        $redis.zremrangebyscore k, "-inf", "(#{r.last}"
+      end
+    end
   end
 
   protected
