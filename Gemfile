@@ -54,6 +54,7 @@ gem 'nested_form'
 gem 'fastercsv'
 
 gem "redis", "~> 2.2"
+gem "redis-namespace"
 #gem 'redis-store'
 gem "vanity"
 gem 'resque', :require => 'resque/server'

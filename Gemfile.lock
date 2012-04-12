@@ -360,6 +360,7 @@ DEPENDENCIES
   omniauth (~> 0.3.2)
   rails (= 3.1.3)
   redis (~> 2.2)
+  redis-namespace
   resque
   rspec-rails (= 2.7)
   rvm-capistrano
