@@ -218,6 +218,10 @@ en:
     save_crop_changes: "Save changes"
     upload_pic: "Upload photo"
     cancel: "Cancel"
+    explore: "Explore"
+    categories: "Categories"
+    and: "and"
+    photos: "Photos"
     
   oauth:
     registered_successfully: "Registered the information successfully"
