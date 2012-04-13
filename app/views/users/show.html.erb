@@ -91,7 +91,13 @@
         'tags' : []
       }
       
-      var zoom = DEFAULT_ZOOM;
+      <% if @zoom %>
+        var zoom = <%= @zoom %>;
+        loadState["<%= @user.username %>"]['zoom'] = <%= @zoom %>;
+      <% else %>
+        var zoom = DEFAULT_ZOOM;
+      <% end %>
+      
       
       if (typeof loadState["<%= @user.username %>"]['zoom'] !== "undefined") {
         zoom = loadState["<%= @user.username %>"]['zoom'];

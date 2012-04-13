@@ -1,6 +1,11 @@
 require 'json'
 
 NEARBY_RADIUS = 0.0035
+DEFAULT_LAT = 49.9
+DEFAULT_LNG = -97.1
+DEFAULT_ZOOM = 3
+DEFAULT_WIDTH = 500
+DEFAULT_HEIGHT = 500
 
 class UsersController < ApplicationController
 
@@ -126,7 +131,60 @@ class UsersController < ApplicationController
       format.json { render :json => {:status =>"success", :users => @users.as_json({:current_user => current_user}) } }
     end
   end
-
+  
+  def iframe
+    @user = User.find_by_username(params[:id])
+    
+    if params[:lat].nil?
+      @lat = DEFAULT_LAT
+    else
+      @lat = params[:lat].to_f
+      if @lat > 90 or @lat < -90
+        @lat = DEFAULT_LAT
+      end
+    end
+    
+    if params[:lng].nil?
+      @lng = DEFAULT_LNG
+    else
+      @lng = params[:lng].to_f
+      if @lng > 180 or @lng < -180
+        @lng = DEFAULT_LNG
+      end
+    end
+    
+    if params[:zoom].nil?
+      @zoom = DEFAULT_ZOOM
+    else
+      @zoom = params[:zoom].to_i
+      if @zoom > 20 or @zoom < 1
+        @zoom = DEFAULT_ZOOM
+      end
+    end
+    
+    if params[:h].nil?
+      @height = DEFAULT_HEIGHT
+    else
+      @height = params[:h].to_i
+      if @height < 1
+        @height = DEFAULT_HEIGHT
+      end
+    end
+    
+    if params[:w].nil?
+      @width = DEFAULT_WIDTH
+    else
+      @width = params[:w].to_i
+      if @width < 1
+        @width = DEFAULT_WIDTH
+      end
+    end
+    
+    respond_to do |format|
+      format.html { render :layout => 'blank' }
+    end
+  end
+  
   def show
     @user = User.find_by_username(params[:id])
     
@@ -145,22 +203,22 @@ class UsersController < ApplicationController
       
       @current_location = []
       
-      if !params[:uid].nil?
-        persp = Perspective.where({'uid'=>@user._id, '_id'=>params[:uid]}).first
+      if !params[:pid].nil?
+        persp = Perspective.where({'uid'=>@user._id, '_id'=>params[:pid]}).first
         
         if !persp.nil?
           @current_location = persp.place.loc
           # Need to update page_state cookie so that it will show the infowindow for current perspective
           if cookies[:page_state].nil?
-            page_state = {@user.username => {'infowindow' => params[:uid], 'server' => true}}
+            page_state = {@user.username => {'infowindow' => params[:pid], 'server' => true}}
           else
             page_state = JSON.parse(cookies[:page_state])
             
             if page_state.has_key?(@user.username)
-              page_state[@user.username]['infowindow'] = params[:uid]
+              page_state[@user.username]['infowindow'] = params[:pid]
               page_state[@user.username]['server'] = true
             else
-              page_state[@user.username] = {'infowindow' => params[:uid], 'server' => true}
+              page_state[@user.username] = {'infowindow' => params[:pid], 'server' => true}
             end
           end
           
@@ -206,6 +264,13 @@ class UsersController < ApplicationController
           if perps.length > 0
             @current_location = perps[0].ploc
           end          
+        end
+      end
+      
+      if params[:zoom]
+        @zoom = params[:zoom].to_i
+        if @zoom > 20 or @zoom < 1
+          @zoom = DEFAULT_ZOOM
         end
       end
       
