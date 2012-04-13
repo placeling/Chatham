@@ -22,7 +22,13 @@ en:
     description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web. If you're a Wordpress blogger, use Placeling to turn your blog into an iPhone-enabled city guide"
     blog: "Blog"
     investors: "Investors"
-
+    
+  iframe:
+    slogan: "Another Beautiful Placeling Map"
+    explore: "Explore more of "
+    or: "or"
+    yours: "get your own"
+    
   basic:
     update: "Update"
     are_you_sure: "Are you sure?"
@@ -212,6 +218,10 @@ en:
     save_crop_changes: "Save changes"
     upload_pic: "Upload photo"
     cancel: "Cancel"
+    explore: "Explore"
+    categories: "Categories"
+    and: "and"
+    photos: "Photos"
     
   oauth:
     registered_successfully: "Registered the information successfully"

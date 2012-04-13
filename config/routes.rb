@@ -43,14 +43,6 @@ Chatham::Application.routes.draw do
   resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
-    #resources :inprogress do
-    #  member do
-    #    get :map
-    #  end
-    #  collection do
-    #    get :convert
-    #  end
-    #end
     member do
       get :bounds
       get :recent
@@ -59,6 +51,7 @@ Chatham::Application.routes.draw do
       post :follow
       post :unfollow
       get :activity
+      get :iframe
       get :account
       get :pic, :to => :edit, :as => :edit_avatar, :avatar => true
       put :pic, :to => :update, :as => :upload_avatar, :avatar => true
