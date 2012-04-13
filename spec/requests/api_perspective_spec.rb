@@ -173,7 +173,7 @@ describe "API - Perspective" do
 
     end
 
-    it "to a new place that exists on Google Places but not the system" do
+    it "to a new place that exists on Google Places but not the system", :broken => true do
       # 49.268547,-123.15279 - Ian's House
 
       user = Factory.create(:user)

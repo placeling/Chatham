@@ -328,55 +328,29 @@ class PlacesController < ApplicationController
 
 
   def create
-    
-    if params[:google_ref]  #check to see what place data is based on
-      if @place = Place.find_by_google_id( params[:google_id] )
-        #kind of a no-op
-      else
-        gp = GooglePlaces.new
-        @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
-        @place.user = current_user
-        @place.client_application = current_client_application unless current_client_application.nil?
-        @place.save
-      end
-    else
-      @place = Place.new(params[:place])
-      if @place.valid?
-        @place = Place.new_from_user_input(@place)
-        track! :user_created_place
-        @place.user = current_user
-        @place.client_application = current_client_application unless current_client_application.nil?
-        @place.save
 
-        #by default, we placemark the new place
-        track! :placemark
-        @perspective= @place.perspectives.build()
-        @perspective.user = current_user
-        @perspective.save
-      end      
+    @place = Place.new(params[:place])
+    if @place.valid?
+      @place = Place.new_from_user_input(@place)
+      track! :user_created_place
+      @place.user = current_user
+      @place.client_application = current_client_application unless current_client_application.nil?
     end
 
-    #check for an attached perspective
-    if ( params[:memo] )
-      @perspective = @place.perspectives.build( )
+    if verify_recaptcha(:model => @place, :message => "Invalid CAPTCHA") && @place.save
+      #by default, we placemark the new place
+      track! :placemark
+      @perspective= @place.perspectives.build()
       @perspective.user = current_user
-      @perspective.memo = params[:memo]
-      if (params[:lat] and params[:long])
-        @perspective.location = [params[:lat].to_f, params[:long].to_f]
-        @perspective.accuracy = params[:accuracy]
-      end
-      @perspective.save! #don't autosave this relation, since were modding at most 1 doc and dont want to bother rest
-    end
+      @perspective.save
 
-    if @place.save
-      current_user.save!
       flash[:notice] = t "basic.saved"
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
         format.json { render :json => @place }
       end
     else
-      render :action => "new"
+      render :action => "confirm"
     end
   end
 

@@ -39,8 +39,11 @@
           </div>
 
           <%= f.hidden_field :address_components, :id=>"address_components" %>
+          <%= f.hidden_field :accurate_address, :id=>"accurate_address" %>
+
           <div class="standout">
             <p><%= t'place.address' %></p>
+            <p id="accurate_address_label" style="display:none"><%= t'place.approximate_address' %></p>
             <p><input id="map_source" name="address" type="text" size="100" class="place_input"/></p>
           </div>
 
@@ -92,6 +95,19 @@
                 $("#address_components").val( JSON.stringify( results[0].address_components ) );
                 //This is placing the returned address in the 'Address' field on the HTML form
                 $("#map_source").val( results[0].formatted_address );
+                if (results[0].geometry.location_type == google.maps.GeocoderLocationType.ROOFTOP ){
+                    $("#accurate_address").val( true );
+                    $("#accurate_address_label").hide();
+                } else {
+                    $("#accurate_address").val( false );
+                    $("#accurate_address_label").show();
+                }
+            } else {
+                 $("#address_components").val( "{}" );
+                //This is placing the returned address in the 'Address' field on the HTML form
+                $("#map_source").val( "" );
+                $("#accurate_address_test").html("INVALID");
+                $("#accurate_address").val( false );
             }
         });
 

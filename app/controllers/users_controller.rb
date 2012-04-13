@@ -227,6 +227,7 @@ class UsersController < ApplicationController
   end
   
   def bounds
+
     @user = User.find_by_username(params[:id])
     
     @perspectives = []

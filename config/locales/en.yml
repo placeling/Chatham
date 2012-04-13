@@ -281,6 +281,7 @@ en:
     add_2: "you're looking for"
     street_address: "Street Address"
     city_data: "City"
+    approximate_address: "Address is approximate"
     address_latlng: "Enter a lat/lng decimal pair or an address:"
     placemarks: "Placemarks"
     placemark: "Placemark"
