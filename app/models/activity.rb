@@ -35,6 +35,9 @@ class Activity
     $redis.zadd "FIREHOSEFEED", timestamp, encoded
   end
 
+  def self.decode(json)
+    Activity.new(ActiveSupport::JSON.decode(json))
+  end
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)

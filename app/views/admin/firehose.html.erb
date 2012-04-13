@@ -1,0 +1,27 @@
+
+<h1>Firehose</h1>
+
+<ul>
+<% @activities.each do |activity| %>
+
+      <% if activity.activity_type == "FOLLOW" %>
+
+        <div class="activity follow">
+          <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> followed <%= activity.username2 %>
+        </div>
+
+
+      <% elsif activity.activity_type == "NEW_PERSPECTIVE" %>
+         <div class="activity new_perspective">
+            <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> placemarked <%= activity.subject_title %>
+         </div>
+
+      <% end %>
+
+
+
+
+<% end %>
+
+
+</ul>
