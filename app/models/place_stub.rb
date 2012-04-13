@@ -12,6 +12,7 @@ class PlaceStub
   field :street_address, :type => String
   field :phone_number, :type => String
   field :city_data, :type => String
+  field :accurate_address, :type => Boolean, :default => false
 
   field :venue_types, :type => Array
   field :google_url,  :type => String
