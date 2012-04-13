@@ -201,6 +201,7 @@ class PlacesController < ApplicationController
   end
 
   def suggested
+    t = Time.now
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
@@ -250,8 +251,8 @@ class PlacesController < ApplicationController
 
     @places_dict = {}
 
-    for perspective in @perspectives.entries
-      place = perspective.place_stub.to_place #saves lookup, effectively casts stub as real, DONT SAVE
+    @perspectives.each do |perspective|
+      place = perspective.place #saves lookup, effectively casts stub as real, DONT SAVE
 
       if current_user && perspective.user.id == current_user.id
         username = "You"
@@ -282,7 +283,7 @@ class PlacesController < ApplicationController
       end
     end
 
-    for place in @places
+    @places.each do |place|
       #add distance to in meters
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
     end
@@ -320,6 +321,7 @@ class PlacesController < ApplicationController
 
     end
 
+    logger.info "action: #{(Time.now - t) *1000}ms"
     respond_to do |format|
         format.html
         format.json { render :json => {:suggested_places => @places } }#, :ad => Advertisement.new( "Admob" ) } }
