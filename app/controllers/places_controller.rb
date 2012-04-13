@@ -238,13 +238,13 @@ class PlacesController < ApplicationController
     if query_type == "following" && current_user
       following_ids = current_user[:following_ids] << current_user.id
       @perspectives = Perspective.query_near( loc, span, query, category ).
-        and(:uid.in => following_ids).limit(n).entries
+        and(:uid.in => following_ids).includes(:user, :place).limit(n).entries
     elsif query_type == "me" && current_user
       search_ids = [ current_user.id ]
       @perspectives = Perspective.query_near( loc, span, query, category ).
-        and(:uid.in => search_ids).limit(n).entries
+        and(:uid.in => search_ids).includes(:user, :place).limit(n).entries
     else
-      @perspectives = Perspective.query_near( loc, span, query, category ).limit(n).entries
+      @perspectives = Perspective.query_near( loc, span, query, category ).includes(:user, :place).limit(n).entries
     end
 
     @places_dict = {}
