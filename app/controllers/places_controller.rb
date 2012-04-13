@@ -138,6 +138,7 @@ class PlacesController < ApplicationController
   def new
     @place = Place.new
     @place.venue_types = [""]
+    @place.name = params[:name] unless params[:name].nil?
     
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()

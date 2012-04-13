@@ -18,6 +18,7 @@
           <% end %>
         </li>
       <% end %>
+      <p><a href="<%= new_place_path :name => @input %>"><%= image_tag "placemarker.png" %><%= t('search.add_new', :name => @input) %></a></p>
       <li class="google">
         <img src="/images/google.png">
       </li>
