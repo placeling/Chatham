@@ -33,7 +33,7 @@ $(document).ready(function(){
     }
   }
 
-    /*
+
   $("#term").autocomplete({
     minLength: 3,
     html: true,
@@ -70,7 +70,7 @@ $(document).ready(function(){
         add(suggestions);
       });
     }
-  });  */
+  });
   
   $("#search_submit").click(function(){
     if ($("#term").val() != "") {
