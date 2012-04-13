@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include HTTParty
   
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_p3p, :set_location
+  before_filter :api_check, :set_location
   helper_method :user_location
   helper_method :return_to_link
   
@@ -170,11 +170,5 @@ class ApplicationController < ActionController::Base
   def current_user=(user)
     @current_user = user
   end
-  
-  private
-  # P3P headers for IE8 iFrame: http://robanderson123.wordpress.com/2011/02/25/p3p-header-hell/
-  # this is required by IE so that we can set session cookies
-  def set_p3p
-    headers['P3P'] = 'CP="ALL DSP COR CURa ADMa DEVa OUR IND COM NAV"'
-  end
+
 end

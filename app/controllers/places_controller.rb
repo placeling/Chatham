@@ -142,6 +142,11 @@ class PlacesController < ApplicationController
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()
     @categories = JSON(content)
+    @categories.each_pair do |key, val|
+      val.each_pair do |k,v|
+        val[k] = k #otherwise mapping to google
+      end
+    end
     
     respond_to do |format|
       format.html
@@ -182,6 +187,11 @@ class PlacesController < ApplicationController
       file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
       content = file.read()
       @categories = JSON(content)
+      @categories.each_pair do |key, val|
+        val.each_pair do |k,v|
+          val[k] = k #otherwise mapping to google
+        end
+      end
       if @place.venue_types.length ==0
         @place.venue_types = [""]
       end
@@ -228,13 +238,13 @@ class PlacesController < ApplicationController
     if query_type == "following" && current_user
       following_ids = current_user[:following_ids] << current_user.id
       @perspectives = Perspective.query_near( loc, span, query, category ).
-        and(:uid.in => following_ids).limit(n).entries
+        and(:uid.in => following_ids).includes(:user, :place).limit(n).entries
     elsif query_type == "me" && current_user
       search_ids = [ current_user.id ]
       @perspectives = Perspective.query_near( loc, span, query, category ).
-        and(:uid.in => search_ids).limit(n).entries
+        and(:uid.in => search_ids).includes(:user, :place).limit(n).entries
     else
-      @perspectives = Perspective.query_near( loc, span, query, category ).limit(n).entries
+      @perspectives = Perspective.query_near( loc, span, query, category ).includes(:user, :place).limit(n).entries
     end
 
     @places_dict = {}
@@ -333,9 +343,16 @@ class PlacesController < ApplicationController
       @place = Place.new(params[:place])
       if @place.valid?
         @place = Place.new_from_user_input(@place)
+        track! :user_created_place
         @place.user = current_user
         @place.client_application = current_client_application unless current_client_application.nil?
         @place.save
+
+        #by default, we placemark the new place
+        track! :placemark
+        @perspective= @place.perspectives.build()
+        @perspective.user = current_user
+        @perspective.save
       end      
     end
 

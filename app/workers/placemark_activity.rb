@@ -14,5 +14,6 @@ class PlacemarkActivity
     activity.subject_title = perspective.place.name
 
     activity.save
+    activity.push_to_followers( actor1 )
   end
 end

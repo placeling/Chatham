@@ -18,7 +18,7 @@
         <li class="permission_list"><%= t("oauth.access.followers") %></li>
     </ul>
 
-    <% form_tag authorize_url do %>
+    <%= form_tag authorize_url do %>
       <%= hidden_field_tag "oauth_token", @token.token %>
       <%- if params[:oauth_callback] -%>
       <%= hidden_field_tag "oauth_callback", params[:oauth_callback] %>

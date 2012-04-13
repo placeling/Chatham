@@ -40,6 +40,7 @@ gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 
 gem 'airbrake'
 
+gem 'rack-p3p'
 
 gem "rspec-rails", "2.7"  #needs these outside to prevent rake break
 gem 'ci_reporter'
@@ -54,6 +55,7 @@ gem 'nested_form'
 gem 'fastercsv'
 
 gem "redis", "~> 2.2"
+gem "redis-namespace"
 #gem 'redis-store'
 gem "vanity"
 gem 'resque', :require => 'resque/server'

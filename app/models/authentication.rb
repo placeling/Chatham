@@ -16,6 +16,7 @@ class Authentication
   index :uid
 
   validates_uniqueness_of :uid
+  validates_presence_of :token
 
   def self.find_by_provider_and_uid(provider,id)
     self.where(:uid =>id).and(:p=>provider).first

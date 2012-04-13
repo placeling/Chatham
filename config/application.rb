@@ -47,6 +47,8 @@ module Chatham
     config.filter_parameters += [:password]
 
     config.middleware.use OAuth::Rack::OAuthFilter
+    config.middleware.insert_before ActionDispatch::Session::CookieStore, Rack::P3p
+
     config.generators do |g|
       g.orm             :mongoid
       g.test_framework  :rspec
