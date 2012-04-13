@@ -9,12 +9,12 @@ test:
   port: 6379
   namespace: placeling_test
 staging:
-  db: 2
+  db: 0
   host: ec2-184-72-38-73.us-west-1.compute.amazonaws.com
   port: 6379
   namespace: placeling_stag
 production:
-  db: 3
+  db: 0
   host: ec2-107-22-193-101.compute-1.amazonaws.com:6379
   port: 6379
   namespace: placeling_prod
