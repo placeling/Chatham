@@ -1593,6 +1593,8 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #code {
   height: 300px;
+  font-size: 14px;
+  width: 200px;
 }
 
 #height_input {
