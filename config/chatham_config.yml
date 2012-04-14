@@ -1,7 +1,27 @@
 
-num_top_tags: 10
-cache_tags_time_hours: 1
-max_returned_map: 32
+development:
+  num_top_tags: 10
+  cache_tags_time_hours: 1
+  max_returned_map: 32
+  iframe_domain: http://dev.placeling.com:3000
 
 
+test:
+  num_top_tags: 10
+  cache_tags_time_hours: 1
+  max_returned_map: 32
+  iframe_domain: http://test.placeling.com:3000
+
+staging:
+  num_top_tags: 10
+  cache_tags_time_hours: 1
+  max_returned_map: 32
+  iframe_domain: http://staging.placeling.com
+
+# set these environment variables on your prod server
+production:
+  num_top_tags: 10
+  cache_tags_time_hours: 1
+  max_returned_map: 32
+  iframe_domain: http://iframe.placeling.com
 

@@ -197,7 +197,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     
     # Don't know how to change this based on environment, so storing here for now
-    @url = "http://dev.placeling.com:3000"
+    @url = CHATHAM_CONFIG['iframe_domain']
     
     # Need a current location and zoom for the map.
     @current_location = []
