@@ -14,6 +14,9 @@ class AttachLocationByIp < Mongoid::Migration
           if loc
             puts "\tassigning lat/lng of #{loc.latitude},#{loc.longitude}"
             user.location = [loc.latitude, loc.longitude]
+            if loc.city_name.force_encoding("UTF-8").valid_encoding?  && loc.region_name.force_encoding("UTF-8").valid_encoding?
+              user.city = loc.city_name + ", " + loc.region_name
+            end
             user.save
           end
         end
