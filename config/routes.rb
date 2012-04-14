@@ -19,7 +19,7 @@ Chatham::Application.routes.draw do
   
   root :to => "home#index"
 
-  devise_for :users, :controllers => { :sessions => 'sessions'}
+  devise_for :users, :controllers => { :sessions => 'sessions', :registrations => :registrations}
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/add' => 'authentications#add'
