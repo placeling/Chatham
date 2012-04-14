@@ -4,7 +4,8 @@ NEARBY_RADIUS = 0.0035
 DEFAULT_LAT = 49.9
 DEFAULT_LNG = -97.1
 DEFAULT_ZOOM = 3
-DEFAULT_WIDTH = 500
+DEFAULT_EMBED_ZOOM = 15
+DEFAULT_WIDTH = 450
 DEFAULT_HEIGHT = 500
 
 class UsersController < ApplicationController
@@ -183,6 +184,32 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html { render :layout => 'blank' }
+    end
+  end
+  
+  def embed
+    @user = User.find_by_username(params[:id])
+    
+    # Don't know how to change this based on environment, so storing here for now
+    @url = "http://dev.placeling.com:3000"
+    
+    # Need a current location and zoom for the map.
+    @current_location = []
+    if !@user.location.nil? && @user.location.length == 2
+      @current_location = @user.location
+    elsif !@user.perspectives.nil? && @user.perspectives.length > 0
+      @current_location = @user.perspectives[0].place_stub.loc
+    else
+      @current_location << 49.2
+      @current_location << -123.2
+    end
+    
+    @zoom = DEFAULT_EMBED_ZOOM
+    @height = DEFAULT_HEIGHT
+    @width = DEFAULT_WIDTH
+    
+    respond_to do |format|
+      format.html
     end
   end
   

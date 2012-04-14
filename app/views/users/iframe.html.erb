@@ -1,0 +1,450 @@
+<% content_for :css do %>
+  <style type="text/css">
+    * {
+      margin: 0px;
+      padding: 0px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    }
+    
+    a,a:link,a:visited { 
+      color:#1271b0;
+      text-decoration:none; 
+    }
+
+    a.no_highlight:focus, a.no_highlight:hover {
+      text-decoration: none;
+    } 
+
+    a:focus,a:hover { 
+      text-decoration:underline;
+    }
+
+    a img { 
+      border:0; 
+    }
+    
+    .filter_value a, a:link, a:hover, a:visited {
+      color: #36757c;
+    }
+    
+    .tag {
+      color: #BE6958;
+    }
+    
+    .spinner {
+      max-height: 30px;
+      max-width: 30px;
+    }
+    
+    .info_window {
+      width: 300px;
+      background: #F9F7F5;
+      padding: 5px;
+    }
+    
+    .info_name {
+      font-size: 18px;
+      color: #567E79;
+      font-weight: bold;
+      padding-left: 3px;
+    }
+    
+    .info_img {
+      max-height: 24px;
+    }
+    
+    .info_cat_and_tags {
+      font-size: 14px;
+      margin-top: -3px;
+      color: #666666;
+      padding-left: 3px;
+    }
+    
+    .info_cat {
+      color: #567E79;
+      font-weight: 500;
+    }
+    
+    .info_tag {
+      color: #567E79;
+      font-weight: 500;
+    }
+    
+    .info_memo {
+      height: 52px;
+      overflow-y: auto;
+      margin-top: 3px;
+      padding-left: 4px;
+    }
+    
+    .info_memo p {
+      font-size: 12px;
+      font-family: Rockwell,Georgia,Serif;
+      margin-bottom: 5px;
+      color: #6A6147;
+    }
+    
+    .info_pics {
+      height: 76px;
+      padding: 3px;
+      overflow-x: auto;
+      margin-right: -5px;
+    }
+    
+    .info_pic {
+      margin-right: 10px;
+    }
+    
+    .info_pic_thumb {
+      max-height: 60px;
+      max-width: 90px;
+      border: solid 6px white;
+      -moz-box-shadow: 0 0 2px 0 #888;
+      -webkit-box-shadow: 0 0 2px 0 #888;
+      box-shadow: 0 0 2px 0 #888;
+    }
+    
+    .info_mod {
+      font-size: 10px;
+      color: #666666;
+      padding-left: 4px;
+    }
+    
+    .info_icon {
+      max-height: 20px;
+    }
+    
+    .info_update {
+      height: 27px;
+      padding-top: 4px;
+    }
+    
+    .info_url {
+      font-size: 10px;
+      padding-left:4px;
+    }
+    
+    #action {
+      background:#fff url("/images/background_tile.png") repeat-x;
+      text-align: center;
+    }
+    
+    @font-face {
+      font-family: MuseoSlab;
+      src: url('/fonts/MuseoSlab.otf');
+    }
+    
+    #intro {
+      padding-top: 13px;
+      color: #000;
+      font-family:MuseoSlab, Rockwell, 'Arial Black';
+      font-size:27px;
+      text-shadow:#DDD 0 1px 0px;
+    }
+    
+    #lat {
+      display: none;
+    }
+    
+    #lng {
+      display: none;
+    }
+    
+    #zoom {
+      display: none;
+    }
+  </style>
+<% end %>
+
+<% content_for :javascript_includes do %>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&amp;sensor=false">
+  </script>
+  <script type="text/javascript">
+    DEFAULT_HEIGHT = 81;
+    
+    function openWindow(url)
+    {
+      window.open(url, '_blank');
+    }
+    
+    function initialize() {
+      var zoom = <%= @zoom %>;
+      var lat = <%= @lat %>;
+      var lng = <%= @lng %>;
+      
+      var persps = {};
+      var topLat;
+      var bottomLat;
+      var rightLng;
+      var leftLng;
+      var requests = 0;
+      
+      var myOptions = {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: zoom,
+        panControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        overviewMapControl: false,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_CENTER
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      
+      var map = new google.maps.Map(document.getElementById("main_map"), myOptions);
+      
+      var placemark = new google.maps.MarkerImage(
+        '/images/placemarker.png',
+        new google.maps.Size(30,32),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(9, 32)
+      );
+      
+      var shape = {
+        coord: [1,1,1,15,6,20,9,30,12,20,18,15,18,1],
+        type: 'poly'
+      };
+      
+      var infowindow = new google.maps.InfoWindow({});
+      
+      google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+        google.maps.event.trigger(map, 'idle');
+      });
+      
+      google.maps.event.addListener(infowindow, 'closeclick', function() {
+        google.maps.event.trigger(map, 'idle');
+      })
+      
+      function createMarker(perspective) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(perspective.lat, perspective.lng),
+          icon: placemark,
+          shape: shape,
+          map: map,
+          title: perspective.name
+        });
+        google.maps.event.addListener(marker, 'click', function(){
+          if (infowindow.getMap() && infowindow.getPosition() === marker.getPosition()) {
+            infowindow.close();
+          } else {
+            var infoWindowHTML = '<div class="info_window">';
+            
+            infoWindowHTML += '<div class="info_name"><a href="' + perspective.place_url + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.name + '</a></div>';
+            
+            if (perspective.categories.length > 0 || perspective.tags.length > 0) {
+              infoWindowHTML += '<div class="info_cat_and_tags">';
+              if (perspective.categories.length > 0) {
+                infoWindowHTML += '<span class="tag">';
+                infoWindowHTML += perspective.categories.join('</span>, <span class="tag">');
+                infoWindowHTML += '</span>';
+                if (perspective.tags.length > 0) {
+                  infoWindowHTML += ' | ';
+                }
+              }
+              if (perspective.tags.length > 0) {
+                infoWindowHTML += '<span class="tag">#';
+                infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
+                infoWindowHTML += '</span>';
+              }
+              infoWindowHTML += '</div>';
+            }
+            
+            if (typeof perspective.memo !== "undefined") {
+              infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
+            }
+            
+            if (typeof perspective.remote_url !== "undefined") {
+              infoWindowHTML += '<div class="info_url"><a href="' + perspective.remote_url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
+            }
+            
+            if (perspective.photos.length > 0) {
+              var pics = '<div class="info_pics lightboxGallery">';
+              for (var i=0; i<perspective.photos.length; i++) {
+                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb + '"></a></span>';
+              }
+              pics += '</div>';
+              infoWindowHTML += pics;
+            }
+            
+            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.modified + '</span></div>';
+            infoWindowHTML += mod_action;
+            
+            infoWindowHTML += '</div>';
+            
+            infowindow.open(map, marker);
+            infowindow.setContent(infoWindowHTML);
+            infowindow.setPosition(marker.getPosition());
+            google.maps.event.trigger(map, 'idle');
+            
+            $('.lightboxGallery').each(function(){
+              $('.lightbox', this).lightBox();
+            });
+          }
+        });
+        marker.setVisible(false);
+        return marker;
+      }      
+      
+      function updatePerspectives(perspectiveList) {
+        for (var i=0; i < perspectiveList.length; i++) {
+          if (typeof persps[perspectiveList[i]['uid']] === "undefined") {
+            persps[perspectiveList[i]['uid']] = perspectiveList[i];
+            persps[perspectiveList[i]['uid']]['marker'] = createMarker(perspectiveList[i]);
+          }
+        }
+        updateMap();
+      }
+      
+      function updateMap() {
+        var currentBounds = map.getBounds();
+        
+        for (var persp in persps) {
+          if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
+            persps[persp]["marker"].setVisible(true);
+          } else {
+            persps[persp]["marker"].setVisible(false);
+          }
+        }
+        
+        if (infowindow.getMap()) {
+          if (currentBounds.contains(infowindow.getPosition()) === false) {
+            infowindow.close();
+          }
+        }        
+      };
+      
+      google.maps.event.addListener(map, 'idle', function() {
+        var callServer = false;
+        var bounds = map.getBounds();
+        
+        $('#lat').text(map.getCenter().lat());
+        $('#lng').text(map.getCenter().lng());
+        $('#zoom').text(map.getZoom());
+        
+        if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+          callServer = true;
+        }
+        
+        if (callServer === false) {
+          var updatedTopLat = bounds.getNorthEast().lat();
+          var updatedBottomLat = bounds.getSouthWest().lat();
+          var updatedRightLng = bounds.getNorthEast().lng();
+          var updatedLeftLng = bounds.getSouthWest().lng();
+          
+          if ((updatedTopLat > topLat) || (updatedBottomLat < bottomLat)) {
+            callServer = true;
+          }
+          
+          if (callServer === false) {
+            if (updatedRightLng > rightLng || updatedLeftLng < leftLng) {
+              callServer = true;
+            }
+          }
+        }
+        
+        if (callServer == true) {
+          requests += 1;
+          if (requests > 0) {
+            $('#spinner').show();
+          }
+          
+          if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+            var updatedTopLat = Math.min(bounds.getNorthEast().lat() + 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), 90);
+            var updatedBottomLat = Math.max(bounds.getSouthWest().lat() - 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), -90);
+            var updatedRightLng = bounds.getNorthEast().lng() + (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
+            var updatedLeftLng = bounds.getSouthWest().lng() - (bounds.getNorthEast().lng() - bounds.getSouthWest().lng());
+            if (updatedRightLng > 0) {
+              updatedRightLng = Math.min(180, updatedRightLng);
+            }
+            if (updatedRightLng < 0) {
+              updatedRightLng = Math.max(-180, updatedRightLng);
+            }
+            if (updatedLeftLng > 0) {
+              updatedLeftLng = Math.min(180, updatedLeftLng);
+            }
+            if (updatedLeftLng < 0) {
+              updatedLeftLng = Math.max(-180, updatedLeftLng);
+            }
+          } else {
+            var updatedTopLat = bounds.getNorthEast().lat();
+            var updatedBottomLat = bounds.getSouthWest().lat();
+            var updatedRightLng = bounds.getNorthEast().lng();
+            var updatedLeftLng = bounds.getSouthWest().lng();
+          }
+          
+          $.ajax({
+            url:'<%= bounds_user_path(@user) %>',
+            data: {
+              top_lat: updatedTopLat,
+              bottom_lat: updatedBottomLat,
+              right_lng: updatedRightLng,
+              left_lng: updatedLeftLng
+            },
+            dataType:"script",
+            type:"GET",
+            success: function(data) {
+              requests -= 1;
+              if (requests <= 0) {
+                $('#spinner').hide();
+              }
+              if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
+                topLat = updatedTopLat,
+                bottomLat = updatedBottomLat,
+                rightLng = updatedRightLng,
+                leftLng = updatedLeftLng
+              } else {
+                if (updatedTopLat > topLat) {
+                  topLat = updatedTopLat;
+                }
+                if (updatedBottomLat < bottomLat) {
+                  bottomLat = updatedBottomLat;
+                }
+                if (updatedRightLng > rightLng) {
+                  rightLng = updatedRightLng;
+                }
+                if (updatedLeftLng < leftLng) {
+                  leftLng = updatedLeftLng;
+                }
+              }
+              
+              eval(data);
+            }
+          });
+        } else {
+          updateMap();
+        }
+      });
+      
+    }
+    
+    $(document).ready(function(){
+      initialize();
+      $('#map_holder').width(<%= @width %>);
+      var height = <%= @height %> - DEFAULT_HEIGHT;
+      $('#map_holder').css({"height": height});
+      $('#action').css({"height": DEFAULT_HEIGHT});
+      $('#action').width(<%= @width %>);
+      
+      $('#map_holder').append('<div id="spinner"><img class="spinner" src="/images/spinner.gif"></div>');
+      $('#spinner').css({
+        'position':'absolute',
+        'left': 3,
+        'top': height - 62
+      });
+      $('#spinner').hide();
+    });
+  </script>
+<% end %>
+
+<div id="map_holder">
+  <div id="main_map" style="width:100%; height:100%"></div>
+</div>
+<div id="action">
+  <div id="intro"><%= t('iframe.slogan') %></div>
+  <div id="outro"><%= t('iframe.explore') %><a href="<%= user_path(@user) %>" onclick="javascript:openWindow(this.href+'?lat='+$('#lat').text()+'&amp;lng='+$('#lng').text() + '&amp;zoom=' + $('#zoom').text());return false;"><%= @user.username %><% if @user.username[@user.username.length-1] != 's' %>'s<% end %></a> <%= t('iframe.or') %> <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><%= t('iframe.yours') %></a></div>
+  <div id="lat"></div><div id="lng"></div><div id="zoom"></div>
+</div>

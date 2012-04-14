@@ -1584,6 +1584,89 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   width: 20px;
 }
 
+/* Embed
+***********************************************/
+.embed_holder {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+#code {
+  height: 300px;
+}
+
+#height_input {
+  width: 35px;
+  text-align: right;
+}
+
+#width_input {
+  width: 35px;
+  text-align: right;
+}
+
+#embed_lat {
+  display: none;
+}
+
+#embed_lng {
+  display: none;
+}
+
+#embed_zoom {
+  display: none;
+}
+
+.step {
+  font-size: 24px;
+}
+
+.dimension {
+  float: right;
+}
+
+.dimension_holder {
+  margin-left: 10px;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+li.dimension_holder {
+  width: 120px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+#step_1_and_2 {
+  width: 680px;
+  float: left;
+}
+
+#step_1 {
+  position: absolute;
+  width: 200px;
+  left: 20px;
+  top: 130px;
+}
+
+#step_2 {
+  position: absolute;
+  width: 500px;
+  left: 200px;
+  top: 130px;
+}
+
+#step_3 {
+  position: absolute;
+  left: 680px;
+  top: 130px;
+  width: 200px;
+}
+
+.mini_space {
+  height: 40px;
+  margin-bottom: 3px;
+}
 
 /* Admin
 ***********************************************/
