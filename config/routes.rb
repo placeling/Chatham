@@ -12,13 +12,14 @@ Chatham::Application.routes.draw do
   get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
   get "/admin/blog_stats", :to => 'admin#blog_stats',:as => :blog_stats
+  get "/admin/firehose", :to => 'admin#firehose',:as => :firehose
   get "/admin/investors", :to => 'admin#investors',:as => :investors
   
   get "/search", :to => 'search#search', :as => :search
   
   root :to => "home#index"
 
-  devise_for :users, :controllers => { :sessions => 'sessions'}
+  devise_for :users, :controllers => { :sessions => 'sessions', :registrations => :registrations}
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/add' => 'authentications#add'

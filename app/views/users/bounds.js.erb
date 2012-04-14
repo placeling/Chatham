@@ -1,16 +1,16 @@
 var perspsList = [];
 <% @perspectives.each do |perspective| %>
   perp = {
-    "name" : "<%= perspective.place_stub.name %>",
-    "name_encoded" : "<%= u perspective.place_stub.name %>",
+    "name" : "<%= perspective.place.name %>",
+    "name_encoded" : "<%= u perspective.place.name %>",
     "uid" : "<%= perspective.id %>",
-    "lower_name" : "<%= perspective.place_stub.name.downcase %>",
+    "lower_name" : "<%= perspective.place.name.downcase %>",
     "url": "<%= perspective_path(perspective) %>",
     "place_url": "<%= place_path(perspective.place) %>",
-    "lat" : <%= perspective.place_stub.loc[0] %>,
-    "lng" : <%= perspective.place_stub.loc[1] %>,
-    <% if perspective.place_stub.street_address %>
-      "address" : "<%= perspective.place_stub.street_address %>",
+    "lat" : <%= perspective.place.loc[0] %>,
+    "lng" : <%= perspective.place.loc[1] %>,
+    <% if perspective.place.street_address %>
+      "address" : "<%= perspective.place.street_address %>",
     <% end %>
     "categories" : [],
     "tags" : [],
@@ -39,7 +39,7 @@ var perspsList = [];
     <% end %>
   }
   
-  <% perspective.place_stub.venue_types.each do |type| %>
+  <% perspective.place.venue_types.each do |type| %>
     <% if type.downcase != 'establishment' %>
       perp.categories.push("<%= type.downcase %>");
     <% end %>

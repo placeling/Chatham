@@ -138,6 +138,7 @@ class PlacesController < ApplicationController
   def new
     @place = Place.new
     @place.venue_types = [""]
+    @place.name = params[:name] unless params[:name].nil?
     
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()
@@ -200,6 +201,7 @@ class PlacesController < ApplicationController
   end
 
   def suggested
+    t = Time.now
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f
     lng = params[:lng].to_f
@@ -249,8 +251,8 @@ class PlacesController < ApplicationController
 
     @places_dict = {}
 
-    for perspective in @perspectives.entries
-      place = perspective.place_stub.to_place #saves lookup, effectively casts stub as real, DONT SAVE
+    @perspectives.each do |perspective|
+      place = perspective.place #saves lookup, effectively casts stub as real, DONT SAVE
 
       if current_user && perspective.user.id == current_user.id
         username = "You"
@@ -281,7 +283,7 @@ class PlacesController < ApplicationController
       end
     end
 
-    for place in @places
+    @places.each do |place|
       #add distance to in meters
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat,lng], [place.location[0],place.location[1]], :units =>:km)).floor
     end
@@ -319,6 +321,7 @@ class PlacesController < ApplicationController
 
     end
 
+    logger.info "action: #{(Time.now - t) *1000}ms"
     respond_to do |format|
         format.html
         format.json { render :json => {:suggested_places => @places } }#, :ad => Advertisement.new( "Admob" ) } }
@@ -328,55 +331,29 @@ class PlacesController < ApplicationController
 
 
   def create
-    
-    if params[:google_ref]  #check to see what place data is based on
-      if @place = Place.find_by_google_id( params[:google_id] )
-        #kind of a no-op
-      else
-        gp = GooglePlaces.new
-        @place = Place.new_from_google_place( gp.get_place( params[:google_ref] ) )
-        @place.user = current_user
-        @place.client_application = current_client_application unless current_client_application.nil?
-        @place.save
-      end
-    else
-      @place = Place.new(params[:place])
-      if @place.valid?
-        @place = Place.new_from_user_input(@place)
-        track! :user_created_place
-        @place.user = current_user
-        @place.client_application = current_client_application unless current_client_application.nil?
-        @place.save
 
-        #by default, we placemark the new place
-        track! :placemark
-        @perspective= @place.perspectives.build()
-        @perspective.user = current_user
-        @perspective.save
-      end      
+    @place = Place.new(params[:place])
+    if @place.valid?
+      @place = Place.new_from_user_input(@place)
+      track! :user_created_place
+      @place.user = current_user
+      @place.client_application = current_client_application unless current_client_application.nil?
     end
 
-    #check for an attached perspective
-    if ( params[:memo] )
-      @perspective = @place.perspectives.build( )
+    if verify_recaptcha(:model => @place, :message => "Invalid CAPTCHA") && @place.save
+      #by default, we placemark the new place
+      track! :placemark
+      @perspective= @place.perspectives.build()
       @perspective.user = current_user
-      @perspective.memo = params[:memo]
-      if (params[:lat] and params[:long])
-        @perspective.location = [params[:lat].to_f, params[:long].to_f]
-        @perspective.accuracy = params[:accuracy]
-      end
-      @perspective.save! #don't autosave this relation, since were modding at most 1 doc and dont want to bother rest
-    end
+      @perspective.save
 
-    if @place.save
-      current_user.save!
       flash[:notice] = t "basic.saved"
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
         format.json { render :json => @place }
       end
     else
-      render :action => "new"
+      render :action => "confirm"
     end
   end
 

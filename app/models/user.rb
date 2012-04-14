@@ -15,12 +15,17 @@ class User
   before_validation :set_downcase_username
   # For updating avatar see http://railscasts.com/episodes/182-cropping-images
   after_update :process_avatar, :if => :cropping?
+  after_create :track_signup
 
   FEED_COUNT=30
   FEED_LENGTH=240
   
   def cropping?
     !x.blank? && !y.blank? && ! w.blank? && !h.blank?
+  end
+
+  def track_signup
+    track! :signup
   end
   
   def process_avatar

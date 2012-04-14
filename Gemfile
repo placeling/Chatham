@@ -41,6 +41,7 @@ gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 gem 'airbrake'
 
 gem 'rack-p3p'
+gem "recaptcha", :require => "recaptcha/rails"
 
 gem "rspec-rails", "2.7"  #needs these outside to prevent rake break
 gem 'ci_reporter'

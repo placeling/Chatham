@@ -69,6 +69,7 @@ en:
     results: "People and places called "
     no_results: "We don't know of any people or places called "
     empty: "Type a place or a user's name into the search box"
+    add_new: "Can't find %{name}? Add it as a new place."
 
   admin:
     required_failed: "This requires admin privileges"
@@ -295,6 +296,7 @@ en:
     add_2: "you're looking for"
     street_address: "Street Address"
     city_data: "City"
+    approximate_address: "Address is approximate"
     address_latlng: "Enter a lat/lng decimal pair or an address:"
     placemarks: "Placemarks"
     placemark: "Placemark"

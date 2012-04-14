@@ -15,6 +15,7 @@ class Place
   field :street_address, :type => String
   field :phone_number, :type => String
   field :city_data, :type => String
+  field :accurate_address, :type => Boolean, :default => false
 
   field :venue_types, :type => Array
   field :google_url,  :type => String
@@ -254,7 +255,7 @@ class Place
     "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
 
-  def self.new_from_user_input( old_place, radius=10 )
+  def self.new_from_user_input( place, radius=10 )
     gp = GooglePlaces.new
     
     # TODO This is hacky and ignores i18n
@@ -267,22 +268,15 @@ class Place
       end
     end
     
-    venue_type = google_mapping[old_place.venue_types[0]] || old_place.venue_types[0]
-
-    place = Place.new
+    venue_type = google_mapping[place.venue_types[0]] || place.venue_types[0]
 
     unless !Rails.env.production?
-      raw_place = gp.create(old_place.location[0], old_place.location[1], radius, old_place.name, venue_type)
+      raw_place = gp.create(place.location[0], place.location[1], radius, place.name, venue_type)
       grg = GoogleReverseGeocode.new
-      raw_address = grg.reverse_geocode(old_place.location[0], old_place.location[1])
+      raw_address = grg.reverse_geocode(place.location[0], place.location[1])
       place.google_id = raw_place.id
       place.google_ref = raw_place.reference
     end
-    
-    place.name = old_place.name
-    place.location = old_place.location
-    
-    place.venue_types = old_place.venue_types
     place.place_type = "USER_CREATED"
     
     return place

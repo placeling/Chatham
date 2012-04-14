@@ -3,6 +3,18 @@
 <% end %>
 
 <%= form_for @place do |f| %>
+      <% if @place.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
+
+          <ul>
+          <% @place.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
     <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
     <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
     <div class="account_holder">
@@ -28,6 +40,7 @@
         <input id="venue_type" name="place[venue_types][]" type="hidden" value="<%= @place.venue_types[0] %>">
         <div class="account_value"><%= @place.venue_types.join(",") %></div>
       </div>
+      <%= recaptcha_tags %>
       <div id="create">
             <input id="save_place_button" name="commit" type="button" value="Save">
       </div>

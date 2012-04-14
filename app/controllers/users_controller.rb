@@ -69,7 +69,7 @@ class UsersController < ApplicationController
     return unless params[:format] == :json
 
     lat = params[:lat].to_f
-    long = params[:long].to_f
+    lng = params[:long].to_f
 
     if (params[:facebook_access_token])
       user = User.new(:username =>params[:username].strip,
@@ -87,13 +87,19 @@ class UsersController < ApplicationController
                   :confirmation_password =>params[:password])
     end
 
-    user.location = [lat, long]
+    if  lat != 0 && lng !=0
+      user.location = [lat, lng]
+    else
+      loc = get_location
+      if location["remote_ip"]
+        user.location =  [ location["remote_ip"]["lat"], location["remote_ip"]["lng"] ]
+      end
+    end
 
     if user.save
       auth.save! unless auth.nil?
 
       if current_client_application
-        track! :signup
         #send back some access keys so user can immediately start
         request_token = current_client_application.create_request_token
         request_token.authorize!( user )
@@ -319,6 +325,7 @@ class UsersController < ApplicationController
   end
   
   def bounds
+
     @user = User.find_by_username(params[:id])
     
     @perspectives = []

@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter :admin_required, :only => [:dashboard, :blog_stats]
+  before_filter :admin_required, :only => [:dashboard, :blog_stats, :firehose]
 
   def app
     track! :app_store
@@ -59,6 +59,18 @@ class AdminController < ApplicationController
 
     ca = ClientApplication.find('4f298a1057b4e33324000003')
     @perspectives = ca.perspectives.descending(:created_at).limit(200)
+
+  end
+
+  def firehose
+      # get latest feed using reverse range lookup of sorted set
+  # then decode raw JSON back into Ruby objects
+    @activities=$redis.zrevrange "FIREHOSEFEED", 0, 50
+    if @activities.size > 0
+      @activities = @activities.collect {|r| Activity.decode(r)}
+    else
+      @activities
+    end
 
   end
 
