@@ -338,8 +338,8 @@ DEPENDENCIES
   capistrano
   capistrano-ext
   capybara!
-  carrierwave
-  carrierwave-mongoid
+  carrierwave (~> 0.5.7)
+  carrierwave-mongoid (~> 0.1.1)
   ci_reporter
   database_cleaner
   devise (~> 1.4.7)
