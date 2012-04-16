@@ -20,13 +20,13 @@ class SearchController < ApplicationController
     
     if @valid_params
       # places
-      lat = params[:lat].to_f
-      lng = params[:lng].to_f
+      @lat = params[:lat].to_f
+      @lng = params[:lng].to_f
       gpa = GooglePlacesAutocomplete.new
 
       @input = params[:input]
 
-      raw_places = gpa.suggest(lat, lng, @input)
+      raw_places = gpa.suggest(@lat, @lng, @input)
 
       if !raw_places.nil?
         raw_places.each do |place|

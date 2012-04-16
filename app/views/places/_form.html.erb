@@ -1,79 +1,77 @@
-
 <% content_for :javascript_includes do %>
-
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
-    </script>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+  </script>
 <% end %>
 
-
-<% content_for :css do %>
-    #latlng{
-        width:100%;
-        text-align: right;
-    }
-
-<% end %>
-
-<div id="content_holder">
-    <div id="story">
-    <div class="title"><%= t 'place.add_new' %></div>
-    <div class="story_text">
-
-        <%= form_for @place, :url =>{:action => "confirm"} do |f| %>
-          <% if @place.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
-
-              <ul>
-              <% @place.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-              <% end %>
-              </ul>
-            </div>
+<div id="new_place_holder">
+  <div class="callout"><%= t('place.add_new_banner') %></div>
+  <div class="story_text">
+    <%= form_for @place, :url =>{:action => "confirm"} do |f| %>
+      <% if @place.errors.any? %>
+        <div id="error_explanation">
+          <p><%= t('place.fix') %></p>
+          <ul class="error_reasons">
+          <% @place.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
           <% end %>
-
-          <div class="standout">
-            <p><%= t'place.name' %></p>
-            <%= f.text_field :name, :class => "place_input" %>
-          </div>
-
-          <%= f.hidden_field :address_components, :id=>"address_components" %>
-          <%= f.hidden_field :accurate_address, :id=>"accurate_address" %>
-
-          <div class="standout">
-            <p><%= t'place.address' %></p>
-            <p id="accurate_address_label" style="display:none"><%= t'place.approximate_address' %></p>
-            <p><input id="map_source" name="address" type="text" size="100" class="place_input"/></p>
-          </div>
-
-          <div id="selector_map" style="height:300px; width: 300px;">
-            <div id="map_canvas" style="width:100%; height:100%"></div>
-            <div id="latlng"></div>
-          </div>
-          <br>
-
-          <div class="field">
-            <% if @place.location %>
-              <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
-              <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
-            <% else %>
-              <input id="lat" name="place[location][]" type="hidden" value="" />
-              <input id="lng" name="place[location][]" type="hidden" value="" />
-            <% end %>
-          </div>
-          <div id="map"></div>
-          <p><%= t'place.category' %></p>
-
-          <%  @place.venue_types.each do |venue| %>
-            <%= hidden_field_tag "place[venue_types][]", venue, :id => "place_venue_type" %>
-          <% end %>
-
-          <div id="create">
-            <input id="save_place_button" name="commit" type="button" value="Save">
-          </div>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="standout">
+        <p class="label emphasize"><%= t'place.name' %></p>
+        <%= f.text_field :name, :class => "entry_field" %>
+      </div>
+      
+      <%= f.hidden_field :address_components, :id=>"address_components" %>
+      <%= f.hidden_field :accurate_address, :id=>"accurate_address" %>
+      
+      <div class="standout">
+        <p class="label emphasize"><%= t'place.address' %></p>
+        <div>
+          <input id="map_source" name="address" type="text" size="100" class="entry_field"/> 
+          <span id="accurate_address_label" style="display:none"><%= t'place.approximate_address' %></span>
+        </div>
+      </div>
+      
+      <div id="selector_map" class="map_style" style="height:300px; width: 488px;">
+        <div id="map_canvas" style="width:100%; height:100%"></div>
+        <div id="latlng_holder"><%= t('place.latlng') %> <span id="latlng"></span></div>
+      </div>
+      
+      <div class="field">
+        <% if @place.location %>
+          <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
+          <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
+        <% else %>
+          <input id="lat" name="place[location][]" type="hidden" value="" />
+          <input id="lng" name="place[location][]" type="hidden" value="" />
         <% end %>
       </div>
+      <div id="map"></div>
+      
+      <div class='pick_category'>
+        <% if @place.errors && @place.errors.keys().include?(:venue_types) %>
+          <span class="missing">
+        <% end %>
+        <%= t'place.category' %>
+        <% if @place.errors && @place.errors.keys().include?(:venue_types) %>
+          </span>
+        <% end %>
+      </div>
+      
+      <%  @place.venue_types.each do |venue| %>
+        <%= hidden_field_tag "place[venue_types][]", venue, :id => "place_venue_type" %>
+      <% end %>
+      
+      <div id="create_or_cancel">
+        <span class="cancel">
+          <a href="<%= search_path :input => @place.name, :lat => @lat, :lng => @lng %>"><%= t ('place.cancel') %></a>
+        </span>
+        <input id="save_place_button" class="submit" name="commit" type="button" value="Save">
+      </div>
+    <% end %>
   </div>
 </div>
 

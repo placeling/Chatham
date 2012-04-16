@@ -1037,6 +1037,100 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   margin-left: 5px;
 }
 
+/* New Place
+=====================================================================*/
+#latlng_holder {
+  margin-top: 15px;
+  font-size: 10px;
+  margi-left: 9px
+}
+
+#new_place_holder {
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
+
+.callout {
+  font-size: 36px;
+}
+
+.label {
+  font-size: 12px
+}
+
+.entry_field {
+  font-size: 18px;
+  width: 500px;
+}
+
+.submit {
+  background-image:url(/images/red_background.png);
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid #bf4f41;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#accurate_address_label {
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+#selector_map {
+  margin-top: 10px;
+}
+
+.map_style {
+  border: 9px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+}
+
+.pick_category {
+  margin-top: 25px
+}
+
+.category_select {
+  margin-right: 10px;
+  font-size: 14px;
+  padding: 2px;
+  width: 220px
+}
+
+#create_or_cancel {
+  margin-top: 10px;
+  margin-left: 375px;
+  width: 180px;
+}
+
+#save {
+  margin-left: 430px;
+}
+
+.missing {
+  color: red;
+}
+
+#captcha_holder {
+  margin-left: 182px;
+}
+
+.new_place_map_holder {
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  width: 504px;
+  height: 168px;
+}
+
+
 /* Devise
 =====================================================================*/
 .auth_block {
@@ -1447,8 +1541,26 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
   margin-left: 60px;
 }
 
-#search_term {
+.search_term {
   font-weight: bold;
+}
+
+.new_place {
+  margin-top: 10px;
+}
+
+.google {
+  clear: both;
+  margin-top: 10px;
+}
+
+.placemarker_holder {
+  float: left;
+}
+
+.add_new_holder {
+  margin-left: 37px;
+  padding-top: 8px;
 }
 
 /* Username Validation
@@ -1582,6 +1694,11 @@ a.place_name_mini, a.place_name_mini:link, a.place_name_mini:visited, a.place_na
 
 #user_remark_notify_false {
   width: 20px;
+}
+
+.edit_actions {
+  width: 150px;
+  padding-left: 300px;
 }
 
 /* Embed
