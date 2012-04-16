@@ -11,7 +11,7 @@ class Picture
 
   field :deleted, :type =>Boolean, :default => false
 
-  mount_uploader :image, PictureUploader
+  mount_uploader :image, PictureUploader, mount_on: :image_filename
   
   embedded_in :perspective
 

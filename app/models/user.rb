@@ -71,7 +71,7 @@ class User
   has_many :places #ones they created
   has_many :authentications
 
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
