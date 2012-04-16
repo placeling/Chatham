@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.0'
 #TODO: unpackage this to not include active record
 
 # Bundle edge Rails instead:
@@ -8,7 +8,7 @@ gem 'rails', '3.1.3'
 
 gem "jquery-rails"
 
-gem "mongoid", "2.3.4"
+gem "mongoid", "~> 2.4.8"
 gem "mongoid_rails_migrations", "~> 0.0.13"
 
 gem "bson_ext", "~> 1.3"
@@ -26,9 +26,9 @@ gem "hashie"
 gem 'uuidtools'
 
 gem 'mini_magick'
-gem 'carrierwave', "~> 0.5.7"
+gem 'carrierwave', "~> 0.6.1"
 gem 'fog'
-gem 'carrierwave-mongoid', "~> 0.1.1", :require => 'carrierwave/mongoid'
+gem 'carrierwave-mongoid', "~> 0.2", :require => 'carrierwave/mongoid'
 
 gem "geocoder"
 gem "geoip"
