@@ -373,7 +373,6 @@ class PlacesController < ApplicationController
       @perspective.user = current_user
       @perspective.save
 
-      flash[:notice] = t "basic.saved"
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
         format.json { render :json => @place }

@@ -39,8 +39,8 @@
       </div>
     </div>
     
-    <div class="actions">
-      <span class="cancel"><a href="<%= account_user_path(current_user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes') %>
+    <div class="edit_actions">
+      <span class="cancel"><a href="<%= account_user_path(current_user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes'), :class=>"submit" %>
     </div>
   <% end %>
 </div>
