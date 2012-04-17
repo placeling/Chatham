@@ -4,6 +4,8 @@
 
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
+    document.domain = "placeling.com";
+    
     var url = "<%= @url %>";
     var path = "<%= iframe_user_path(@user) %>"; 
     

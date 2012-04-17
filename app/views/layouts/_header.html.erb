@@ -18,6 +18,8 @@
           <li><p class="holder"><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></p></li>
         <% else %>
           <li><p class="holder"><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></p></li>
+          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
+          <li><p class="holder"><%= link_to t("user.sign_up"), new_user_registration_path, :class=>"users" %></p></li>
         <% end %>
       </ul>
   </div>
