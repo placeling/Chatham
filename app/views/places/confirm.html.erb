@@ -2,50 +2,57 @@
   <title><%= t('place.confirm_place') %></title>
 <% end %>
 
-<%= form_for @place do |f| %>
+<div id="new_place_holder">
+  <div class="callout"><%= t('place.confirm_place') %></div>
+  <div>
+    <%= form_for @place do |f| %>
       <% if @place.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
-
-          <ul>
+          <p><%= t('place.fix') %></p>
+          <ul class="error_reasons">
           <% @place.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
           <% end %>
           </ul>
         </div>
       <% end %>
-
-    <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
-    <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
-    <div class="account_holder">
-      <div class="account_title"><%= t('place.confirm_place') %> </div>
-      <div class="account_info_holder">
-        <div class="account_label"><%= t('place.name') %></div>
-        <div class="account_value"><%= f.text_field :name %></div>
+      
+      <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
+      <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
+      
+      <div class="standout">
+        <p class="label emphasize"><%= t'place.name' %></p>
+        <%= f.text_field :name, :class => "entry_field" %>
       </div>
-      <div class="account_info_holder">
-        <div class="account_label"><%= t('place.street_address') %></div>
-        <div class="account_value"><%= f.text_field :street_address %></div>
+      <div class="standout form_spacer">
+        <p class="label emphasize"><%= t('place.address') %></p>
+        <%= f.text_field :street_address, :class => "entry_field" %>
       </div>
-      <div class="account_info_holder">
-        <div class="account_label"><%= t('place.city_data') %></div>
-        <div class="account_value"><%= f.text_field :city_data %></div>
+      <div class="standout form_spacer">
+        <p class="label emphasize"><%= t('place.city_data') %></p>
+        <%= f.text_field :city_data, :class => "entry_field" %>
       </div>
-      <div class="account_info_holder">
-        <div class="account_label"><%= t('place.location') %></div>
-        <div class="account_value"><%= image_tag @place.map_url %></div>
+      <div class="standout form_spacer">
+        <p class="label emphasize"><%= t('place.location') %></p>
+        <div class="new_place_map_holder"><%= image_tag @place.wide_map_url, :class => "map_style"  %></div>
       </div>
-      <div class="account_info_holder">
-        <div class="account_label"><%= t('place.category_label') %></div>
+      <div class="standout form_spacer">
+        <div class="label emphasize"><%= t('place.category_label') %></div>
         <input id="venue_type" name="place[venue_types][]" type="hidden" value="<%= @place.venue_types[0] %>">
-        <div class="account_value"><%= @place.venue_types.join(",") %></div>
+        <div><%= @place.venue_types.join(",") %></div>
       </div>
-      <%= recaptcha_tags %>
-      <div id="create">
-            <input id="save_place_button" name="commit" type="button" value="Save">
+      <div id="captcha_holder">
+        <%= recaptcha_tags %>
       </div>
-    </div>
-<% end %>
+      <div id="create_or_cancel">
+        <span class="cancel">
+          <a href="<%= request.referer %>"><%= t ('place.edit') %></a>
+        </span>
+        <input id="save_place_button" class="submit" name="commit" type="button" value="Save">
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <% content_for :javascript do %>
 

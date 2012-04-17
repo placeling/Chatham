@@ -140,6 +140,18 @@ class PlacesController < ApplicationController
     @place.venue_types = [""]
     @place.name = params[:name] unless params[:name].nil?
     
+    if !params[:lat].nil?
+      @lat = params[:lat].to_f
+    else
+      @lat = 0.0
+    end
+    
+    if !params[:lng].nil?
+      @lng = params[:lng]
+    else
+      @lng = 0.0
+    end
+    
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()
     @categories = JSON(content)
@@ -149,42 +161,56 @@ class PlacesController < ApplicationController
       end
     end
     
+    if request.referer.nil?
+      @return_url = "/"
+    else
+      if URI(request.referer).path == new_user_session_path
+        @return_url = session[:"user_return_to"]
+      else
+        @return_url = request.referer
+      end
+    end
+    
     respond_to do |format|
       format.html
     end
   end
 
   def confirm
-
     unless params['place']['address_components'].nil?
       params['place']['address_components'] =JSON.parse( params['place']['address_components'] )
       params['place']['address_components'] = params['place']['address_components'].each{|item| Hashie::Mash.new(item)}
-
+      
       address_array = []
       for component in params['place']['address_components']
          address_array <<  Hashie::Mash.new( component )
       end
-
+      
       address_dict = GooglePlaces.getAddressDict( address_array )
-
+      
       if address_dict['number'] and address_dict['street']
         params['place']['street_address'] = address_dict['number'] + " " + address_dict['street']
       elsif address_dict['street']
          params['place']['street_address'] = address_dict['street']
       end
-
+      
       if address_dict['city'] and address_dict['province']
         params['place']['city_data'] = address_dict['city'] + ", " + address_dict['province']
       end
-
+      
       params['place'].delete( 'address_components' )
     end
-
+    
     @place = Place.new( params[:place] )
-
+    
     if @place.valid?
       render :action => :confirm
     else
+      if !@place.location.nil?
+        @lat = @place.location[0]
+        @lng = @place.location[1]
+      end
+      
       file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
       content = file.read()
       @categories = JSON(content)
@@ -347,7 +373,6 @@ class PlacesController < ApplicationController
       @perspective.user = current_user
       @perspective.save
 
-      flash[:notice] = t "basic.saved"
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
         format.json { render :json => @place }

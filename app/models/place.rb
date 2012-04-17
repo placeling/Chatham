@@ -254,7 +254,11 @@ class Place
   def map_url
     "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
-
+  
+  def wide_map_url
+    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=486x150&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+  end
+  
   def self.new_from_user_input( place, radius=10 )
     gp = GooglePlaces.new
     
