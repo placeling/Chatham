@@ -83,10 +83,10 @@
 
      function updateGeocode(){
         clearTimeout( t );
-         var latlng = main_map.getCenter();
+         var latlng_center = main_map.getCenter();
          geocoder = new google.maps.Geocoder();
 
-         geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+         geocoder.geocode({ 'latLng': latlng_center }, function (results, status) {
 
             // This is checking to see if the Geoeode Status is OK before proceeding
             if (status == google.maps.GeocoderStatus.OK && results[0]){
@@ -143,13 +143,13 @@
           };
 
         if ( $("#lat").val() != "" && $("#lng").val() != "" ){
-            latlng = new google.maps.LatLng($("#lat").val(), $("#lng").val());
+            latlng_center = new google.maps.LatLng($("#lat").val(), $("#lng").val());
         } else {
-            latlng = new google.maps.LatLng(default_lat, default_lng);
+            latlng_center = new google.maps.LatLng(default_lat, default_lng);
         }
 
         var myOptions = {
-          center: latlng,
+          center: latlng_center,
           zoom: 15,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -157,7 +157,7 @@
             myOptions);
 
         reticleMarker = new google.maps.Marker({
-            position: latlng,
+            position: latlng_center,
             map: main_map,
             icon: reticleImage,
             shape: reticleShape,
