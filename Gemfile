@@ -13,7 +13,7 @@ gem "mongoid_rails_migrations", "~> 0.0.13"
 
 gem "bson_ext", "~> 1.3"
 
-gem "oauth", ">= 0.4.4"
+gem "oauth", "0.4.4"
 gem "devise", "~> 1.4.7"
 gem "omniauth", "~> 0.3.2"
 
