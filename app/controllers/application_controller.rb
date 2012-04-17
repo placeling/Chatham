@@ -41,7 +41,6 @@ class ApplicationController < ActionController::Base
       else
         oauth_app_required
       end
-
     end
   end
   
@@ -51,8 +50,7 @@ class ApplicationController < ActionController::Base
       if request.get?
         session[:"user_return_to"] = request.fullpath
       else
-        test =  URI(request.referer).path
-        session[:"user_return_to"] = test
+        session[:"user_return_to"] = URI(request.referer).path unless request.referer.nil?
       end
       authenticate_user!
     end
