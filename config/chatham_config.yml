@@ -4,6 +4,7 @@ development:
   cache_tags_time_hours: 1
   max_returned_map: 32
   iframe_domain: http://dev.placeling.com:3000
+  # To test properly, set to iframe.placeling.com:3000 and update /etc/hosts to map localhost to that
 
 
 test:
@@ -23,5 +24,5 @@ production:
   num_top_tags: 10
   cache_tags_time_hours: 1
   max_returned_map: 32
-  iframe_domain: http://iframe.placeling.com
+  iframe_domain: https://iframe.placeling.com
 
