@@ -4,3 +4,5 @@ log/*.log
 tmp/**/*
 public/uploads/**/*
 assets/GeoIPCity.csv
+.sass-cache/
+public/assets/
