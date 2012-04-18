@@ -76,8 +76,7 @@ module ApplicationHelper
     
     lat2_rad = lat2 * RAD_PER_DEG
     lon2_rad = lon2 * RAD_PER_DEG
-    
-    # puts "dlon: #{dlon}, dlon_rad: #{dlon_rad}, dlat: #{dlat}, dlat_rad: #{dlat_rad}"
+
     
     a = (Math.sin(dlat_rad/2))**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * (Math.sin(dlon_rad/2))**2
     c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))

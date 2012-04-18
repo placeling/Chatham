@@ -148,14 +148,12 @@ class PotentialPerspectivesController < ApplicationController
           if row.length > 10
             row[10, row.length].each do |potential_picture|
               begin
-                puts "Created picture:"
-                puts potential_picture
                 picture = perp.pictures.build()
                 picture.remote_image_url = potential_picture
                 picture.remote_url = potential_picture # for us, to keep track
                 picture.save
               rescue
-                puts "Invalid url"
+
               end
             end
           end

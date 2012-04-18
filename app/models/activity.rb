@@ -47,8 +47,6 @@ class Activity
       if user && user.thumb_url
         self.thumb1 = user.thumb_url
       end
-    else
-      puts self.thumb1
     end
 
     self.attributes
