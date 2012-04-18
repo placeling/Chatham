@@ -361,32 +361,23 @@ class UsersController < ApplicationController
         end
       end
       # Query fails if at exact edge, so reassign limits
-      if top_lat == 90.0
-        top_lat = 89.999999
-      end
-      if bottom_lat == -90.0
-        bottom_lat = -89.999999
-      end
-      if right_lng == 180.0
-        right_lng = 179.999999
-      end
-      if right_lng == -180.0
-        right_lng = -179.999999
-      end
-      if left_lng == 180.0
-        left_lng = 179.999999
-      end
-      if left_lng == -180
-        left_lng = -179.999999
-      end
+      top_lat = [ 89.999999,top_lat ].min
+      bottom_lat = [ -89.999999, bottom_lat ].max
+      right_lng = [ right_lng, 179.999999 ].min
+      right_lng = [ right_lng, -179.999999 ].max
+      left_lng = [ left_lng, 179.999999 ].min
+      left_lng = [ left_lng, -179.999999 ].max
+
       # Edge case where user zooms so far out on map that multiple earths are visible
       if valid_params && right_lng < left_lng
         right_lng, left_lng = left_lng, right_lng
       end
     end
     
-    if valid_params
+    if valid_params && top_lat != bottom_lat && right_lng != left_lng
       @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id).includes(:place, :user)
+    else
+      @perspectives = []
     end
     
     respond_to do |format|
