@@ -60,8 +60,7 @@ class Perspective
     Perspective.where(:uid => user.id).
         order_by( [:created_at, :desc] ).
         skip( start ).
-        limit( count ).
-        entries
+        limit( count )
   end
 
   def self.find_nearby_for_user( user, loc, span, start, count )
@@ -72,8 +71,7 @@ class Perspective
     Perspective.where( :ploc => geonear ).
         and(:uid => user.id).
         skip( start ).
-        limit( count ).
-        entries
+        limit( count )
   end
 
   def self.query_near( loc, span,  query, category )
