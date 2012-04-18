@@ -115,7 +115,13 @@ class UsersController < ApplicationController
         end
       end
     else
-      Airbrake.notify( params )
+      Airbrake.notify(
+        :error_class      => "Signup Fail",
+        :error_message    => "Someone failed at a signup",
+        :backtrace        => $@,
+        :environment_name => ENV['RAILS_ENV'],
+        :rack_env         => request.env
+      ) if ENV['RAILS_ENV'] == 'production'
       respond_to do |format|
         format.json { render :json => {:status => "fail", :message => user.errors} }
       end
