@@ -179,9 +179,9 @@ class PerspectivesController < ApplicationController
       long = params[:lng].to_f
       location = [lat, long]
 
-      @perspectives = Perspective.find_nearby_for_user( @user, location, span, start_pos, count )
+      @perspectives = Perspective.find_nearby_for_user( @user, location, span, start_pos, count ).includes(:place)
     else
-      @perspectives = Perspective.find_recent_for_user( @user, start_pos, count )
+      @perspectives = Perspective.find_recent_for_user( @user, start_pos, count ).includes(:place)
     end
 
     respond_to do |format|
