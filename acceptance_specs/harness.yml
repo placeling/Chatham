@@ -13,7 +13,7 @@ test:
   consumer_secret: "Eu9IwNmhazNgS7vYtaM9cWeF0DKpIFp6Rxruxmy4"
 
 staging:
-  host: "http://staging.corp.placeling.com"
+  host: "https://staging.corp.placeling.com"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
@@ -21,7 +21,7 @@ staging:
 
 # these would be live-fire against the production environment
 production:
-  host: "http://api.placeling.com"
+  host: "https://api.placeling.com"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
