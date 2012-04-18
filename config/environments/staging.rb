@@ -33,6 +33,8 @@ Chatham::Application.configure do
   # In production, Apache or nginx will already do this
   config.serve_static_assets = false
 
+  config.force_ssl = true
+
   #this has to be the amazon url, or will fail SSL
   #config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
 
