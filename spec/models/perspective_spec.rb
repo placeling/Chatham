@@ -54,7 +54,7 @@ describe Perspective do
 
     perspectives = Perspective.find_recent_for_user( user, 1, 20 )
 
-    perspectives.count.should == 1
+    perspectives.entries.count.should == 1
     perspectives[0].id.should == perspective.id
   end
 

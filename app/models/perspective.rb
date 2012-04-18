@@ -57,7 +57,7 @@ class Perspective
   attr_accessor :post_feed
 
   def self.find_recent_for_user( user, start, count )
-    Perspective.where(:uid => user.id).
+    user.perspectives.
         order_by( [:created_at, :desc] ).
         skip( start ).
         limit( count )
