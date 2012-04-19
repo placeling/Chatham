@@ -125,13 +125,13 @@
     }
     
     #action {
-      background:#fff url("/images/background_tile.png") repeat-x;
+      background:#fff url(<%= asset_path 'background_tile.png' %>) repeat-x;
       text-align: center;
     }
     
     @font-face {
       font-family: MuseoSlab;
-      src: url('/fonts/MuseoSlab.otf');
+      src: url(<%= asset_path 'fonts/MuseoSlab.otf' %>);
     }
     
     #intro {

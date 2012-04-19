@@ -11,6 +11,12 @@ Chatham::Application.configure do
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
+  # Do not compress assets
+  config.assets.compress = false
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
+
   #uncomment for testing CDN
   #config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
 

@@ -5,6 +5,7 @@ require File.expand_path('../boot', __FILE__)
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
+require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 require 'oauth/rack/oauth_filter'
@@ -25,6 +26,8 @@ module Chatham
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     config.plugins = [ :dynamic_form ]
+    config.assets.enabled = true
+    config.assets.paths << "#{Rails.root}/app/assets/images"
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
@@ -37,7 +40,7 @@ module Chatham
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # JavaScript files you want as :defaults (application.js is always included).
+    # JavaScript files you want as :defaults (chatham.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
     # Configure the default encoding used in templates for Ruby 1.9.

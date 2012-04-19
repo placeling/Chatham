@@ -9,6 +9,7 @@ before 'deploy:setup', 'ubuntu:required_packages'
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
+before :"deploy:symlink", :"deploy:assets";
 after "deploy:symlink", "deploy:restart_workers"
 
 task :production do
@@ -92,6 +93,11 @@ namespace :db do
   task :reload, :roles => :app do
     run("cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} db:reload")
   end
+end
+
+desc "Compile asets"
+task :assets do
+  run "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
 end
 
 require 'airbrake/capistrano'
