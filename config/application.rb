@@ -9,6 +9,7 @@ require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 require 'oauth/rack/oauth_filter'
+require 'rack/rewrite'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -19,6 +20,12 @@ module Chatham
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
+      r301 %r{.*}, 'https://www.placeling.com$&', :if => Proc.new {|rack_env|
+        rack_env['SERVER_NAME'].start_with?("iframe.")
+      }
+    end
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
