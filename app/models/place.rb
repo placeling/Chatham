@@ -123,23 +123,23 @@ class Place
     end
 
     if !category
-      return "http://www.placeling.com/#{asset_path("quickpicks/EverythingPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
     end
 
     if CATEGORIES["Bars & Nightlife"].keys().include?(category) or CATEGORIES["Bars & Nightlife"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/NightLifePick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/NightLifePick.png")}"
     elsif CATEGORIES["Government"].keys().include?(category) or CATEGORIES["Government"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/GovernmentPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/GovernmentPick.png")}"
     elsif CATEGORIES["Shopping"].keys().include?(category) or CATEGORIES["Shopping"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/ShoppingPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/ShoppingPick.png")}"
     elsif CATEGORIES["Beauty"].keys().include?(category) or CATEGORIES["Beauty"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/BeautyPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/BeautyPick.png")}"
     elsif CATEGORIES["Interesting & Outdoors"].keys().include?(category) or CATEGORIES["Interesting & Outdoors"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/TouristyPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/TouristyPick.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
-      return "http://www.placeling.com/#{asset_path("quickpicks/FoodPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
     else
-      return "http://www.placeling.com/#{asset_path("quickpicks/EverythingPick.png")}"
+      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
 
     #elsif CATEGORIES["Services"].values().include?(category)
     #elsif CATEGORIES["Travel & Lodging"].values().include?(category)
