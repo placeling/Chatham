@@ -63,7 +63,7 @@
     var map = new google.maps.Map(document.getElementById("map"), myOptions);
     var marker = new google.maps.Marker({
       map: map,
-      icon: '/images/cross-hairs.gif',
+      icon: '<%= asset_path('cross-hairs.gif.png') %>',
       shape: crosshairShape
     });
     marker.bindTo('position', map, 'center');

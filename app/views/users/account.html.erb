@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="account_holder">
-  <div class="account_title"><%= t('account.title') %> <a href="<%= edit_user_path(@user) %>"><%= image_tag "/images/writer.png", :alt=>"t('account.edit')", :class=>"account_edit_image" %></a></div>
+  <div class="account_title"><%= t('account.title') %> <a href="<%= edit_user_path(@user) %>"><%= image_tag "writer.png", :alt=>"t('account.edit')", :class=>"account_edit_image" %></a></div>
   <div class="account_info_holder">
     <div class="account_label"><%= t('account.username') %></div>
     <div class="account_value"><%= @user.username %></div>
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div class="account_info_holder account_profile_pic">
-    <div class="account_label"><%= t('account.profile_pic') %> <a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag "/images/writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a></div>
+    <div class="account_label"><%= t('account.profile_pic') %> <a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag "writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a></div>
     <div class="account_value"><a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %></a></div>
   </div>
   <div class="account_info_holder">

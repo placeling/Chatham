@@ -15,7 +15,7 @@
     </tr>
     <% @red.each do |entry| %>
       <tr>
-        <td class="locations light"><%= image_tag("/images/admin/red_light.png") %></td>
+        <td class="locations light"><%= image_tag("admin/red_light.png") %></td>
         <td class="locations place_name"><%= entry.name %></td>
         <td class="locations unknown_address">
           <% if entry.address %>
@@ -66,7 +66,7 @@
     </tr>
     <% @yellow.each do |entry| %>
       <tr>
-        <td class="locations light"><%= image_tag("/images/admin/yellow_light.png") %></td>
+        <td class="locations light"><%= image_tag("admin/yellow_light.png") %></td>
         <td class="locations place_name"><%= entry.name %></td>
         <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
         <td class="locations action"><%= link_to "Fix", edit_potential_perspective_path(entry) %></td>
@@ -93,7 +93,7 @@
     </tr>
     <% @green.each do |entry| %>
       <tr class="locations">
-        <td class="locations light"><%= image_tag("/images/admin/green_light.png") %></td>
+        <td class="locations light"><%= image_tag("admin/green_light.png") %></td>
         <td class="locations place_name"><%= entry.name %></td>
         <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
         <td class="locations action"><%= link_to "Edit", edit_potential_perspective_path(entry) %></td>
@@ -126,7 +126,7 @@
     </tr>
     <% @black.each do |entry| %>
       <tr class="locations">
-        <td class="locations light"><%= image_tag("/images/admin/black_light.png") %></td>
+        <td class="locations light"><%= image_tag("admin/black_light.png") %></td>
         <td class="locations place_name"><%= entry.name %></td>
         <td class="locations image"><%= image_tag("http://maps.googleapis.com/maps/api/staticmap?center=#{entry.location[0]},#{entry.location[1]}&zoom=16&size=200x100&sensor=false&markers=color:blue%7C#{entry.location[0]},#{entry.location[1]}") %></td>
         <td class="locations"><%= simple_format(entry.notes) %></td>

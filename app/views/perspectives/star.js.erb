@@ -5,14 +5,14 @@ $('.star_link').unbind('hover');
 $('.star_link').hover(
   function() {
     var source = $('img', this).attr('src');
-    if (source.indexOf('/images/unstarred.png') >= 0) {
-      $('img', this).attr('src', '/images/starred.png');
+    if (source.indexOf('unstarred.png') >= 0) {
+      $('img', this).attr('src', '<%= asset_path('starred.png') %>');
       $('img', this).css({'opacity':'0.4'});
     }
   }, 
   function() {
     if ($('img', this).css('opacity') == '0.4') {
-      $('img', this).attr('src', '/images/unstarred.png');
+      $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
       $('img', this).css({'opacity':'1.0'});
     }
   }
@@ -24,6 +24,6 @@ followers += 1;
 $('#placemark_count').text(followers);
 <% if @path == place_path(@perspective.place) %>
 if ($('#my_perspective').length === 0) {
-  $('.content_type').after('<div id="my_perspective" class="perspective_group"><div id="you_header" class="header_group"><img class="tab" src="/images/green_tab.png" alt="you"><div class="group_title me"><%= t("place.your_notes") %></div></div><div class="interact star"><a href="<%= edit_perspective_path(@user_perspective) %>"><img src="/images/writer.png"></a></div><div class="detail"><div class="name"><%=j t("perspective.enter_text") %> <%= escape_javascript(@user_perspective.place.name) %></div><div class="perspective_footer"><span class="footer_elements footer_text_elements updated"><%=t("perspective.last_updated") %> <%= @user_perspective.updated_at.strftime("%B %d, %Y") %></span><span class="footer_elements footer_text_elements"><%= link_to "Delete", @user_perspective, :confirm => "Are you sure?", :method => :delete %></span></div></div></div>').fadeIn(200);
+  $('.content_type').after('<div id="my_perspective" class="perspective_group"><div id="you_header" class="header_group"><img class="tab" src="<%= asset_path('green_tab.png') %>" alt="you"><div class="group_title me"><%= t("place.your_notes") %></div></div><div class="interact star"><a href="<%= edit_perspective_path(@user_perspective) %>">'><%= image_tag('writer.png') %>'</a></div><div class="detail"><div class="name"><%=j t("perspective.enter_text") %> <%= escape_javascript(@user_perspective.place.name) %></div><div class="perspective_footer"><span class="footer_elements footer_text_elements updated"><%=t("perspective.last_updated") %> <%= @user_perspective.updated_at.strftime("%B %d, %Y") %></span><span class="footer_elements footer_text_elements"><%= link_to "Delete", @user_perspective, :confirm => "Are you sure?", :method => :delete %></span></div></div></div>').fadeIn(200);
 }
 <% end %>

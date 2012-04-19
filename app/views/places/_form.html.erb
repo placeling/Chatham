@@ -133,7 +133,7 @@
 
         $('#place_venue_type').optionTree(<%= raw @categories.to_json %>, options);
         var reticleImage = new google.maps.MarkerImage(
-            '/images/cross-hairs.gif',            // marker image
+            '<%= asset_path('cross-hairs.gif') %>',            // marker image
             new google.maps.Size(27, 27),    // marker size
             new google.maps.Point(0,0),      // marker origin
             new google.maps.Point(13, 13));  // marker anchor point

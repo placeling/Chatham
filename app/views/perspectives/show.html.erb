@@ -22,14 +22,14 @@
       $('.star_link').hover(
         function() {
           var source = $('img', this).attr('src');
-          if (source.indexOf('/images/unstarred.png') >= 0) {
-            $('img', this).attr('src', '/images/starred.png');
+          if (source.indexOf('unstarred.png') >= 0) {
+            $('img', this).attr('src', '<%= asset_path('starred.png') %>');
             $('img', this).css({'opacity':'0.4'});
           }
         }, 
         function() {
           if ($('img', this).css('opacity') == '0.4') {
-            $('img', this).attr('src', '/images/unstarred.png');
+            $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
             $('img', this).css({'opacity':'1.0'});
           }
         }
@@ -99,7 +99,7 @@
         <div id="perspective_<%= @perspective.id %>" class="perspective_details">
           <div class="interact mini_star">
             <% if current_user == @perspective.user %>
-              <a href="<%= edit_perspective_path(@perspective) %>"><img src="/images/writer.png" class="button_image"></a>
+              <a href="<%= edit_perspective_path(@perspective) %>">'<%= image_tag 'starred.png', :class=>"button_image" %>'</a>
             <% else %>
               <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
                 <% if current_user && @perspective.su.include?(current_user.id) %>

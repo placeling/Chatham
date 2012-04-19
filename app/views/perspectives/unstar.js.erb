@@ -3,11 +3,11 @@ $("#perspective_<%= @perspective.id %> .interact").html('<a rel="nofollow" data-
 $('#perspective_<%= @perspective.id %> .interact').fadeIn(100);
 $('#perspective_<%= @perspective.id %> .star_link').hover(
   function() {
-    $('img', this).attr('src', '/images/starred.png');
+    $('img', this).attr('src', '<%= asset_path('starred.png') %>');
     $('img', this).css({'opacity':'0.4'});
   }, 
   function() {
-    $('img', this).attr('src', '/images/unstarred.png');
+    $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
     $('img', this).css({'opacity':'1.0'});
   }
 );
