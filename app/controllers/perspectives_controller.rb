@@ -1,7 +1,7 @@
 require 'uri'
 
 class PerspectivesController < ApplicationController
-  before_filter :login_required, :except =>[:index, :show, :nearby, :all]
+  before_filter :login_required, :except =>[:index, :show, :nearby, :all, :new]
 
   def new
     @place = Place.find(params[:place_id])

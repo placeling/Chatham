@@ -187,7 +187,17 @@ class Place
 
   def parse_address
     if self.address_components && !self.street_address && !self.city_data
-      address_dict = GooglePlaces.getAddressDict(self.address_components)
+      if self.address_components.is_a?(Hash)
+          components_mash = Hashie::Mash.new(response)
+      else
+        if self.address_components.first.is_a?(Hash)
+          components_mash = self.address_components.map{|item| Hashie::Mash.new(item)}
+        else
+          components_mash = {}
+        end
+      end
+
+      address_dict = GooglePlaces.getAddressDict( components_mash )
 
       if address_dict['number'] and address_dict['street']
         self.street_address = address_dict['number'] + " " + address_dict['street']
@@ -252,11 +262,11 @@ class Place
 
 
   def map_url
-    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+    "https://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
   
   def wide_map_url
-    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=486x150&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
+    "https://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=14&size=486x150&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
   
   def self.new_from_user_input( place, radius=10 )
