@@ -9,7 +9,6 @@ before 'deploy:setup', 'ubuntu:required_packages'
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
-before :"deploy:symlink", :"deploy:assets";
 after "deploy:symlink", "deploy:restart_workers"
 
 task :production do
