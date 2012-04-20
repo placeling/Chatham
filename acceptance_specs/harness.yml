@@ -6,7 +6,7 @@ development:
   consumer_secret: "Eu9IwNmhazNgS7vYtaM9cWeF0DKpIFp6Rxruxmy4"
 
 test:
-  host: "http://staging.corp.placeling.com"
+  host: "https://staging.corp.placeling.com"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
