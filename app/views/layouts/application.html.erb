@@ -17,6 +17,7 @@
 
     <%= javascript_include_tag "externals" %>
     <%= javascript_include_tag "application" %>
+
   <%= yield :javascript_includes %>
 
   <link rel="stylesheet" type='text/css' href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css"/>
@@ -24,11 +25,6 @@
   <style type="text/css">
     <%= yield :css %>
   </style>
-  <!--[if !IE 7]>
-    <style type="text/css">
-      #wrap {display:table;height:100%}
-    </style>
-  <![endif]-->
 </head>
 <body>
     <input type="hidden" id="default_lat" name="default_lat" value="<%= @default_lat %>" />

@@ -14,6 +14,14 @@
   </script>
   <script type="text/javascript">
     var DEFAULT_ZOOM = 13;
+    var DEFAULT_HEIGHT = 81;
+    var persps = {};
+    var myOptions;
+    var placemark;
+    var map;
+    var shape;
+    var infowindow;
+    var loadState;
     
     <% if @user.location && @user.location.length == 2 %>
       var user_lat = <%= @user.location[0] %>
@@ -23,14 +31,6 @@
     function openWindow(url)
     {
       window.open(url, '_blank');
-    }
-    
-    function compare(a,b) {
-      if (a.lower_name < b.lower_name)
-         return -1;
-      if (a.lower_name > b.lower_name)
-        return 1;
-      return 0;
     }
     
     function filter_term(a,b) {
@@ -54,102 +54,10 @@
         return 0;
       }
     }
-    
-    function initialize() {
-      var persps = {};
-      var topLat;
-      var bottomLat;
-      var rightLng;
-      var leftLng;
-      var requests = 0;
-      var runCount = 0;
-      
-      var loadState = JSON.parse($.cookie('page_state'));
-      if (loadState === null) {
-        loadState = {};
-      }
-      
-      if (typeof loadState["<%= @user.username %>"] === "undefined") {
-        loadState["<%= @user.username %>"] = {};
-      }
-      
-      <% if @current_location.length > 0 %>
-        var lat = <%= @current_location[0] %>;
-        var lng = <%= @current_location[1] %>;
-      <% else %>
-        <% if @user.location && @user.location.length == 2 && @user.location[0] != 0.0 && @user.location[1] != 0.0 %>
-          var lat = <%= (@user.location[0] * 100).round().to_f/100 %>;
-          var lng = <%= (@user.location[1] * 100).round().to_f/100 %>;
-        <% else %>
-          var lat = <%= @default_location[0] %>;
-          var lng = <%= @default_location[1] %>;
-        <% end %>
-      <% end %>
-      
-      var filters = {
-        'categories' : [],
-        'tags' : []
-      }
-      
-      <% if @zoom %>
-        var zoom = <%= @zoom %>;
-        loadState["<%= @user.username %>"]['zoom'] = <%= @zoom %>;
-      <% else %>
-        var zoom = DEFAULT_ZOOM;
-      <% end %>
-      
-      
-      if (typeof loadState["<%= @user.username %>"]['zoom'] !== "undefined") {
-        zoom = loadState["<%= @user.username %>"]['zoom'];
-      }
-      
-      if (typeof loadState["<%= @user.username %>"]['sort'] === "undefined") {
-        loadState["<%= @user.username %>"]['sort'] = 'count';
-      }
-      
-      var myOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom: zoom,
-        panControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false,
-        zoomControlOptions: {
-          position: google.maps.ControlPosition.LEFT_CENTER
-        },
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      var map = new google.maps.Map(document.getElementById("main_map"), myOptions);
-      
-      var placemark = new google.maps.MarkerImage(
-        '/images/placemarker.png',
-        new google.maps.Size(30,32),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(9, 32)
-      );
-      
-      var shape = {
-        coord: [1,1,1,15,6,20,9,30,12,20,18,15,18,1],
-        type: 'poly'
-      };
-      
-      var infowindow = new google.maps.InfoWindow({});
-      
-      google.maps.event.addListener(map, 'click', function() {
-        infowindow.close();
-        delete loadState["<%= @user.username %>"]['infowindow'];
-        google.maps.event.trigger(map, 'idle');
-      });
-      
-      google.maps.event.addListener(infowindow, 'closeclick', function() {
-        delete loadState["<%= @user.username %>"]['infowindow'];
-        google.maps.event.trigger(map, 'idle');
-      })
-      
-      function createMarker(perspective) {
+
+    function createMarker(perspective) {
         var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(perspective.lat, perspective.lng),
+          position: new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
           icon: placemark,
           shape: shape,
           map: map,
@@ -160,33 +68,33 @@
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           } else {
-            loadState["<%= @user.username %>"]['infowindow'] = perspective['uid'];
+            loadState["<%= @user.username %>"]['infowindow'] = perspective['place_id'];
             var infoWindowHTML = '<div class="info_window">';
-            
+
             // Edit vs. star
-            if (typeof perspective.edit === "undefined") {
-              if (typeof perspective.memo !== "undefined" || perspective.photos.length > 0) {
+            if (perspective.mine != "true") {
+              if (perspective.memo.length >0 || perspective.photos.length > 0) {
                 var action = '<div class="info_action"><a href="/" id="star">';
                 if (perspective.starred == true) {
                   action += "<img class='info_img' src='<%= asset_path("starred.png") %>'>";
                 } else {
                   action += "<img class='info_img' src='<%= asset_path("unstarred.png") %>'>";
                 }
-                action += '"></a></div>';
+                action += '</a></div>';
                 infoWindowHTML += action;
               }
             } else {
-              var action = '<div class="info_action"><a href="' + perspective.edit + '"><img class="info_img" src="<%= asset_path("pencil_24.png") %>"></a></div>';
+              var action = '<div class="info_action"><a href="/perspectives/"' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("pencil_24.png") %>"></a></div>';
               infoWindowHTML += action;
             }
-            
-            infoWindowHTML += '<div class="info_name"><a href="' + perspective.place_url + '">' + perspective.name + '</a></div>';
-            
-            if (perspective.categories.length > 0 || perspective.tags.length > 0) {
+
+            infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '">' + perspective.place.name + '</a></div>';
+
+            if (perspective.place.venue_types.length > 0 || perspective.tags.length > 0) {
               infoWindowHTML += '<div class="info_cat_and_tags">';
-              if (perspective.categories.length > 0) {
+              if (perspective.place.venue_types.length > 0) {
                 infoWindowHTML += '<span class="tag">';
-                infoWindowHTML += perspective.categories.join('</span>, <span class="tag">');
+                infoWindowHTML += perspective.place.venue_types.join('</span>, <span class="tag">');
                 infoWindowHTML += '</span>';
                 if (perspective.tags.length > 0) {
                   infoWindowHTML += ' | ';
@@ -199,58 +107,58 @@
               }
               infoWindowHTML += '</div>';
             }
-            
+
             if (typeof perspective.memo !== "undefined") {
               infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
             }
-            
-            if (typeof perspective.remote_url !== "undefined") {
-              infoWindowHTML += '<div class="info_url"><a href="' + perspective.remote_url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
+
+            if (typeof perspective.url !== "undefined") {
+              infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
             }
-            
+
             if (perspective.photos.length > 0) {
               var pics = '<div class="info_pics lightboxGallery">';
               for (var i=0; i<perspective.photos.length; i++) {
-                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb + '"></a></span>';
+                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb_url + '"></a></span>';
               }
               pics += '</div>';
               infoWindowHTML += pics;
             }
-            
-            var share = '<div class="info_action"><span class="social"><a href="https://twitter.com/share?url=http://www.placeling.com' + perspective.url + '&text=' + perspective.name_encoded + '" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, \'\', \'left=\'+H+\',top=\'+G+\',width=\'+D+\',height=\'+A+\',personalbar=0,toolbar=0,scrollbars=1,resizable=1\');return false;"><img src="<%= asset_path("twitter.png") %>" class="info_icon"></a></span>';
-            
-            share += '<span class="social"><a href="" onclick="javascript:var d=document,f=\'https://www.facebook.com/share\',l=d.location,e=encodeURIComponent,p=\'.php?src=bm&v=4&i=1323211438&u=\'+e(\'http://www.placeling.com' + perspective.url + '\')+\'&t=\'+e(\'' + perspective.name_encoded + '\');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+\'r\'+p,\'sharer\',\'toolbar=0,status=0,resizable=1,width=626,height=436\'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><img src="<%= asset_path("facebook.png"); %>" class="info_icon"></a></span>';
-            
-            share += '<span><a href=\"http://www.placeling.com' + perspective.url + '" onclick="javascript:return false;" class="email"><img src="<%= asset_path("email.png"); %>" class="info_icon"></a></span>';
-            
+
+            var share = '<div class="info_action"><span class="social"><a href="https://twitter.com/share?url=http://www.placeling.com/perspectives/' + perspective.id + '&text=' + perspective.place.name + '" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, \'\', \'left=\'+H+\',top=\'+G+\',width=\'+D+\',height=\'+A+\',personalbar=0,toolbar=0,scrollbars=1,resizable=1\');return false;"><%= image_tag "twitter.png", :class=>"info_icon" %></a></span>';
+
+            share += '<span class="social"><a href="" onclick="javascript:var d=document,f=\'https://www.facebook.com/share\',l=d.location,e=encodeURIComponent,p=\'.php?src=bm&v=4&i=1323211438&u=\'+e(\'http://www.placeling.com/perspectives/' + perspective.id + '\')+\'&t=\'+e(\'' + perspective.place.name + '\');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+\'r\'+p,\'sharer\',\'toolbar=0,status=0,resizable=1,width=626,height=436\'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :class=>"info_icon" %></a></span>';
+
+            share += '<span><a href=\"http://www.placeling.com/perspectives/' + perspective.id + '" onclick="javascript:return false;" class="email"><img src="<%= asset_path("email.png"); %>" class="info_icon"></a></span>';
+
             share += "</div>";
-            
+
             infoWindowHTML += share;
-            
-            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.modified + '</span>';
-            
-            if (typeof perspective.edit === "undefined") {
-              mod_action += perspective.flag;
-            } else {
-              mod_action += perspective["delete"];
-            }
-            
+
+            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span>';
+
+            //if (typeof perspective.mine != true) {
+            //  mod_action += perspective.flag;
+            //} else {
+              //mod_action += perspective["delete"];
+            //}
+
             mod_action += '</div>';
-            
+
             infoWindowHTML += mod_action;
-            
+
             infoWindowHTML += '</div>';
-            
+
             infowindow.open(map, marker);
             infowindow.setContent(infoWindowHTML);
-            loadState["<%= @user.username %>"]['infowindow'] = perspective["uid"];
+            loadState["<%= @user.username %>"]['infowindow'] = perspective["place_id"];
             infowindow.setPosition(marker.getPosition());
             google.maps.event.trigger(map, 'idle');
-            
+
             $('.lightboxGallery').each(function(){
               $('.lightbox', this).lightBox();
             });
-            
+
             $('.email').each(function() {
               $(this).qtip({
                 content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
@@ -270,7 +178,7 @@
                  }
               });
             });
-            
+
             $('#star').click(function(e){
               e.preventDefault();
               if (perspective.starred == true) {
@@ -315,27 +223,27 @@
         marker.setVisible(false);
         return marker;
       }
-      
+
       function updatePerspectives(perspectiveList) {
         for (var i=0; i < perspectiveList.length; i++) {
-          if (typeof persps[perspectiveList[i]['uid']] === "undefined") {
-            persps[perspectiveList[i]['uid']] = perspectiveList[i];
-            persps[perspectiveList[i]['uid']]['marker'] = createMarker(perspectiveList[i]);
+          if (typeof persps[perspectiveList[i]['place_id']] === "undefined") {
+            persps[perspectiveList[i]['place_id']] = perspectiveList[i];
+            persps[perspectiveList[i]['place_id']]['marker'] = createMarker(perspectiveList[i]);
           }
         }
         updateMap();
       }
-      
+
       function updateMap() {
         var currentBounds = map.getBounds();
-                
+
         loadState["<%= @user.username %>"]['lat'] = map.getCenter().lat();
         loadState["<%= @user.username %>"]['lng'] = map.getCenter().lng();
         loadState["<%= @user.username %>"]['zoom'] = map.getZoom();
-        
+
         var filterTerm = loadState["<%= @user.username %>"]['filterValue'];
         var filterType = loadState["<%= @user.username %>"]['filterType'];
-        
+
         for (var persp in persps) {
           if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
             if (typeof filterTerm === "undefined") {
@@ -353,9 +261,9 @@
                   }
                 }
               } else if (filterType === 'category') {
-                if (persps[persp].categories.length > 0) {
-                  for (var j=0; j<persps[persp].categories.length; j++) {
-                    if (persps[persp].categories[j] === filterTerm) {
+                if (persps[persp].place.venue_types.length > 0) {
+                  for (var j=0; j<persps[persp].place.venue_types.length; j++) {
+                    if (persps[persp].place.venue_types[j] === filterTerm) {
                       pass = true;
                     }
                   }
@@ -365,7 +273,7 @@
                 persps[persp]["marker"].setVisible(true);
               } else if (pass === false && persps[persp]["marker"].getVisible() === true) {
                 persps[persp]["marker"].setVisible(false);
-                if (persps[persp]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
+                if (persps[persp]["place_id"] === loadState["<%= @user.username %>"]['infowindow']) {
                   infowindow.close();
                   delete loadState["<%= @user.username %>"]['infowindow'];
                 }
@@ -374,14 +282,14 @@
           } else {
             if (persps[persp]["marker"].getVisible() === true) {
               persps[persp]["marker"].setVisible(false);
-              if (persps[persp]["uid"] === loadState["<%= @user.username %>"]['infowindow']) {
+              if (persps[persp]["place_id"] === loadState["<%= @user.username %>"]['infowindow']) {
                 infowindow.close();
                 delete loadState["<%= @user.username %>"]['infowindow'];
               }
             }
           }
         }
-        
+
         if (infowindow.getMap()) {
           if (currentBounds.contains(infowindow.getPosition()) === false) {
             infowindow.close();
@@ -390,9 +298,9 @@
         } else if ((typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && (typeof persps[loadState["<%= @user.username %>"]['infowindow']]["marker"] !== "undefined")) {
             google.maps.event.trigger(persps[loadState["<%= @user.username %>"]['infowindow']]["marker"], 'click');
         }
-        
+
         $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
-        
+
         if ($('#filters').height() > 0) {
           if (typeof loadState["<%= @user.username %>"]['sort'] !== "undefined") {
             if (loadState["<%= @user.username %>"]['sort'] === 'count') {
@@ -402,13 +310,316 @@
             }
           }
         }
-        
+
         if (loadState["<%= @user.username %>"]['location'] === 'places') {
           updatePlaces();
         } else if (loadState["<%= @user.username %>"]['location'] === 'photos') {
           updatePhotos();
-        }        
+        }
+      }
+
+
+    function updateFilters(sortDown) {
+      filters['categories'] = {};
+      filters['tags'] = {};
+
+      var bounds = map.getBounds();
+      for (var persp in persps) {
+        if (bounds.contains(persps[persp]["marker"].getPosition())) {
+          // Create categories
+          if (persps[persp].place.venue_types.length > 0) {
+            for (var j=0; j < persps[persp].place.venue_types.length; j++) {
+              if (filters['categories'][persps[persp].place.venue_types[j]]) {
+                filters['categories'][persps[persp].place.venue_types[j]] += 1;
+              } else {
+                filters['categories'][persps[persp].place.venue_types[j]] = 1;
+              }
+            }
+          }
+
+          if (persps[persp].tags.length > 0) {
+            for (var j=0; j <persps[persp].tags.length; j++) {
+              if (filters['tags'][persps[persp].tags[j]]) {
+                filters['tags'][persps[persp].tags[j]] += 1;
+              } else {
+                filters['tags'][persps[persp].tags[j]] = 1;
+              }
+            }
+          }
+        }
+      }
+
+      var clean_filters = [];
+
+      for (var cat in filters['categories']) {
+        clean_filters.push({'term':cat,'type':'category','count':filters['categories'][cat]});
+      }
+
+      for (var tag in filters['tags']) {
+        clean_filters.push({'term':tag,'type':'tag','count':filters['tags'][tag]});
+      }
+
+      if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
+        if (loadState["<%= @user.username %>"]['filterType'] === "category") {
+          if (typeof filters['categories'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
+            clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'],'type':'category','count':0});
+          }
+        } else if (loadState["<%= @user.username %>"]['filterType'] === "tag") {
+          if (typeof filters['tags'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
+            clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'],'type':'tag','count':0});
+          }
+        }
+      }
+
+      var html = "";
+      if (clean_filters.length == 0) {
+        html += '<div class="no_places"><%= t('perspective.no_categories') %></div>';
+      } else {
+        var filterTerm = loadState["<%= @user.username %>"]['filterValue'];
+        var filterType = loadState["<%= @user.username %>"]['filterType'];
+
+        if (loadState["<%= @user.username %>"]['sort'] !== 'alpha') {
+          html += '<div id="sort_type">Sort: <a href="/" id="sort_alpha">abc</a> 321</div>';
+          clean_filters.sort(filter_count);
+        } else {
+          html += '<div id="sort_type">Sort: abc <a href="/" id="sort_count">321</a></div>';
+          clean_filters.sort(filter_term);
+        }
+
+        for (var i=0; i<clean_filters.length; i++) {
+          var chosen = false;
+          if (typeof filterTerm !== "undefined" && typeof filterType != "undefined") {
+            if (clean_filters[i]["type"] === filterType && clean_filters[i]["term"] === filterTerm) {
+              chosen = true;
+            }
+          }
+
+          if (chosen === true) {
+            html += '<div class="filter selected">';
+          } else {
+            html += '<div class="filter">'
+          }
+
+          html += '<a href="/" class="filter_value">';
+          if (clean_filters[i]["type"] === 'tag') {
+            html += "#";
+          }
+          html += clean_filters[i]["term"];
+          html += '</a> <span class="filter_count">(';
+          html += clean_filters[i]["count"];
+          html += ')</span>';
+          if (chosen === true) {
+            html+= ' <a href="/" id="show_all_filters"><%= t("perspective.show_all") %></a>';
+          }
+
+          html += "</div>";
+        }
+      }
+
+      $('#filters').html(html);
+
+      $('.filter_value').each(function() {
+        $(this).click(function(e) {
+          e.preventDefault();
+          var term = $(this).text();
+          if (term.charAt(0) === "#") {
+            loadState["<%= @user.username %>"]['filterType'] = 'tag';
+            loadState["<%= @user.username %>"]['filterValue'] = term.substr(1,term.length-1);
+          } else {
+            loadState["<%= @user.username %>"]['filterType'] = 'category';
+            loadState["<%= @user.username %>"]['filterValue'] = term;
+          }
+          google.maps.event.trigger(map, 'idle');
+          return false;
+        })
+      })
+
+      $('#sort_count').click(function(e) {
+        e.preventDefault();
+        loadState["<%= @user.username %>"]['sort'] = 'count';
+        updateFilters(true);
+        google.maps.event.trigger(map, 'idle');
+        return false;
+      });
+
+      $('#sort_alpha').click(function(e) {
+        e.preventDefault();
+        loadState["<%= @user.username %>"]['sort'] = 'alpha';
+        updateFilters();
+        google.maps.event.trigger(map, 'idle');
+        return false;
+      })
+
+      $('#show_all_filters').click(function(e) {
+        e.preventDefault();
+        delete loadState["<%= @user.username %>"]['filterType'];
+        delete loadState["<%= @user.username %>"]['filterValue'];
+        google.maps.event.trigger(map, 'idle');
+        return false;
+      });
+    }
+
+    function updatePlaces() {
+      var placePerspectives = [];
+      var count = 0;
+      var locationHTML = "";
+      for (var persp in persps) {
+        if (persps[persp]["marker"].getVisible() === true) {
+          placePerspectives.push(persps[persp]);
+          count += 1;
+        }
+      }
+
+      if (count == 0) {
+        locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
+      } else {
+        for (var i=0; i<placePerspectives.length; i++) {
+          var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["place_id"] + '"><div>' + placePerspectives[i]["place"]["name"];
+          if (placePerspectives[i]["street_address"]) {
+            html += '<div class="map_address">';
+            html += placePerspectives[i]["street_address"];
+            html += '</div>'
+          }
+          html += '</div></a></div>';
+          locationHTML += html;
+        }
+      }
+
+      $('#locations').html(locationHTML);
+
+      $('.map_place').each(function(e) {
+        $(this).click(function(e) {
+          e.preventDefault();
+          google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+          return false;
+        })
+      });
+    }
+
+    function updatePhotos() {
+      var count = 0;
+      var locationHTML = "";
+      for (var persp in persps) {
+        if (persps[persp]["marker"].getVisible() === true) {
+          if (persps[persp].photos.length > 0) {
+            var pics = '';
+
+            for (var j=0; j<persps[persp].photos.length; j++) {
+              pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].thumb_url + '"></div>';
+            }
+            locationHTML += pics;
+            count += 1;
+          }
+        }
+      }
+
+      if (count == 0) {
+        locationHTML = '<div class="no_places"><%= t("perspective.no_photos") %></div>';
+      }
+
+      $('#locations').html(locationHTML);
+
+      $('.map_photo').each(function() {
+        $(this).click(function() {
+          if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
+            google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+          }
+        })
+      });
+    }
+
+
+    function initialize() {
+      persps = {};
+      var topLat;
+      var bottomLat;
+      var rightLng;
+      var leftLng;
+      var requests = 0;
+      var runCount = 0;
+
+      loadState = JSON.parse($.cookie('page_state'));
+      if (loadState === null) {
+        loadState = {};
+      }
+      
+      if (typeof loadState["<%= @user.username %>"] === "undefined") {
+        loadState["<%= @user.username %>"] = {};
+      }
+      
+      <% if @current_location.length > 0 %>
+        var lat = <%= @current_location[0] %>;
+        var lng = <%= @current_location[1] %>;
+      <% else %>
+        <% if @user.location && @user.location.length == 2 && @user.location[0] != 0.0 && @user.location[1] != 0.0 %>
+          var lat = <%= (@user.location[0] * 100).round().to_f/100 %>;
+          var lng = <%= (@user.location[1] * 100).round().to_f/100 %>;
+        <% else %>
+          var lat = <%= @default_location[0] %>;
+          var lng = <%= @default_location[1] %>;
+        <% end %>
+      <% end %>
+      
+      var filters = {
+        'categories' : [],
+        'tags' : []
+      }
+      
+      <% if @zoom %>
+        var zoom = <%= @zoom %>;
+        loadState["<%= @user.username %>"]['zoom'] = <%= @zoom %>;
+      <% else %>
+        var zoom = DEFAULT_ZOOM;
+      <% end %>
+      
+      
+      if (typeof loadState["<%= @user.username %>"]['zoom'] !== "undefined") {
+        zoom = loadState["<%= @user.username %>"]['zoom'];
+      }
+      
+      if (typeof loadState["<%= @user.username %>"]['sort'] === "undefined") {
+        loadState["<%= @user.username %>"]['sort'] = 'count';
+      }
+      
+      myOptions = {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: zoom,
+        panControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        overviewMapControl: false,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_CENTER
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       };
+      map = new google.maps.Map(document.getElementById("main_map"), myOptions);
+      
+      placemark = new google.maps.MarkerImage(
+        '/images/placemarker.png',
+        new google.maps.Size(30,32),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(9, 32)
+      );
+      
+      shape = {
+        coord: [1,1,1,15,6,20,9,30,12,20,18,15,18,1],
+        type: 'poly'
+      };
+      
+      infowindow = new google.maps.InfoWindow({});
+      
+      google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+        delete loadState["<%= @user.username %>"]['infowindow'];
+        google.maps.event.trigger(map, 'idle');
+      });
+      
+      google.maps.event.addListener(infowindow, 'closeclick', function() {
+        delete loadState["<%= @user.username %>"]['infowindow'];
+        google.maps.event.trigger(map, 'idle');
+      })
       
       google.maps.event.addListener(map, 'idle', function() {
         var callServer = false;
@@ -472,6 +683,7 @@
             var updatedRightLng = bounds.getNorthEast().lng();
             var updatedLeftLng = bounds.getSouthWest().lng();
           }
+
           
           $.ajax({
             url:'<%= bounds_user_path(@user) %>',
@@ -481,9 +693,13 @@
               right_lng: updatedRightLng,
               left_lng: updatedLeftLng
             },
-            dataType:"script",
+            dataType:"json",
             type:"GET",
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.debug( textStatus, errorThrown);
+            },
             success: function(data) {
+              updatePerspectives( data.perspectives );
               requests -= 1;
               if (requests <= 0) {
                 $('#spinner').hide();
@@ -507,225 +723,13 @@
                   leftLng = updatedLeftLng;
                 }
               }
-              
-              eval(data);
             }
           });
         } else {
           updateMap();
         }
       });
-      
-      function updateFilters(sortDown) {
-        filters['categories'] = {};
-        filters['tags'] = {};
-        
-        var bounds = map.getBounds();
-        for (var persp in persps) {
-          if (bounds.contains(persps[persp]["marker"].getPosition())) {
-            // Create categories
-            if (persps[persp].categories.length > 0) {
-              for (var j=0; j < persps[persp].categories.length; j++) {
-                if (filters['categories'][persps[persp].categories[j]]) {
-                  filters['categories'][persps[persp].categories[j]] += 1;
-                } else {
-                  filters['categories'][persps[persp].categories[j]] = 1;
-                }
-              }
-            }
-            
-            if (persps[persp].tags.length > 0) {
-              for (var j=0; j <persps[persp].tags.length; j++) {
-                if (filters['tags'][persps[persp].tags[j]]) {
-                  filters['tags'][persps[persp].tags[j]] += 1;
-                } else {
-                  filters['tags'][persps[persp].tags[j]] = 1;
-                }
-              }
-            }
-          }
-        }
-        
-        var clean_filters = [];
-        
-        for (var cat in filters['categories']) {
-          clean_filters.push({'term':cat,'type':'category','count':filters['categories'][cat]});
-        }
-        
-        for (var tag in filters['tags']) {
-          clean_filters.push({'term':tag,'type':'tag','count':filters['tags'][tag]});
-        }
-        
-        if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
-          if (loadState["<%= @user.username %>"]['filterType'] === "category") {
-            if (typeof filters['categories'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
-              clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'],'type':'category','count':0});
-            }
-          } else if (loadState["<%= @user.username %>"]['filterType'] === "tag") {
-            if (typeof filters['tags'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
-              clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'],'type':'tag','count':0});
-            }
-          }
-        }
-        
-        var html = "";
-        if (clean_filters.length == 0) {
-          html += '<div class="no_places"><%= t('perspective.no_categories') %></div>';
-        } else {
-          var filterTerm = loadState["<%= @user.username %>"]['filterValue'];
-          var filterType = loadState["<%= @user.username %>"]['filterType'];
-          
-          if (loadState["<%= @user.username %>"]['sort'] !== 'alpha') {
-            html += '<div id="sort_type">Sort: <a href="/" id="sort_alpha">abc</a> 321</div>';
-            clean_filters.sort(filter_count);            
-          } else {
-            html += '<div id="sort_type">Sort: abc <a href="/" id="sort_count">321</a></div>';
-            clean_filters.sort(filter_term);
-          }
-          
-          for (var i=0; i<clean_filters.length; i++) {
-            var chosen = false;
-            if (typeof filterTerm !== "undefined" && typeof filterType != "undefined") {
-              if (clean_filters[i]["type"] === filterType && clean_filters[i]["term"] === filterTerm) {
-                chosen = true;
-              }
-            }
-            
-            if (chosen === true) {
-              html += '<div class="filter selected">';
-            } else {
-              html += '<div class="filter">'
-            }
-            
-            html += '<a href="/" class="filter_value">';
-            if (clean_filters[i]["type"] === 'tag') {
-              html += "#";
-            }
-            html += clean_filters[i]["term"];
-            html += '</a> <span class="filter_count">(';
-            html += clean_filters[i]["count"];
-            html += ')</span>';
-            if (chosen === true) {
-              html+= ' <a href="/" id="show_all_filters"><%= t("perspective.show_all") %></a>';
-            }
-            
-            html += "</div>";
-          }
-        }
-        
-        $('#filters').html(html);
-        
-        $('.filter_value').each(function() {
-          $(this).click(function(e) {
-            e.preventDefault();
-            var term = $(this).text();
-            if (term.charAt(0) === "#") {
-              loadState["<%= @user.username %>"]['filterType'] = 'tag';
-              loadState["<%= @user.username %>"]['filterValue'] = term.substr(1,term.length-1);
-            } else {
-              loadState["<%= @user.username %>"]['filterType'] = 'category';
-              loadState["<%= @user.username %>"]['filterValue'] = term;
-            }
-            google.maps.event.trigger(map, 'idle');
-            return false;
-          })
-        })
-        
-        $('#sort_count').click(function(e) {
-          e.preventDefault();
-          loadState["<%= @user.username %>"]['sort'] = 'count';
-          updateFilters(true);
-          google.maps.event.trigger(map, 'idle');
-          return false;
-        });
-        
-        $('#sort_alpha').click(function(e) {
-          e.preventDefault();
-          loadState["<%= @user.username %>"]['sort'] = 'alpha';
-          updateFilters();
-          google.maps.event.trigger(map, 'idle');
-          return false;
-        })
-        
-        $('#show_all_filters').click(function(e) {
-          e.preventDefault();
-          delete loadState["<%= @user.username %>"]['filterType'];
-          delete loadState["<%= @user.username %>"]['filterValue'];
-          google.maps.event.trigger(map, 'idle');
-          return false;
-        });        
-      }
-      
-      function updatePlaces() {
-        var placePerspectives = [];
-        var count = 0;
-        var locationHTML = "";
-        for (var persp in persps) {
-          if (persps[persp]["marker"].getVisible() === true) {
-            placePerspectives.push(persps[persp]);
-            count += 1;
-          }
-        }
-        
-        if (count == 0) {
-          locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
-        } else {
-          placePerspectives = placePerspectives.sort(compare);
-          for (var i=0; i<placePerspectives.length; i++) {
-            var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["uid"] + '"><div>' + placePerspectives[i]["name"];
-            if (placePerspectives[i]["address"]) {
-              html += '<div class="map_address">';
-              html += placePerspectives[i]["address"];
-              html += '</div>'
-            }
-            html += '</div></a></div>';
-            locationHTML += html;
-          }
-        }
-        
-        $('#locations').html(locationHTML);
-        
-        $('.map_place').each(function(e) {
-          $(this).click(function(e) {
-            e.preventDefault();
-            google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-            return false;
-          })
-        });
-      }
-      
-      function updatePhotos() {
-        var count = 0;
-        var locationHTML = "";
-        for (var persp in persps) {
-          if (persps[persp]["marker"].getVisible() === true) {
-            if (persps[persp].photos.length > 0) {
-              var pics = '';
-              
-              for (var j=0; j<persps[persp].photos.length; j++) {
-                pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].thumb + '"></div>';
-              }
-              locationHTML += pics;
-              count += 1;
-            }
-          }
-        }
-        
-        if (count == 0) {
-          locationHTML = '<div class="no_places"><%= t("perspective.no_photos") %></div>';
-        }
-        
-        $('#locations').html(locationHTML);
-        
-        $('.map_photo').each(function() {
-          $(this).click(function() {
-            if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
-              google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-            }
-          })
-        });
-      }
-      
+
       $('#hide_filters_click').click(function(e) {
         e.preventDefault();
         $('#filters').height(0);
@@ -820,7 +824,7 @@
         $('#current_location').width(30);
         $('#current_location').css({
           'position':'absolute',
-          'z-index':'10003',
+          'z-index':'10003'
         });
         // Assign callback
         $('.pan').click(function(e) {          
@@ -885,7 +889,7 @@
       $('#spinner').width(30);
       $('#spinner').css({
         'position':'absolute',
-        'z-index':'10003',
+        'z-index':'10003'
       });
       $('#spinner').hide();
       
@@ -953,14 +957,14 @@
 <div id="map_holder">
   <div id="filter_drawer">
     <div id="toggle_filters">
-      <div id="hide_filters"><a href="/" id="hide_filters_click"><img src="<%= asset_path("hide.png"); %>" class="hide"></a></div>
+      <div id="hide_filters"><a href="/" id="hide_filters_click"><%= image_tag "hide.png", :class=>"hide" %></a></div>
       <div><%= t('user.explore') %> <a id="show_filters" href="/"><%= t('user.categories') %></a></div>
     </div>
   </div>
   <div id="filters"></div>
   <div id="location_drawer">
     <div id="toggle_locations">
-      <div id="hide_locations"><a href="/" id="hide_locations_click"><img src"<%= asset_path("hide.png"); %>" class="hide"></a></div>
+      <div id="hide_locations"><a href="/" id="hide_locations_click"><%= image_tag "hide.png", :class=>"hide" %></a></div>
       <div><%= t('user.explore') %> <a id="show_places" href="/"><%= t('user.places') %></a> <%= t('user.and') %> <a id="show_photos" href="/"><%= t('user.photos') %></a></div>
     </div>
     <div id="locations">

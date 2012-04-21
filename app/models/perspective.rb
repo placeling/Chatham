@@ -6,8 +6,8 @@ class Perspective
   include Mongoid::Paranoia
   include Twitter::Extractor
 
-  field :memo,        :type => String
-  field :tags,    :type => Array
+  field :memo,        :type => String, :default=>""
+  field :tags,    :type => Array, :default =>[]
   field :url,       :type => String
   field :flag_count, :type => Integer, :default =>0
   field :modified_at, :type => DateTime
