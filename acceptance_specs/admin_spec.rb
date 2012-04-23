@@ -15,10 +15,14 @@ describe "Admin", :type => :request do
   end
 
   it "should display status page" do
+      puts @site + "/admin/status"
 
-      res = Net::HTTP.get_response URI.parse(@site + "/admin/status")
+      http= Net::HTTP.new(@site, 443)
+      http.use_ssl = true
+      req = Net::HTTP::Get.new('/admin/status')
+      res = http.request(req)
+
       res.code.should == "200"
-
       res.body.should include("E8455D251B002C7A0E0ADE385C8940E29CE7C139233B31A9889009B37814CA49")
   end
 end
