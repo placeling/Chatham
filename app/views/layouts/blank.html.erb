@@ -9,7 +9,6 @@
   <%= stylesheet_link_tag "jquery.lightbox.css" %>
   <%= javascript_include_tag "jquery.lightbox-0.5.min.js" %>
   
-  
   <%= yield :javascript_includes %>
   
   <%= yield :css %>
@@ -38,5 +37,6 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
   </script>
+  <%= yield :javascript %>
 </body>
 </html>

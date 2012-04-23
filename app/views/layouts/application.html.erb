@@ -20,9 +20,11 @@
 
   <%= yield :javascript_includes %>
 
-  <link rel="stylesheet" type='text/css' href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css"/>
   <%= stylesheet_link_tag "application" %>
   <style type="text/css">
+      .ui-autocomplete {
+          font-size: 62.5%;
+      }
     <%= yield :css %>
   </style>
 </head>

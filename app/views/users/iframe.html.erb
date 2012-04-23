@@ -165,88 +165,48 @@
   <script type="text/javascript"
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&amp;sensor=false">
   </script>
+
+<% end %>
+<% content_for :javascript do %>
+
   <script type="text/javascript">
     document.domain = "placeling.com";
-    
+
     DEFAULT_HEIGHT = 81;
-    
+
+    var persps = {};
+    var myOptions;
+    var placemark;
+    var map;
+    var shape;
+    var infoWindow;
+
     function openWindow(url)
     {
       window.open(url, '_blank');
     }
-    
-    function initialize() {
-      var zoom = <%= @zoom %>;
-      var lat = <%= @lat %>;
-      var lng = <%= @lng %>;
-      
-      var persps = {};
-      var topLat;
-      var bottomLat;
-      var rightLng;
-      var leftLng;
-      var requests = 0;
-      
-      var myOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom: zoom,
-        panControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false,
-        zoomControlOptions: {
-          position: google.maps.ControlPosition.LEFT_CENTER
-        },
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      
-      var map = new google.maps.Map(document.getElementById("main_map"), myOptions);
-      
-      var placemark = new google.maps.MarkerImage(
-        '/images/placemarker.png',
-        new google.maps.Size(30,32),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(9, 32)
-      );
-      
-      var shape = {
-        coord: [1,1,1,15,6,20,9,30,12,20,18,15,18,1],
-        type: 'poly'
-      };
-      
-      var infowindow = new google.maps.InfoWindow({});
-      
-      google.maps.event.addListener(map, 'click', function() {
-        infowindow.close();
-        google.maps.event.trigger(map, 'idle');
-      });
-      
-      google.maps.event.addListener(infowindow, 'closeclick', function() {
-        google.maps.event.trigger(map, 'idle');
-      })
-      
-      function createMarker(perspective) {
+
+    function createMarker(perspective) {
         var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(perspective.lat, perspective.lng),
+          position: new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
           icon: placemark,
           shape: shape,
           map: map,
-          title: perspective.name
+          title: perspective.place.name
         });
         google.maps.event.addListener(marker, 'click', function(){
           if (infowindow.getMap() && infowindow.getPosition() === marker.getPosition()) {
             infowindow.close();
           } else {
             var infoWindowHTML = '<div class="info_window">';
-            
-            infoWindowHTML += '<div class="info_name"><a href="' + perspective.place_url + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.name + '</a></div>';
-            
-            if (perspective.categories.length > 0 || perspective.tags.length > 0) {
+
+            infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a></div>';
+
+            if (perspective.place.venue_types.length > 0 || perspective.tags.length > 0) {
               infoWindowHTML += '<div class="info_cat_and_tags">';
-              if (perspective.categories.length > 0) {
+              if (perspective.place.venue_types.length > 0) {
                 infoWindowHTML += '<span class="tag">';
-                infoWindowHTML += perspective.categories.join('</span>, <span class="tag">');
+                infoWindowHTML += perspective.place.venue_types.join('</span>, <span class="tag">');
                 infoWindowHTML += '</span>';
                 if (perspective.tags.length > 0) {
                   infoWindowHTML += ' | ';
@@ -259,34 +219,34 @@
               }
               infoWindowHTML += '</div>';
             }
-            
+
             if (typeof perspective.memo !== "undefined") {
               infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
             }
-            
-            if (typeof perspective.remote_url !== "undefined") {
-              infoWindowHTML += '<div class="info_url"><a href="' + perspective.remote_url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
+
+            if (typeof perspective.url !== "undefined") {
+              infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
             }
-            
+
             if (perspective.photos.length > 0) {
               var pics = '<div class="info_pics lightboxGallery">';
               for (var i=0; i<perspective.photos.length; i++) {
-                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb + '"></a></span>';
+                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb_url + '"></a></span>';
               }
               pics += '</div>';
               infoWindowHTML += pics;
             }
-            
-            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.modified + '</span></div>';
+
+            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span></div>';
             infoWindowHTML += mod_action;
-            
+
             infoWindowHTML += '</div>';
-            
+
             infowindow.open(map, marker);
             infowindow.setContent(infoWindowHTML);
             infowindow.setPosition(marker.getPosition());
             google.maps.event.trigger(map, 'idle');
-            
+
             $('.lightboxGallery').each(function(){
               $('.lightbox', this).lightBox();
             });
@@ -294,21 +254,21 @@
         });
         marker.setVisible(false);
         return marker;
-      }      
-      
+      }
+
       function updatePerspectives(perspectiveList) {
         for (var i=0; i < perspectiveList.length; i++) {
-          if (typeof persps[perspectiveList[i]['uid']] === "undefined") {
-            persps[perspectiveList[i]['uid']] = perspectiveList[i];
-            persps[perspectiveList[i]['uid']]['marker'] = createMarker(perspectiveList[i]);
+          if (typeof persps[perspectiveList[i]['place_id']] === "undefined") {
+            persps[perspectiveList[i]['place_id']] = perspectiveList[i];
+            persps[perspectiveList[i]['place_id']]['marker'] = createMarker(perspectiveList[i]);
           }
         }
         updateMap();
       }
-      
+
       function updateMap() {
         var currentBounds = map.getBounds();
-        
+
         for (var persp in persps) {
           if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
             persps[persp]["marker"].setVisible(true);
@@ -316,49 +276,100 @@
             persps[persp]["marker"].setVisible(false);
           }
         }
-        
+
         if (infowindow.getMap()) {
           if (currentBounds.contains(infowindow.getPosition()) === false) {
             infowindow.close();
           }
-        }        
+        }
       };
-      
+
+    function initialize() {
+      var zoom = <%= @zoom %>;
+      var lat = <%= @lat %>;
+      var lng = <%= @lng %>;
+
+      persps = {};
+      var topLat;
+      var bottomLat;
+      var rightLng;
+      var leftLng;
+      var requests = 0;
+
+      myOptions = {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: zoom,
+        panControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        overviewMapControl: false,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_CENTER
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      map = new google.maps.Map(document.getElementById("main_map"), myOptions);
+
+      placemark = new google.maps.MarkerImage(
+        '/images/placemarker.png',
+        new google.maps.Size(30,32),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(9, 32)
+      );
+
+      shape = {
+        coord: [1,1,1,15,6,20,9,30,12,20,18,15,18,1],
+        type: 'poly'
+      };
+
+      infowindow = new google.maps.InfoWindow({});
+
+      google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+        google.maps.event.trigger(map, 'idle');
+      });
+
+      google.maps.event.addListener(infowindow, 'closeclick', function() {
+        google.maps.event.trigger(map, 'idle');
+      })
+
       google.maps.event.addListener(map, 'idle', function() {
         var callServer = false;
         var bounds = map.getBounds();
-        
+
         $('#lat').text(map.getCenter().lat());
         $('#lng').text(map.getCenter().lng());
         $('#zoom').text(map.getZoom());
-        
+
         if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
           callServer = true;
         }
-        
+
         if (callServer === false) {
           var updatedTopLat = bounds.getNorthEast().lat();
           var updatedBottomLat = bounds.getSouthWest().lat();
           var updatedRightLng = bounds.getNorthEast().lng();
           var updatedLeftLng = bounds.getSouthWest().lng();
-          
+
           if ((updatedTopLat > topLat) || (updatedBottomLat < bottomLat)) {
             callServer = true;
           }
-          
+
           if (callServer === false) {
             if (updatedRightLng > rightLng || updatedLeftLng < leftLng) {
               callServer = true;
             }
           }
         }
-        
+
         if (callServer == true) {
           requests += 1;
           if (requests > 0) {
             $('#spinner').show();
           }
-          
+
           if ((typeof topLat === "undefined") || (typeof bottomLat === "undefined") || (typeof rightLng === "undefined") || (typeof leftLng === "undefined")) {
             var updatedTopLat = Math.min(bounds.getNorthEast().lat() + 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), 90);
             var updatedBottomLat = Math.max(bounds.getSouthWest().lat() - 2*(bounds.getNorthEast().lat() - bounds.getSouthWest().lat()), -90);
@@ -382,7 +393,7 @@
             var updatedRightLng = bounds.getNorthEast().lng();
             var updatedLeftLng = bounds.getSouthWest().lng();
           }
-          
+
           $.ajax({
             url:'<%= bounds_user_path(@user) %>',
             data: {
@@ -391,9 +402,11 @@
               right_lng: updatedRightLng,
               left_lng: updatedLeftLng
             },
-            dataType:"script",
+            dataType:"json",
             type:"GET",
             success: function(data) {
+              updatePerspectives( data.perspectives );
+
               requests -= 1;
               if (requests <= 0) {
                 $('#spinner').hide();
@@ -417,17 +430,15 @@
                   leftLng = updatedLeftLng;
                 }
               }
-              
-              eval(data);
             }
           });
         } else {
           updateMap();
         }
       });
-      
+
     }
-    
+
     $(document).ready(function(){
       initialize();
       $('#map_holder').width(<%= @width %>);
@@ -435,7 +446,7 @@
       $('#map_holder').css({"height": height});
       $('#action').css({"height": DEFAULT_HEIGHT});
       $('#action').width(<%= @width %>);
-      
+
       $('#map_holder').append('<div id="spinner"><img class="spinner" src="<%= asset_path("spinner.gif") %>"></div>');
       $('#spinner').css({
         'position':'absolute',
@@ -446,6 +457,7 @@
     });
   </script>
 <% end %>
+
 
 <div id="map_holder">
   <div id="main_map" style="width:100%; height:100%"></div>
