@@ -387,7 +387,7 @@ class UsersController < ApplicationController
     end
     
     respond_to do |format|
-      format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true} ) } }
+      format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user } ) } }
     end
   end
   

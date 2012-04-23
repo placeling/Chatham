@@ -213,6 +213,8 @@ class Perspective
           attributes = attributes.merge(:starred => false)
         end
       end
+    else
+      attributes = attributes.merge(:mine => false)
     end
 
     if options[:detail_view] == true

@@ -12,6 +12,9 @@
   <script type="text/javascript"
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
   </script>
+<% end %>
+
+<% content_for :javascript do %>
   <script type="text/javascript">
     var DEFAULT_ZOOM = 13;
     var DEFAULT_HEIGHT = 81;
@@ -24,8 +27,8 @@
     var loadState;
     
     <% if @user.location && @user.location.length == 2 %>
-      var user_lat = <%= @user.location[0] %>
-      var user_lng = <%= @user.location[1] %>
+      var user_lat = <%= @user.location[0] %>;
+      var user_lng = <%= @user.location[1] %>;
     <% end %>
     
     function openWindow(url)
@@ -72,7 +75,10 @@
             var infoWindowHTML = '<div class="info_window">';
 
             // Edit vs. star
-            if (perspective.mine != "true") {
+            if (perspective.mine) {
+                var action = '<div class="info_action"><a href="/perspectives/' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("pencil_24.png") %>"></a></div>';
+                infoWindowHTML += action;
+            } else {
               if (perspective.memo.length >0 || perspective.photos.length > 0) {
                 var action = '<div class="info_action"><a href="/" id="star">';
                 if (perspective.starred == true) {
@@ -83,9 +89,6 @@
                 action += '</a></div>';
                 infoWindowHTML += action;
               }
-            } else {
-              var action = '<div class="info_action"><a href="/perspectives/"' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("pencil_24.png") %>"></a></div>';
-              infoWindowHTML += action;
             }
 
             infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '">' + perspective.place.name + '</a></div>';
@@ -137,11 +140,11 @@
 
             var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span>';
 
-            //if (typeof perspective.mine != true) {
-            //  mod_action += perspective.flag;
-            //} else {
-              //mod_action += perspective["delete"];
-            //}
+            if (perspective.mine) {
+              mod_action += '<a href="/perspectives/' + perspective.id + '" class="info_act" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Delete</a>';
+            } else {
+              mod_action += '<a href="/perspectives/' + perspective.id + '/flag" class="info_act" data-confirm="Flag these notes &amp; photos?" data-method="post" data-remote="true" rel="nofollow">Flag</a>';
+            }
 
             mod_action += '</div>';
 
@@ -174,7 +177,7 @@
                    event: 'click'
                  },
                  style: {
-                   classes: 'ui-tooltip-rounded ui-tooltip-shadow',
+                   classes: 'ui-tooltip-rounded ui-tooltip-shadow'
                  }
               });
             });
@@ -183,7 +186,7 @@
               e.preventDefault();
               if (perspective.starred == true) {
                 $.ajax({
-                  url: perspective.unstar,
+                  url: "/perspectives/" + perspective.id + "/unstar",
                   dataType:"script",
                   type:"POST",
                   success: function(data) {
@@ -200,7 +203,7 @@
                 });
               } else {
                 $.ajax({
-                  url: perspective.star,
+                  url: "/perspectives/" + perspective.id + "/star",
                   dataType:"script",
                   type:"POST",
                   success: function(data) {
