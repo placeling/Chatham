@@ -91,7 +91,7 @@
             <%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%>
             <% if @perspective.user.perspective_count > 1 %>
             <div class="all_places_holder">
-              <a href="<%= user_path(@perspective.user) %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a>
+              <a href="<%= user_path(@perspective.user) %>?pid=<%= @perspective.id %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a>
             </div>
             <% end %>
           </div>
