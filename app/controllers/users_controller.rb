@@ -401,7 +401,7 @@ class UsersController < ApplicationController
     start_pos = params[:start].to_i
     count = 20
     
-    @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count )
+    @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries
     
     if @perspectives.length < count
       @noscroll = true
