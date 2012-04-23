@@ -6,14 +6,14 @@ development:
   consumer_secret: "Eu9IwNmhazNgS7vYtaM9cWeF0DKpIFp6Rxruxmy4"
 
 test:
-  host: "https://staging.corp.placeling.com"
+  host: "https://staging.placeling.com"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
   consumer_secret: "Eu9IwNmhazNgS7vYtaM9cWeF0DKpIFp6Rxruxmy4"
 
 staging:
-  host: "https://staging.corp.placeling.com"
+  host: "https://staging.placeling.com"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
