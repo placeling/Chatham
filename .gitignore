@@ -6,3 +6,4 @@ public/uploads/**/*
 assets/GeoIPCity.csv
 .sass-cache/
 public/assets/
+**/.DS_Store
