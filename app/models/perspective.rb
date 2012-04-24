@@ -198,6 +198,7 @@ class Perspective
     attributes.delete('place_stub')
     attributes.delete('uid')
     attributes[:place_id] = attributes.delete('plid')
+    attributes[:modified_timestamp] = attributes['updated_at'].getutc
 
     if options[:current_user]
       current_user = options[:current_user]
