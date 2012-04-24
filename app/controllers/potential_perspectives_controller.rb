@@ -1,4 +1,4 @@
-require 'faster_csv'
+require 'csv'
 require 'google_places'
 
 GOOGLE_RADIUS = 150
@@ -108,21 +108,21 @@ class PotentialPerspectivesController < ApplicationController
     @potential_perspective = PotentialPerspective.new(params[:potential_perspective])
     
     if @potential_perspective.user.nil?
-      @potential_perspective.errors.add_to_base "We need a valid username"
+      @potential_perspective.errors[:base] << "We need a valid username"
     end
     
     if params[:upload].nil?
-      @potential_perspective.errors.add_to_base "Please attach a file"
+      @potential_perspective.errors[:base] << "Please attach a file"
     else
       begin
-        data = FasterCSV.parse(params[:upload].read)
+        data = CSV.parse(params[:upload].read)
       rescue
-        @potential_perspective.errors.add_to_base "That .csv file isn't valid"
+        @potential_perspective.errors[:base] << "That .csv file isn't valid"
       end
     end
     
     respond_to do |format|
-      if @potential_perspective.errors.length == 0
+      if @potential_perspective.errors.count == 0
         # In following, order of fields is hardcoded and assumes no header row
         data.each_with_index do |row, index|
           perp = PotentialPerspective.new
@@ -139,7 +139,7 @@ class PotentialPerspectivesController < ApplicationController
           perp.postal_code = row[5]
           perp.url = row[9]
           perp.valid?
-          if perp.errors[:url].length > 0
+          if perp.errors[:url].count > 0
             perp.url = nil
           end
           perp.save
@@ -228,11 +228,11 @@ class PotentialPerspectivesController < ApplicationController
       # Fixing place - user creating new place
       if params[:potential_perspective].has_key?(:name)
         if params[:potential_perspective][:name].length == 0
-          @potential_perspective.errors.add_to_base "We need a name for this place."
+          @potential_perspective.errors.add[:base] << "We need a name for this place."
         end
         
         if !params[:potential_perspective].has_key?(:venue_types) or params[:potential_perspective][:venue_types].length == 0
-          @potential_perspective.errors.add_to_base "Please pick at least one venue type"
+          @potential_perspective.errors.add[:base] << "Please pick at least one venue type"
         elsif params[:potential_perspective][:name].length > 0
           @place = Place.new
           @place.name = params[:potential_perspective][:name]
@@ -259,7 +259,7 @@ class PotentialPerspectivesController < ApplicationController
     end
     
     respond_to do |format|
-      if @potential_perspective.errors.length == 0
+      if @potential_perspective.errors.count == 0
         if @potential_perspective.save
           format.html { redirect_to(user_potential_perspectives_path(@potential_perspective.user), :notice => 'Potential perspective was successfully updated.') }
         else

@@ -82,6 +82,8 @@ class PotentialPerspective
             end
             result = geocoder.geocode(address_pieces)
             
+            sleep(3) # DO THIS SO DON'T HIT GOOGLE TOO HARD AND GET THROTTLED
+            
             if result and (result.types.include? "street_address" or result.types.include? "subpremise" \
               or result.types.include? "premise" or result.types.include? "point_of_interest")
                 self.location[0] = result.geometry.location.lat
