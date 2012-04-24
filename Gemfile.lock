@@ -363,6 +363,7 @@ DEPENDENCIES
   coffee-rails (~> 3.1.1)
   database_cleaner
   devise (~> 1.4.7)
+  execjs
   factory_girl_rails (~> 1.1.rc1)
   fastercsv
   fb_graph

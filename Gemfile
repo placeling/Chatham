@@ -32,6 +32,7 @@ gem 'carrierwave-mongoid', "~> 0.1.1", :require => 'carrierwave/mongoid'
 
 gem "geocoder"
 gem "geoip"
+gem "execjs"
 
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
