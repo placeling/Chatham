@@ -71,7 +71,7 @@
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           } else {
-            loadState["<%= @user.username %>"]['infowindow'] = perspective['place_id'];
+            loadState["<%= @user.username %>"]['infowindow'] = perspective['id'];
             var infoWindowHTML = '<div class="info_window">';
 
             // Edit vs. star
@@ -154,7 +154,7 @@
 
             infowindow.open(map, marker);
             infowindow.setContent(infoWindowHTML);
-            loadState["<%= @user.username %>"]['infowindow'] = perspective["place_id"];
+            loadState["<%= @user.username %>"]['infowindow'] = perspective["id"];
             infowindow.setPosition(marker.getPosition());
             google.maps.event.trigger(map, 'idle');
 
@@ -229,9 +229,9 @@
 
       function updatePerspectives(perspectiveList) {
         for (var i=0; i < perspectiveList.length; i++) {
-          if (typeof persps[perspectiveList[i]['place_id']] === "undefined") {
-            persps[perspectiveList[i]['place_id']] = perspectiveList[i];
-            persps[perspectiveList[i]['place_id']]['marker'] = createMarker(perspectiveList[i]);
+          if (typeof persps[perspectiveList[i]['id']] === "undefined") {
+            persps[perspectiveList[i]['id']] = perspectiveList[i];
+            persps[perspectiveList[i]['id']]['marker'] = createMarker(perspectiveList[i]);
           }
         }
         updateMap();
@@ -276,7 +276,7 @@
                 persps[persp]["marker"].setVisible(true);
               } else if (pass === false && persps[persp]["marker"].getVisible() === true) {
                 persps[persp]["marker"].setVisible(false);
-                if (persps[persp]["place_id"] === loadState["<%= @user.username %>"]['infowindow']) {
+                if (persps[persp]["id"] === loadState["<%= @user.username %>"]['infowindow']) {
                   infowindow.close();
                   delete loadState["<%= @user.username %>"]['infowindow'];
                 }
@@ -285,7 +285,7 @@
           } else {
             if (persps[persp]["marker"].getVisible() === true) {
               persps[persp]["marker"].setVisible(false);
-              if (persps[persp]["place_id"] === loadState["<%= @user.username %>"]['infowindow']) {
+              if (persps[persp]["id"] === loadState["<%= @user.username %>"]['infowindow']) {
                 infowindow.close();
                 delete loadState["<%= @user.username %>"]['infowindow'];
               }
@@ -298,8 +298,11 @@
             infowindow.close();
             delete loadState["<%= @user.username %>"]['infowindow'];
           }
-        } else if ((typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && (typeof persps[loadState["<%= @user.username %>"]['infowindow']]["marker"] !== "undefined")) {
-            google.maps.event.trigger(persps[loadState["<%= @user.username %>"]['infowindow']]["marker"], 'click');
+        } else if ( typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined" ) {
+            openId = loadState["<%= @user.username %>"]['infowindow'];
+            if ( persps.hasOwnProperty(openId) && persps[openId].hasOwnProperty("marker") ){
+                google.maps.event.trigger(persps[loadState["<%= @user.username %>"]['infowindow']]["marker"], 'click');
+            }
         }
 
         $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
@@ -477,7 +480,7 @@
         locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
       } else {
         for (var i=0; i<placePerspectives.length; i++) {
-          var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["place_id"] + '"><div>' + placePerspectives[i]["place"]["name"];
+          var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
           if (placePerspectives[i]["street_address"]) {
             html += '<div class="map_address">';
             html += placePerspectives[i]["street_address"];
