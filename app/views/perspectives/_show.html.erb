@@ -67,13 +67,13 @@ If user has added text from place page, source will still be "place_page_empty" 
     </span>
     <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
     <span class="twitter footer_elements">
-      <a href="https://twitter.com/share?url=http://www.placeling.com<%= perspective_path(perspective) %>&text=<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+      <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_path(perspective.user) %>?pid=<%= perspective.id %>&text=<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
     </span>
     <span class="facebook footer_elements">
       <a href="<%= perspective_path(perspective) %>" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= perspective_path(perspective) %>')+'&t='+e('<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
     </span>
     <span class="footer_elements">
-      <a href="http://www.placeling.com<%= perspective_path(perspective) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+      <a href="https://www.placeling.com<%= user_path(perspective.user) %>?pid=<%= perspective.id %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
     </span>
     <% end %>
     <span class="footer_elements footer_text_elements">
