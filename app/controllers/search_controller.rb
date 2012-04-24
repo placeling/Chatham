@@ -32,7 +32,7 @@ class SearchController < ApplicationController
         raw_places.each do |place|
           interstitial = {}
           # Need to remove "political" and "route" types to stay in sync with mobile client
-          if !place.types.include?("political") and !place.types.include?("route")
+          if !place.types.include?("route")
             interstitial['name'] = place.terms[0].value
             interstitial['url'] = reference_places_path + "?ref=" + place.reference
             location = []

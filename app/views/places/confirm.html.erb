@@ -42,7 +42,7 @@
         <div><%= @place.venue_types.join(",") %></div>
       </div>
       <div id="captcha_holder">
-        <%= recaptcha_tags %>
+        <%= recaptcha_tags(:ssl => true) %>
       </div>
       <div id="create_or_cancel">
         <span class="cancel">
