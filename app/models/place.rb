@@ -20,6 +20,7 @@ class Place
   field :venue_types, :type => Array
   field :google_url,  :type => String
   field :place_type,  :type => String
+  field :venue_url,  :type => String
   field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
 
   field :google_ref,  :type => String # may need this later, makes easier
@@ -214,14 +215,22 @@ class Place
 
   def self.new_from_google_place( raw_place )
     place = Place.new
-    place.name = raw_place.name
-    place.google_id = raw_place.id
-    place.google_url = raw_place.url
-    place.vicinity = raw_place.vicinity
-    place.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
-    place.address_components = raw_place.address_components unless raw_place.address_components.nil?
-    place.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
-    place.google_ref = raw_place.reference
+    place.update_from_google_place( raw_place )
+    return place
+  end
+
+
+  def update_from_google_place( raw_place )
+
+    self.name = raw_place.name
+    self.google_id = raw_place.id
+    self.google_url = raw_place.url
+    self.vicinity = raw_place.vicinity
+    self.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
+    self.address_components = raw_place.address_components unless raw_place.address_components.nil?
+    self.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
+    self.google_ref = raw_place.reference
+    self.venue_url = raw_place.url unless raw_place.url.nil?
     
     # TODO This is hacky and ignores i18n
     @categories = CATEGORIES
@@ -253,11 +262,11 @@ class Place
       end
     end
     
-    place.venue_types = clean_venues
+    self.venue_types = clean_venues
     
-    place.place_type = "GOOGLE_PLACE"
+    self.place_type = "GOOGLE_PLACE"
 
-    return place
+    return self
   end
 
 
