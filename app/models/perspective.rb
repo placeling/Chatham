@@ -197,6 +197,7 @@ class Perspective
     attributes[:id] = attributes['_id']
     attributes.delete('place_stub')
     attributes.delete('uid')
+    attributes.delete('url') unless !attributes['url'].nil?
     attributes[:place_id] = attributes.delete('plid')
     attributes[:modified_timestamp] = attributes['updated_at'].getutc
 
