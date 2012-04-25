@@ -10,6 +10,6 @@
     <p>
       <%= f.file_field :avatar %>
     </p>
-    <p class="upload"><%= link_to t('user.cancel'), account_user_path(@user), :class => "cancel_spacer" %> <%= f.submit t("user.upload_pic") %></p>
+    <p class="upload"><%= link_to t('user.cancel'), account_user_path(@user), :class => "cancel_spacer" %> <%= f.submit t("user.upload_pic"), :class=>"submit" %></p>
   <% end %>
 </div>

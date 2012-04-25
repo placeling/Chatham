@@ -621,6 +621,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json { render :json => {:followers => @users} }
       format.html { render :template => 'users/list'}
+      format.js { render :template => 'users/list'}
     end
   end
 
@@ -629,12 +630,13 @@ class UsersController < ApplicationController
     start_pos = params[:start].to_i
     count = 20
 
-    @users = @user.following.skip(start_pos).limit( count )
+    @users = @user.following.skip(start_pos).limit( count ).entries
     @title = t('user.following_title', :username =>@user.username)
 
     respond_to do |format|
       format.html { render :template => 'users/list'}
       format.json { render :json => {:following => @users } }
+      format.js { render :template => 'users/list'}
     end
   end
 
