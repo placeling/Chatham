@@ -193,7 +193,7 @@ class PerspectivesController < ApplicationController
     @perspective = Perspective.find(params[:id])
     # handle case where user refreshes page from browser bar => no referer
     if request.referer != "/"
-      session[:referring_url] = URI(request.referer).path # Strip params otherwise may get wrong result on user.show
+      session[:referring_url] = URI(request.referer).path unless request.referer.nil? # Strip params otherwise may get wrong result on user.show
     end
   end
   
