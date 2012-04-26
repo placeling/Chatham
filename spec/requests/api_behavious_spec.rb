@@ -10,8 +10,8 @@ describe "API - " do
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
 
-      user.follow( user2 )
-      user.follow( user3 )
+      user.follow!( user2 )
+      user.follow!( user3 )
 
       user2.follow( user3 )
       perspective = Factory.create(:perspective, :user=>user2)

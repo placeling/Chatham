@@ -264,6 +264,11 @@ class User
     if self.id != user.id && !self.following.include?(user)
       self.following << user
     end
+  end
+
+
+  def follow!( user )
+    self.follow( user )
     ActivityFeed.add_follow( self, user)
   end
 

@@ -13,7 +13,7 @@ describe ActivityFeed do
   it "creates a follow event on user " do
     user = Factory.create(:user)
     user2 = Factory.create(:user)
-    user.follow( user2 )
+    user.follow!( user2 )
 
     user.reload #necessary since the activity stuff happens in another environment-ish
     user2.reload
