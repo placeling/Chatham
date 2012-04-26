@@ -1,5 +1,5 @@
 <div id="map">
-  <img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= place.location[0] %>,<%= place.location[1] %>&zoom=16&size=200x200&sensor=false&markers=color:blue%7C<%= place.location[0] %>,<%= place.location[1] %>" alt="map" class="styled_pic">
+  <%= image_tag place.map_url, :alt=>"map", :class=>"styled_pic" %>
 </div>
 <div id="place_overview">
   <div id="tombstones_and_share">
