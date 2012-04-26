@@ -34,7 +34,7 @@ module Chatham
     # :all can be used as a placeholder for all plugins not explicitly named.
     config.plugins = [ :dynamic_form ]
     config.assets.enabled = true
-    config.assets.paths << "#{Rails.root}/app/assets/images"
+    config.assets.paths << "#{Rails.root}/app/assets/images" << "#{Rails.root}/vendor/assets"
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
