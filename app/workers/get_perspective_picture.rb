@@ -15,6 +15,12 @@ class GetPerspectivePicture
           if !found
             picture = @perspective.pictures.build()
             begin
+              uri = URI( photo_url )
+
+              if uri.host == "www.urbanspoon.com"
+                break  #special case, these give 403 errors
+              end
+
               picture.remote_url = photo_url # for us, to keep track
               picture.remote_image_url = photo_url
               picture.save
