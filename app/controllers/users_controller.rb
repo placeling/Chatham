@@ -91,8 +91,8 @@ class UsersController < ApplicationController
       user.location = [lat, lng]
     else
       loc = get_location
-      if location["remote_ip"]
-        user.location =  [ location["remote_ip"]["lat"], location["remote_ip"]["lng"] ]
+      if loc && loc["remote_ip"]
+        user.location =  [ loc["remote_ip"]["lat"], loc["remote_ip"]["lng"] ]
       end
     end
 
