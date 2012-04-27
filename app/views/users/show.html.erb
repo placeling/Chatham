@@ -138,7 +138,7 @@
 
             infoWindowHTML += share;
             var modified_at = new Date( perspective.modified_timestamp );
-            var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('yy-mm-dd', modified_at ); + '</span>';
+            var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('M. dd, yy', modified_at ); + '</span>';
 
             if (perspective.mine) {
               mod_action += '<a href="/perspectives/' + perspective.id + '" class="info_act" data-confirm="Are you sure?" data-method="delete" rel="nofollow">Delete</a>';
