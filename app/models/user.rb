@@ -59,6 +59,8 @@ class User
   field :remark_notify, :type => Boolean, :default => true
   
   field :confirmed_at, :type =>DateTime
+
+  field :ios_notification_token, :type =>String
   
   # For avatar cropping
   # Initial position of cropping + dimensions

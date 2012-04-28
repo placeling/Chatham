@@ -68,7 +68,13 @@ Chatham::Application.routes.draw do
   end
   
   resources :potential_perspectives, :only => [:update, :edit, :destroy]
-  
+
+  resources :ios do
+    collection do
+      post :update_token
+    end
+  end
+
   resources :perspectives, :only =>[:show, :edit, :update, :destroy]   do
     member do
       post :star
@@ -119,6 +125,12 @@ Chatham::Application.routes.draw do
     match '/auth/:provider/callback' => 'authentications#create'
     match '/auth/:provider/add' => 'authentications#add'
     match '/auth/:provider/login' => 'authentications#login'
+
+    resources :ios do
+      collection do
+        post :update_token
+      end
+    end
 
     resources :users do
       resources :perspectives, :only =>[:index]
