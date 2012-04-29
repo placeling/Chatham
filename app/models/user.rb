@@ -368,6 +368,14 @@ class User
     
   end
 
+  def ios_notification_token
+    res = self[:ios_notification_token].scan(/\<(.+)\>/).first
+    unless res.nil? || res.empty?
+      return res.first
+    end
+    return self[:ios_notification_token]
+  end
+
   def facebook
     for auth in self.authentications
       if auth.provider == 'facebook'

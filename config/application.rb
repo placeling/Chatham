@@ -69,3 +69,8 @@ module Chatham
 
   end
 end
+
+require "apns"
+
+APNS.pem = "#{Rails.root}/config/certs/apns-dev-cert.pem"
+
