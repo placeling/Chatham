@@ -372,6 +372,10 @@ class User
     
   end
 
+  def star_notification?
+    !ios_notification_token.nil?
+  end
+
   def follow_notification?
     !ios_notification_token.nil?
   end
