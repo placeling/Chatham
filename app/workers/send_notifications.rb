@@ -9,6 +9,8 @@ class SendNotifications
       n = [user.ios_notification_token, :aps=>{:alert=>message, :sound => 'default'}]
     end
 
+    track! :ios_notification
+
     APNS.send_notifications( [n] )
   end
 end
