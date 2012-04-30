@@ -1,12 +1,12 @@
 require 'uri'
 
 class PerspectivesController < ApplicationController
-  before_filter :login_required, :except =>[:index, :show, :nearby, :all, :new]
+  before_filter :login_required, :except =>[:index, :show, :nearby, :all]
 
   def new
     @place = Place.find(params[:place_id])
     @perspective= current_user.perspective_for_place( @place )
-    
+
     if @perspective.nil?
       track! :placemark
       @perspective= @place.perspectives.build()
@@ -14,10 +14,11 @@ class PerspectivesController < ApplicationController
       @perspective.user = current_user
       @perspective.location = @place.location
     end
-    
+
     @perspective.save
-    
+
     respond_to do |format|
+      format.html
       format.js
     end
   end
