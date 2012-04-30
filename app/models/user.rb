@@ -57,6 +57,10 @@ class User
   
   field :new_follower_notify, :type => Boolean, :default => true
   field :remark_notify, :type => Boolean, :default => true
+  field :weekly_update, :type => Boolean, :default =>true
+
+  field :new_follower_notify_mobile, :type => Boolean, :default => true
+  field :remark_notify_mobile, :type => Boolean, :default => true
   
   field :confirmed_at, :type =>DateTime
 
@@ -368,7 +372,12 @@ class User
     
   end
 
+  def follow_notification?
+    !ios_notification_token.nil?
+  end
+
   def ios_notification_token
+    return nil unless !self[:ios_notification_token].nil?
     res = self[:ios_notification_token].scan(/\<(.+)\>/).first
     unless res.nil? || res.empty?
       return res.first

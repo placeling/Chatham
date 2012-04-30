@@ -13,5 +13,10 @@ class FollowActivity
     activity.username2 = actor2.username
     activity.save
     activity.push_to_followers( actor1 )
+
+    if actor2.follow_notification?
+      Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} started following you!", "placeling://users/#{actor1.username}")
+    end
+
   end
 end
