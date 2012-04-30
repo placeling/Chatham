@@ -24,21 +24,7 @@
     <div class="account_info_holder">
       <div class="account_label"><%= t('account.url') %></div><div class="account_value"><%= f.url_field :url %> <div class="url_hint"><%= t('perspective.url_hint') %></div></div>
     </div>
-    
-    <div class="account_info_holder">
-      <div class="account_label"><%= t('account.new_follower') %></div><div class="account_value">
-        <%= f.radio_button :new_follower_notify, true %> Yes
-        <%= f.radio_button :new_follower_notify, false %> No
-      </div>
-    </div>
-    
-    <div class="account_info_holder">
-      <div class="account_label"><%= t('account.remarked') %></div><div class="account_value">
-        <%= f.radio_button :remark_notify, true %> Yes
-        <%= f.radio_button :remark_notify, false %> No
-      </div>
-    </div>
-    
+
     <div class="edit_actions">
       <span class="cancel"><a href="<%= account_user_path(current_user) %>"><%= t ('account.cancel') %></a></span> <%= f.submit t('account.save_changes'), :class=>"submit" %>
     </div>

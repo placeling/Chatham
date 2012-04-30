@@ -34,6 +34,7 @@ class User
     self.y = nil
     self.w = nil
     self.h = nil
+    self.save
   end
   
   field :username,      :type =>String
@@ -54,14 +55,6 @@ class User
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
-  
-  field :new_follower_notify, :type => Boolean, :default => true
-  field :remark_notify, :type => Boolean, :default => true
-  field :weekly_update, :type => Boolean, :default =>true
-
-  field :new_follower_notify_mobile, :type => Boolean, :default => true
-  field :remark_notify_mobile, :type => Boolean, :default => true
-  
   field :confirmed_at, :type =>DateTime
 
   field :ios_notification_token, :type =>String
@@ -107,11 +100,19 @@ class User
 
   before_save :cache_urls
   before_save :get_city
+
+  before_create :attach_settings
   after_create :follow_defaults
 
   def get_city
     if self.location != nil && self.location != [0,0] && self.city == ""
       self.city =  CitynameFinder.getCity( self.location[0], self.location[1] )
+    end
+  end
+
+  def attach_settings
+    if !self.user_setting
+      self.create_user_setting
     end
   end
 

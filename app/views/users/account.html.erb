@@ -47,24 +47,6 @@
     <div class="account_value"><a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %></a></div>
   </div>
   <div class="account_info_holder">
-    <div class="account_label"><%= t('account.notify') %></div>
-    <div class="account_value">
-    <% if @user.new_follower_notify %>
-      <%= t('account.yes_new_follower_notify')%>
-    <% else %>
-      <%= t('account.no_new_follower_notify' )%>
-    <% end %>
-    </div>
-    <div class="account_value">
-    <% if @user.remark_notify %>
-      <%= t('account.yes_remark_notify')%>
-    <% else %>
-      <%= t('account.no_remark_notify' )%>
-    <% end %>
-    </div>
-    
-  </div>
-  <div class="account_info_holder">
     <div class="account_label"><%= t('account.authentications') %></div>
     <div class="account_value">
     <% if @facebook %>
@@ -85,3 +67,4 @@
   </div>
   
 </div>
+
