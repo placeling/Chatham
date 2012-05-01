@@ -374,12 +374,24 @@ class User
     
   end
 
-  def star_notification?
-    !ios_notification_token.nil?
+  def remark_notification?
+    !ios_notification_token.nil? && self.user_settings.remark_notify
   end
 
   def follow_notification?
-    !ios_notification_token.nil?
+    !ios_notification_token.nil? && self.user_settings.new_follower_notify
+  end
+
+  def follow_email?
+    self.confirmed? && self.user_settings.new_follower_email
+  end
+
+  def remark_email?
+    self.confirmed? && self.user_settings.remark_email
+  end
+
+  def weekly_email?
+    self.confirmed? && self.user_settings.weekly_email
   end
 
   def ios_notification_token
