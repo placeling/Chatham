@@ -18,7 +18,7 @@ class StarActivity
     activity.save
     activity.push_to_followers( actor1 )
 
-    if actor2.star_notification?
+    if actor2.remark_notification?
       Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} liked your placemark on #{ perspective.place.name }!", "placeling://places/#{perspective.place.id}")
     end
 
