@@ -125,6 +125,7 @@ Chatham::Application.routes.draw do
     match '/auth/:provider/callback' => 'authentications#create'
     match '/auth/:provider/add' => 'authentications#add'
     match '/auth/:provider/login' => 'authentications#login'
+    match '/auth/:provider/friends' => 'authentications#friends'
 
     resources :ios do
       collection do
