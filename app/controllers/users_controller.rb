@@ -497,40 +497,10 @@ class UsersController < ApplicationController
         @user.avatar = params[:image]
       end
     else
-      if params[:avatar]
-        if params[:user].blank?
-          return redirect_to edit_avatar_user_path(@user)
-        else
-          @user.avatar = params[:user][:avatar]
-        end
-      else
         # Couldn't use update_attributes here as Mongoid wouldn't create new objects
         # where previously <nil>
-        if params[:user][:description]
-          @user.description = params[:user][:description]
-        end
-        if params[:user][:username]
-          @user.username = params[:user][:username]
-        end
-        if params[:user][:email]
-          @user.email = params[:user][:email]
-        end
-        if params[:user][:city] && params[:user][:city].length > 0
-          @user.city = params[:user][:city]
-        else
-          @user.city = nil
-        end
-        if params[:user][:url] && params[:user][:url].length > 0
-          @user.url = params[:user][:url]
-        else
-          @user.url = nil
-        end
-        if params[:user][:new_follower_notify]
-          @user.new_follower_notify = params[:user][:new_follower_notify]
-        end
-        if params[:user][:remark_notify]
-          @user.remark_notify = params[:user][:remark_notify]
-        end
+        @user.update_attributes( params[:user] )
+
         if params[:user][:x]
           @user.x = 2 * params[:user][:x].to_f
         end
@@ -543,26 +513,18 @@ class UsersController < ApplicationController
         if params[:user][:h]
           @user.h = 2 * params[:user][:h].to_f
         end
-      end
     end
     
     if @user.save
-      if params[:avatar]
-        render :crop_pic
-      else
-        respond_to do |format|
-          format.html { redirect_to account_user_path(@user) }
-          format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
-        end
+      flash[:notice] = "User Setting Saved!"
+      respond_to do |format|
+        format.html { render :account }
+        format.json { render :json => {:status =>"success", :user => @user.as_json({:current_user => current_user}) } }
       end
     else
-      if params[:avatar]
-        render :pic
-      else
-        respond_to do |format|
-          format.html { render :account }
-          format.json { render :json => {:status => "fail", :message => @user.errors} }
-        end
+      respond_to do |format|
+        format.html { render :account }
+        format.json { render :json => {:status => "fail", :message => @user.errors} }
       end
     end
   end

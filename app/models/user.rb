@@ -80,7 +80,7 @@ class User
 
   embeds_one :activity_feed
   embeds_one :user_setting
-  accepts_nested_attributes_for :user_settings
+  accepts_nested_attributes_for :user_setting
 
   validate :acceptable_name, :on => :create
   validate :acceptable_password
@@ -90,7 +90,7 @@ class User
   validates_format_of :email, :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => "is not valid"
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
   validates_uniqueness_of :username, :email, :case_sensitive => false
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :url, :user_setting_attributes, :city
   
   index :unm
   index :email

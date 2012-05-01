@@ -14,7 +14,7 @@
       <div class="account_title"><%= t('account.title') %></div>
       <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
       <div class="account_info_holder">
-        <div class="account_label"><%= t('account.username') %></div><div class="account_value" id="username"><%= f.text_field :username %></div>
+        <div class="account_label"><%= t('account.username') %></div><div class="account_value" id="username"><%= f.text_field :username, :disabled => 'disabled' %></div>
       </div>
 
       <div class="account_info_holder">
@@ -47,7 +47,7 @@
       </div>
 
       <div class="account_title"><%= t('account.notify') %></div>
-      <%= f.fields_for :user_settings  do |us| %>
+      <%= f.fields_for :user_setting  do |us| %>
       <table>
         <tr>
           <td></td>
