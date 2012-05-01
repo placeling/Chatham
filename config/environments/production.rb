@@ -32,6 +32,7 @@ Chatham::Application.configure do
   # In production, Apache or nginx will already do this
 
   config.assets.compress = true
+  config.assets.digest = true
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "dmznjo0da80tm.cloudfront.net"
