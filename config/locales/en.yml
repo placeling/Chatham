@@ -88,6 +88,7 @@ en:
 
   profile:
     profile: "Profile"
+    profile_pic: "Profile Pic"
 
   potential_perspective:
     start_submit: "Start Upload"
@@ -134,18 +135,15 @@ en:
     cancel: "Cancel"
     save_changes: "Save"
     notify: "Notifications"
-    yes_new_follower_notify: "Yes, send me an email when someone follows me"
-    no_new_follower_notify: "No, do not send me an email when someone follows me"
-    yes_remark_notify: "Yes, send me an email when someone reMarks one of my placemarks"
-    no_remark_notify: "No, do not send me an email when someone reMarks one of my placemarks"
+    new_follower: "A user follows you"
+    placemark_starred: "A user favourites one of your placemarks"
+    weekly_email: "Weekly Recommendations"
     new_pic: "Change Your Profile Picture"
     pic_choose: "Select a .png, .jpeg or .gif file"
     change_pic: "Change your profile picture"
     authentications: "authentications"
     fb_connected: "Your account is connected to Facebook"
     update: "Update"
-    new_follower: "Email if new follower"
-    remarked: "Email if reMarked"
     embed: "embed"
     embed_howto: "Embed a copy of your map on your website or blog"
     embed_title: "Embed your map"

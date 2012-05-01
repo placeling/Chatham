@@ -80,6 +80,7 @@ class User
 
   embeds_one :activity_feed
   embeds_one :user_setting
+  accepts_nested_attributes_for :user_settings
 
   validate :acceptable_name, :on => :create
   validate :acceptable_password

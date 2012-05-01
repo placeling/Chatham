@@ -2,69 +2,89 @@
   <title><%= t('account.title') %></title>
 <% end %>
 
-<div class="account_holder">
-  <div class="account_title"><%= t('account.title') %> <a href="<%= edit_user_path(@user) %>"><%= image_tag "writer.png", :alt=>"t('account.edit')", :class=>"account_edit_image" %></a></div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.username') %></div>
-    <div class="account_value"><%= @user.username %></div>
-  </div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.email') %></div>
-    <div class="account_value"><%= @user.email %></div>
-  </div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.location') %></div>
-    <div class="account_value">
-    <% if !@user.city.nil? && @user.city.length > 0 %>
-      <%= @user.city %>
-    <% else %>
-      <%= t('account.no_city') %>
-    <% end %>
-    </div>
-  </div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.description') %></div>
-    <div class="account_value">
-    <% if !@user.description.nil? && @user.description.length > 0 %>
-      <%= @user.description %>
-    <% else %>
-      <%= t('account.no_description')%>
-    <% end %>
-    </div>
-  </div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.url') %></div>
-    <div class="account_value">
-      <% if @user.url.nil? || @user.url.length == 0 %>
-        <%= t('account.no_url') %>
-      <% else %>
-        <%= link_to(@user.url, @user.url) %>
-      <% end %>
-    </div>
-  </div>
-  <div class="account_info_holder account_profile_pic">
-    <div class="account_label"><%= t('account.profile_pic') %> <a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag "writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a></div>
-    <div class="account_value"><a href="<%= edit_avatar_user_path(@user) %>"><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %></a></div>
-  </div>
-  <div class="account_info_holder">
-    <div class="account_label"><%= t('account.authentications') %></div>
-    <div class="account_value">
-    <% if @facebook %>
-      <%= t('account.fb_connected')%>
-    <% else %>
-      <a href="/auth/facebook" class="auth_provider">
-        <%= image_tag "facebook/fb-connect-large.png", :width => 200, :alt => "t('basic.facebook')" %>
-      </a>
-    <% end %>
-    </div>
-  </div>
+<%= form_for @user, :url => { :action => "update" } do |f| %>
+    <div class="account_holder">
 
+      <div class="account_title"><%= t('profile.profile_pic') %></div>
+      <div class="account_info_holder account_profile_pic">
+        <div class="account_label"><%= t('account.profile_pic') %> <a href="<%= pic_user_path(@user) %>"><%= image_tag "writer.png", :alt=>"t('account.change_pic')", :class=>"account_change_pic" %></a></div>
+        <div class="account_value"><a href="<%= pic_user_path(@user) %>"><%= image_tag(@user.thumb_url, :class => "styled_pic", :alt => "Profile Pic") %></a></div>
+      </div>
+
+      <div class="account_title"><%= t('account.title') %></div>
+      <%= f.error_messages :header_message => "One sec please...", :message => "We need you to check the following:" %>
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.username') %></div><div class="account_value" id="username"><%= f.text_field :username %></div>
+      </div>
+
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.email') %></div><div class="account_value" id="email"><%= f.email_field :email %></div>
+      </div>
+
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.location') %></div><div class="account_value"><%= f.text_field :city %></div>
+      </div>
+
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.description') %></div><div class="account_value"><%= f.text_area :description %></div>
+      </div>
+
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.url') %></div><div class="account_value"><%= f.url_field :url %> <div class="url_hint"><%= t('perspective.url_hint') %></div></div>
+      </div>
+
+      <div class="account_info_holder">
+        <div class="account_label"><%= t('account.authentications') %></div>
+        <div class="account_value">
+        <% if @facebook %>
+          <%= t('account.fb_connected')%>
+        <% else %>
+          <a href="/auth/facebook" class="auth_provider">
+            <%= image_tag "facebook/fb-connect-large.png", :width => 200, :alt => "t('basic.facebook')" %>
+          </a>
+        <% end %>
+        </div>
+      </div>
+
+      <div class="account_title"><%= t('account.notify') %></div>
+      <%= f.fields_for :user_settings  do |us| %>
+      <table>
+        <tr>
+          <td></td>
+          <td><%= image_tag 'email.png',:width => '36' %></td>
+          <td><%= image_tag 'mobile_icon.png',:width => '36' %></td>
+        </tr>
+        <tr>
+          <td><%= t('account.new_follower')%></td>
+          <td align="center"><%= us.check_box :new_follower_email %></td>
+          <td align="center"><%= us.check_box :new_follower_notify %></td>
+        </tr>
+        <tr>
+          <td><%= t('account.placemark_starred')%></td>
+          <td align="center"><%= us.check_box :remark_email %></td>
+          <td align="center"><%= us.check_box :remark_notify %></td>
+        </tr>
+        <tr>
+          <td><%= t('account.weekly_email')%></td>
+          <td align="center"><%= us.check_box :weekly_email %></td>
+          <td></td>
+        </tr>
+      </table>
+      <% end %>
+      <br>
+
+      <div class="edit_actions">
+        <%= f.submit t('account.save_changes'), :class=>"submit" %>
+      </div>
+    <% end %>
+
+  <br>
   <div class="account_info_holder">
     <div class="account_label"><%= t('account.embed') %></div>
     <div class="account_value">
       <a href="<%= embed_user_path(@user) %>"><%= t('account.embed_howto') %></a>
     </div>
   </div>
-  
+
 </div>
 

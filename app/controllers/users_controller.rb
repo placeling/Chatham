@@ -46,25 +46,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    @user = User.find_by_username(params[:id])
-    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
-
-    if current_user.id != @user.id
-      redirect_to edit_user_path( current_user )
-    else
-      if params[:avatar]
-        render :pic
-      else
-        respond_to do |format|
-          format.html
-          format.json
-        end
-      end
-    end
-
-  end
-
   def create
     return unless params[:format] == :json
 
@@ -428,6 +409,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html { render :account}
+      format.json
     end
   end
   
@@ -459,6 +441,37 @@ class UsersController < ApplicationController
     else
       render :username
     end
+  end
+
+  def pic
+    @user = User.find_by_username(params[:id])
+    return unless @user.id == current_user.id
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def update_pic
+    @user = User.find_by_username(params[:id])
+    return unless @user.id == current_user.id
+
+    if params[:user].blank?
+      return redirect_to edit_avatar_user_path(@user)
+    else
+      @user.avatar = params[:user][:avatar]
+    end
+
+    if @user.save
+      respond_to do |format|
+        format.html{ render :crop_pic }
+      end
+    else
+      respond_to do |format|
+        format.html{ render :pic }
+      end
+    end
+
   end
   
   def update
@@ -547,7 +560,7 @@ class UsersController < ApplicationController
         render :pic
       else
         respond_to do |format|
-          format.html { render :edit }
+          format.html { render :account }
           format.json { render :json => {:status => "fail", :message => @user.errors} }
         end
       end
