@@ -10,7 +10,7 @@ DEFAULT_HEIGHT = 500
 
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :edit, :update, :account]
+  before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :update, :account]
   
   
   def me
@@ -417,7 +417,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     
     if @user != current_user
-      return redirect_to edit_user_path( current_user )
+      return redirect_to account_user_path( current_user )
     end
     
     respond_to do |format|
@@ -429,7 +429,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     
     if @user != current_user
-      return redirect_to edit_user_path( current_user )
+      return redirect_to account_user_path( current_user )
     end
     
     if @user.update_attributes(params[:user])
