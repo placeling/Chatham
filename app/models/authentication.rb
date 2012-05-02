@@ -17,6 +17,8 @@ class Authentication
 
   validates_uniqueness_of :uid
 
+  after_create :social_graph_jobs
+
   def self.find_by_provider_and_uid(provider,id)
     self.where(:uid =>id).and(:p=>provider).first
   end
@@ -25,6 +27,12 @@ class Authentication
     attributes = {:provider =>self['p'], :uid => self['uid'],  :token =>self['token'],
                     :expiry => self.expiry }
     attributes
+  end
+
+  def social_graph_jobs
+    if provider == "facebook" && !Rails.env.test? #no need for this in test
+      Resque.enqueue(NewFacebookUser, self.user.id)
+    end
   end
 
 end

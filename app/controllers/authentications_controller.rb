@@ -1,5 +1,5 @@
 class AuthenticationsController < ApplicationController
-  #before_filter :login_required, :only =>[:add]
+  before_filter :login_required, :only =>[:friends]
 
   def index
     @authentications = current_user.authentications if current_user
@@ -15,7 +15,7 @@ class AuthenticationsController < ApplicationController
 
     if auth && auth.token == token
       render :text => generate_keys_for( auth.user )
-    else
+    elsif auth
       user = FbGraph::User.me( token ) #see if the given token is any good
       begin
         fbuser = user.fetch
@@ -32,6 +32,8 @@ class AuthenticationsController < ApplicationController
       else
         render :text =>"FAIL"
       end
+    else
+      render :text =>"FAIL"
     end
   end
 
@@ -105,13 +107,37 @@ class AuthenticationsController < ApplicationController
     provider = params['provider']
     @users = []
 
-    if provider == "facebook"
+    if provider == "facebook" && current_user.facebook
 
+      friends_json = $redis.smembers("facebook_friends_#{current_user.id}")
+      @users = []
+      if friends_json.count > 0 #friend self to differentiate empty from null
+        friends_json.each do |friend_json|
+          friend = JSON.parse( friend_json )
+          user = User.find( friend[0] )
+          user.fullname = friend[2]
+          @users << user
+        end
+      else
+        $redis.sadd("facebook_friends_#{current_user.id}" , [current_user.id, current_user.facebook.fetch.identifier, current_user.facebook.fetch.name].to_json )
+        friends = current_user.facebook.friends
+
+        begin
+          friends.each do |friend|
+            if auth = Authentication.find_by_provider_and_uid(provider, friend.identifier)
+              auth.user.fullname = friend.name
+              @users << auth.user
+              $redis.sadd("facebook_friends_#{current_user.id}" , [auth.user.id, friend.identifier, friend.name].to_json )
+            end
+          end
+          friends = friends.next
+        end while friends.count > 0
+
+      end
     end
 
-
     respond_to do |format|
-      format.json :json => {:users => @users }
+      format.json { render :json => {:users => @users.as_json({ :current_user => current_user }) } }
     end
 
   end

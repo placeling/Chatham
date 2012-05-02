@@ -315,7 +315,7 @@ class User
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = {:id =>self['_id'], :username => self['username'],  :perspectives_count =>self['pc'],
                   :url => self.url, :description => self.description,
-                  :thumb_url => thumb_url, :main_url => main_url, :city =>self.city }
+                  :thumb_url => thumb_url, :main_url => main_url, :city =>self.city, :fullname =>self.fullname }
 
     attributes = attributes.merge(:follower_count => followers.count, :following_count => following.count)
     #photo id is same as user, for now
@@ -405,8 +405,8 @@ class User
 
   def facebook
     for auth in self.authentications
-      if auth.provider == 'facebook'
-        return auth
+      if auth.provider == 'facebook' && !auth.token.nil?
+        return FbGraph::User.me( auth.token )
       end
     end
     return nil
