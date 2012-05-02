@@ -12,8 +12,8 @@ class Authentication
 
   belongs_to :user
 
-  index :p
   index :uid
+  index :user_id
 
   validates_uniqueness_of :uid
 

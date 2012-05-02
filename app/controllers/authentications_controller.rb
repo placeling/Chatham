@@ -16,7 +16,22 @@ class AuthenticationsController < ApplicationController
     if auth && auth.token == token
       render :text => generate_keys_for( auth.user )
     else
-      render :text =>"FAIL"
+      user = FbGraph::User.me( token ) #see if the given token is any good
+      begin
+        fbuser = user.fetch
+      rescue
+        render :text =>"FAIL"
+        return
+      end
+      if fbuser.identifier == auth.uid
+        #this is kind of an odd case, but we shoudl probably update the token
+        auth.token = token
+        auth.save!
+
+        render :text => generate_keys_for( auth.user )
+      else
+        render :text =>"FAIL"
+      end
     end
   end
 
@@ -59,7 +74,7 @@ class AuthenticationsController < ApplicationController
       end
     elsif current_user
       # Only occurs if already logged in and try to add your Facebook account
-      current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+      current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
       redirect_to return_to_link
     else
       @user = User.new
@@ -68,7 +83,7 @@ class AuthenticationsController < ApplicationController
       @user.skip_confirmation!
 
       if @user.save
-        @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'])
+        @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
         sign_in( @user )
         respond_to do |format|
           format.html { redirect_to( confirm_username_user_path( @user ) ) }
@@ -84,6 +99,23 @@ class AuthenticationsController < ApplicationController
       end
     end
   end
+
+  def friends
+
+    provider = params['provider']
+    @users = []
+
+    if provider == "facebook"
+
+    end
+
+
+    respond_to do |format|
+      format.json :json => {:users => @users }
+    end
+
+  end
+
 
   def destroy
     @authentication = current_user.authentications.find(params[:id])
