@@ -3,7 +3,13 @@ class NewFacebookUser
     def self.perform(user_id)
       user = User.find( user_id )
 
-      me = user.facebook.fetch
+      begin
+        me = user.facebook.fetch
+      rescue Exception => e
+        puts "\t\t#{e.message}"
+        return
+      end
+
       friends = user.facebook.friends
       begin
         friends.each do |friend|
