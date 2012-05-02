@@ -457,7 +457,7 @@ class UsersController < ApplicationController
     return unless @user.id == current_user.id
 
     if params[:user].blank?
-      return redirect_to edit_avatar_user_path(@user)
+      return redirect_to pic_user_path(@user)
     else
       @user.avatar = params[:user][:avatar]
     end
