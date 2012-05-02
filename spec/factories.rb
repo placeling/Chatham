@@ -119,6 +119,19 @@ FactoryGirl.define do
     admin true
     confirmed_at {Time.now}
   end
+
+  factory :facebook_auth, :class => Authentication do
+    provider "facebook"
+    uid "100003811806655"
+    token "AAADZCWT3gVXYBAGYqJC0WvcDDEOVmQSbCVDZBeZCUXETOmZCvKKTsrmNaKB5Jtk6rmmUUPgTmJOVjI6XKghiusmPUpOAD7pXkAvhhh2bTEWolHVhPCdX"
+  end
+
+  factory :facebook_auth_two, :class => Authentication do
+    provider "facebook"
+    uid "100003796836502"
+    token "AAADZCWT3gVXYBAP8SPa7dT0wVzMphIuuHoCqERAouF93ZCh30DzXszIEUFojDTjCZA495yhHSzc67lZBD6uxmqoAh0cvHN7DtP2IgL295YMrHELveNvZB"
+  end
+
 end
 
 
