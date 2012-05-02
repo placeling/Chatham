@@ -139,6 +139,8 @@ class AuthenticationsController < ApplicationController
       end
     end
 
+    @users.sort! {|x,y| x.fullname <=> y.fullname }
+
     respond_to do |format|
       format.json { render :json => {:users => @users.as_json({ :current_user => current_user }) } }
     end
