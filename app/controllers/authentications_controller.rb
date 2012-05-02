@@ -67,6 +67,9 @@ class AuthenticationsController < ApplicationController
     omniauth = request.env["omniauth.auth"]
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
+      authentication.token = omniauth['credentials']['token'] #update token for facebook
+      authentication.save
+
       sign_in( authentication.user )
       respond_to do |format|
         format.html { redirect_to return_to_link }
