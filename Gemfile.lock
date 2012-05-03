@@ -280,9 +280,9 @@ GEM
       redis-namespace (~> 1.0.2)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
-    resque-scheduler (1.9.9)
+    resque-scheduler (2.0.0.h)
       redis (>= 2.0.1)
-      resque (>= 1.8.0)
+      resque (>= 1.19.0)
       rufus-scheduler
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -395,7 +395,7 @@ DEPENDENCIES
   redis (~> 2.2)
   redis-namespace
   resque
-  resque-scheduler
+  resque-scheduler (= 2.0.0.h)
   rspec-rails (= 2.7)
   rvm-capistrano
   sass-rails (~> 3.1.4)

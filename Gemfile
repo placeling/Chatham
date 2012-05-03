@@ -63,7 +63,7 @@ gem "redis-namespace"
 #gem 'redis-store'
 gem "vanity"
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', :require => 'resque_scheduler'
+gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 
 group :test, :development do
 

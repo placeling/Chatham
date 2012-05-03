@@ -10,10 +10,11 @@ before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
 after "deploy:symlink", "deploy:restart_workers"
+after "deploy:symlink", "deploy:restart_scheduler"
 
 task :production do
   set :gateway, 'beagle.placeling.com:11235'
-  server '10.112.241.90', :app, :web, :db, :primary => true
+  server '10.112.241.90', :app, :web, :db, :scheduler, :primary => true
   ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
   set :user, 'ubuntu'
   set :use_sudo, false
@@ -21,7 +22,7 @@ task :production do
 end
 
 task :staging do
-  server 'staging.placeling.com', :app, :web, :db, :primary => true
+  server 'staging.placeling.com', :app, :web, :db, :scheduler, :primary => true
   ssh_options[:forward_agent] = true
   set :user, 'ubuntu'
   set :port, '11235'
@@ -67,7 +68,7 @@ namespace :deploy do
   end
 
   desc "Restart Resque scheduler"
-  task :restart_scheduler, :roles => :db do
+  task :restart_scheduler,:roles => :scheduler do
     run_remote_rake "resque:restart_scheduler"
   end
 
