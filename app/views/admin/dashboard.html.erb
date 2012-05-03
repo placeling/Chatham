@@ -11,7 +11,8 @@
       <tr>
       <td>Username</td>
       <td>Email</td>
-      <td>FacebookId</td>
+      <td>Confirm?</td>
+      <td>FB?</td>
       <td>Loction</td>
       <td>Created_at</td>
       <td>Bookmark Count</td>
@@ -21,6 +22,7 @@
     <tr>
       <td><%= link_to user.username,  user_path( user ), :target =>"_blank"%></td>
       <td><%= user.email %></td>
+      <td><%= user.confirmed? ? "" : "false" %></td>
       <td><%= user.facebook.nil? ? "" : "true" %></td>
       <td><%= user.city %></td>
       <td><%= user[:created_at] %></td>
