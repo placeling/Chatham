@@ -10,7 +10,7 @@
   </script>
 <% end %>
 
-<div class="auth_block">
+<div class="auth_block" style="width:355px">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.signup_callout') %></div>
   </div>
@@ -40,5 +40,12 @@
         <div class="action_signup"><%= f.submit t("user.sign_up"), :class=>"submit" %></div>
       </div>
     <% end %>
+    <hr>
+    <div style="padding-top: 10px;border-top: 2px black; text-align: center">
+      <a href="/auth/facebook" class="auth_provider">
+        <%= image_tag "facebook/fb-connect-large.png", :width => 200, :alt => "Connect with Facebook" %>
+      </a>
+    </div>
   </div>
+
 </div>
