@@ -1,4 +1,5 @@
 require "resque/tasks"
+require 'resque_scheduler/tasks'
 
 # Start a worker with proper env vars and output redirection
 def run_worker(queue, count = 1)
@@ -30,7 +31,11 @@ def run_scheduler
 end
 
 namespace :resque do
-  task :setup => :environment
+  task :setup => :environment do
+      require 'resque'
+      require 'resque_scheduler'
+      require 'resque/scheduler'
+  end
 
   desc "Restart running workers"
   task :restart_workers => :environment do
