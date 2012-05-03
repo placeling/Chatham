@@ -85,9 +85,10 @@ class AuthenticationsController < ApplicationController
       @user = User.new
       @user.password = Devise.friendly_token[0,20]
       @user.apply_omniauth( omniauth )
-      @user.skip_confirmation!
 
-      if @user.save
+      if @user.valid?
+        @user.confirm!
+        @user.save!
         @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
         sign_in( @user )
         respond_to do |format|
