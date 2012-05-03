@@ -1,7 +1,18 @@
 class RegistrationsController < Devise::RegistrationsController
   after_filter :check_location, :reset_notifications, :only => [:create]
+  before_filter :check_timestamp, :only => :create
 
   protected
+    def check_timestamp
+      timestamp = params['page_timestamp'].to_i
+      diff = timestamp - Time.now.to_i
+      if diff.abs < 2
+        flash[:notice] = "You filled out that form pretty fast, so we think you might be a bot, try again"
+        redirect_to new_user_registration_path
+        return false
+      end
+    end
+
     def reset_notifications
       if current_user
         #setup for non-iphone version
