@@ -11,19 +11,17 @@ class AuthenticationsController < ApplicationController
     token = params["token"]
     expiry = params["expiry"]
 
+    if token && !uid
+      fb_user = get_me token
+      uid = fb_user.identifier
+    end
+
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
     if auth && auth.token == token
       render :text => generate_keys_for( auth.user )
-    elsif auth
-      user = FbGraph::User.me( token ) #see if the given token is any good
-      begin
-        fbuser = user.fetch
-      rescue
-        render :text =>"FAIL"
-        return
-      end
-      if fbuser.identifier == auth.uid
+    elsif auth && (fb_user || fb_user = get_me( token ) )
+      if fb_user.identifier == auth.uid
         #this is kind of an odd case, but we shoudl probably update the token
         auth.token = token
         auth.save!
@@ -42,6 +40,11 @@ class AuthenticationsController < ApplicationController
     uid = params['uid']
     token = params["token"]
     expiry = params["expiry"]
+
+    if token && !uid
+      fb_user = get_me token
+      uid = fb_user.identifier
+    end
 
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
@@ -178,5 +181,14 @@ class AuthenticationsController < ApplicationController
     return access_token.to_query + "&username=#{user.username}"
   end
 
+
+  def get_me( token )
+    user = FbGraph::User.me( token ) #see if the given token is any good
+    begin
+      return user.fetch
+    rescue
+      return nil
+    end
+  end
 
 end
