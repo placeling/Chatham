@@ -87,6 +87,14 @@ class AuthenticationsController < ApplicationController
       @user.apply_omniauth( omniauth )
 
       if @user.valid?
+
+        if @user.location.nil?
+          loc = get_location
+          if loc && loc["remote_ip"]
+            current_user.location =  [ loc["remote_ip"]["lat"], loc["remote_ip"]["lng"] ]
+          end
+        end
+
         @user.confirm!
         @user.save!
         @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])

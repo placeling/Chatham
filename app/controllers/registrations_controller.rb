@@ -28,8 +28,8 @@ class RegistrationsController < Devise::RegistrationsController
     def check_location
       if current_user && current_user.location.nil?
         loc = get_location
-        if location["remote_ip"]
-          current_user.location =  [ location["remote_ip"]["lat"], location["remote_ip"]["lng"] ]
+        if loc && loc["remote_ip"]
+          current_user.location =  [ loc["remote_ip"]["lat"], loc["remote_ip"]["lng"] ]
           current_user.save
         end
       end
