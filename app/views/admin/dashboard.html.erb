@@ -13,14 +13,14 @@
       <td>Email</td>
       <td>Confirm?</td>
       <td>FB?</td>
-      <td>Loction</td>
+      <td>Location</td>
       <td>Created_at</td>
       <td>Bookmark Count</td>
     </thead>
 
   <% for user in @users %>
     <tr>
-      <td><%= link_to user.username,  user_path( user ), :target =>"_blank"%></td>
+      <td><%= link_to user.username,  recent_user_path( user ), :target =>"_blank"%></td>
       <td><%= user.email %></td>
       <td><%= user.confirmed? ? "" : "false" %></td>
       <td><%= user.facebook.nil? ? "" : "true" %></td>
