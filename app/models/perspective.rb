@@ -54,7 +54,7 @@ class Perspective
   after_update :notify_feed_update
   before_destroy :scrub_stars
 
-  attr_accessor :post_feed
+  attr_accessor :post_feed, :post_delay
 
   def self.find_recent_for_user( user, start, count )
     user.perspectives.
@@ -114,6 +114,7 @@ class Perspective
 
   def notify_feed_create
     ActivityFeed.add_new_perspective(self.user, self) unless !self.post_feed
+    self.post_delay = nil
     self.post_feed = false
   end
 
@@ -223,7 +224,7 @@ class Perspective
       if current_user
         attributes.merge(:place => self.place.as_json({:current_user => current_user}),:user => self.user.as_json())
       else
-        attributes.merge(:place => self.place_stub.as_json(),:user => self.user.as_json())
+        attributes.merge(:place => self.place.as_json(),:user => self.user.as_json())
       end
     elsif options[:place_view]
       attributes.merge(:user => self.user.as_json())

@@ -15,6 +15,7 @@ class PlaceStub
   field :accurate_address, :type => Boolean, :default => false
 
   field :venue_types, :type => Array
+  field :venue_url,  :type => String
   field :google_url,  :type => String
   field :place_type,  :type => String
   field :pc, :type => Integer, :default => 0 #property for easier lookup of of top places
