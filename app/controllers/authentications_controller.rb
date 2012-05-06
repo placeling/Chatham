@@ -94,7 +94,7 @@ class AuthenticationsController < ApplicationController
         if @user.location.nil?
           loc = get_location
           if loc && loc["remote_ip"]
-            current_user.location =  [ loc["remote_ip"]["lat"], loc["remote_ip"]["lng"] ]
+            @user.location =  [ loc["remote_ip"]["lat"], loc["remote_ip"]["lng"] ]
           end
         end
 
