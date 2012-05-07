@@ -12,7 +12,7 @@ class User
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :confirmable, :registerable
 
   #before_validation :fix_location
-  before_validation :set_downcase_username
+  after_validation :set_downcase_username
   # For updating avatar see http://railscasts.com/episodes/182-cropping-images
   after_update :process_avatar, :if => :cropping?
   after_create :track_signup
