@@ -267,11 +267,11 @@ class PerspectivesController < ApplicationController
       end
       
       if params[:memo]
-        @perspective.update_attributes(params.slice("memo"))
+        @perspective.memo = params[:memo]
       end
 
       if params[:url]
-        @perspective.update_attributes(params.slice("url"))
+        @perspective.url = params[:url]
       end
 
       if params[:photo_urls]
@@ -282,6 +282,10 @@ class PerspectivesController < ApplicationController
     end
 
     @perspective.notify_modified
+
+    if params[:post_delay]
+      @perspective.post_delay = params[:post_delay].to_i * 60
+    end
     
     if @perspective.save
       @perspective.place.update_tags

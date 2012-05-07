@@ -120,6 +120,7 @@ class Perspective
 
   def notify_feed_update
     ActivityFeed.add_update_perspective(self.user, self) unless !self.post_feed
+    self.post_delay = nil
     self.post_feed = false
   end
 
