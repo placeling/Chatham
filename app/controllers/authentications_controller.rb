@@ -1,5 +1,5 @@
 class AuthenticationsController < ApplicationController
-  before_filter :login_required, :only =>[:friends]
+  before_filter :login_required, :only =>[:friends, :add]
 
   def index
     @authentications = current_user.authentications if current_user
@@ -41,20 +41,24 @@ class AuthenticationsController < ApplicationController
     token = params["token"]
     expiry = params["expiry"]
 
-    if token && !uid
-      fb_user = get_me token
-      uid = fb_user.identifier
+    fb_user = get_me token #verifies that token is good
+    if fb_user.nil? or (uid && uid != fb_user.identifier)
+      render :json =>{:status => "FAIL"} #invalid token
+      return
     end
 
+    uid = fb_user.identifier unless !uid.nil?
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
-    if current_user && auth && current_user.id != auth.user.id  && auth.token == token
+    if current_user && auth && current_user.id != auth.user.id
       render :json => "Facebook id already in use", :status=>400
     elsif current_user && auth && auth.token == token
       render :json => {:user => current_user.as_json({:current_user => current_user})}
-    elsif current_user && auth
+    elsif current_user && auth  && auth.uid == uid
       #update tokens
-      render :json =>{:status => "FAIL"}
+      auth.token = token
+      auth.save
+      render :json =>{:user => current_user.as_json({:current_user => current_user})}
     elsif current_user
       #some update
       auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token =>token, :expiry=>expiry)

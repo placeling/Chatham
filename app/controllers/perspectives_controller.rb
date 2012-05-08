@@ -267,24 +267,27 @@ class PerspectivesController < ApplicationController
       end
       
       if params[:memo]
-        @perspective.update_attributes(params.slice("memo"))
+        @perspective.memo = params[:memo]
       end
 
       if params[:url]
-        @perspective.update_attributes(params.slice("url"))
+        @perspective.url = params[:url]
       end
-
-      if params[:photo_urls]
-        #we don't know how slow their server is, so do this async
-        Resque.enqueue(GetPerspectivePicture, @perspective.id, params[:photo_urls].split(','))
-      end
-
     end
 
     @perspective.notify_modified
+
+    if params[:post_delay]
+      @perspective.post_delay = params[:post_delay].to_i * 60
+    end
     
     if @perspective.save
       @perspective.place.update_tags
+
+      if params[:photo_urls] #has to be done after save in case perspective didn't exist
+        #we don't know how slow their server is, so do this async
+        Resque.enqueue(GetPerspectivePicture, @perspective.id, params[:photo_urls].split(','))
+      end
       @perspective.place.save
       respond_to do |format|
         format.html {redirect_to session[:referring_url]}
