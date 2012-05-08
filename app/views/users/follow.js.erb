@@ -1,6 +1,6 @@
-$('#follow_action').fadeOut(100);
-$('#follow_action').html('<a rel="nofollow" data-remote="true" data-method="post" href="<%=  unfollow_user_path(@user) %>" class="no_highlight"><span class="follow_link">Unfollow</span></a>');
-$('#follow_action').fadeIn(100);
+$('#follow_status').fadeOut(100);
+$('#follow_status').html('<a rel="nofollow" data-remote="true" data-method="post" href="<%=  unfollow_user_path(@user) %>" class="no_highlight"><%= image_tag "unfollow.png", :alt=>"Unfollow" %></a>');
+$('#follow_status').fadeIn(100);
 var followers = parseInt($('#follower_count').text());
 followers += 1;
 $('#follower_count').text(followers);

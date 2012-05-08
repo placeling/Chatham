@@ -6,45 +6,28 @@
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){
-      $('.email').each(function() {
-        $(this).qtip({
-          content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
-           position: {
-             my: 'bottom center',
-             at: 'top center'
-           },
-           show: {
-             event: 'click',
-             solo: true
-           },
-           hide: {
-             event: 'click'
-           },
-           style: {
-             classes: 'ui-tooltip-rounded ui-tooltip-shadow',
-           }
-        });
+      $(window).resize(function() {
+        var height = $(window).height() - $('#header').outerHeight(true) - $('#footerbottom').outerHeight();
+        var user_padding = $('#user_details').outerHeight() - $('#user_details').height();
+        var perspective_padding = $('#users').outerHeight() - $('#users').height();
+        $('#user_details').height(height - user_padding);
+        $('#users').height(height - perspective_padding);
       });
+      
+      $(window).resize();
     });
   </script>
 <% end %>
 
 <div>
-  <div id="userdetails">
+  <div id="user_details">
     <%= render :partial => "detail", :locals => {:user => @user} %>    
   </div>
   <div id="users">
-    <div>
-      <div class="image_lead">
-        <%= image_tag "plane.png", :alt=>"Plane" %>
-      </div>
-      <div class="content_type">
-        <span><%= @title %></span>
-      </div>
-    </div>
+    <div class="place_category recent"><%= @title %></div>
     <ul id="user_list">
       <% @users.each do |user|%>
-      <li><%= render :partial => "users/user", :locals => {:user => user} %></li>
+        <%= render :partial => "users/user", :locals => {:user => user} %>
       <% end %>
     </ul>
   </div>

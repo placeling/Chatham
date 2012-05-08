@@ -9,6 +9,7 @@
   <META NAME="geo.placename" content="<%= @place.name %>" />
   <META NAME="geo.position" content="<%= @place.location[0] %>;<%= @place.location[1] %>" />
   <meta name=”ICBM” content=”<%= @place.location[0] %>,<%= @place.location[1] %>″>
+  
 <% end %>
 
 <% content_for :javascript_includes do %>
@@ -38,76 +39,87 @@
         });
       });
     });
+    $(window).load(function(){
+      $(".images").each(function() {
+        mosaic(this);
+      });
+    });
   </script>
 <% end %>
 
-<div id="placedetails">
-  <%= render :partial => "detail", :locals => {:place => @place, :my_perspective => @my_perspective} %>    
-</div>
-<div id="perspectives">
-  <div>
-    <div class="image_lead">
-      <%= image_tag "plane.png", :alt=>"Plane" %>
-    </div>
-    <div class="content_type">
-      <% if @place.perspectives.count > 0 %>
-        <span><%=t('place.notes_and_photos') %></span>
-      <% else %>
-        <span><%=t('place.no_notes') %></span>
+<%= render :partial => "detail", :locals => {:place => @place, :my_perspective => @my_perspective} %>    
+
+<% if @place.perspectives.count == 0 %>
+  <div class="unplacemarked">
+    <%= image_tag "plane.png", :alt=>"Plane" %><span><%=t('place.no_notes') %></span>
+  </div>
+<% else %>
+  <% if current_user.nil? %>
+    <div class="place_category centered_place_mini"><%= t('place.popular')%></div>
+    <div class="perspectives_holder">
+      <% @all_perspectives.each do |perspective|%>
+        <div id="perspective_<%=perspective.id %>">
+          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+        </div>
       <% end %>
     </div>
-    
-    <% if current_user.nil? && @place.perspectives.count > 0 %>
-      <div class="call_to_action perspective_group header_group">
-        <%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %><%= t'place.call_to_action'%>
+    <% if @all_perspectives_empty.length > 0 %>
+      <div class="empty_perspectives centered_place">
+        <div class="more_placemarks"><%= t('place.more')%></div>
+      <% @all_perspectives_empty.each do |perspective|%>
+        <div class="empty_perspective"><a href="<%= user_path(perspective.user, :pid => perspective.id) %>" title="<%= perspective.user.username %>"><%= image_tag perspective.user.thumb_url, :alt=>"Thumb", :class=>"styled_mini" %></a></div>
+      <% end %>
       </div>
-    <% else %>
-      <% if @my_perspective %>
-        <div id="my_perspective" class="perspective_group">
-          <div id="you_header" class="header_group">
-            <%= image_tag "green_tab.png", :alt=>"you", :class=>"tab" %>
-            <div class="group_title me"><%= t('place.your_notes') %></div>
-          </div>
-          <% if (!(@my_perspective.memo.nil? || @my_perspective.memo.length == 0) && !(@my_perspective.pictures.nil? || @my_perspective.pictures.length == 0))%>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page"} %>
-          <% else %>
-            <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"} %>
+    <% end %>
+  <% else %>
+    <% if @my_perspective %>
+      <div id="my_perspective" class="perspective_group">
+        <% if !@my_perspective.empty_perspective? %>
+          <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page"} %>
+        <% else %>
+          <%= render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"} %>
+        <% end %>
+      </div>
+    <% end %>
+    <div id="following_perspective">
+      <div class="place_category centered_place_mini"><%= t('place.following')%></div>
+      <% if @follow_perspectives_count > 0 %>
+        <div class="perspectives_holder">
+          <% @following_perspectives.each do |perspective|%>
+            <div id="perspective_<%=perspective.id %>">
+              <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+            </div>
           <% end %>
         </div>
-      <% end %>
-      <% if @follow_perspectives_count > 0 %>
-      <div id="following_perspectives" class="perspective_group">
-        <div id="follow_header" class="header_group">
-          <%= image_tag "red_tab.png", :alt=>"following", :class=>"tab" %>
-          <div class="group_title">
-            <div class="others"><%= t('place.following_notes') %></div>
-            <div class="others_count"><%= t('place.place_lead') %><%= @follow_perspectives_count %><% if @follow_perspectives_count == 1 %><%= t('place.singular') %><% else %><%= t('place.plural') %><% end %><%= t('place.place_trail') %></div>
+        <% if @following_perspectives_empty.length > 0 %>
+          <div class="empty_perspectives centered_place">
+            <div class="more_placemarks"><%= t('place.more')%></div>
+          <% @following_perspectives_empty.each do |perspective|%>
+            <div class="empty_perspective"><a href="<%= user_path(perspective.user, :pid => perspective.id) %>" title="<%= perspective.user.username %>"><%= image_tag perspective.user.thumb_url, :alt=>"Thumb", :class=>"styled_mini" %></a></div>
+          <% end %>
           </div>
-        </div>
-        <ul>
-        <% @following_perspectives.each do |perspective|%>
-            <li class="tombstone_clear" id="perspective_<%=perspective.id %>"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "place_page"} %></li>
         <% end %>
-        </ul>
-      </div>
+      <% else %>
+        <div class="no_following centered_place_mini"><%= t('place.no_following')%></div>
       <% end %>
-    <% end %>
-    <% if @else_perspective_count > 0 %>
-    <div id= "all_perspectives" class="perspective_group">
-      <div id="all_header" class="header_group">
-        <%= image_tag "red_tab.png", :alt=>"everyone",:class=>"tab" %>
-        <% if current_user %>
-          <div class="group_title others"><%= t('place.everyone_else_notes') %></div>
-        <% else %>
-          <div class="group_title others"><%= t('place.everyone_notes') %></div>
-        <% end %>
-      </div>
-      <ul>
-      <% @all_perspectives.each do |perspective|%>
-          <li class="tombstone_clear" id="perspective_<%=perspective.id %>"><%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %></li>
-      <% end %>
-      </ul>
     </div>
+    <% if @else_perspective_count > 0 %>
+      <div class="place_category centered_place_mini"><%= t('place.popular')%></div>
+      <div class="perspectives_holder">
+        <% @all_perspectives.each do |perspective|%>
+          <div  id="perspective_<%=perspective.id %>">
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source =>"place_page"} %>
+          </div>
+        <% end %>
+      </div>
+      <% if @all_perspectives_empty.length > 0 %>
+        <div class="empty_perspectives centered_place">
+          <div class="more_placemarks"><%= t('place.more')%></div>
+        <% @all_perspectives_empty.each do |perspective|%>
+          <div class="empty_perspective"><a href="<%= user_path(perspective.user, :pid => perspective.id) %>" title="<%= perspective.user.username %>"><%= image_tag perspective.user.thumb_url, :alt=>"Thumb", :class=>"styled_mini" %></a></div>
+        <% end %>
+        </div>
+      <% end %>
     <% end %>
-  </div>
-</div>
+  <% end %>
+<% end %>
