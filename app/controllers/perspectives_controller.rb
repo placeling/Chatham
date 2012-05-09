@@ -152,6 +152,11 @@ class PerspectivesController < ApplicationController
     
     track! :star
     
+    # Need following for place page html: need to show blank perspective for current user
+    if request.referer && URI(request.referer).path == place_path(@perspective.place)
+      @my_perspective = Perspective.where('uid'=>current_user._id, 'plid'=>@perspective.place._id)[0]
+    end
+    
     respond_to do |format|
       format.js
       format.json { render :json =>{:result => "starred", :perspective =>@user_perspective.as_json({:current_user => current_user, :detail_view => true}) } }

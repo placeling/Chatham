@@ -429,7 +429,7 @@ class PlacesController < ApplicationController
     perspectives_to_delete = []
     
     for perspective in @all_perspectives
-      if perspective.empty_perspective?
+      if perspective.empty_perspective? && perspective != @my_perspective
         if @following_perspectives_empty
           if !@following_perspectives_empty.include?(perspective)
             @all_perspectives_empty << perspective
