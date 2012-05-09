@@ -4,7 +4,7 @@
   <meta property="og:title" content="<%= t('user.user_head', {:user => @user.username}) %>" />
   <meta property="og:url" content="https://www.placeling.com<%= user_path(@user) %>" />
   <meta property="og:type" content="placeling:user" />
-  <meta property="og:image" content="<%=  @user.thumb_url %>" />
+  <meta property="og:image" content="<%=  @user.main_url %>" />
   <meta property="og:description" content="<%= @user.description %>" />
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <% end %>
