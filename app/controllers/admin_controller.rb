@@ -40,6 +40,12 @@ class AdminController < ApplicationController
     end
   end
 
+  def categories
+    respond_to do |format|
+      format.json  {render :file =>"#{Rails.root}/config/google_place_mapping.json"}
+    end
+  end
+
   def investors
 
   end

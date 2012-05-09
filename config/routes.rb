@@ -13,6 +13,7 @@ Chatham::Application.routes.draw do
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
   get "/admin/blog_stats", :to => 'admin#blog_stats',:as => :blog_stats
   get "/admin/firehose", :to => 'admin#firehose',:as => :firehose
+  get "/admin/categories", :to => 'admin#categories',:as => :categories
   get "/admin/investors", :to => 'admin#investors',:as => :investors
   
   get "/search", :to => 'search#search', :as => :search
