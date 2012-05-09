@@ -17,13 +17,11 @@ $('.star_link').hover(
     }
   }
 );
-$("#placemark").html("<span class='placemarked'><%= t('place.placemarked') %></span>");
-$("#placemark").addClass("placemark_it");
-var followers = parseInt($('#placemark_count').text());
-followers += 1;
-$('#placemark_count').text(followers);
-<% if @path == place_path(@perspective.place) %>
-if ($('#my_perspective').length === 0) {
-  $('.content_type').after('<div id="my_perspective" class="perspective_group"><div id="you_header" class="header_group"><img class="tab" src="<%= asset_path('green_tab.png') %>" alt="you"><div class="group_title me"><%= t("place.your_notes") %></div></div><div class="interact star"><a href="<%= edit_perspective_path(@user_perspective) %>">'><%= image_tag('writer.png') %>'</a></div><div class="detail"><div class="name"><%=j t("perspective.enter_text") %> <%= escape_javascript(@user_perspective.place.name) %></div><div class="perspective_footer"><span class="footer_elements footer_text_elements updated"><%=t("perspective.last_updated") %> <%= @user_perspective.updated_at.strftime("%B %d, %Y") %></span><span class="footer_elements footer_text_elements"><%= link_to "Delete", @user_perspective, :confirm => "Are you sure?", :method => :delete %></span></div></div></div>').fadeIn(200);
-}
+$("#placemark").fadeOut(100);
+var placemarkCount = parseInt($('#placemark_count').text());
+placemarkCount += 1;
+$('#placemark_count').text(placemarkCount);
+
+<% if URI(request.referer).path == place_path(@perspective.place) %>
+  $("#place_details").after('<div id="my_perspective" class="perspective_group"><%= escape_javascript(render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"}) %></div>').fadeIn(200);
 <% end %>

@@ -407,14 +407,19 @@ class PlacesController < ApplicationController
     if current_user
       @my_perspective = current_user.perspective_for_place(@place)
       @following_perspectives = current_user.following_perspectives_for_place( @place )
+      @following_perspectives_empty = []
       @follow_perspectives_count = @following_perspectives.count
-
+      
       for perspective in @following_perspectives
-        @following_perspectives.delete( perspective ) unless !perspective.empty_perspective?
+        if perspective.empty_perspective?
+          @following_perspectives_empty << perspective
+          @following_perspectives.delete(perspective)
+        end
       end
     end if
 
     @all_perspectives = @place.perspectives.entries
+    @all_perspectives_empty = []
     if @all_perspectives
       @all_perspectives_count = @all_perspectives.count
     else
@@ -424,7 +429,14 @@ class PlacesController < ApplicationController
     perspectives_to_delete = []
     
     for perspective in @all_perspectives
-      if perspective.empty_perspective?
+      if perspective.empty_perspective? && perspective != @my_perspective
+        if @following_perspectives_empty
+          if !@following_perspectives_empty.include?(perspective)
+            @all_perspectives_empty << perspective
+          end
+        else
+          @all_perspectives_empty << perspective
+        end
         perspectives_to_delete << perspective
       elsif @following_perspectives && @following_perspectives.include?(perspective)
         perspectives_to_delete << perspective
@@ -439,7 +451,7 @@ class PlacesController < ApplicationController
       @all_perspectives.delete(@my_perspective)
     end
     
-    @else_perspective_count = @all_perspectives.count
+    @else_perspective_count = @all_perspectives.count + @all_perspectives_empty.count
     
     if params['rf']
       @referring_user = User.find_by_username( params['rf'] )

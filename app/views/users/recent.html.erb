@@ -11,6 +11,16 @@
 <% content_for :javascript_includes do %>
   <script type="text/javascript">
     $(document).ready(function(){
+      $(window).resize(function() {
+        var height = $(window).height() - $('#header').outerHeight(true) - $('#footerbottom').outerHeight();
+        var user_padding = $('#user_details').outerHeight() - $('#user_details').height();
+        var perspective_padding = $('#perspectives').outerHeight() - $('#perspectives').height();
+        $('#user_details').height(height - user_padding);
+        $('#perspectives').height(height - perspective_padding);
+      });
+      
+      $(window).resize();
+      
       $('.lightboxGallery').each(function(){
         $('.lightbox', this).lightBox();
       });
@@ -51,11 +61,13 @@
         });
       });
       $('#loading').hide()
+      
       <% if @noscroll.nil? %>
-      $(window).data('ajaxready', true).scroll(function(e) {
+      $(window).data('ajaxready', true);
+      $('#perspectives').scroll(function(){
         if ($(window).data('ajaxready') == false) return;
         
-        if ($(window).scrollTop() >= ($(document).height() - 200 - $(window).height())) {
+        if ($('#perspectives').scrollTop() >= ($('#recent_perspectives_list').height() - 1000)) {
           $('#loading').show();
           $(window).data('ajaxready', false);
           $.ajax({
@@ -63,32 +75,48 @@
             data: {
               start: $('#recent_perspectives_list').attr('start')
             },
-            dataType: 'script'
+            dataType: 'script',
           });
         }
       });
       <% end %>
     });
+    $(window).load(function(){
+      $(".images").each(function() {
+        mosaic(this);
+      });
+    });
   </script>
 <% end %>
 
-<div id="userdetails">
-  <%= render :partial => "detail", :locals => {:user => @user} %>    
-</div>
-<div id="perspectives">
-  <div class="image_lead">
-    <%= image_tag "plane.png", :alt=>"Plane" %>
-  </div>
-  <% if @perspectives.length > 0 %>
-    <ul id="recent_perspectives_list" start="<%= @perspectives.length %>">
-      <% @perspectives.each_with_index do |perspective, index|%>
-        <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
-          <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => :user} %>
+<div id="user_and_content">
+  <div id="user_details">
+    <div class="toggle_view">
+      <ul class="location_types">
+        <li class="left active">
+          <a class="active" href="<%= user_path(@user) %>"><span class="type"><%= t('user.nearby') %></span></a>
         </li>
-      <% end %>
-    </ul>
-    <div id="loading"><img id="spinner" src='<%= asset_path('spinner.gif') %>'></div>
-  <% else %>
-    <div class="detail nothing">I haven't placemarked anything yet...</div>
-  <% end %>
+        <li class="right inactive">
+          <span class="type"><%= t('user.recent') %></span>
+        </li>
+      </ul>
+    </div>
+    
+    <%= render :partial => "detail", :locals => {:user => @user} %>
+  </div>
+  <div id="perspectives">
+    <% if @perspectives.length > 0 %>
+      <div class="place_category recent"><%= t('place.recent_places')%></div>
+      <ul id="recent_perspectives_list" start="<%= @perspectives.length %>">
+        <% @perspectives.each_with_index do |perspective, index|%>
+          <li class="perspective_wrapper" id="perspective_<%=perspective.id %>">
+            <%= render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "magazine"} %>
+          </li>
+        <% end %>
+      </ul>
+      <div id="loading"><img id="spinner" src='<%= asset_path('spinner.gif') %>'></div>
+    <% else %>
+      <div class="detail nothing">I haven't placemarked anything yet...</div>
+    <% end %>
+  </div>
 </div>

@@ -194,8 +194,60 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 
 /* Profile Page
 =====================================================================*/
-#tombstones_and_share {
-  float:right;
+#user_and_content {
+  width: 100%;
+}
+
+#perspectives {
+  margin-left: 340px;
+  overflow-y: auto;
+  overflow-x: none;
+}
+
+#user_details {
+  width: 290px;
+  height: 1000px;
+  background-image:url(<%= asset_path 'top_texture.png' %>);
+  box-shadow: inset 0 0 5px #888;
+  float: left;
+  padding:20px;
+}
+
+.pic_plus_follow {
+  float: left;
+}
+
+.profile_pic {
+  border: 5px solid white;
+  background: #faf9f7;
+  -moz-box-shadow: 0 0 8px 0 #888;
+  -webkit-box-shadow: 0 0 8px 0 #888;
+  box-shadow: 0 0 8px 0 #888;
+  max-width:50px;
+  max-height: 50px;
+}
+
+.summary {
+  margin-left: 70px;
+}
+
+.username {
+  color: #e08574;
+  font-size: 24px;
+}
+
+.city {
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+#user_overview {
+  padding-top: 5px;
+  clear: both;
+}
+
+#map_holder {
+  margin-left: 330px;
 }
 
 #userdetails {
@@ -221,46 +273,31 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   float: left;
 }
 
-.follow_link {
-  width: 92px;
-  background-image:url(<%= asset_path 'red_background.png' %>);
-  padding: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: 2px solid #bf4f41;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-
 #follow_action {
   display: inline;
   padding-left: 10px;
 }
 
-#user_overview {
-  margin-left: 130px;
-}
-
-.username {
-  color: #e08574;
-  width: 400px;
-  font-size: 30px;
-}
-
-.city {
-  font-size: 10px;
-  margin-top: 4px;
-}
-
-#perspectives {
-  margin-top: 20px;
-}
-
 #tombstones ul li {
   float: left;
   margin-right: 20px;
+}
+
+#tombstones {
+  height: 72px;
+}
+
+.place_tombstones {
+  padding-left: 100px;
+}
+
+.tombstone {
+  float: left;
+  margin-right: 10px;
+}
+
+#profile_share {
+  padding-top: 20px;
 }
 
 .count {
@@ -336,28 +373,6 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   max-width: 100px;
 }
 
-#tombstones {
-  height: 72px;
-}
-
-.place_tombstones {
-  padding-left: 100px;
-}
-
-.tombstone {
-  float: left;
-  margin-right: 10px;
-}
-
-.tombstone_clear {
-  clear: both;
-}
-
-#profile_share {
-  padding-top: 20px;
-  float: right;
-}
-
 .share_label {
   color: #EBE4D0;
   padding-top: 3px;
@@ -395,13 +410,23 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   color: #b7614b;
 }
 
+.toggle_view {
+  margin-top: -13px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.location_types li {
+  display: inline;
+}
+
 .left {
   border-left: 2px solid #988f79;
   border-top: 2px solid #988f79;
   border-bottom: 2px solid #988f79;
   border-right: 1px solid #988f79;
-  border-top-left-radius: 8px;
-  -moz-border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  padding: 5px 21px;
 }
 
 .right {
@@ -409,8 +434,8 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   border-top: 2px solid #988f79;
   border-bottom: 2px solid #988f79;
   border-left: 1px solid #988f79;
-  border-top-right-radius: 8px;
-  -moz-border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 5px;
 }
 
 .inactive {
@@ -478,7 +503,7 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   opacity: 0.9;
   overflow-y: auto;
   position: absolute;
-  left:38px;
+  left:368px;
   z-index:10002;
   top: 200px;
 }
@@ -703,43 +728,48 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 
 /* Perspectives - show
 =====================================================================*/
-.perspective_wrapper {
-  clear: both;
-  padding-bottom: 50px;
-  list-style: none;
+.perspective {
+  clear: right;
+  margin-bottom: 10px;
+  padding-top: 10px;
 }
 
-.star {
-  margin-left: 193px;
+.perspective_user {
   float: left;
+  width: 330px;
+  padding-top: 5px;
 }
 
-.detail {
-  padding-left: 268px;
+.perspective_user_contents {
+  float: right;
+  line-height: 32px;
 }
 
-.name {
-  font-size: 24px;
-  line-height: 24px;
-  margin-right: 50px;
+.perspective_and_action {
+  width: 700px;
 }
 
-.geo_info {
-  display: none;
+.perspective_and_wide_action {
+  width: 1050px;
 }
 
-.counter {
-  display: none;
+.perspective_wrapper {
+  width: 450px;
 }
 
-.away {
-  font-size: 10px;
+.centered_perspective {
+  margin-left: 340px;
+  width: 450px;
 }
 
-.nothing {
-  font-size: 24px;
-  color: #1271b0;
-  padding-top: 20px;
+.tags li {
+  display: inline;
+  background: #36757C;
+  color: white;
+  font-size: 12px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px #888888;
 }
 
 .memo_wrapper {
@@ -750,13 +780,8 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   padding-top: 0px;
 }
 
-.memo {
-  padding-top:10px;
-  width: 600px;
-}
-
-.mini_memo .tag {
-  color: #DAABA2;
+p.memo {
+  padding-top: 10px;
 }
 
 .tag {
@@ -767,44 +792,38 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   margin-top: 5px;
 }
 
-.call_to_action {
-  font-size: 24px;
-}
-
-.lightboxGallery {
-  margin-top: 5px;
-}
-
-.perspective_gallery {
-  width: 650px;
-}
-
-.photo {
-  float:left;
-  margin-right: 25px;
+.images {
   margin-top: 10px;
 }
 
-.perspective_photo {
+.image_holder {
+  background: none repeat scroll 0 0 #FAF9F7;
   border: 9px solid white;
-  background: #faf9f7;
-  -moz-box-shadow: 0 0 8px 0 #888;
-  -webkit-box-shadow: 0 0 8px 0 #888;
-  box-shadow: 0 0 8px 0 #888;
-  height: 97px;
-  max-width: 500px;
+  box-shadow: 0 0 8px 0 #888888;
+  overflow:hidden;
+  float: right;
 }
 
-.image_clear {
-  clear: both;
+.right_clear {
+  clear: right;
 }
 
-.perspective_footer {
-  height: 24px;
+.perspective_date {
+  color: #888;
+  font-size: 10px;
 }
 
-.footer_spacer {
-  margin-top: 10px;
+.picture_spacer {
+  padding-top: 10px;
+}
+
+.perspective_action {
+  float:right;
+  margin-right: 100px;
+}
+
+.edit_empty {
+  margin-right: 175px;
 }
 
 .footer_elements {
@@ -813,12 +832,11 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   margin-right: 10px;
 }
 
-.footer_text_elements {
-  padding-top: 7px;
-}
-
-.updated {
-  color: #888;
+.edit_flag {
+  clear: both;
+  padding-top: 10px;
+  margin-left: 5px;
+  font-size: 10px;
 }
 
 .share {
@@ -829,49 +847,21 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   margin-right: 20px;
 }
 
-.link_header {
-  font-size: 12px;
-  text-align: right;
-  padding-right: 5px;
-}
-
-.link_text {
-  width: 210px;
-}
-
-.inline_profile_pic {
-  margin-left: -15px;
+.place_name {
+  font-size: 24px;
   margin-bottom: 5px;
 }
 
-.perspective_details {
-  clear: both;
-}
-
-.all_places_holder {
-  margin-top: 10px;
-}
-
-.all_places {
-  margin-top: 10px;
-  background-image: url(<%= asset_path 'red_background.png' %>);
-  border: 2px solid #BF4F41;
-  border-radius: 5px 5px 5px 5px;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 5px;
-}
-
-a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:visited {
-  color: white;
-  text-decoration: none;
+.geo_info {
+  display: none;
 }
 
 /* Followers/following
 =====================================================================*/
 #users {
-  clear: both;
+  margin-left: 340px;
+  overflow-y: auto;
+  overflow-x: none;
 }
 
 #user_list {
@@ -881,21 +871,18 @@ a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:visite
 .user_thumb {
   float:left;
   padding-top: 10px;
-  padding-left: 160px;
 }
 
 .styled_thumb {
   border: 8px solid white;
   background: #faf9f7;
-  -moz-box-shadow: 0 0 3px 0 #888;
-  -webkit-box-shadow: 0 0 3px 0 #888;
   box-shadow: 0 0 3px 0 #888;
   max-width:60px;
   height:60px;
 }
 
 .user_info {
-  margin-left: 268px;
+  margin-left: 86px;
 }
 
 .detail_username {
@@ -904,7 +891,7 @@ a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:visite
 }
 
 .detail_description {
-  width: 600px;
+  width: 370px;
 }
 
 .user_summary {
@@ -914,56 +901,47 @@ a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:visite
 
 /* Place Page
 =====================================================================*/
-#placedetails {
+#place_details {
   background-image:url(<%= asset_path 'place_top_texture.png' %>);
-  height: 116px;
-  -moz-box-shadow: inset 0 0 5px #888;
-  -webkit-box-shadow: inset 0 0 5px#888;
   box-shadow: 0 0 5px #888;
-  padding:15px;
-
+  padding:20px;
+  min-height: 110px;
 }
 
 #map {
   float: left;
 }
 
-#summary {
-  margin-bottom: 10px;
-}
-
-.placemark_it {
-  padding-top: 25px;
-  margin-bottom: 11px;
-}
-
-.placemarked {
-  background-image:url(<%= asset_path 'green_background.png' %>);
-  border: 2px solid #418989;
-  padding: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
+.styled_map {
+  border: 9px solid white;
+  background: #faf9f7;
+  box-shadow: 0 0 8px 0 #888;
 }
 
 #place_overview {
-  margin-left: 130px;
+  margin-left: 320px;
 }
-/*
-.placename_holder {
-  height: 61px;
-}*/
 
 .placename {
-  float:left;
   color: white;
   font-size: 30px;
   font-weight: bold;
-  margin-top:15px;
-  margin-right: 10px;
+  margin-right: 6px;
+  line-height: 72px;
+}
+
+#placemark {
+  display: inline-block;
+  vertical-align: -10px;
+}
+
+.address_plus_link {
+  margin-top: -10px;
+}
+
+.my_empty {
+  font-size: 24px;
+  padding-top: 4px;
 }
 
 .google_url {
@@ -974,12 +952,68 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
   color: white;
 }
 
-.address {
-  width: 400px;
-  opacity:.90;
-  filter:alpha(opacity=90);
-  margin-top: 4px;
+#tombstones_and_share {
+  float: right;
 }
+
+#place_share {
+  padding-top: 8px;
+  float: right;
+}
+
+.unplacemarked img {
+  vertical-align: middle;
+}
+
+.unplacemarked {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 36px;
+  color: #B7614B;
+}
+
+.centered_place {
+  clear: both;
+  width: 450px;
+  margin-left: 340px;
+}
+
+.centered_place_mini {
+  clear: both;
+  width: 430px;
+  margin-left: 340px;
+}
+
+.recent {
+  width: 430px;
+}
+
+
+.place_category {
+  height: 52px;
+  font-size: 36px;
+  color: #B7614B;
+  padding: 5px 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-image:url(<%= asset_path 'header_bg.png' %>);
+  box-shadow: 0 0 1px 0 #888;
+}
+
+.more_placemarks {
+  margin-bottom: 5px;
+}
+
+.empty_perspective {
+  float:left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+#my_perspective {
+  margin-top: 10px;
+}
+
 
 .placemark {
   font-size: 11px;
@@ -1030,6 +1064,10 @@ a.google_url, a.google_url:link, a.google_url:visited, a.google_url:hover, a.goo
 
 .username_link {
   margin-left: 5px;
+}
+
+.placemarker {
+  max-height: 25px;
 }
 
 /* New Place
