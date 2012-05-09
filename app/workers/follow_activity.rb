@@ -18,5 +18,9 @@ class FollowActivity
       Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} started following you!", "placeling://users/#{actor1.username}")
     end
 
+    if actor1.facebook && Rails.env.production?
+      actor1.facebook.("placeling:follow", :user => "https://www.placeling.com#{ user_path(@user) }")
+    end
+
   end
 end
