@@ -5,7 +5,7 @@
   <meta property="og:url" content="<%= @perspective.og_path%>"/>
   <meta property="placeling:user" content="<%= @perspective.user.og_path %>"/>
   <meta property="placeling:location" content="https://<%= ActionMailer::Base.default_url_options[:host] + url_for( place_path(@perspective.place) ) %>"/>
-  <meta property="og:determiner" content="for" />
+  <meta property="og:determiner" content="a placemark for" />
 
   <meta property="og:type" content="placeling:placemark">
   <% @perspective.pictures.each do |picture| %>
