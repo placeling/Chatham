@@ -1,8 +1,12 @@
 <% content_for :head do %>
   <title><%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %></title>
   <meta name="description" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %> :: <%= t('perspective.call_to_action', {:user => @perspective.user.username, :place => @perspective.place.name}) %>">
-  <meta property="og:title" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %>"/>
-  <meta property="og:url" content="https://www.placeling.com<%= perspective_path(@perspective) %>"/>
+  <meta property="og:title" content="<%= t('perspective.perspective_head', {:place => @perspective.place.name}) %>"/>
+  <meta property="og:url" content="https://<%= ActionMailer::Base.default_url_options[:host] + url_for( perspective_path(@perspective) ) %>"/>
+  <meta property="placeling:user" content="https://<%= ActionMailer::Base.default_url_options[:host] + url_for( user_path(@perspective.user) ) %>"/>
+  <meta property="placeling:location" content="https://<%= ActionMailer::Base.default_url_options[:host] + url_for( place_path(@perspective.place) ) %>"/>
+  <meta property="og:determiner" content="a" />
+
   <meta property="og:type" content="placeling:placemark">
   <% @perspective.pictures.each do |picture| %>
     <% if !picture.deleted %>
@@ -10,7 +14,6 @@
       <% break %>
     <% end %>
   <% end %>
-  <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
 <% end %>
 
 <% content_for :javascript_includes do %>
