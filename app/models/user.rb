@@ -446,7 +446,7 @@ class User
   end
 
   def og_path
-    "https://#{ActionMailer::Base.default_url_options[:host]}#{url_for( user_path( self ) )}"
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_path( self )}"
   end
 
   protected

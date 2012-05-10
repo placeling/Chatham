@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe UsersController do
+  render_views
 
    describe "GET suggested" do
       it "returns list of suggested users" do
@@ -27,10 +28,8 @@ describe UsersController do
   describe "GET /:id" do
     describe "with valid params" do
       it "returns imack's profile" do
-        user = User.new
-        user.username = "imack"
+        user = Factory.create(:user, :username=>"imack")
 
-        User.stubs(:where).with(anything).returns([user])
         get :show, :id => user.username
         response.should be_success
       end

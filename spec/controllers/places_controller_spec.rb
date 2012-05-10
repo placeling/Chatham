@@ -3,6 +3,7 @@ require 'google_places'
 
 describe PlacesController do
   include Devise::TestHelpers
+  render_views
 
   describe "GET 'search'" do
     render_views

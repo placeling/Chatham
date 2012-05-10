@@ -178,7 +178,7 @@ class Perspective
   end
 
   def og_path
-    "https://#{ActionMailer::Base.default_url_options[:host]}#{url_for( perspective_path( self ) )}"
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{ Rails.application.routes.url_helpers.perspective_path( self ) }"
   end
 
   def as_json(options={})
