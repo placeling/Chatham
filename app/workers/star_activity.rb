@@ -23,7 +23,7 @@ class StarActivity
     end
 
     if actor1.facebook #&& Rails.env.production?
-      actor1.facebook.og_action!("placeling:like", :placemark => perspective.og_path, :user=> perspective.user.og_path )
+      actor1.facebook.og_action!("placeling:like", :placemark => perspective.og_path )
     end
 
   end
