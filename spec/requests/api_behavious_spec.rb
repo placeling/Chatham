@@ -7,17 +7,6 @@ describe "API - " do
   describe "home activity feed" do
     it "shows other user's activity" do
       user = Factory.create(:user)
-      user2 = Factory.create(:user)
-      user3 = Factory.create(:user)
-
-      user.follow!( user2 )
-      user.follow!( user3 )
-
-      user2.follow( user3 )
-      perspective = Factory.create(:perspective, :user=>user2)
-      perspective2 = Factory.create(:perspective, :user=>user3)
-
-      user2.star( perspective )
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 

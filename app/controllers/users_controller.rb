@@ -557,12 +557,13 @@ class UsersController < ApplicationController
   def follow
     @user = User.find_by_username( params[:id] )
 
-    current_user.follow!( @user )
+    current_user.follow( @user )
 
     @user.save!
     current_user.save!
 
     track! :follow
+    ActivityFeed.add_follow( current_user, @user)
 
     respond_to do |format|
       format.html { render :show }

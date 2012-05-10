@@ -50,11 +50,9 @@ class Perspective
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
   after_create :check_in
-  after_create :notify_feed_create
-  after_update :notify_feed_update
   before_destroy :scrub_stars
 
-  attr_accessor :post_feed, :post_delay
+  attr_accessor :post_delay
 
   def self.find_recent_for_user( user, start, count )
     user.perspectives.
@@ -112,22 +110,7 @@ class Perspective
     end
   end
 
-  def notify_feed_create
-    ActivityFeed.add_new_perspective(self.user, self) unless !self.post_feed
-    self.post_delay = nil
-    self.post_feed = false
-  end
-
-  def notify_feed_update
-    ActivityFeed.add_update_perspective(self.user, self) unless !self.post_feed
-    self.post_delay = nil
-    self.post_feed = false
-  end
-
   def notify_modified
-    if self.modified_at.nil? || self.modified_at < 1.day.ago
-      self.post_feed = true
-    end
     self.modified_at = Time.now
   end
 
