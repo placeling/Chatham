@@ -23,7 +23,7 @@ class StarActivity
     end
 
     if actor1.facebook && Rails.env.production?
-      actor1.facebook.("placeling:like", :placemark => "https://www.placeling.com#{perspective_path(@perspective)}" )
+      actor1.facebook.og_action!("placeling:like", :placemark => "https://www.placeling.com#{Rails.application.routes.url_helpers.perspective_path(@perspective)}" )
     end
 
   end

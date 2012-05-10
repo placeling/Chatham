@@ -16,8 +16,8 @@ class PlacemarkActivity
     activity.save
     activity.push_to_followers( actor1 )
 
-    if fb_post && actor1.facebook #&& Rails.env.production?
-      actor1.facebook.("placeling:placemark", :location => "https://www.placeling.com#{place_path( perspective.place )}" )
+    if fb_post && actor1.facebook #use in all environments
+      actor1.facebook.og_action!("placeling:placemark", :location => "https://www.placeling.com#{ Rails.application.routes.url_helpers.place_path( perspective.place )}" )
     end
   end
 end
