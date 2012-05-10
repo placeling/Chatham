@@ -177,6 +177,10 @@ class Perspective
     return favourites
   end
 
+  def og_path
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{url_for( perspective_path( self ) )}"
+  end
+
   def as_json(options={})
     attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false), :fav_count =>self.fav_count)
     attributes[:id] = attributes['_id']

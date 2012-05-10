@@ -445,6 +445,10 @@ class User
     end
   end
 
+  def og_path
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{url_for( user_path( self ) )}"
+  end
+
   protected
 
   def self.find_for_database_authentication(conditions)
