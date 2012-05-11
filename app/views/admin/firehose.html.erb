@@ -9,13 +9,20 @@
         <div class="activity follow">
           <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> followed <%= activity.username2 %> : <%= time_ago_in_words( activity.created_at ) %>
         </div>
-
+      <% elsif activity.activity_type == "STAR_PERSPECTIVE" %>
+         <div class="activity star_perspective">
+            <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> liked <%= activity.username2 %>'s placemark on <%= activity.subject_title %> : <%= time_ago_in_words( activity.created_at ) %>
+         </div>
 
       <% elsif activity.activity_type == "NEW_PERSPECTIVE" %>
          <div class="activity new_perspective">
             <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> placemarked <%= activity.subject_title %> : <%= time_ago_in_words( activity.created_at ) %>
          </div>
 
+      <% elsif activity.activity_type == "UPDATE_PERSPECTIVE" %>
+         <div class="activity update_perspective">
+            <%= image_tag activity.thumb1, :size => "64x64" %> <%= activity.username1 %> updated placemark <%= activity.subject_title %> : <%= time_ago_in_words( activity.created_at ) %>
+         </div>
       <% end %>
 
 
