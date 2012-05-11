@@ -125,6 +125,12 @@ class User
       self.create_first_run
     end
   end
+
+  def attach_first_run
+    if !self.first_run
+      self.create_first_run
+    end
+  end
   
   def follow_defaults
     other = User.find_by_username( 'citysnapshots' )
