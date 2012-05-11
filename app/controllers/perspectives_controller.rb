@@ -15,7 +15,8 @@ class PerspectivesController < ApplicationController
       @perspective.location = @place.location
     end
 
-    @perspective.save
+    @perspective.save!
+    ActivityFeed.add_new_perspective(@perspective.user, @perspective, true)
 
     respond_to do |format|
       format.html
@@ -213,6 +214,7 @@ class PerspectivesController < ApplicationController
       
       if @perspective.user == current_user
         @perspective.update_attributes(params[:perspective])
+        params[:fb_post] = true #default to send to OG for now
         
         if @perspective.url == ""
           @perspective.url = nil
