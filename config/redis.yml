@@ -10,7 +10,7 @@ test:
   namespace: placeling_test
 staging:
   db: 0
-  host: ip-10-170-90-180.us-west-1.compute.internal
+  host: localhost
   port: 6379
   namespace: placeling_staging
 production:
