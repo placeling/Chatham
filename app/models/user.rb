@@ -80,6 +80,7 @@ class User
 
   embeds_one :activity_feed
   embeds_one :user_setting
+  embeds_one :first_run
   accepts_nested_attributes_for :user_setting
 
   validate :acceptable_name, :on => :create
@@ -102,7 +103,7 @@ class User
   before_save :cache_urls
   before_save :get_city
 
-  before_create :attach_settings
+  before_create :attach_settings, :attach_first_run
   after_create :follow_defaults
 
   def get_city
@@ -116,7 +117,13 @@ class User
       self.create_user_setting
     end
   end
-
+  
+  def attach_first_run
+    if !self.first_run
+      self.create_first_run
+    end
+  end
+  
   def follow_defaults
     other = User.find_by_username( 'citysnapshots' )
     if other

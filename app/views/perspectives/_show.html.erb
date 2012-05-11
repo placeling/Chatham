@@ -3,7 +3,7 @@
     <div class="perspective_user">
       <div class="perspective_user_contents">
         <%= image_tag perspective.user.thumb_url, :alt=>"Pic", :class =>"styled_mini" %>
-        <%= link_to perspective.user.username, user_path(perspective.user, :pid => perspective.id), :class => "username_link" %>
+        <%= link_to perspective.user.username, user_path(perspective.user, :pid => perspective.id), :class => "username_link", :id => "me" %>
       </div>
     </div>
   <% end %>

@@ -1,20 +1,4 @@
 $(document).ready(function(){
-  var copy = "Find places to explore and people to guide you"
-  $("#term").val(copy);
-  $("#term").css({'color':'grey'});
-  
-  $("#term").focus(function() {
-    this.value = "";
-    $(this).css({'color': 'black'});
-  })
-  
-  $("#term").blur(function() {
-    if (this.value == '') {
-      this.value = copy;
-      $(this).css({'color':'grey'});
-    }
-  })
-  
   var userLocation = JSON.parse($.cookie('location'));
   
   var user_lat = 49.2;

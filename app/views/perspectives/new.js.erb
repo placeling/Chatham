@@ -7,4 +7,8 @@ if (count == 2) {
   $('#placemark_text').text("placemarks");
 }
 
+$("#arrow_box").remove();
+
 $("#place_details").after('<div id="my_perspective" class="perspective_group"><%= escape_javascript(render :partial => "perspectives/show", :locals => {:perspective => @perspective, :source => "place_page_empty"}) %></div>').fadeIn(200);
+
+first_run();

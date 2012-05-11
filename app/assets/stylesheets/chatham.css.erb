@@ -49,6 +49,61 @@ input {
   padding:0;
 }
 
+/* First run
+=====================================================================*/
+#first_run {
+  display: none;
+}
+
+.arrow_box {
+  position: absolute;
+  background: #EBE4D0;
+  border: 4px solid #B7614B;
+  
+  border-radius: 3px;
+  padding: 15px;
+  z-index: 10010;
+  box-shadow: 4px 4px 8px 0px #888888;
+}
+.arrow_box:after, .arrow_box:before {
+  bottom: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-bottom-color: #EBE4D0;
+  border-width: 15px;
+  left: 50%;
+  margin-left: -15px;
+}
+.arrow_box:before {
+  border-bottom-color: #B7614B;
+  border-width: 21px;
+  left: 50%;
+  margin-left: -21px;
+}
+
+.alt_color {
+  border: 4px solid #35757C;
+}
+
+.alt_color:before {
+  border-bottom-color: #35757C;
+}
+
+.arrow_action {
+  font-size:24px;
+}
+
+.arrow_more {
+  color: gray;
+}
+
 /* Header
 =====================================================================*/
 #header {
