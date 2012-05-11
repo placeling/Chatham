@@ -1,8 +1,6 @@
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(document).ready(function() {
-      first_run();
-      
       var copy = "<%= t('header.call_to_action') %>"
       $("#term").val(copy);
       $("#term").css({'color':'grey'});
@@ -18,7 +16,10 @@
           $(this).css({'color':'grey'});
         }
       })
-    });    
+    });
+    $(window).load(function() {
+      first_run();
+    });
   </script>
 <% end %>
 
