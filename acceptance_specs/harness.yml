@@ -1,5 +1,5 @@
 development:
-  host: "http://localhost:3000"
+  host: "http://dev.placeling.com:3000"
   username: "tyler"
   password: "foobar"
   consumer_key:  "B2WICHNVOvPOUwlnCeXmCxqYGcn50IdK82wQhN3D"
