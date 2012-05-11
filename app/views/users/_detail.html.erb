@@ -67,9 +67,9 @@
     <div id="follow_status">
       <% if current_user != user %>
         <% if current_user && current_user.following.include?(user) %>
-          <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'unfollow', :controller => 'users')%>"><span class="follow_link"><%= image_tag "unfollow.png", :alt=>"Unfollow" %></span></a>
+          <a class="follow_link" rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'unfollow', :controller => 'users')%>"><%= image_tag "unfollow.png", :alt=>"Unfollow" %></a>
         <% else %>
-          <a rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'follow', :controller => 'users') %>"><span class="follow_link"><%= image_tag "follow.png", :alt=>"Follow" %></span></a>
+          <a class="follow_link" rel="nofollow" data-remote="true" data-method="post" href="<%= url_for(:action => 'follow', :controller => 'users') %>"><%= image_tag "follow.png", :alt=>"Follow" %></a>
         <% end %>
       <% end %>
     </div>

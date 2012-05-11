@@ -1,8 +1,39 @@
 class RegistrationsController < Devise::RegistrationsController
   after_filter :check_location, :reset_notifications, :only => [:create]
   before_filter :check_timestamp, :only => :create
-
+  before_filter :update_session, :only => :new
+  
+  # REALLY IMPORTANT COMMENT
+  # To understand all the logic below, you need to know something about Devise:
+  # If it find a value in session[:"user_return_to"] it never calls after_sign_up_path_for(resource)
+  
+  def update_session
+    puts "in update_session"
+    puts "request.referer is:"
+    puts request.referer
+    puts "current session[:user_return_to] is:"
+    puts session[:"user_return_to"]
+    # If user is coming from home page, we want them to go to their map
+    if (URI(request.referer).path == "/")
+      session[:"user_return_to"] = nil
+    # If user clicked to sign in page and then register, clear session if originally from homepage
+    elsif URI(request.referer).path == new_user_session_path && session[:"user_return_to"] == "/"
+      session[:"user_return_to"] = nil
+    else
+      session[:"user_return_to"] = request.referer
+    end
+  end
+  
   protected
+    def after_sign_up_path_for(resource)
+      puts "in after_sign_up_path_for"
+      puts "here's session[:user_return_to]"
+      puts session[:user_return_to]
+      if session[:user_return_to] == nil
+        user_path(current_user)
+      end
+    end
+    
     def check_timestamp
       timestamp = params['page_timestamp'].to_i
       diff = timestamp - Time.now.to_i
@@ -34,4 +65,5 @@ class RegistrationsController < Devise::RegistrationsController
         end
       end
     end
+    
 end

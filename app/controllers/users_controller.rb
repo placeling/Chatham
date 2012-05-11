@@ -12,7 +12,6 @@ class UsersController < ApplicationController
 
   before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :update, :account]
   
-  
   def me
     @user = current_user
 
@@ -673,5 +672,5 @@ class UsersController < ApplicationController
         format.json { render :json => {:status => "INVALID EMAIL" } }
       end
     end
-  end
+  end  
 end

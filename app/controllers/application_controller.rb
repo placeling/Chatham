@@ -4,33 +4,68 @@ class ApplicationController < ActionController::Base
   include HTTParty
   
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_location
+  before_filter :api_check, :set_location, :first_run_app
   helper_method :user_location
   helper_method :return_to_link
+  helper_method :first_run_app
   
   alias :logged_in? :user_signed_in?
 
   use_vanity :current_user
-
+  
+  def first_run_app
+    if !cookies[:first_run]
+      if current_user && current_user.first_run.search == false
+        cookies[:first_run] = {:value => {:value=>"search",:modified=>false}.to_json}
+      elsif current_user && current_user.first_run.placemark == false
+        cookies[:first_run] = {:value => {:value=>"placemark",:modified=>false}.to_json}
+      elsif current_user && current_user.first_run.map == false
+        cookies[:first_run] = {:value => {:value=>"map",:modified=>false}.to_json}
+      elsif current_user
+        cookies[:first_run] = {:value => {:value=>"none",:modified=>false}.to_json}
+      end
+    else
+      first_run_status = JSON.parse(cookies[:first_run])
+      
+      if first_run_status.has_key?("value") && first_run_status.has_key?("modified")
+        if first_run_status["value"] == "search" && first_run_status["modified"] == true
+          current_user.first_run.search = true
+          current_user.save
+          cookies[:first_run] = {:value => {:value=>"placemark",:modified=>false}.to_json}
+        elsif first_run_status["value"] == "placemark" && first_run_status["modified"] == true
+          current_user.first_run.placemark = true
+          current_user.save
+          cookies[:first_run] = {:value => {:value=>"map",:modified=>false}.to_json}
+        elsif first_run_status["value"] == "map" && first_run_status["modified"] == true
+          current_user.first_run.map = true
+          current_user.save
+          cookies[:first_run] = {:value => {:value=>"none",:modified=>false}.to_json}
+        end
+      end
+    end
+  end
+  
   def return_to_link
     if session[:"user_return_to"]
       session[:"user_return_to"]
     else
-      "/"
+      if !current_user.nil?
+        user_path(current_user)
+      end
     end
   end
 
-  def after_sign_in_path_for(resource)
-    return return_to_link
-  end
+  #def after_sign_in_path_for(resource)
+  #  return return_to_link
+  #end
   
   def after_sign_out_path_for(resource)
     return (session[:"user_return_to"].nil?) ? request.referer : session[:"user_return_to"].to_s
   end
   
-  def after_create(resource)
-    return return_to_link
-  end
+  #def after_create(resource)
+  #  return return_to_link
+  #end
   
   def api_check
     if params[:api_call]

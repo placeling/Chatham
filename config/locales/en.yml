@@ -22,6 +22,9 @@ en:
     description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web. If you're a Wordpress blogger, use Placeling to turn your blog into an iPhone-enabled city guide"
     blog: "Blog"
     investors: "Investors"
+  
+  header:
+    call_to_action: "Find places to explore and people to guide you"
     
   iframe:
     slogan: "Another Beautiful Placeling Map"

@@ -23,5 +23,7 @@ placemarkCount += 1;
 $('#placemark_count').text(placemarkCount);
 
 <% if URI(request.referer).path == place_path(@perspective.place) %>
-  $("#place_details").after('<div id="my_perspective" class="perspective_group"><%= escape_javascript(render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"}) %></div>').fadeIn(200);
+  if ($('#my_perspective').length == 0) {
+    $("#place_details").after('<div id="my_perspective" class="perspective_group"><%= escape_javascript(render :partial => "perspectives/show", :locals => {:perspective => @my_perspective, :source => "place_page_empty"}) %></div>').fadeIn(200);
+  }
 <% end %>
