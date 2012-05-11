@@ -3,12 +3,9 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :check_timestamp, :only => :create
   before_filter :update_session, :only => :new
   
-  #def new
-  #  super
-  #  session[:"user_return_to"] = URI(request.referer).path unless request.referer.nil? # WILL FAIL ON LINK FROM SIGNIN
-  #  puts "here's the session:"
-  #  puts session[:"user_return_to"]
-  #end
+  # REALLY IMPORTANT COMMENT
+  # To understand all the logic below, you need to know something about Devise:
+  # If it find a value in session[:"user_return_to"] it never calls after_sign_up_path_for(resource)
   
   def update_session
     puts "in update_session"
@@ -16,13 +13,15 @@ class RegistrationsController < Devise::RegistrationsController
     puts request.referer
     puts "current session[:user_return_to] is:"
     puts session[:"user_return_to"]
-    if URI(request.referer).path == "/" || URI(request.referer).path == new_user_session_path
+    # If user is coming from home page, we want them to go to their map
+    if (URI(request.referer).path == "/")
+      session[:"user_return_to"] = nil
+    # If user clicked to sign in page and then register, clear session if originally from homepage
+    elsif URI(request.referer).path == new_user_session_path && session[:"user_return_to"] == "/"
       session[:"user_return_to"] = nil
     else
       session[:"user_return_to"] = request.referer
     end
-    #puts session[:"user_return_to"]
-    #session[:"user_return_to"] = "/users/imack/recent"
   end
   
   protected
@@ -33,19 +32,7 @@ class RegistrationsController < Devise::RegistrationsController
       if session[:user_return_to] == nil
         user_path(current_user)
       end
-      #session[:"user_return_to"] = "/users/imack/recent"
-      #puts "referer"
-      #puts request.referer
-      #puts "session[:user_return_to]"
-      #puts session[:"user_return_to"]
-      #puts "session[:user.return_to]"
-      #puts session[:"user.return_to"]
-      #{}"/users/meg/recent"
     end
-    
-    #def after_inactive_sign_up_path_for(resource)
-    #  '/'
-    #end
     
     def check_timestamp
       timestamp = params['page_timestamp'].to_i

@@ -131,7 +131,7 @@ function first_run() {
   // If it is, update the cookie
   var status = JSON.parse($.cookie("first_run"));
   
-  if ("value" in status && "modified" in status) {
+  if (status && "value" in status && "modified" in status) {
     if (status["value"] == "search" && status["modified"] == false) {
       if ($('#term').length === 1) {
         var call_to_action = $('<div id="arrow_box" class="arrow_box"><p class="arrow_action">Let\'s put a place on your map</p><p class="arrow_more">Type the name of a place to pin</p></div>').hide();
