@@ -2,6 +2,10 @@
   <title><%= t('auth.fail') %></title>
 <% end %>
 
+<!--
+<%= @user.error_messages :message => "Errors" %>
+-->
+
 <div class="auth_inset">
   <p class="auth_standout"><%= t('auth.standout')%> <span class="auth_provider"><%= @provider %><span></p>
   <p><%= t('auth.reason') %></p>

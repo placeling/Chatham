@@ -113,6 +113,7 @@ class AuthenticationsController < ApplicationController
           }
         end
       else
+        Rails.logger.warn( @user.errors )
         @provider = omniauth['provider']
         respond_to do |format|
           format.html {render :auth_fail}
