@@ -151,6 +151,7 @@ class PerspectivesController < ApplicationController
     @user_perspective = current_user.star( @perspective )
     
     track! :star
+    ActivityFeed.add_star_perspective(current_user, @perspective.user, @perspective)
     
     # Need following for place page html: need to show blank perspective for current user
     if request.referer && URI(request.referer).path == place_path(@perspective.place)
@@ -206,6 +207,7 @@ class PerspectivesController < ApplicationController
   def update
     # if coming from mobile client, will have param 'place_id'
     # otherwise web client
+    new_perspective = false
     if params['place_id'].nil?
       @perspective = Perspective.find(params[:id])
       
@@ -259,6 +261,7 @@ class PerspectivesController < ApplicationController
           @perspective.location = @place.location #made raw, these are by definition the same
           @perspective.accuracy = params[:accuracy]
         end
+        new_perspective = true
       end
 
       if current_client_application && current_client_application.id.to_s == "4f298a1057b4e33324000003"
@@ -282,17 +285,24 @@ class PerspectivesController < ApplicationController
 
     @perspective.notify_modified
 
-    if params[:post_delay]
-      @perspective.post_delay = params[:post_delay].to_i * 60
-    end
-    
     if @perspective.save
       @perspective.place.update_tags
+
+      if params[:post_delay]
+        @perspective.post_delay = params[:post_delay].to_i * 60
+      end
+
+      if new_perspective
+        ActivityFeed.add_new_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
+      else
+        ActivityFeed.add_update_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
+      end
 
       if params[:photo_urls] #has to be done after save in case perspective didn't exist
         #we don't know how slow their server is, so do this async
         Resque.enqueue(GetPerspectivePicture, @perspective.id, params[:photo_urls].split(','))
       end
+
       @perspective.place.save
       respond_to do |format|
         format.html {redirect_to session[:referring_url]}

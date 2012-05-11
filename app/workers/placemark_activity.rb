@@ -1,6 +1,6 @@
 class PlacemarkActivity
   @queue = :activity_queue
-  def self.perform(actor_id, perspective_id)
+  def self.perform(actor_id, perspective_id, fb_post = false)
 
     actor1 = User.find( actor_id )
 
@@ -15,5 +15,9 @@ class PlacemarkActivity
 
     activity.save
     activity.push_to_followers( actor1 )
+
+    if fb_post && actor1.facebook #use in all environments
+      actor1.facebook.og_action!("placeling:placemark", :location => perspective.og_path )
+    end
   end
 end

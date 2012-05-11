@@ -11,19 +11,19 @@ class ActivityFeed
     Resque.enqueue(FollowActivity, actor1.id, actor2.id)
   end
 
-  def self.add_new_perspective(actor, perspective)
+  def self.add_new_perspective(actor, perspective, fb_post = false)
     if perspective.post_delay
-      Resque.enqueue_in( perspective.post_delay.seconds, PlacemarkActivity, actor.id, perspective.id)
+      Resque.enqueue_in( perspective.post_delay.seconds, PlacemarkActivity, actor.id, perspective.id, fb_post)
     else
-      Resque.enqueue(PlacemarkActivity, actor.id, perspective.id)
+      Resque.enqueue(PlacemarkActivity, actor.id, perspective.id, fb_post)
     end
   end
 
-  def self.add_update_perspective(actor, perspective)
+  def self.add_update_perspective(actor, perspective, fb_post = false)
     if perspective.post_delay
-      Resque.enqueue_in( perspective.post_delay.seconds, UpdatePlacemarkActivity, actor.id, perspective.id)
+      Resque.enqueue_in( perspective.post_delay.seconds, UpdatePlacemarkActivity, actor.id, perspective.id, fb_post)
     else
-      Resque.enqueue(UpdatePlacemarkActivity, actor.id, perspective.id)
+      Resque.enqueue(UpdatePlacemarkActivity, actor.id, perspective.id, fb_post)
     end
   end
 

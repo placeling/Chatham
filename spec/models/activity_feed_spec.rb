@@ -13,7 +13,8 @@ describe ActivityFeed do
   it "creates a follow event on user " do
     user = Factory.create(:user)
     user2 = Factory.create(:user)
-    user.follow!( user2 )
+
+    ActivityFeed.add_follow(user, user2)
 
     user.reload #necessary since the activity stuff happens in another environment-ish
     user2.reload
@@ -37,6 +38,8 @@ describe ActivityFeed do
     place = Factory.create(:place)
     perspective = Factory.create(:perspective, :user => user, :place =>place)
 
+    ActivityFeed.add_new_perspective(user, perspective, false)
+
     user.reload #necessary since the activity stuff happens in another environment-ish
     perspective.reload
     place.reload
@@ -59,6 +62,8 @@ describe ActivityFeed do
     place = Factory.create(:place)
     perspective = Factory.create(:perspective, :user => user, :place =>place)
     sleep 1
+
+    ActivityFeed.add_new_perspective(user, perspective, false)
 
     perspective.memo = "new memo"
     perspective.save
@@ -87,6 +92,7 @@ describe ActivityFeed do
     perspective = Factory.create(:perspective, :user => user2, :place =>place)
 
     user.star( perspective )
+    ActivityFeed.add_star_perspective(user, user2, perspective)
 
     user.reload #necessary since the activity stuff happens in another environment-ish
     user2.reload

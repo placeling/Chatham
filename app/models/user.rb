@@ -103,7 +103,7 @@ class User
   before_save :cache_urls
   before_save :get_city
 
-  before_create :attach_settings, :attach_first_run
+  before_create :attach_subdocs
   after_create :follow_defaults
 
   def get_city
@@ -112,13 +112,15 @@ class User
     end
   end
 
-  def attach_settings
+  def attach_subdocs
+    if !self.activity_feed
+      self.create_activity_feed
+    end
+
     if !self.user_setting
       self.create_user_setting
     end
-  end
-  
-  def attach_first_run
+    
     if !self.first_run
       self.create_first_run
     end
@@ -254,8 +256,6 @@ class User
     perspective.starring_users << self.id
     perspective.save
 
-    ActivityFeed.add_star_perspective(self, perspective.user, perspective)
-
     return user_perspective
   end
 
@@ -279,12 +279,6 @@ class User
     if self.id != user.id && !self.following.include?(user)
       self.following << user
     end
-  end
-
-
-  def follow!( user )
-    self.follow( user )
-    ActivityFeed.add_follow( self, user)
   end
 
   def unfollow( user )
@@ -454,6 +448,10 @@ class User
         $redis.zremrangebyscore k, "-inf", "(#{r.last}"
       end
     end
+  end
+
+  def og_path
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_path( self )}"
   end
 
   protected

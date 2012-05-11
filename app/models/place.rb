@@ -308,6 +308,10 @@ class Place
     
     return place
   end
+
+  def og_path
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{ Rails.application.routes.url_helpers.place_path( self ) }"
+  end
   
   def as_json(options={})
     self.venue_types.delete("Establishment") #filter out establishment from return values

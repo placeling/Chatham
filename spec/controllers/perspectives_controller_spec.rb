@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe PerspectivesController do
+  render_views
 
   it "should return a place with an embedded perspective for its 'show'" do
     #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
