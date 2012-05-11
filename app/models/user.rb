@@ -103,8 +103,7 @@ class User
   before_save :cache_urls
   before_save :get_city
 
-  before_create :attach_subdocs
-  after_create :follow_defaults
+  after_create :follow_defaults, :attach_subdocs
 
   def get_city
     if self.location != nil && self.location != [0,0] && self.city == ""

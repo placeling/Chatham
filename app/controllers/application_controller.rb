@@ -14,17 +14,17 @@ class ApplicationController < ActionController::Base
   use_vanity :current_user
   
   def first_run_app
-    if !cookies[:first_run]
-      if current_user && current_user.first_run.search == false
+    if !cookies[:first_run] && current_user
+      if current_user.first_run.search == false
         cookies[:first_run] = {:value => {:value=>"search",:modified=>false}.to_json}
-      elsif current_user && current_user.first_run.placemark == false
+      elsif current_user.first_run.placemark == false
         cookies[:first_run] = {:value => {:value=>"placemark",:modified=>false}.to_json}
-      elsif current_user && current_user.first_run.map == false
+      elsif current_user.first_run.map == false
         cookies[:first_run] = {:value => {:value=>"map",:modified=>false}.to_json}
-      elsif current_user
+      else
         cookies[:first_run] = {:value => {:value=>"none",:modified=>false}.to_json}
       end
-    else
+    elsif current_user
       first_run_status = JSON.parse(cookies[:first_run])
       
       if first_run_status.has_key?("value") && first_run_status.has_key?("modified")
