@@ -15,7 +15,7 @@ class UpdatePlacemarkActivity
     activity.save
     activity.push_to_followers( actor1 )
 
-    if fb_post && actor1.facebook #&& Rails.env.production?
+    if fb_post && actor1.facebook && !(Rails.env.development? || Rails.env.test?)
       actor1.facebook.og_action!("placeling:placemark", :location => perspective.og_path )
     end
   end

@@ -22,7 +22,7 @@ class StarActivity
       Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} liked your placemark on #{ perspective.place.name }!", "placeling://places/#{perspective.place.id}")
     end
 
-    if actor1.facebook #&& Rails.env.production?
+    if actor1.facebook && !(Rails.env.development? || Rails.env.test?)
       actor1.facebook.og_action!("placeling:like", :location => perspective.og_path )
     end
 
