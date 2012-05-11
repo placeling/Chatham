@@ -16,7 +16,7 @@ test:
   identity_map_enabled: true
 
 staging:
-  host: ip-10-170-90-180.us-west-1.compute.internal
+  host: localhost
   database: chatham_staging
   raise_not_found_error: false
   identity_map_enabled: true
