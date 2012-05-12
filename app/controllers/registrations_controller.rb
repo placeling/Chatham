@@ -8,16 +8,11 @@ class RegistrationsController < Devise::RegistrationsController
   # If it find a value in session[:"user_return_to"] it never calls after_sign_up_path_for(resource)
   
   def update_session
-    puts "in update_session"
-    puts "request.referer is:"
-    puts request.referer
-    puts "current session[:user_return_to] is:"
-    puts session[:"user_return_to"]
     # If user is coming from home page, we want them to go to their map
-    if (URI(request.referer).path == "/")
+    if (request.referer && URI(request.referer).path == "/")
       session[:"user_return_to"] = nil
     # If user clicked to sign in page and then register, clear session if originally from homepage
-    elsif URI(request.referer).path == new_user_session_path && session[:"user_return_to"] == "/"
+    elsif request.referer && URI(request.referer).path == new_user_session_path && session[:"user_return_to"] == "/"
       session[:"user_return_to"] = nil
     else
       session[:"user_return_to"] = request.referer
