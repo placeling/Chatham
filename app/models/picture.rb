@@ -6,6 +6,9 @@ class Picture
   field :thumb_cache_url, :type => String
   field :iphone_cache_url, :type => String
   field :main_cache_url, :type => String
+  field :mosaic_3_1_cache_url, :type => String # 3 column layout, 1 column wide, 132px x 132px, 9px border
+  field :mosaic_3_2_cache_url, :type => String # 3 column layout, 2 columns wide, 282px x 132px, 9px border
+  field :mosaic_3_3_cache_url, :type => String # 3 column layout, 3 columns wide, 432px x 282px, 9px border
 
   field :remote_url, :type => String
 
@@ -23,8 +26,11 @@ class Picture
     self.thumb_cache_url = self.image_url(:thumb)
     self.iphone_cache_url = self.image_url(:iphone)
     self.main_cache_url =  self.image_url(:main)
+    self.mosaic_3_1_cache_url = self.image_url(:mosaic_3_1)
+    self.mosaic_3_2_cache_url = self.image_url(:mosaic_3_2)
+    self.mosaic_3_3_cache_url = self.image_url(:mosaic_3_3)
   end
-
+  
   def thumb_url
     if Rails.env == self.creation_environment
       self.image_url(:thumb)
@@ -54,8 +60,37 @@ class Picture
       return "http://placeling.com/images/default_profile.png"
     end
   end
-
-
+  
+  def mosaic_3_1_url
+    if Rails.env == self.creation_environment
+      self.image_url(:mosaic_3_1)
+    elsif mosaic_3_1_cache_url
+      mosaic_3_1_cache_url
+    else
+      return "http://placeling.com/images/default_profile.png"
+    end
+  end
+  
+  def mosaic_3_2_url
+    if Rails.env == self.creation_environment
+      self.image_url(:mosaic_3_2)
+    elsif mosaic_3_2_cache_url
+      mosaic_3_2_cache_url
+    else
+      return "http://placeling.com/images/default_profile.png"
+    end
+  end
+  
+  def mosaic_3_3_url
+    if Rails.env == self.creation_environment
+      self.image_url(:mosaic_3_3)
+    elsif mosaic_3_3_cache_url
+      mosaic_3_3_cache_url
+    else
+      return "http://placeling.com/images/default_profile.png"
+    end
+  end
+  
   def as_json(options={})
     attributes = {:id =>self['_id'], :_id => self['_id'] }
 
