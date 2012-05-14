@@ -855,8 +855,15 @@ p.memo {
   background: none repeat scroll 0 0 #FAF9F7;
   border: 9px solid white;
   box-shadow: 0 0 8px 0 #888888;
-  overflow:hidden;
-  float: right;
+  float: left;
+}
+
+.image_holder img {
+  display: block;
+}
+
+.left_clear {
+  clear: left;
 }
 
 .right_clear {
@@ -1346,20 +1353,24 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   color: #b7614b;
 }
 
+.perspective_body {
+  clear:both;
+}
+
 .perspective_and_place_wrapper {
-  width: 970px;
+  width: 1020px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
 }
 
-.perspective_and_place {
+/*.perspective_and_place {
   clear: both;
-}
+}*/
 
 #perspective_well {
   float: left;
-  width: 560px;
+  width: 650px;
   border: 25px solid white;
   padding: 10px;
   background-image:url(<%= asset_path 'top_texture.png' %>);
@@ -1371,7 +1382,7 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
 }
 
 #place_well_holder {
-  margin-left: 630px;
+  margin-left: 720px;
   padding-top: 15px;
 }
 
@@ -1385,7 +1396,8 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   padding: 10px;
 }
 
-#perspective_profile_pic {
+#member {
+  height: 126px;
   margin: 25px;
 }
 
@@ -1416,6 +1428,30 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
   padding-top: 36px;
 }
 
+.all_places_holder {
+  margin-top: 10px;
+}
+
+.all_places {
+  background-image:url(<%= asset_path 'red_background.png' %>);
+  padding: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 2px solid #bf4f41;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+a.all_places, a.all_places:link, a.all_places:visited, a.all_places:hover, a.all_places:focus {
+  color: white;
+}
+
+.member_perspective {
+  clear: both;
+}
+
 .button_image {
   border-radius: 25px;
   -webkit-border-radius: 25px;
@@ -1434,6 +1470,7 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
   margin-left: 151px;
   padding-left: 10px;
   margin-right: 25px;
+  width: 450px;
 }
 
 .mini_memo {
@@ -1445,12 +1482,17 @@ a.username_perspective_link, a.username_perspective_link:link, a.username_perspe
   padding-top: 0px;
 }
 
+a.perspective_url, a.perspective_url:link, a.perspective_url:visited, a.perspective_url:hover, a.perspective_url:focus {
+  color: white;
+}
+
 .updated_dark {
   color: black;
 }
 
 .footer_details {
-  margin-top: 5px;
+  clear: left;
+  padding-top: 5px;
   font-size: 10px;
 }
 
