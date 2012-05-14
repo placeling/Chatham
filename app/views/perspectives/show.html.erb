@@ -60,7 +60,7 @@
   </script>
 <% end %>
 
-<div>
+<div class="perspective_header">
   <div class="plane">
     <%= image_tag "plane.png", :alt=>"Plane" %>
   </div>
@@ -82,36 +82,34 @@
         </span>
     </div>
   </div>
+  
+</div>
+
+<div class="perspective_body">
   <div class="perspective_and_place_wrapper">
-    <div class="perspective_and_place">
-      <div id="perspective_well">
-        <div id="perspective_profile_pic">
-          <div class="profile_pic_holder">
-            <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
-          </div>
-          <div class="profile_username">
-            <%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%>
-            <% if @perspective.user.perspective_count > 1 %>
-            <div class="all_places_holder">
-              <a href="<%= user_path(@perspective.user) %>?pid=<%= @perspective.id %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a>
-            </div>
-            <% end %>
-          </div>
+    <div id="perspective_well">
+      <div id="member">
+        <div class="profile_pic_holder">
+          <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
         </div>
+        <div class="profile_username">
+          <div><%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%></div>
+          <% if @perspective.user.perspective_count > 1 %>
+          <div class="all_places_holder"><a href="<%= user_path(@perspective.user) %>?pid=<%= @perspective.id %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a></div>
+          <% end %>
+        </div>
+      </div>
+      <div id="member_perspective">
         <div id="perspective_<%= @perspective.id %>" class="perspective_details">
           <div class="interact mini_star">
             <% if current_user == @perspective.user %>
-              <a href="<%= edit_perspective_path(@perspective) %>">'<%= image_tag 'starred.png', :class=>"button_image" %>'</a>
+              <a href="<%= edit_perspective_path(@perspective) %>"><%= image_tag 'writer.png', :class=>"button_image" %></a>
             <% else %>
               <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
                 <% if current_user && @perspective.su.include?(current_user.id) %>
-                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link">
-                    <%= image_tag "starred.png", :alt=>"Unstar", :class=>"button_image"%>
-                  </a>
+                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar", :class=>"button_image"%></a>
                 <% else %>
-                    <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link">
-                      <%= image_tag "unstarred.png", :alt=>"Star", :class=>"button_image" %>
-                    </a>
+                    <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star", :class=>"button_image" %></a>
                 <% end %>
               <% end %>
             <% end %>
@@ -128,14 +126,11 @@
               </div>
             <% end %>
             <% if @perspective.pictures.length > 0 %>
-              <div class="lightboxGallery">
-              <% @perspective.pictures.each_with_index do |photo, i| %>
-                <% if !photo.deleted %>
-                  <div class="narrow_photo"><a href="<%= photo.main_url %>" class="lightbox"><%= image_tag photo.thumb_url, :class => "perspective_photo" %></a></div>
+              <div class="lightboxGallery images">
+                <% mosaic_3(@perspective.pictures).each do |photo| %>
+                  <a href="<%= photo["main"] %>" class="lightbox"><div class="image_holder"><%= image_tag photo["mini"], :class=>"photo_image" %></div></a>
                 <% end %>
-              <% end %>
               </div>
-              <div class="image_clear"></div>
             <% end %>
             <div class="footer_details">
               <span class="updated_dark">
@@ -152,6 +147,7 @@
           </div>
         </div>
       </div>
+    </div>
       <div id="place_well_holder">
       <div id="place_well">
         <div class="place_name_mini">
@@ -174,4 +170,5 @@
       </div>
     </div>
   </div>
+</div>  
 </div>

@@ -80,15 +80,13 @@
       <% end %>
       <% if perspective.pictures.length > 0 %>
         <div class="lightboxGallery images">
-        <% perspective.pictures.each_with_index do |photo, i| %>
-          <% if !photo.deleted %>
-            <a href="<%= photo.main_url %>" class="lightbox"><div class="image_holder"><%= image_tag photo.iphone_url, :class=>"photo_image" %></div></a>
+          <% mosaic_3(perspective.pictures).each do |photo| %>
+            <a href="<%= photo["main"] %>" class="lightbox"><div class="image_holder"><%= image_tag photo["mini"], :class=>"photo_image" %></div></a>
           <% end %>
-        <% end %>
         </div>
       <% end %>
       <% if !perspective.empty_perspective? %>
-        <div class="perspective_date <% if perspective.pictures.length > 0 %>picture_spacer right_clear<% end %>"><%= perspective.updated_at.strftime('%B %d, %Y') %></div>
+        <div class="perspective_date <% if perspective.pictures.length > 0 %>picture_spacer left_clear<% end %>"><%= perspective.updated_at.strftime('%B %d, %Y') %></div>
       <% end %>
     </div>
   </div>
