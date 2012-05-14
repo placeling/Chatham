@@ -350,7 +350,7 @@ class PlacesController < ApplicationController
     logger.info "action: #{(Time.now - t) *1000}ms"
     respond_to do |format|
         format.html
-        format.json { render :json => {:suggested_places => @places } }#, :ad => Advertisement.new( "Admob" ) } }
+        format.json { render :json => {:suggested_places => @places.as_json({:current_user =>current_user}) } }#, :ad => Advertisement.new( "Admob" ) } }
     end
 
   end
