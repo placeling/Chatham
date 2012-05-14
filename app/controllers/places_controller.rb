@@ -358,6 +358,9 @@ class PlacesController < ApplicationController
 
   def create
 
+    if params[:api_call]
+      params[:place] = realign_place_params params
+    end
     @place = Place.new(params[:place])
     if @place.valid?
       @place = Place.new_from_user_input(@place)
@@ -366,7 +369,7 @@ class PlacesController < ApplicationController
       @place.client_application = current_client_application unless current_client_application.nil?
     end
 
-    if verify_recaptcha(:model => @place, :message => "Invalid CAPTCHA") && @place.save
+    if ( params[:api_call] || verify_recaptcha(:model => @place, :message => "Invalid CAPTCHA")) && @place.save
       #by default, we placemark the new place
       track! :placemark
       @perspective= @place.perspectives.build()
@@ -375,10 +378,13 @@ class PlacesController < ApplicationController
 
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
-        format.json { render :json => @place }
+        format.json { render :json => {:place => @place, :status =>"OK" } }
       end
     else
-      render :action => "confirm"
+      respond_to do |format|
+        format.html { render :action => "confirm" }
+        format.json { render :json => {:status => "fail"} }
+      end
     end
   end
 
@@ -482,5 +488,19 @@ class PlacesController < ApplicationController
     #@client_application.destroy
     #flash[:notice] = t "oauth.destroyed_client_application"
     #redirect_to :action => "index"
+  end
+
+
+  protected
+  def realign_place_params( params )
+    place = {}
+    place[:name] = params.delete(:name)
+    place[:street_address] = params.delete(:street_address)
+    place[:city_data] = params.delete(:city_data)
+    place[:location] = [params.delete(:place_lat), params.delete(:place_lng)]
+    place[:venue_types] = []
+    place[:venue_types] << params.delete(:initial_venue_type)
+
+    return place
   end
 end
