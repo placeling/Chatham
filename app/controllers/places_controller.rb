@@ -2,7 +2,7 @@ require 'google_places'
 require 'google_reverse_geocode'
 
 class PlacesController < ApplicationController
-  before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy]
+  before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]
   
   def reference
     if params[:ref].nil?
@@ -387,6 +387,42 @@ class PlacesController < ApplicationController
       end
     end
   end
+
+
+  def highlight
+    if BSON::ObjectId.legal?( params[:id] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params[:id])
+    else
+      @place = Place.find_by_google_id( params[:id] )
+    end
+
+    current_user.highlighted_places << @place.id
+    current_user.save
+
+    respond_to do |format|
+      format.json { render :json => {:status => "OK"} }
+    end
+
+  end
+
+  def unhighlight
+    if BSON::ObjectId.legal?( params[:id] )
+      #it's a direct request for a place in our db
+      @place = Place.find( params[:id])
+    else
+      @place = Place.find_by_google_id( params[:id] )
+    end
+
+    current_user.highlighted_places.delete( @place.id )
+    current_user.save
+
+    respond_to do |format|
+      format.json { render :json => {:status => "OK"} }
+    end
+  end
+
+
 
   def show
     if BSON::ObjectId.legal?( params[:id] )

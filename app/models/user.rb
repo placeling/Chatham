@@ -58,6 +58,8 @@ class User
   field :confirmed_at, :type =>DateTime
 
   field :ios_notification_token, :type =>String
+
+  field :highlighted_places, :type =>Array, :default =>[]
   
   # For avatar cropping
   # Initial position of cropping + dimensions
@@ -409,6 +411,10 @@ class User
     return self[:ios_notification_token]
   end
 
+  def highlighted?( place )
+    self.highlighted_places.include?( place.id )
+  end
+
   def facebook
     for auth in self.authentications
       if auth.provider == 'facebook' && !auth.token.nil?
@@ -416,8 +422,6 @@ class User
       end
     end
     return nil
-
-   # @fb_user ||= FbGraph::User.me(self.authentications.find_by_provider('facebook').token)
   end
 
   # get latest feed using reverse range lookup of sorted set

@@ -11,5 +11,17 @@ class IosController < ApplicationController
     end
   end
 
+  def update_location
+
+    lat = params[:lat].to_f
+    lng = params[:lng].to_f
+
+
+
+
+    respond_to do |format|
+      format.json { render :json => {:status => 'OK'} }
+    end
+  end
 
 end
