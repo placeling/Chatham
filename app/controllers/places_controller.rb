@@ -378,7 +378,7 @@ class PlacesController < ApplicationController
 
       respond_to do |format|
         format.html { redirect_to :action => "show", :id => @place.id }
-        format.json { render :json => {:place => @place, :status =>"OK" } }
+        format.json { render :json => {:place => @place.as_json({:current_user => current_user}), :status =>"OK" } }
       end
     else
       respond_to do |format|
