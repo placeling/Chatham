@@ -350,7 +350,7 @@ class User
     if (options[:perspectives] == :location)
       attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).includes(:place).as_json({:user_view=>true,:current_user =>current_user })  )
     elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:created_at).includes(:place).limit(10).as_json({:user_view=>true,:current_user =>current_user }) )
+      attributes.merge(:perspectives => self.perspectives.descending(:updated_at).includes(:place).limit(10).as_json({:user_view=>true,:current_user =>current_user }) )
     else
       attributes
     end
