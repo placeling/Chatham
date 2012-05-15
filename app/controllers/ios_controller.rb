@@ -15,9 +15,10 @@ class IosController < ApplicationController
 
     lat = params[:lat].to_f
     lng = params[:lng].to_f
+    accuracy = params[:accuracy].to_f
 
-    Resque.enqueue( SendNotifications, current_user.id, "Server got location update to #{lat}, #{lng}")
-
+    #Resque.enqueue( SendNotifications, current_user.id, "Server got location update to #{lat}, #{lng}")
+    Rails.logger.info "Got a location for #{current_user.username}: #{lat}, #{lng} with accuracy #{accuracy}"
 
     respond_to do |format|
       format.json { render :json => {:status => 'OK'} }
