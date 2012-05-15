@@ -9,6 +9,7 @@ Chatham::Application.routes.draw do
   get "/about", :to => 'admin#about_us', :as => :about_us
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
   get "/contact_us", :to => 'admin#contact_us',:as => :contact_us
+  get "/map", :to => 'admin#map', :as => :map
   get "/admin/status", :to => 'admin#heartbeat',:as => :status
   get "/admin/dashboard", :to => 'admin#dashboard',:as => :dashboard
   get "/admin/blog_stats", :to => 'admin#blog_stats',:as => :blog_stats
