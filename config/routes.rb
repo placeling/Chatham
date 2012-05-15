@@ -75,6 +75,7 @@ Chatham::Application.routes.draw do
   resources :ios do
     collection do
       post :update_token
+      post :update_location
     end
   end
 
@@ -97,6 +98,10 @@ Chatham::Application.routes.draw do
       get :suggested
       get :reference
       post :confirm
+    end
+    member do
+      post :highlight
+      post :unhighlight
     end
     resources :users
       resources :perspectives, :except =>[:show, :index]  do
@@ -133,6 +138,7 @@ Chatham::Application.routes.draw do
     resources :ios do
       collection do
         post :update_token
+        post :update_location
       end
     end
 
@@ -171,6 +177,10 @@ Chatham::Application.routes.draw do
         get :search
         get :suggested
         get :reference
+      end
+      member do
+        post :highlight
+        post :unhighlight
       end
       resources :users, :only =>[:index]
       resources :perspectives, :except =>[:show] do

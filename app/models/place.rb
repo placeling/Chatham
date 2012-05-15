@@ -341,19 +341,21 @@ class Place
       attributes = attributes.merge(:bookmarked => bookmarked)
 
       attributes = attributes.merge(:following_perspective_count => self.perspectives.where(:uid.in => current_user.following_ids).count)
+      attributes[:highlighted] = current_user.highlighted?( self )
 
-      @home_perspectives = [] #perspectives to be returned in detail view
-      perspective = current_user.perspectives.where( :plid => self.id ).first
-      @home_perspectives << perspective unless perspective.nil?
+      if options[:detail_view] == true
+        @home_perspectives = [] #perspectives to be returned in detail view
+        perspective = current_user.perspectives.where( :plid => self.id ).first
+        @home_perspectives << perspective unless perspective.nil?
 
-      user_perspective = current_user.perspective_for_place( self )
-      @starred = []
-      @starred = user_perspective.favourite_perspectives unless user_perspective.nil?
+        user_perspective = current_user.perspective_for_place( self )
+        @starred = []
+        @starred = user_perspective.favourite_perspectives unless user_perspective.nil?
 
-      #@starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
-      @home_perspectives.concat( @starred )
-
-      attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
+        #@starred = self.perspectives.where(:_id.in => current_user.favourite_perspectives).excludes(:uid => current_user.id)
+        @home_perspectives.concat( @starred )
+        attributes = attributes.merge( :perspectives => @home_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
+      end
     end
 
     if options[:referring_user]
@@ -373,11 +375,7 @@ class Place
       attributes = attributes.merge( :referring_perspectives => @referring_perspectives.as_json( {:current_user => current_user, :place_view=>true} ) )
     end
 
-    if options[:detail_view] == true
-      attributes.merge(:user => user)
-    else
-      attributes
-    end
+    return attributes
 
   end
 

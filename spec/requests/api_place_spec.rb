@@ -3,6 +3,67 @@ require 'json/ext'
 
 describe "API - " do
 
+  describe "Place can be" do
+    it "highlighted" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+
+      user.highlighted?(place).should == false
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post highlight_place_path( place ), {
+        :format => 'json'
+      }
+
+      user.reload
+
+      user.highlighted?(place).should == true
+    end
+
+    it "unhighlighted" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+
+      user.highlighted_places << place.id
+
+      user.highlighted?(place).should == true
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      post unhighlight_place_path( place ), {
+        :format => 'json'
+      }
+
+      user.reload
+
+      user.highlighted?(place).should == false
+
+    end
+
+
+    it "shown as highlighted" do
+      user = Factory.create(:user)
+      place = Factory.create(:place)
+
+      user.highlighted_places << place.id
+      user.save
+
+      user.highlighted?(place).should == true
+
+      post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+      get place_path( place ), {
+        :format => 'json'
+      }
+
+      response.status.should be(200)
+
+      showPlace = JSON.parse( response.body )
+
+      showPlace['highlighted'].should == true
+    end
+  end
 
   describe "GET users list who have bookmarked the place" do
     it "for all users" do
