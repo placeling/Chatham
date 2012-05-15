@@ -177,6 +177,10 @@ Chatham::Application.routes.draw do
         get :suggested
         get :reference
       end
+      member do
+        post :highlight
+        post :unhighlight
+      end
       resources :users, :only =>[:index]
       resources :perspectives, :except =>[:show] do
         collection do
