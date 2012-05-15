@@ -25,7 +25,7 @@ class GetPerspectivePicture
               picture.remote_image_url = photo_url
               picture.save
             rescue => ex
-              Airbrake.notify( ex, "error getting #{photo_url}" )
+              Airbrake.notify( ex )
               @perspective.pictures.delete(picture)
             end
           end
