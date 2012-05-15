@@ -16,7 +16,7 @@ class IosController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
 
-
+    Resque.enqueue( SendNotifications, current_user.id, "Server got location update to #{lat}, #{lng}")
 
 
     respond_to do |format|
