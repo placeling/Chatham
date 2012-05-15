@@ -1,0 +1,55 @@
+<% content_for :head do %>
+  <title>Placeling :: Guide Others Through Your World</title>
+  <meta name="description" content="Be the guide to your world" />
+  <meta property="og:title" content="Placeling lets you be the guide to your world" />
+<% end %>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $(window).load(function() {
+    $(function() {
+         $("#sign_up_banner").jScroll();
+    });
+  });
+</script>
+<% end %>
+
+<div class="marketing_well">
+  <div id="sign_up_banner">
+    <a href="<%= new_user_registration_path %>"><%= image_tag "home/signup_banner.png", :alt=>"Signup" %></a>
+  </div>
+  <div class="marketing_content">
+    <div class="big_script">
+      Be the guide to your world.
+    </div>
+    <div class="text">
+      <div class="col_1">
+        <p class="top_space">Your Placeling map lets you literally be the guide to your world.</p>
+        <p>Using our <a href="<%= app_path %>">iPhone app</a>, people can see the nearby places you recommend.</p>
+        <p>Your experiences and opinions are just a tap away.</p>
+      </div>
+      <div class="col_2_image">
+        <%= image_tag "home/iphone_nearby_map.png", :alt=>"nearby map", :class=>"blog_image right_image_spacer" %><%= image_tag "home/iphone_nearby_list.png", :alt=>"nearby list", :class=>"blog_image" %>
+      </div>
+    </div>
+    <div class="text">
+      <p class="top_space">And anyone can be a guide. If you've got a map, you're a guide. Anyone can follow you and see the world through your eyes.</p>
+    </div>
+    <div>
+      <%= image_tag "home/profile_iphone.png", :alt=>"iphone profile", :class=>"blog_image right_image_spacer" %><%= image_tag "home/profile_web.png", :alt=>"web profile", :class=>"blog_image" %>
+    </div>
+    <div class="text">
+      <div class="col_1_image">
+        <%= image_tag "home/find_locals.png", :alt=>"find locals", :class=>"blog_image" %>
+      </div>
+      <div class="col_2">
+        <p class="top_space">Plus it's easy to find folks to guide you.</p>
+        <p>Our app gives you a list of the top locals nearby.</p>
+        <p>And all of them want to share their world with you - just follow them and you're set.</p>
+      </div>
+    </div>
+    <div class="text clear_both">
+      <p class="top_space">That's a whirlwind tour of Placeling. Enough talk by us - <a href="<%= new_user_registration_path %>">let's create a map for you</a>.</p>
+    </div>
+  </div>
+</div>

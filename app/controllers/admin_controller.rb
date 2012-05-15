@@ -52,6 +52,18 @@ class AdminController < ApplicationController
     end
   end
   
+  def share
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def guide
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def investors
 
   end

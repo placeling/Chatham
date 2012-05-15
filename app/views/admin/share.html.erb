@@ -1,0 +1,59 @@
+<% content_for :head do %>
+  <title>Placeling :: Share Your World With Others</title>
+  <meta name="description" content="Every place in your world should be shareable" />
+  <meta property="og:title" content="Placeling lets you share your world with others" />
+<% end %>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $(window).load(function() {
+    $(function() {
+         $("#sign_up_banner").jScroll();
+    });
+  });
+</script>
+<% end %>
+
+<div class="marketing_well">
+  <div id="sign_up_banner">
+    <a href="<%= new_user_registration_path %>"><%= image_tag "home/signup_banner.png", :alt=>"Signup" %></a>
+  </div>
+  <div class="marketing_content">
+    <div class="big_script">
+      Let others experience your world.
+    </div>
+    <div class="text">
+    <p class="top_space">When you use Placeling, you're not just building a map for you. You're making it effortlessly easy for others to experience your world.</p>
+    <p>Everything in Placeling is a web link.</p>
+    <p>This means that you can email a map to someone.</p>
+    <p>Or tweet it.</p>
+    <p>Or post it to Facebook.</p>
+    <p>Or <a href="https://www.placeling.com/lindsayrgwatt">put it in a web page</a>. And you can do the same <a href="https://placeling.com/places/4e8f4131a6f1ca7bfb0000ca">for places</a>. Or <a href="https://www.placeling.com/perspectives/4e8d1eb0a6f1ca4cfd000007">your notes about a specific place</a>.</p>
+    </div>
+    <div>
+      <ul class="share_icons">
+        <li>
+            <%= image_tag "home/email_big_icon.png", :alt=>"email", :class=>"email_big" %>
+        </li>
+        <li>
+            <%= image_tag "home/facebook_big_icon.png", :alt=>"facebook", :class=>"facebook_big" %>
+        </li>
+        <li>
+            <%= image_tag "home/twitter_big_icon.png", :alt=>"twitter", :class=>"twitter_big" %>
+        </li>
+      </ul>
+    </div>
+    <div class="text">
+      <p class="top_space">And if you're a blogger or have your own website, we've got something special for you.</p>
+      <p>You can actually embed your Placeling map in your site - just like you'd embed a video.</p>
+      <p>In fact, if you use <a href="<%= bloggers_path %>">our blog tool</a>, you can embed your map in your blog and when people click on your places, they'll be taken to the blog post about that place.</p>
+      <p>Here's what an embedded map looks like plus <a href="https://placeling.com/bloggers#embed">instructions on how to do this</a>.</p>
+    </div>
+    <div>
+      <a href="http://lindsayrgwatt.com/blog/my-favourite-places/"><%= image_tag "home/embedded_map.png", :alt=>"embedded map", :class=>"blog_image" %></a>
+    </div>
+    <div class="text">
+      <p class="top_space">So <a href="<%= new_user_registration_path %>">let's get started on a map for you</a> or take a quick tour of how you <a href="<%= guide_path %>">our iPhone app lets you be the guide for others</a>.</p>
+    </div>
+  </div>
+</div>

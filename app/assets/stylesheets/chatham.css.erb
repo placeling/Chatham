@@ -206,6 +206,7 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
 #container {
   min-height: 100%;
   background-image: url(<%= asset_path 'background_pattern.png' %>);
+  width:100%;
 }
 
 #wrapper {
@@ -1364,10 +1365,6 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   padding: 20px;
 }
 
-/*.perspective_and_place {
-  clear: both;
-}*/
-
 #perspective_well {
   float: left;
   width: 650px;
@@ -2000,10 +1997,6 @@ li.dimension_holder {
   max-width: 344px;
 }
 
-#container {
-  width:100%;
-}
-
 .blog_image {
   border: 9px solid white;
   -moz-box-shadow: 0 0 8px 0 #888;
@@ -2229,9 +2222,51 @@ li.specific {
   display: block;
   padding-top: 80px;
   background-image: url(<%= asset_path 'background_pattern.png' %>);
+  background: #D5F1FA;
 }
 
 a.splash_link:link, a.splash_link:visited, a.splash_link:focus, a.splash_link:hover {
   color: #E7E2DA;
   font-family: Georgia, 'Times New Roman', serif;
+}
+
+.share_icons li {
+  display: inline;
+}
+
+.email_big {
+  padding-left: 88px;
+  padding-right: 87px;
+  padding-bottom: 10px;
+}
+
+.facebook_big {
+  padding-left: 95px;
+  padding-right: 94px;
+}
+
+.twitter_big {
+  padding-left: 78px;
+  padding-bottom: 10px;
+}
+
+.col_1 {
+  float: left;
+  width: 230px;
+}
+
+.col_1_image {
+  float: right;
+}
+
+.col_2_image {
+  margin-left: 236px;
+}
+
+.right_image_spacer {
+  margin-right: 10px;
+}
+
+.clear_both {
+  clear: both;
 }
