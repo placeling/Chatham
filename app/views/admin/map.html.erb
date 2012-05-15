@@ -1,0 +1,76 @@
+<% content_for :head do %>
+  <title>Placeling :: Your Map to Your World</title>
+  <meta name="description" content="Your wold's an interesting place; you need a map of it" />
+  <meta property="og:title" content="Placeling is your map to your world" />
+<% end %>
+
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $(window).load(function() {
+    $(function() {
+         $("#sign_up_banner").jScroll();
+    });
+  });
+</script>
+<% end %>
+
+<div class="marketing_well">
+  <div id="sign_up_banner">
+    <a href="<%= new_user_registration_path %>"><%= image_tag "home/signup_banner.png", :alt=>"Signup" %></a>
+  </div>
+  <div class="marketing_content">
+    <div class="big_script">
+      Your world is an interesting place.
+    </div>
+    <div class="text">
+    <p>You deserve a way to help record and share it. The places you love and what makes them so great. The places you want to go and why they're so interesting.</p>
+    <p>At Placeling, we can help.</p>
+    <p>We've built an <a href="<%= app_path %>">iPhone app</a> that lets you bookmark <span class="italics">any place on earth</span> onto a map. You can bring your world in your pocket.</p>
+    </div>
+    <div class="iphone_demo">
+      <ul>
+        <li>
+          <%= image_tag "home/iphone_splash.png", :alt=>"iPhone", :class=>"blog_image" %>
+        </li>
+        <li>
+          <%= image_tag "home/search.png", :alt=>"search", :class=>"blog_image" %>
+        </li>
+        <li>
+          <%= image_tag "home/placemark_it.png", :alt=>"placemark", :class=>"blog_image" %>
+        </li>
+        <li>
+          <%= image_tag "home/my_placemark.png", :alt=>"my placemark", :class=>"blog_image" %>
+        </li>
+        <li>
+          <%= image_tag "home/washington_map.png", :alt=>"on my map", :class=>"blog_image" %>
+        </li>
+      </ul>
+    </div>
+    <div class="text">
+      <p class="top_space">And you're not restricted to our iPhone app. Your map lives on the web at the easy to remember address of placeling.com/yourname.</p>
+      <p>You can also see your map as a beautiful magazine-style guide, highlighting all the places you've pinned.</p>
+      <p>Click either of the images below to see examples from our users.</p>
+    </div>
+    <div class="iphone_demo">
+      <ul>
+        <li>
+          <a href="https://placeling.com/lindsayrgwatt"><%= image_tag "home/web_map.png", :alt=>"web map", :class=>"blog_image" %></a>
+        </li>
+        <li>
+          <a href="https://placeling.com/users/lindsayrgwatt/recent"><%= image_tag "home/web_magazine.png", :alt=>"web magazine", :class=>"blog_image" %></a>
+        </li>
+      </ul>
+    </div>
+    <div class="text">
+      <p class="top_space">If you're a blogger, we can also help you turn your Wordpress blog posts into pins on your map.</p>
+      <p><a href="http://wordpress.org/extend/plugins/placeling/">Our plugin</a> allows you to create a pin that links to your blog post, giving your readers a new way to explore your blog.</p>
+      <p>In fact, if you're a blogger, <a href="<%= bloggers_path %>">we've a whole mini-site dedicated to you</a>.
+    </div>
+    <div>
+      <%= image_tag "home/blog_footer.png", :alt=>"blog footer", :class=>"blog_image" %>
+    </div>
+    <div class="text">
+      <p class="top_space">If you're ready, <a href="<%= new_user_registration_path %>">let's create a map for you</a>, otherwise let us show you <a href="<%= share_path %>">how you can share your map</a>.</p>
+    </div>
+  </div>
+</div>

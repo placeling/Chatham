@@ -21,13 +21,13 @@
       </div>
       <div id="place_share">
           <span class="social">
-            <a href="https://twitter.com/share?url=http://www.placeling.com<%= place_path(place) %>&text=<%= u place.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+            <a href="https://twitter.com/share?url=https://www.placeling.com<%= place_path(place) %>&text=<%= u place.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
           </span>
           <span class="social">
-            <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= place_path(place) %>')+'&t='+e('<%= u place.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
+            <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= place_path(place) %>')+'&t='+e('<%= u place.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
           </span>
           <span class="social">
-            <a href="http://www.placeling.com<%= place_path(place) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+            <a href="https://www.placeling.com<%= place_path(place) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
           </span>
       </div>
     </div>
