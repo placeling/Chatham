@@ -4,9 +4,9 @@ class SendNotifications
     user = User.find( user_id )
 
     if url
-      n = [user.ios_notification_token, :aps=>{:alert=>message, :sound => 'default'}, :url => url]
+      n = [user.ios_notification_token, :aps=>{:alert=>message}, :url => url]
     else
-      n = [user.ios_notification_token, :aps=>{:alert=>message, :sound => 'default'}]
+      n = [user.ios_notification_token, :aps=>{:alert=>message}]
     end
 
     track! :ios_notification
