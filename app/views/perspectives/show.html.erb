@@ -57,6 +57,11 @@
         });
       });
     });
+    $(window).load(function(){
+      $(".images").each(function() {
+        mosaic(this);
+      });
+    });
   </script>
 <% end %>
 
@@ -127,8 +132,10 @@
             <% end %>
             <% if @perspective.pictures.length > 0 %>
               <div class="lightboxGallery images">
-                <% mosaic_3(@perspective.pictures).each do |photo| %>
-                  <a href="<%= photo["main"] %>" class="lightbox"><div class="image_holder"><%= image_tag photo["mini"], :class=>"photo_image" %></div></a>
+                <% @perspective.pictures.each_with_index do |photo, i| %>
+                  <% if !photo.deleted %>
+                    <a href="<%= photo.main_url %>" class="lightbox"><div class="image_holder"><%= image_tag photo.iphone_url, :class=>"photo_image" %></div></a>
+                  <% end %>
                 <% end %>
               </div>
             <% end %>
