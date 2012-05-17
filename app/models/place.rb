@@ -271,7 +271,7 @@ class Place
 
 
   def map_url
-    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]},#{loc[1]}&zoom=15&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%7Ccolor:red%7C#{loc[0]},#{loc[1]}&sensor=false"
+    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]+0.0003},#{loc[1]}&zoom=15&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%7Ccolor:red%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
   
   def wide_map_url
