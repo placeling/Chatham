@@ -75,6 +75,10 @@
       overflow-y: auto;
       margin-top: 3px;
       padding-left: 4px;
+      font-size: 12px;
+      font-family: Rockwell,Georgia,Serif;
+      margin-bottom: 5px;
+      color: #6A6147;
     }
     
     .info_memo p {
@@ -236,8 +240,12 @@
               pics += '</div>';
               infoWindowHTML += pics;
             }
-
-            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span></div>';
+            
+            var modified_at = new Date( perspective.updated_at );
+            var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('M. dd, yy', modified_at ); + '</span>';
+            
+            
+//            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span></div>';
             infoWindowHTML += mod_action;
 
             infoWindowHTML += '</div>';
