@@ -42,6 +42,14 @@
       window.open(url, '_blank');
     }
     
+    function compare(a,b) {
+      if (a.lower_name < b.lower_name)
+         return -1;
+      if (a.lower_name > b.lower_name)
+        return 1;
+      return 0;
+    }
+    
     function filter_term(a,b) {
       if (a.term < b.term)
         return -1;
@@ -477,6 +485,7 @@
       var locationHTML = "";
       for (var persp in persps) {
         if (persps[persp]["marker"].getVisible() === true) {
+          persps[persp]["lower_name"] = persps[persp]["place"]["name"].toLowerCase();
           placePerspectives.push(persps[persp]);
           count += 1;
         }
@@ -485,6 +494,7 @@
       if (count == 0) {
         locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
       } else {
+        placePerspectives = placePerspectives.sort(compare);
         for (var i=0; i<placePerspectives.length; i++) {
           var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
           if (placePerspectives[i]["street_address"]) {
