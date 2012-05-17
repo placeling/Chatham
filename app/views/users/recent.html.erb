@@ -80,6 +80,7 @@
         }
       });
       <% end %>
+      callToDownload();
     });
     $(window).load(function(){
       $(".images").each(function() {
@@ -120,3 +121,4 @@
     <% end %>
   </div>
 </div>
+<%= render :partial => "layouts/download", :locals => {:user => @user} %>

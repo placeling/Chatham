@@ -56,6 +56,7 @@
            }
         });
       });
+      callToDownload();
     });
     $(window).load(function(){
       $(".images").each(function() {
@@ -178,4 +179,4 @@
     </div>
   </div>
 </div>  
-</div>
+<%= render :partial => "layouts/download", :locals => {:user => @perspective.user} %>

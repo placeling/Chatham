@@ -30,6 +30,12 @@ en:
   header:
     call_to_action: "Find places to explore and people to guide you"
     
+  download:
+    get: "Get"
+    map: "map"
+    platform: "on your iPhone"
+    your: "your"
+    
   iframe:
     slogan: "Another Beautiful Placeling Map"
     explore: "Explore more of "

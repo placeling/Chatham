@@ -1,0 +1,14 @@
+<div id="download_container">
+  <div id="background">
+    <a id="close" href="#"><div id="close_button">
+      <img src="<%= asset_path("download/close.png") %>">
+    </div></a>
+    <div id="hey_plus_text">
+      <div id="hey_center">
+        <a href="<%= download_user_path(@user) %>" rel="nofollow" data-method="post"><div id="hey_img"><img src="<%= asset_path("download/hey.png") %>"></div><div id="hey_text"><p><%= t('download.get')%> <% if user == current_user %><%= t('download.your')%><% else %><%= user.username %>'<% if user.username[user.username.length-1] != 's' %>s<% end %><% end %> <%= t('download.map')%></p><p><%= t('download.platform')%></p></a></div>
+      </div>
+    </div>
+    <a href="<%= download_user_path(@user) %>" rel="nofollow" data-method="post"><div id="faker"></div></a>
+    <a href="<%= download_user_path(@user) %>" rel="nofollow" data-method="post"><div id="download_call_to_action"></div></a>
+  </div>
+</div>

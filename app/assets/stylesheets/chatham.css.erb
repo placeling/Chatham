@@ -2272,3 +2272,72 @@ a.splash_link:link, a.splash_link:visited, a.splash_link:focus, a.splash_link:ho
 .clear_both {
   clear: both;
 }
+
+/* Call to download
+*******************************************/
+#download_container {
+  bottom: 0px ;
+  right: 20px;
+  position: fixed;
+  display: none;
+  width: 398px;
+  z-index: 10010;
+}
+
+#background {
+  height: 260px;
+  background-image: url('<%= asset_path("download/background.png") %>');
+
+}
+
+#close_button {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  z-index: 1;
+}
+
+#download_call_to_action {
+  background-image: url('<%= asset_path("download/download_iphone.png") %>');
+  height: 100px;
+  margin-left: 17px;
+  margin-top: 6px;
+  background-repeat: no-repeat;
+}
+
+#main {
+  border: 1px solid red;
+  height: 600px;
+  width: 600px;
+}
+
+#hey_plus_text {
+  padding-top: 40px;
+  height: 34px;
+}
+
+#hey_img {
+  float:left;
+  margin-top: 5px;
+}
+
+#hey_center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+#hey_text {
+  margin-left: 80px;
+  color: #5D8B8B;
+}
+
+#hey_text p {
+  font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#faker {
+  width: 350px;
+  height: 80px;
+}

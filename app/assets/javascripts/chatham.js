@@ -17,7 +17,7 @@ function fadeArrow() {
   $('#star').unbind('click', fadeArrow);
 }
 
-function first_run() {
+function firstRun() {
   // Read the cookie and test if that element is on the page
   // If it is, update the cookie
   var status = JSON.parse($.cookie("first_run"));
@@ -88,6 +88,37 @@ function first_run() {
       }
     }
   }
+}
+
+function callToDownload() {
+  $(document).ready(function() {
+    var firstRun = JSON.parse($.cookie("first_run"));
+    var firstRunBlock = false;
+    if (firstRun && "value" in firstRun && "modified" in firstRun) {
+      if (firstRun["value"] == "search" && firstRun["modified"] == false) {
+        firstRunBlock = true;
+      }
+    }
+    
+    var show = true;
+    var download = JSON.parse($.cookie("download"));
+    
+    if (typeof download != 'undefined') {
+      show = download;
+    }
+    
+    if (!show && !firstRunBlock) {
+      setTimeout(function() {
+        $("#download_container").slideDown(1000);
+      }, 2000);
+
+      $("#close").click(function(event) {
+        event.preventDefault();
+        $.cookie('download', JSON.stringify(true), {path:'/'});
+        $("#download_container").slideUp( 1000 );
+      });
+    }
+  });
 }
 
 function greedyFactor(base, counter) {
