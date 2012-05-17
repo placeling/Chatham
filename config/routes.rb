@@ -67,6 +67,7 @@ Chatham::Application.routes.draw do
       put :update_pic, :as => :update_pic
       get :username, :to => :confirm_username, :as => :confirm_username
       put :username, :to => :update_username, :as => :update_username
+      post :download
     end
     collection do
       get :suggested

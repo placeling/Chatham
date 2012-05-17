@@ -464,6 +464,6 @@
 </div>
 <div id="action">
   <div id="intro">Another Beautiful <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><img src="<%= asset_path("logo.png") %>" class="iframe_logo" ></a> Map</div>
-  <div id="outro"><%= t('iframe.explore') %><a href="<%= user_path(@user) %>" onclick="javascript:openWindow(this.href+'?lat='+$('#lat').text()+'&amp;lng='+$('#lng').text() + '&amp;zoom=' + $('#zoom').text());return false;"><%= @user.username %><% if @user.username[@user.username.length-1] != 's' %>'s<% end %></a> <%= t('iframe.or') %> <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><%= t('iframe.yours') %></a></div>
+  <div id="outro"><%= t('iframe.explore') %><a href="<%= user_path(@user) %>" onclick="javascript:openWindow(this.href+'?lat='+$('#lat').text()+'&amp;lng='+$('#lng').text() + '&amp;zoom=' + $('#zoom').text());return false;"><%= @user.username %>'<% if @user.username[@user.username.length-1] != 's' %>s<% end %></a> <%= t('iframe.or') %> <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><%= t('iframe.yours') %></a></div>
   <div id="lat"></div><div id="lng"></div><div id="zoom"></div>
 </div>

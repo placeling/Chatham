@@ -959,6 +959,7 @@
         }
       }
     });
+    callToDownload();
   </script>
 <% end %>
 
@@ -995,3 +996,4 @@
     <div id="main_map"></div>  
   </div>
 </div>
+<%= render :partial => "layouts/download", :locals => {:user => @user} %>

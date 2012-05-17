@@ -27,7 +27,7 @@
       </div>
       <div class="action_group">
       <% if devise_mapping.rememberable? -%>
-        <div class="remember_me"><%= f.check_box :remember_me, {:tabindex=>3, :checked => true} %> <%= f.label t('user.remember_me') %></div>
+        <div class="remember_me"><%= f.check_box :remember_me, {:tabindex=>3, :checked => true} %> <%= label_tag 'user_remember_me', t('user.remember_me') %></div>
       <% end -%>
         <div class="action"><%= f.submit t("user.sign_in"), :class=>"submit", :tabindex=>4 %></div>
       </div>

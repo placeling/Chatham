@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :user_location
   helper_method :return_to_link
   helper_method :first_run_app
+  helper_method :download_app
   
   alias :logged_in? :user_signed_in?
 
@@ -45,6 +46,33 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def download_app
+    if current_user
+      if cookies[:download]
+        if cookies[:download] == "false"
+          if current_user.first_run.downloaded_app
+            current_user.first_run.dismiss_app_ad = true
+            current_user.save
+            cookies[:download] = {:value => true}
+          elsif current_user.first_run.dismiss_app_ad
+            cookies[:download] = {:value => true}
+          end
+        else
+          if !current_user.first_run.dismiss_app_ad
+            current_user.first_run.dismiss_app_ad = true
+            current_user.save
+          end
+        end
+      else
+        cookies[:download] = {:value => current_user.first_run.dismiss_app_ad}
+      end
+    else
+      if !cookies[:download]
+        cookies[:download] = {:value => false}
+      end
+    end
+  end
+  
   def return_to_link
     if session[:"user_return_to"]
       session[:"user_return_to"]
@@ -55,17 +83,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #def after_sign_in_path_for(resource)
-  #  return return_to_link
-  #end
-  
   def after_sign_out_path_for(resource)
     return (session[:"user_return_to"].nil?) ? request.referer : session[:"user_return_to"].to_s
   end
-  
-  #def after_create(resource)
-  #  return return_to_link
-  #end
   
   def api_check
     if params[:api_call]

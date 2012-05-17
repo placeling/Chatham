@@ -21,9 +21,6 @@ class RegistrationsController < Devise::RegistrationsController
   
   protected
     def after_sign_up_path_for(resource)
-      puts "in after_sign_up_path_for"
-      puts "here's session[:user_return_to]"
-      puts session[:user_return_to]
       if session[:user_return_to] == nil
         user_path(current_user)
       end
