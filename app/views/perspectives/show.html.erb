@@ -131,7 +131,7 @@
                 <%= link_to t('perspective.web_link'), @perspective.url, :class=>"perspective_url", :target=>"_blank" %>
               </div>
             <% end %>
-            <% if @perspective.pictures.length > 0 %>
+            <% if @perspective.active_photos.length > 0 %>
               <div class="lightboxGallery images">
                 <% @perspective.pictures.each_with_index do |photo, i| %>
                   <% if !photo.deleted %>

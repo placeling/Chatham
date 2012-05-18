@@ -115,9 +115,34 @@ class Perspective
   end
 
   def empty_perspective?
-    return (memo.nil? or memo.length ==0) && (self.pictures.count == 0)
+    if (memo.length > 0)
+      return false
+    elsif (memo.nil? or memo.length ==0) && (self.pictures.count == 0)
+      return true
+    else
+      # Deleted photos aren't removed from model so need to calcuate
+      self.pictures.each do |pic|
+        if pic.deleted == false
+          return false
+        end
+      end
+      
+      return true
+    end
+    #return (memo.nil? or memo.length ==0) && (self.pictures.count == 0)
   end
-
+  
+  def active_photos
+    photos = []
+    self.pictures.each do |pic|
+      if pic.deleted == false
+        photos << pic
+      end
+    end
+    
+    return photos
+  end
+  
   def parse_tags
     self.tags = extract_hashtags( self.memo.downcase ) unless self.memo.nil?
   end

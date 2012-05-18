@@ -19,7 +19,7 @@
     <div class="perspective_action <% if current_user == perspective.user && perspective.empty_perspective? %>edit_empty<% end %>">
       <div class="interact">
         <% if current_user != perspective.user %>
-          <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
+          <% if !perspective.empty_perspective? %>
               <% if current_user && perspective.su.include?(current_user.id) %>
                 <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link">
                   <%= image_tag "starred.png", :alt=>"Unstar", :class=>"star_image"%>
@@ -35,7 +35,7 @@
         <% end %>
       </div>
       <div class="perspective_share">
-        <% if !perspective.memo.nil? && perspective.memo.length > 0 || perspective.pictures.length > 0 %>
+        <% if !perspective.empty_perspective? %>
         <span class="twitter footer_elements">
           <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_path(perspective.user) %>?pid=<%= perspective.id %>&text=<%= u perspective.place.name %>%20by%20<%= u perspective.user.username %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
         </span>
@@ -78,7 +78,7 @@
           <%= link_to t('perspective.web_link'), perspective.url, :class=>"perspective_url", :target=>"_blank" %>
         </div>
       <% end %>
-      <% if perspective.pictures.length > 0 %>
+      <% if perspective.active_photos.length > 0 %>
         <div class="lightboxGallery images">
           <% perspective.pictures.each_with_index do |photo, i| %>
             <% if !photo.deleted %>
