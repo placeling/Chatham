@@ -11,31 +11,8 @@ class User
   # :token_authenticatable, :encryptable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :confirmable, :registerable
 
-  #before_validation :fix_location
-  after_validation :set_downcase_username
-  # For updating avatar see http://railscasts.com/episodes/182-cropping-images
-  after_update :process_avatar, :if => :cropping?
-  after_create :track_signup
-
   FEED_COUNT=30
   FEED_LENGTH=240
-  
-  def cropping?
-    !x.blank? && !y.blank? && ! w.blank? && !h.blank?
-  end
-
-  def track_signup
-    track! :signup
-  end
-  
-  def process_avatar
-    self.avatar.recreate_versions!
-    self.x = nil
-    self.y = nil
-    self.w = nil
-    self.h = nil
-    self.save
-  end
   
   field :username,      :type =>String
   field :du, :as => :downcase_username, :type => String
@@ -105,7 +82,29 @@ class User
   before_save :cache_urls
   before_save :get_city
 
+  #before_validation :fix_location
+  after_validation :set_downcase_username
+  # For updating avatar see http://railscasts.com/episodes/182-cropping-images
+  after_update :process_avatar, :if => :cropping?
+  after_create :track_signup
   after_create :follow_defaults, :attach_subdocs
+
+  def cropping?
+    !x.blank? && !y.blank? && ! w.blank? && !h.blank?
+  end
+
+  def track_signup
+    track! :signup
+  end
+
+  def process_avatar
+    self.avatar.recreate_versions!
+    self.x = nil
+    self.y = nil
+    self.w = nil
+    self.h = nil
+    self.save
+  end
 
   def get_city
     if self.location != nil && self.location != [0,0] && self.city == ""
