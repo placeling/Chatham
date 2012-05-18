@@ -2210,16 +2210,11 @@ li.specific {
 }
 
 .stay_in_touch {
-  margin-bottom: 3px;
+  margin-top: -3px;
 }
 
 .stay_in_touch ul li {
   display: inline;
-}
-
-.stay_in_touch img {
-  max-height: 30px;
-  max-width: 30px;
 }
 
 .stay_in_touch_wrapper {
@@ -2228,21 +2223,33 @@ li.specific {
 }
 
 .stay_in_touch_spacer {
-  margin-left: 50px;
+  margin-left: 30px;
+}
+
+#ribbon_sign_up {
+  margin-top: -1px;
 }
 
 #cityscape {
   height: 524px;
-  width:1020px; 
-  margin-left: auto;
-  margin-right: auto;
+  width:100%;
+  background-image: url(<%= asset_path 'background_pattern.png' %>);
 }
 
 #street_scene {
-  display: block;
-  padding-top: 80px;
-  background-image: url(<%= asset_path 'background_pattern.png' %>);
-  background: #D5F1FA;
+  height: 524px;
+  width: 100%;
+  background-image:url(<%= asset_path 'home/new_background.png' %>);
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-position:center 94px;
+}
+
+#clear_bg {
+  height: 524px;
+  width: 1020px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 a.splash_link:link, a.splash_link:visited, a.splash_link:focus, a.splash_link:hover {

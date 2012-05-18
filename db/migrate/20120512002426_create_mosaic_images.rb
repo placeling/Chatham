@@ -2,9 +2,18 @@ class CreateMosaicImages < Mongoid::Migration
   def self.up
     Perspective.all.each do |perp|
       perp.pictures.each do |picture|
-        if picture.creation_environment == Rails.env
-          puts "Recreating picture for #{perp.user.username}'s perspctive on #{perp.place.name}'"
-          picture.image.recreate_versions!
+        begin
+          if picture.creation_environment == Rails.env
+            picture.image.cache_stored_file!
+            picture.image.retrieve_from_cache!(picture.image.cache_name)
+            
+            puts "Recreating picture for #{perp.user.username}'s perspctive on #{perp.place.name}'"
+            
+            picture.image.recreate_versions!
+            picture.save!
+          end
+        rescue => e
+          puts  "ERROR: #{CLASS}: #{object.id} -> #{e.to_s}"
         end
       end
     end
