@@ -33,6 +33,12 @@ class Authentication
     if provider == "facebook" && !Rails.env.test? #no need for this in test
       Resque.enqueue(NewFacebookUser, self.user.id)
     end
+
+    if provider == "facebook" && !self.user.avatar?
+      self.user.remote_avatar_url = self.user.facebook.fetch.picture('large') #go get facebook profile
+      self.user.save
+    end
+
   end
 
 end
