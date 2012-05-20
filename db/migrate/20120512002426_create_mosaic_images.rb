@@ -13,7 +13,7 @@ class CreateMosaicImages < Mongoid::Migration
             picture.save!
           end
         rescue => e
-          puts  "ERROR: #{CLASS}: #{object.id} -> #{e.to_s}"
+          puts  "ERROR: perspective #{perp.id}: picture #{picture.id} -> #{e.to_s}"
         end
       end
     end
