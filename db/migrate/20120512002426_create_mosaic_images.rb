@@ -11,6 +11,7 @@ class CreateMosaicImages < Mongoid::Migration
             
             picture.image.recreate_versions!
             picture.save!
+            CarrierWave.clean_cached_files!
           end
         rescue => e
           puts  "ERROR: perspective #{perp.id}: picture #{picture.id} -> #{e.to_s}"
