@@ -3,7 +3,7 @@ class CreateMosaicImages < Mongoid::Migration
     Perspective.all.each do |perp|
       perp.pictures.each do |picture|
         begin
-          if picture.creation_environment == Rails.env
+          if picture.creation_environment == Rails.env && picture.mosaic_3_2_cache_url.nil?
             picture.image.cache_stored_file!
             picture.image.retrieve_from_cache!(picture.image.cache_name)
             
