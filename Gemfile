@@ -76,6 +76,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'dynamic_form'
 
 # Deploy with Capistrano
 gem 'capistrano'
