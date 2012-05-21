@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.1'
+gem 'rails', '3.2.0'
 #TODO: unpackage this to not include active record
 
 # Bundle edge Rails instead:
@@ -15,7 +15,8 @@ gem "bson_ext", "~> 1.3"
 
 gem "oauth", "0.4.4"
 gem "devise", "~> 2.1.0"
-gem "omniauth", "~> 0.3.2"
+gem "omniauth", "~> 1.1"
+gem 'omniauth-facebook'
 
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 
@@ -70,8 +71,8 @@ group :test, :development do
 end
 
 group :assets do
-  gem 'sass-rails',   '~> 3.1.4'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
 
