@@ -26,6 +26,42 @@ describe "Timeline" do
   end
 end
 
+
+describe "Users can be" do
+  it "blocked" do
+    user = Factory.create(:user)
+    user2 = Factory.create(:user)
+
+    user.blocked?(user2).should == false
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    post block_user_path( user2 ), { :format => 'json' }
+
+    user.reload
+
+    user.blocked?(user2).should == true
+  end
+
+  it "unblocked" do
+    user = Factory.create(:user)
+    user2 = Factory.create(:user)
+
+    user.blocked_users << user2.id
+
+    user.blocked?(user2).should == true
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    post unblock_user_path( user2 ), { :format => 'json' }
+
+    user.reload
+
+    user.blocked?(user2).should == false
+
+  end
+end
+
 describe "Users search" do
 
   it "finds same user name" do

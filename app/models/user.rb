@@ -45,6 +45,7 @@ class User
   field :ios_notification_token, :type =>String
 
   field :highlighted_places, :type =>Array, :default =>[]
+  field :blocked_users, :type=>Array, :default=>[]
   
   # For avatar cropping
   # Initial position of cropping + dimensions
@@ -343,6 +344,8 @@ class User
       #check against raw ids so it doesnt have to go back to db
       following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
       follows_you = self['following_ids'].include?( options[:current_user].id )
+      attributes[:blocked] = current_user.blocked?( self )
+
       attributes = attributes.merge(:following => following, :follows_you => follows_you, :location=>self[:loc])
       if self.id == current_user.id
         for auth in current_user.authentications
@@ -420,6 +423,10 @@ class User
 
   def highlighted?( place )
     self.highlighted_places.include?( place.id )
+  end
+
+  def blocked?( user )
+    self.blocked_users.include?( user.id )
   end
 
   def facebook
