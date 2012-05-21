@@ -10,7 +10,7 @@ DEFAULT_HEIGHT = 500
 
 class UsersController < ApplicationController
 
-  before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download]
+  before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock]
   before_filter :download_app, :only => [:show]
   
   def me
@@ -584,6 +584,30 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render :show }
+      format.js
+      format.json { render :text => "OK" }
+    end
+  end
+
+  def block
+    @user = User.find_by_username( params[:id] )
+
+    current_user.blocked_users << @user.id
+    current_user.save!
+
+    respond_to do |format|
+      format.js
+      format.json { render :text => "OK" }
+    end
+  end
+
+  def unblock
+    @user = User.find_by_username( params[:id] )
+
+    current_user.blocked_users.delete( @user.id )
+    current_user.save
+
+    respond_to do |format|
       format.js
       format.json { render :text => "OK" }
     end

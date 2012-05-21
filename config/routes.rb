@@ -63,6 +63,8 @@ Chatham::Application.routes.draw do
       get :iframe
       get :embed
       get :account
+      post :block
+      post :unblock
       get :pic, :as => :pic
       put :update_pic, :as => :update_pic
       get :username, :to => :confirm_username, :as => :confirm_username
@@ -156,6 +158,8 @@ Chatham::Application.routes.draw do
         post :follow
         post :unfollow
         get :activity
+        post :block
+        post :unblock
       end
       collection do
         get :suggested
