@@ -14,7 +14,7 @@ gem "mongoid_rails_migrations", "~> 0.0.13"
 gem "bson_ext", "~> 1.3"
 
 gem "oauth", "0.4.4"
-gem "devise", "~> 1.5.0"
+gem "devise", "~> 2.1.0"
 gem "omniauth", "~> 0.3.2"
 
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'

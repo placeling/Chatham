@@ -33,7 +33,15 @@ class User
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
   field :confirmed_at, :type =>DateTime
-
+  field :reset_password_sent_at, :type =>DateTime
+  field :encrypted_password, :type => String
+  field :confirmation_token, :type => String
+  field :confirmation_sent_at, :type => DateTime
+  field :current_sign_in_at, :type =>DateTime
+  field :last_sign_in_at, :type =>DateTime
+  field :current_sign_in_ip, :type =>String
+  field :last_sign_in_ip, :type =>String
+  field :sign_in_count, :type =>Integer
   field :ios_notification_token, :type =>String
 
   field :highlighted_places, :type =>Array, :default =>[]
@@ -70,7 +78,7 @@ class User
   validates_format_of :email, :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => "is not valid"
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
   validates_uniqueness_of :username, :email, :case_sensitive => false
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :admin, :description, :url, :user_setting_attributes, :city
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :encrypted_password, :admin, :description, :url, :user_setting_attributes, :city
   
   index :unm
   index :email
