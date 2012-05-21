@@ -37,6 +37,7 @@ class User
   field :encrypted_password, :type => String
   field :confirmation_token, :type => String
   field :confirmation_sent_at, :type => DateTime
+  field :remember_created_at, :type => DateTime
   field :current_sign_in_at, :type =>DateTime
   field :last_sign_in_at, :type =>DateTime
   field :current_sign_in_ip, :type =>String
