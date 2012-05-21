@@ -26,8 +26,8 @@ Chatham::Application.routes.draw do
   
   root :to => "home#index"
 
-  devise_for :users, :controllers => { :sessions => 'sessions', :registrations => :registrations}
-
+  devise_for :users, :controllers => { :sessions => 'sessions', :registrations => :registrations, :confirmations => :confirmations}
+  
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/add' => 'authentications#add'
   match '/auth/:provider/login' => 'authentications#add'
@@ -48,7 +48,7 @@ Chatham::Application.routes.draw do
   match '/vanity(/:action(/:id(.:format)))', :controller=>:vanity
   match '/app',   :to =>"admin#app"
   post '/users/resend',      :to => 'users#resend', :as => :resend_password
-
+    
   resources :users, :except =>[:index] do
     resources :perspectives, :only =>[:index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
