@@ -1,0 +1,5 @@
+<div class="confirm">
+  <p><%= t('confirmation.hey') %> <span class="emphasize"><%= current_user.username %></span>, <%= t('confirmation.email') %>.</p>
+  <p><%= t('confirmation.welcome') %>.</p>
+  <p><%= t('confirmation.meantime') %> <%= link_to "your map", user_path(current_user) %> <%= t('confirmation.add') %>.</p>
+</div>
