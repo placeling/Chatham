@@ -27,7 +27,7 @@ gem "hashie"
 gem 'uuidtools'
 
 gem 'mini_magick'
-gem 'carrierwave', "~> 0.5.7"
+gem 'carrierwave', "~> 0.6.2"
 gem 'fog'
 gem 'carrierwave-mongoid', "~> 0.1.1", :require => 'carrierwave/mongoid'
 
