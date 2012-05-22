@@ -72,7 +72,7 @@ class User
   
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
-  has_many :authentications
+  has_many :authentications, :dependent => :destroy
 
   mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 
@@ -383,13 +383,13 @@ class User
   end
 
   def apply_omniauth( omniauth )
-    self.email = omniauth['user_info']['email'] if email.blank?
+    self.email = omniauth['info']['email'] if email.blank?
     
     if username.blank?
-      if omniauth['provider'] == "facebook" && omniauth['user_info']['nickname']
-        username = omniauth['user_info']['nickname'].gsub(/\W+/, "")
+      if omniauth['provider'] == "facebook" && omniauth['info']['nickname']
+        username = omniauth['info']['nickname'].gsub(/\W+/, "")
       else
-        username = omniauth['user_info']['name'].gsub(/\W+/, "")
+        username = omniauth['info']['name'].gsub(/\W+/, "")
       end
       
       user = User.find_by_username(username)
