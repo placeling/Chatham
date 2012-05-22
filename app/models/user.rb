@@ -18,9 +18,35 @@ class User
   field :du, :as => :downcase_username, :type => String
   field :fullname,      :type =>String
   alias :login :username
-  field :email,         :type =>String
   field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
+
+  ## Database authenticatable
+  field :email,              :type => String, :null => false, :default => ""
+  field :encrypted_password, :type => String, :null => false, :default => ""
+
+  ## Recoverable
+  field :reset_password_token,   :type => String
+  field :reset_password_sent_at, :type => Time
+
+  ## Rememberable
+  field :remember_created_at, :type => Time
+
+  ## Trackable
+  field :sign_in_count,      :type => Integer, :default => 0
+  field :current_sign_in_at, :type => Time
+  field :last_sign_in_at,    :type => Time
+  field :current_sign_in_ip, :type => String
+  field :last_sign_in_ip,    :type => String
+
+  ## Confirmable
+  field :confirmation_token,   :type => String
+  field :confirmed_at,         :type => Time
+  field :confirmation_sent_at, :type => Time
+  field :unconfirmed_email,    :type => String # Only if using reconfirmable
+
+  ## Token authenticatable
+  # field :authentication_token, :type => String
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
   field :city, :type => String, :default => ""
@@ -32,17 +58,6 @@ class User
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
-  field :confirmed_at, :type =>DateTime
-  field :reset_password_sent_at, :type =>DateTime
-  field :encrypted_password, :type => String
-  field :confirmation_token, :type => String
-  field :confirmation_sent_at, :type => DateTime
-  field :remember_created_at, :type => DateTime
-  field :current_sign_in_at, :type =>DateTime
-  field :last_sign_in_at, :type =>DateTime
-  field :current_sign_in_ip, :type =>String
-  field :last_sign_in_ip, :type =>String
-  field :sign_in_count, :type =>Integer
   field :ios_notification_token, :type =>String
 
   field :highlighted_places, :type =>Array, :default =>[]
