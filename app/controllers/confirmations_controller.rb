@@ -5,6 +5,8 @@ class ConfirmationsController < Devise::ConfirmationsController
     if resource.errors.empty?
       sign_in(resource_name, resource)
       
+      Resque.enqueue( WelcomeEmail, current_user.id)
+      
       respond_to do |format|
         format.html
       end
