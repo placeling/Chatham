@@ -374,7 +374,11 @@ en:
     show_all: "show all"
     no_places: "Alas, no places to show you here"
     no_photos: "Alas, no photos to show you here"
-
+    more_nearby: "More nearby places on my map"
+    notes_and_photos: "Notes & Photos"
+    notes: "Notes"
+    photos: "Photos"
+  
   errors:
     messages:
       expired: "has expired, please request a new one"

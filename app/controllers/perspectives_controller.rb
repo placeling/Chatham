@@ -1,6 +1,10 @@
 require 'uri'
 
 class PerspectivesController < ApplicationController
+  include ApplicationHelper
+  
+  MAX_RADIUS = 5000
+  
   before_filter :login_required, :except =>[:index, :show, :nearby, :all]
 
   def new
@@ -103,6 +107,23 @@ class PerspectivesController < ApplicationController
     @place = @perspective.place
     
     @referring_user = @perspective.user
+    
+    if !params[:api_call]
+      @nearby = []
+      
+      related = Perspective.where(:ploc=>{"$near"=>@perspective.ploc},:uid=>@perspective.user.id)
+      
+      counter = 0
+      related.each do |perp|
+        if perp != @perspective && !perp.empty_perspective? && haversine_distance(@perspective.ploc[0], @perspective.ploc[1], perp.ploc[0], perp.ploc[1])['m'] < MAX_RADIUS
+          @nearby << perp
+          counter += 1
+          if counter > 2
+            break
+          end
+        end
+      end
+    end
     
     respond_to do |format|
       format.html

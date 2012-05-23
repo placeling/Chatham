@@ -93,70 +93,91 @@
 
 <div class="perspective_body">
   <div class="perspective_and_place_wrapper">
-    <div id="perspective_well">
-      <div id="member">
-        <div class="profile_pic_holder">
-          <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
-        </div>
-        <div class="profile_username">
-          <div><%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%></div>
-          <% if @perspective.user.perspective_count > 1 %>
-          <div class="all_places_holder"><a href="<%= user_path(@perspective.user) %>?pid=<%= @perspective.id %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a></div>
-          <% end %>
-        </div>
-      </div>
-      <div id="member_perspective">
-        <div id="perspective_<%= @perspective.id %>" class="perspective_details">
-          <div class="interact mini_star">
-            <% if current_user == @perspective.user %>
-              <a href="<%= edit_perspective_path(@perspective) %>"><%= image_tag 'writer.png', :class=>"button_image" %></a>
-            <% else %>
-              <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
-                <% if current_user && @perspective.su.include?(current_user.id) %>
-                  <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar", :class=>"button_image"%></a>
-                <% else %>
-                    <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star", :class=>"button_image" %></a>
-                <% end %>
-              <% end %>
+    <div id="perspective_and_nearby_well">
+      <div id="perspective_well">
+        <div id="member">
+          <div class="profile_pic_holder">
+            <a href="<%= user_path(@perspective.user) %>"><%= image_tag @perspective.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
+          </div>
+          <div class="profile_username">
+            <div><%= link_to( @perspective.user.username, @perspective.user, :class=>"username_perspective_link")%></div>
+            <% if @perspective.user.perspective_count > 1 %>
+            <div class="all_places_holder"><a href="<%= user_path(@perspective.user) %>?pid=<%= @perspective.id %>" class="all_places"><%= t('perspective.count', {:count => @perspective.user.perspective_count}) %></a></div>
             <% end %>
           </div>
-          <div id="full_details">
-            <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
-              <div class="mini_memo_wrapper">
-                <%= simple_format_with_tags(@perspective.memo, :class=>"mini_memo") %>
-              </div>
-            <% end %>
-            <% if !@perspective.url.nil? && @perspective.url.length > 0 %>
-              <div class="url_wrapper">
-                <%= link_to t('perspective.web_link'), @perspective.url, :class=>"perspective_url", :target=>"_blank" %>
-              </div>
-            <% end %>
-            <% if @perspective.active_photos.length > 0 %>
-              <div class="lightboxGallery images">
-                <% @perspective.pictures.each_with_index do |photo, i| %>
-                  <% if !photo.deleted %>
-                    <a href="<%= photo.main_url %>" class="lightbox"><div class="image_holder"><%= image_tag photo.iphone_url, :class=>"photo_image" %></div></a>
+        </div>
+        <div id="member_perspective">
+          <div id="perspective_<%= @perspective.id %>" class="perspective_details">
+            <div class="interact mini_star">
+              <% if current_user == @perspective.user %>
+                <a href="<%= edit_perspective_path(@perspective) %>"><%= image_tag 'writer.png', :class=>"button_image" %></a>
+              <% else %>
+                <% if !@perspective.memo.nil? && @perspective.memo.length > 0 || @perspective.pictures.length > 0 %>
+                  <% if current_user && @perspective.su.include?(current_user.id) %>
+                    <a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(@perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar", :class=>"button_image"%></a>
+                  <% else %>
+                      <a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star", :class=>"button_image" %></a>
                   <% end %>
                 <% end %>
+              <% end %>
+            </div>
+            <div id="full_details">
+              <% if !@perspective.memo.nil? && @perspective.memo.length > 0 %>
+                <div class="mini_memo_wrapper">
+                  <%= simple_format_with_tags(@perspective.memo, :class=>"mini_memo") %>
+                </div>
+              <% end %>
+              <% if !@perspective.url.nil? && @perspective.url.length > 0 %>
+                <div class="url_wrapper">
+                  <%= link_to t('perspective.web_link'), @perspective.url, :class=>"perspective_url", :target=>"_blank" %>
+                </div>
+              <% end %>
+              <% if @perspective.active_photos.length > 0 %>
+                <div class="lightboxGallery images">
+                  <% @perspective.pictures.each_with_index do |photo, i| %>
+                    <% if !photo.deleted %>
+                      <a href="<%= photo.main_url %>" class="lightbox"><div class="image_holder"><%= image_tag photo.iphone_url, :class=>"photo_image" %></div></a>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+              <div class="footer_details">
+                <span class="updated_dark">
+                  <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
+                </span>
+                <span class="flag">
+                  <% if @perspective.user == current_user %>
+                    <%= link_to 'Delete', @perspective, :confirm => 'Are you sure?', :method => :delete %>
+                  <% else %>
+                    <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
+                  <% end %>
+                </span>
               </div>
-            <% end %>
-            <div class="footer_details">
-              <span class="updated_dark">
-                <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
-              </span>
-              <span class="flag">
-                <% if @perspective.user == current_user %>
-                  <%= link_to 'Delete', @perspective, :confirm => 'Are you sure?', :method => :delete %>
-                <% else %>
-                  <%= link_to(t('perspective.flag'), flag_perspective_path(@perspective), :confirm =>t('perspective.flag_confirm'), :method=>"post", :remote=>"true")%>
-                <% end %>
-              </span>
             </div>
           </div>
         </div>
       </div>
+      <% if @nearby.length > 0 %>
+        <div id="nearby_well">
+          <div id="nearby_title"><%= t('perspective.more_nearby')%></div>
+          <% @nearby.each do |entry| %>
+            <div class="nearby_holder">
+              <p><a href="<%= user_path(entry.user) %>?pid=<%= entry.id %>" class="nearby_name"><%= entry.place.name %></a></p>
+              <a href="<%= user_path(entry.user) %>?pid=<%= entry.id %>" class="nearby_link">
+                <% if !entry.memo.nil? && entry.memo.length > 0 && entry.active_photos.length > 0 %>
+                  <%= t('perspective.notes_and_photos') %>
+                <% elsif !entry.memo.nil? && entry.memo.length > 0 %>
+                  <%= t('notes') %>
+                <% else %>
+                  <%= t('photos') %>
+                <% end %>
+              </a>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
-      <div id="place_well_holder">
+    <div id="place_well_holder">
       <div id="place_well">
         <div class="place_name_mini">
           <%= link_to( @perspective.place.name, @perspective.place, :class=>"place_name_mini") %>
@@ -175,8 +196,7 @@
           </div>        
         </div>
       </div>
-      </div>
     </div>
-  </div>
+  </div>  
 </div>  
 <%= render :partial => "layouts/download", :locals => {:user => @perspective.user} %>
