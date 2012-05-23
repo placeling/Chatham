@@ -969,7 +969,10 @@
         }
       }
     });
-    callToDownload();
+    
+    $(window).load(function(){
+      callToDownload();
+    });
   </script>
 <% end %>
 
