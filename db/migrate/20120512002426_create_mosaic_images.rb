@@ -3,7 +3,7 @@ class CreateMosaicImages < Mongoid::Migration
     perspectives = Perspective.all.excludes(:pictures => nil).to_a
     puts "Need to process #{perspectives.count} files"
 
-    int i=0
+    i=0
     while perp = perspectives.pop
       i = i+1
       perp.pictures.each do |picture|
@@ -17,7 +17,6 @@ class CreateMosaicImages < Mongoid::Migration
             
             picture.image.recreate_versions!
             picture.save!
-            picture.file.delete #get rid cached version
           end
         rescue => e
           puts  "ERROR: perspective #{perp.id}: picture #{picture.id} -> #{e.to_s}"
