@@ -80,12 +80,9 @@
         }
       });
       <% end %>
-      callToDownload();
     });
     $(window).load(function(){
-      $(".images").each(function() {
-        mosaic(this);
-      });
+      callToDownload(2000);
     });
   </script>
 <% end %>

@@ -279,8 +279,8 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  max-width:50px;
-  max-height: 50px;
+  width:50px;
+  height: 50px;
 }
 
 .summary {
@@ -868,9 +868,24 @@ p.memo {
   overflow:hidden;
 }
 
-.image_holder img {
-  display: block;
+.one_wide {
+  height: 132px;
+  width: 132px;
 }
+
+.two_wide {
+  height: 132px;
+  width: 282px;
+}
+
+.three_wide {
+  height: 282px;
+  width: 432px;
+}
+
+/*.image_holder img {
+  display: block;
+}*/
 
 .left_clear {
   clear: left;
@@ -1378,8 +1393,13 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   padding: 20px;
 }
 
+#perspective_and_nearby_well {
+  float:left;
+  width: 700px;
+  margin-bottom: 40px;
+}
+
 #perspective_well {
-  float: left;
   width: 650px;
   border: 25px solid white;
   padding: 10px;
@@ -1388,7 +1408,6 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  margin-bottom: 40px;
 }
 
 #place_well_holder {
@@ -1421,8 +1440,8 @@ a.thoughts_url, a.thoughts_url:link, a.thoughts_url:visited, a.thoughts_url:hove
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  max-width:100px;
-  max-height: 100px;
+  width:100px;
+  height: 100px;
 }
 
 .username_perspective_link {
@@ -1485,10 +1504,16 @@ a.all_places, a.all_places:link, a.all_places:visited, a.all_places:hover, a.all
 
 .mini_memo {
   padding-top: 10px;
-  color: #e7e3db;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-.mini_memo_wrapper .mini_memo:first-child {
+.mini_memo_wrapper {
+  background: #FAF9F7;
+  padding: 10px;
+  box-shadow: inset 0 0 1px 0 #888888;
+}
+
+.mini_memo:first-child {
   padding-top: 0px;
 }
 
@@ -1504,6 +1529,43 @@ a.perspective_url, a.perspective_url:link, a.perspective_url:visited, a.perspect
   clear: left;
   padding-top: 5px;
   font-size: 10px;
+}
+
+#nearby_well {
+  background: none repeat scroll 0 0 #FAF9F7;
+  box-shadow: 0 0 2px 0 #888888 inset;
+  margin: 0 25px 25px;
+  min-height: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  width: 650px;
+}
+
+.mini_placemarker {
+  max-height: 20px;
+  margin-right: 5px;
+}
+
+#nearby_title {
+  font-size: 22px;
+  color: #666666;
+}
+
+.nearby_holder {
+  width: 200px;
+  margin-right: 10px;
+  float: left;
+}
+
+a.nearby_name, a.nearby_name:link, a.nearby_name:visited, a.nearby_name:hover, a.nearby_name:focus, a.nearby_name:active {
+  color: #B7614B;
+  font-size: 14px;
+}
+
+a.nearby_link, a.nearby_link:link, a.nearby_link:visited, a.nearby_link:hover, a.nearby_link:focus, a.nearby_name:active {
+  color: #666666;
+  font-size: 12px;
 }
 
 .place_name_mini {

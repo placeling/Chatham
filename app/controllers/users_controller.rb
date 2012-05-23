@@ -59,6 +59,9 @@ class UsersController < ApplicationController
       if user.valid?
         #these trigger an implicit save that seems to override validations
         user.confirm! #indicates that it doesn't need a confirmation, since we got email from Facebook
+        
+        Resque.enqueue( WelcomeEmail, current_user.id)
+        
         auth = user.authentications.build(:provider => "facebook", :uid =>params[:facebook_id], :token => params[:facebook_access_token])
       end
     else

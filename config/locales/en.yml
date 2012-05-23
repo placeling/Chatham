@@ -374,7 +374,11 @@ en:
     show_all: "show all"
     no_places: "Alas, no places to show you here"
     no_photos: "Alas, no photos to show you here"
-
+    more_nearby: "More nearby places on my map"
+    notes_and_photos: "Notes & Photos"
+    notes: "Notes"
+    photos: "Photos"
+  
   errors:
     messages:
       expired: "has expired, please request a new one"
@@ -392,6 +396,35 @@ en:
     welcome: "A welcome package is on its way to your inbox"
     meantime: "In the mean time, check out"
     add: "or add a place to your map by typing in the search box above"
+  
+  welcome:
+    hey: "Hey"
+    welcome: "Welcome to Placeling!"
+    thanks: "Thanks for signing up. Here's some info to make Placeling even better for you."
+    iphone: "Your places live on your iPhone"
+    download_app: "Download our iPhone app"
+    pocket: "to take your places with you in your pocket"
+    follow: "Follow other people to get nearby recommendations."
+    web: "Your places live on the web"
+    go: "Just go to"
+    map: "and you'll see a map of all your places"
+    recommendations: "If anyone ever wants recommendations, send them here!"
+    more: "More things you can only do with Placeling"
+    wordpress: "Do you have a Wordpress blog? Get our"
+    plugin: "plugin"
+    more_wordpress: "to turn your posts about places into pins on your map"
+    embed_1: "If you've a blog or website, you can"
+    embed_2: "embed your Placeling map in your site"
+    find_guides: "Find some local guides"
+    perspective: "It's fun to see your city from someone else's perspective."
+    different: "Follow these folks and see your city differently:"
+    all: "That's all from us."
+    support: "If you ever need any help or have feedback, just email:"
+    guide_on: "Now start being the guide to your world!"
+    text_web: "A map of your places lives on the web at:"
+    text_download: "Download our app to get Placeling on your iPhone:"
+    text_feedback: "If you even have any questions or feedback, please drop us a line at support@placeling.com."
+    text_guide: "Now start being the guide to your world!"
   
   devise:
     views:

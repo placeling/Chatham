@@ -103,6 +103,9 @@ class AuthenticationsController < ApplicationController
         end
 
         @user.confirm!
+        
+        Resque.enqueue( WelcomeEmail, current_user.id)
+        
         @user.save!
         @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
         sign_in( @user )
