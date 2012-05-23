@@ -158,7 +158,7 @@
       </div>
       <% if @nearby.length > 0 %>
         <div id="nearby_well">
-          <div id="nearby_title"><%= t('perspective.more_nearby')%></div>
+          <div id="nearby_title"><%= image_tag "placemarker.png", :class=>"mini_placemarker" %><%= t('perspective.more_nearby')%></div>
           <% @nearby.each do |entry| %>
             <div class="nearby_holder">
               <p><a href="<%= user_path(entry.user) %>?pid=<%= entry.id %>" class="nearby_name"><%= entry.place.name %></a></p>
