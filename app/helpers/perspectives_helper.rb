@@ -51,17 +51,20 @@ module PerspectivesHelper
       if item == 1
         photo_values[i] = {
           "main" => clean_photos[i].main_url,
-          "mini" => clean_photos[i].mosaic_3_1_url
+          "mini" => clean_photos[i].mosaic_3_1_url,
+          "style" => "one_wide" # For webkit browsers we want to have a fixed size in the div holding image
         }
       elsif item == 2
         photo_values[i] = {
           "main" => clean_photos[i].main_url,
-          "mini" => clean_photos[i].mosaic_3_2_url
+          "mini" => clean_photos[i].mosaic_3_2_url,
+          "style" => "two_wide"
         }
       elsif item == 3
         photo_values[i] = {
           "main" => clean_photos[i].main_url,
-          "mini" => clean_photos[i].mosaic_3_3_url
+          "mini" => clean_photos[i].mosaic_3_3_url,
+          "style" => "three_wide"
         }
       else
         puts "Shouldn't be here!"

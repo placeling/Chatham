@@ -18,23 +18,6 @@ var new_count = <%= @perspectives.length %>;
     html += '</li>';
     
     $('#recent_perspectives_list').append(html);
-    // Add callback here as need to create mosaic after images load - and can't use window.load() with AJAX
-    $('.photo_image', '#perspective_<%=perspective.id %>').each(function() {
-      $(this).load(function() {
-        var image_count = $('.photo_image', '#perspective_<%=perspective.id %>').length;
-        var load_count = 0;
-        $('.photo_image', '#perspective_<%=perspective.id %>').each(function() {
-          if (this.complete) {
-            load_count += 1;
-          }
-          if (load_count === image_count) {
-            $('.images', '#perspective_<%=perspective.id %>').each(function() {
-              mosaic(this);
-            });
-          }
-        })
-      });
-    });
   <% end %>
   
   $('#recent_perspectives_list').attr('start', start_count + new_count);
