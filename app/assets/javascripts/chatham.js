@@ -90,7 +90,7 @@ function firstRun() {
   }
 }
 
-function callToDownload() {
+function callToDownload(timeout) {
   $(document).ready(function() {
     var firstRun = JSON.parse($.cookie("first_run"));
     var firstRunBlock = false;
@@ -110,7 +110,7 @@ function callToDownload() {
     if (!show && !firstRunBlock) {
       setTimeout(function() {
         $("#download_container").slideDown(1000);
-      }, 2000);
+      }, timeout);
 
       $("#close").click(function(event) {
         event.preventDefault();
