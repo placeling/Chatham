@@ -157,7 +157,7 @@
       <% if !@lat.nil? && !@lng.nil? %>
         <div class="nearby">
           <div class="nearby_map"><img class="styled_map" src="https://maps.google.com/maps/api/staticmap?center=<%= @lat %>,<%= @lng %>&zoom=14&size=192x92&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C<%= @lat %>,<%= @lng %>&sensor=false"></div>
-          <div class="mini_recent"><a href="<%= recent_user_path(@user) %>">Recent Places</a></div>
+          <div class="mini_recent"><a href="<%= magazine_user_path(@user) %>">Recent Places</a></div>
         </div>
       <% else %>
         <div class="place_category recent">
