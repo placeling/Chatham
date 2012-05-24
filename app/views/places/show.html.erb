@@ -81,6 +81,7 @@
         <% end %>
       </div>
     <% end %>
+    <% if @follow_perspectives_count > 0 || (@follow_perspectives_count == 0 && @else_perspective_count > 0) %>
     <div id="following_perspective">
       <div class="place_category centered_place_mini"><%= t('place.following')%></div>
       <% if @follow_perspectives_count > 0 %>
@@ -103,6 +104,7 @@
         <div class="no_following centered_place_mini"><%= t('place.no_following')%></div>
       <% end %>
     </div>
+    <% end %>
     <% if @else_perspective_count > 0 %>
       <div class="place_category centered_place_mini"><%= t('place.popular')%></div>
       <div class="perspectives_holder">
