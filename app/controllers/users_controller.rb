@@ -51,7 +51,11 @@ class UsersController < ApplicationController
     return unless params[:format] == :json
 
     lat = params[:lat].to_f
-    lng = params[:long].to_f
+    lng = params[:lng].to_f
+
+    if lng.nil? or lng == 0
+      lng = params[:long].to_f
+    end
 
     if (params[:facebook_access_token])
       user = User.new(:username =>params[:username].strip,
