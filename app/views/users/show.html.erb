@@ -896,6 +896,10 @@
           return false;
         });
       }
+      
+      $('#magazine').click(function() {
+        $(this).attr("href",$(this).attr("href")+"?lat="+map.getCenter().lat()+"&lng="+map.getCenter().lng());
+      })
     }
     
     $(document).ready(function(){
@@ -984,7 +988,7 @@
           <span class="type"><%= t('user.nearby') %></span>
         </li>
         <li class="right active">
-          <a class="active" href="<%= recent_user_path(@user) %>"><span class="type"><%= t('user.recent') %></span></a>
+          <a class="active" id="magazine" href="<%= magazine_user_path(@user) %>"><span class="type"><%= t('user.recent') %></span></a>
         </li>
       </ul>
     </div>

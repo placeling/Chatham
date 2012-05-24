@@ -63,9 +63,13 @@
       <% end %>
       <% if !perspective.memo.nil? && perspective.memo.length > 0 %>
         <% if !perspective.tags.nil? && perspective.tags.length > 0 %>
-        <ul class="tags">
+        <ul>
           <% perspective.tags.each do |tag| %>
-          <li>#<%= tag %></li>
+          <% if request.path == magazine_user_path(perspective.user) %><a class="tag_link" href="<%=request.fullpath %>"><% end %>
+          <li class="tags <% if tag == @tag %>highlighted_tag<% end %>">
+              #<%= tag %>
+          </li>
+          <% if request.path == magazine_user_path(perspective.user) %></a><% end %>
           <% end %>
         </ul>
         <% end %>
@@ -90,7 +94,15 @@
         </div>
       <% end %>
       <% if !perspective.empty_perspective? %>
-        <div class="perspective_date <% if perspective.pictures.length > 0 %>picture_spacer left_clear<% end %>"><%= perspective.updated_at.strftime('%B %d, %Y') %></div>
+        <div class="perspective_date <% if perspective.pictures.length > 0 %>picture_spacer left_clear<% end %>"><%= perspective.updated_at.strftime('%B %d, %Y') %>
+        <% if !@lat.nil? && !@lng.nil? %>
+          | <% if perspective.distance < 1000 %>
+            <%= perspective.distance.round %>m
+          <% else %>
+            <%= (perspective.distance/1000).round(1)%>km
+          <% end %>
+        <% end %>
+        </div>
       <% end %>
     </div>
   </div>

@@ -52,7 +52,7 @@ class Perspective
   after_create :check_in
   before_destroy :scrub_stars
 
-  attr_accessor :post_delay
+  attr_accessor :post_delay, :distance
 
   def self.find_recent_for_user( user, start, count )
     user.perspectives.
