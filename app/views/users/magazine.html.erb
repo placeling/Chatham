@@ -104,7 +104,7 @@
       $('#perspectives').scroll(function(){
         if ($(window).data('ajaxready') == false) return;
         
-        var url = '<%= recent_user_path(@user) %>';
+        var url = '<%= magazine_user_path(@user) %>';
         if (typeof lat !== "undefined" && typeof lng !== "undefined") {
           url = url + "?lat=" + lat + "&lng=" + lng;
         }

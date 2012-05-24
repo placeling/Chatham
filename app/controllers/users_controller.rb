@@ -380,7 +380,7 @@ class UsersController < ApplicationController
     end
   end
   
-  def recent
+  def magazine
     @user = User.find_by_username(params[:id])
     
     if !cookies[:page_state].nil?
