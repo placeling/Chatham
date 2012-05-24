@@ -9,7 +9,8 @@ DEFAULT_WIDTH = 450
 DEFAULT_HEIGHT = 500
 
 class UsersController < ApplicationController
-
+  include ApplicationHelper
+  
   before_filter :login_required, :only =>[:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock]
   before_filter :download_app, :only => [:show]
   
@@ -266,7 +267,7 @@ class UsersController < ApplicationController
       
       if @current_location.length == 0 && !cookies[:page_state].nil?
         page_state = JSON.parse(cookies[:page_state])
-        if page_state.has_key?(@user.username)
+        if page_state.has_key?(@user.username) && page_state[@user.username].has_key?('lat') && page_state[@user.username].has_key?('lng')
           @current_location << page_state[@user.username]['lat']
           @current_location << page_state[@user.username]['lng']
         end
@@ -382,6 +383,16 @@ class UsersController < ApplicationController
   def recent
     @user = User.find_by_username(params[:id])
     
+    if !cookies[:page_state].nil?
+      page_state = JSON.parse(cookies[:page_state])
+      if page_state.has_key?(@user.username) && page_state[@user.username].has_key?("filterType") && page_state[@user.username]["filterType"] == "tag"
+        @tag = page_state[@user.username]["filterValue"]
+      end
+    else
+      @tag = nil
+    end
+    
+    
     if params[:start].nil?
       params[:start] = 0
     end
@@ -389,7 +400,53 @@ class UsersController < ApplicationController
     start_pos = params[:start].to_i
     count = 20
     
-    @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries
+    if params[:lat].nil? or params[:lng].nil?
+      if @tag
+        @perspectives = @user.perspectives.where(:tags.in=>[@tag]).order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries
+      else
+        @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries
+      end
+      @lat = nil
+      @lng = nil
+    else
+      @lat = params[:lat].to_f
+      @lng = params[:lng].to_f
+      
+      # Text input will convert to 0.0
+      if @lat != 0.0 && @lng != 0.0
+        # Tried to use mongoid.near but consistently returned incorrect results
+        # First ~20 results would be correct but then no longer in correct distance
+        # Sample queries: 
+        # @perspectives = @user.perspectives.where(:ploc => {'$near'=>[@lat, @lng]}).entries[start_pos..(start_pos + count - 1)]
+        # @perspectives = @user.perspectives.near(:ploc => [@lat, @lng]).entries[start_pos..(start_pos + count - 1)]
+        #
+        
+        if @tag
+          raw_perspectives = @user.perspectives.where(:tags.in=>[@tag]).entries
+        else
+          raw_perspectives = @user.perspectives.all().entries          
+        end
+        raw_perspectives.each do |perp|
+          perp.distance = haversine_distance(@lat, @lng, perp.ploc[0], perp.ploc[1])["m"]
+        end
+        
+        raw_perspectives.sort!{ |a,b| a.distance <=> b.distance}
+        
+        finish = start_pos + count - 1
+        if finish >= raw_perspectives.length
+          finish = raw_perspectives.length - 1
+        end
+        @perspectives = raw_perspectives[start_pos..(start_pos+count-1)]
+      else
+        @lat = nil
+        @lng = nil
+        if @tag
+          @perspectives = @user.perspectives.where(:tags.in=>[@tag]).order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries
+        else
+          @perspectives = @user.perspectives.order_by([:created_at, :desc]).skip(start_pos).limit( count ).entries        
+        end
+      end
+    end
     
     if @perspectives.length < count
       @noscroll = true
