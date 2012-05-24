@@ -27,6 +27,13 @@ var new_count = <%= @perspectives.length %>;
     $('.lightbox', this).lightBox();
   });
   
+  $('.liker_list').click(function(e){
+    e.preventDefault();
+    var target = "#likers_" + $(this).attr('id').substring(5, $(this).attr('id').length);
+    $(target).show("fast");
+    return false;
+  });
+  
   $('.star_link').hover(
     function() {
       var source = $('img', this).attr('src');

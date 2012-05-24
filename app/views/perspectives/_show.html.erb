@@ -93,8 +93,36 @@
           <% end %>
         </div>
       <% end %>
+      <% if request.path == magazine_user_path(perspective.user) && perspective.favourite_perspective_ids.length > 0 %>
+        <div class="left_clear">
+          <div class="like_holder <% if perspective.empty_perspective? %>empty_like<% end %>"><%= image_tag asset_path('starred.png'), :class => "liked" %></div>
+          <ul class="my_likes <% if perspective.empty_perspective? %>empty_like<% end %>">
+          <% perspective.favourite_perspective_ids.each_with_index do |perp, index| %>
+            <li>
+              <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><%= image_tag Perspective.find(perp).user.thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></a>
+              <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><span><%= Perspective.find(perp).user.username %></span></a><% if index != perspective.favourite_perspective_ids.length - 1%>,<% end %>
+            </li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if request.path == magazine_user_path(perspective.user) && perspective.starring_users.length > 0 %>
+        <div class="left_clear picture_spacer">
+          <div class="likers_count">Liked by <a href="#" id="list_<%= perspective.id %>" class="liker_list"><%= perspective.starring_users.length %> <% if perspective.starring_users.length == 1 %>person<% else %>people<% end %></a></div>
+          <ul class="likers" id="likers_<%= perspective.id%>">
+          <% perspective.starring_users.each do |user| %>
+            <li class="left_clear">
+              <a href="<%= user_path(User.find(user), :lat=>perspective.ploc[0], :lng=>perspective.ploc[1]) %>">
+                <div class="liked_pic"><%= image_tag User.find(user).thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></div>
+                <div class="liked_name"><%= User.find(user).username %></div>
+              </a>
+            </li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
       <% if !perspective.empty_perspective? %>
-        <div class="perspective_date <% if perspective.pictures.length > 0 %>picture_spacer left_clear<% end %>"><%= perspective.updated_at.strftime('%B %d, %Y') %>
+        <div class="perspective_date left_clear picture_spacer"><%= perspective.updated_at.strftime('%B %d, %Y') %>
         <% if !@lat.nil? && !@lng.nil? %>
           | <% if perspective.distance < 1000 %>
             <%= perspective.distance.round %>m

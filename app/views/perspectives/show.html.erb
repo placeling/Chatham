@@ -37,6 +37,13 @@
         }
       );
       
+      $('.liker_list').click(function(e){
+        e.preventDefault();
+        var target = "#likers_" + $(this).attr('id').substring(5, $(this).attr('id').length);
+        $(target).show("fast");
+        return false;
+      });
+      
       $('.email').each(function() {
         $(this).qtip({
           content: '<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="'+ $(this).attr("href") + '" class="link_text"></span>',
@@ -140,6 +147,38 @@
                   <% end %>
                 </div>
               <% end %>
+              <% if @perspective.favourite_perspective_ids.length > 0 %>
+              <div class="left_clear">
+              <div class="like_holder <% if @perspective.empty_perspective? %>empty_like<% end %>"><%= image_tag asset_path('starred.png'), :class => "liked" %></div>
+              <ul class="my_likes <% if @perspective.empty_perspective? %>empty_like<% end %>">
+              <% @perspective.favourite_perspective_ids.each_with_index do |perp, index| %>
+                <li>
+                  <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><%= image_tag Perspective.find(perp).user.thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></a>
+                  <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><span><%= Perspective.find(perp).user.username %></span></a><% if index != @perspective.favourite_perspective_ids.length - 1%>,<% end %>
+                </li>
+              <% end %>
+              </ul>
+              </div>
+              <% end %>
+              <% if @perspective.starring_users.length > 0 %>
+              <div class="likers_count left_clear">Liked by <a href="#" id="list_<%= @perspective.id %>" class="liker_list likers_list_perspective"><%= @perspective.starring_users.length %> <% if @perspective.starring_users.length == 1 %>person<% else %>people<% end %></a></div>
+              <ul class="likers" id="likers_<%= @perspective.id%>">
+              <% @perspective.starring_users.each do |user| %>
+                <li class="left_clear">
+                  <a href="<%= user_path(User.find(user), :lat=>@perspective.ploc[0], :lng=>@perspective.ploc[1]) %>" class="likers_list_perspective">
+                    <div class="liked_pic"><%= image_tag User.find(user).thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></div>
+                    <div class="liked_name likers_list_perspective"><%= User.find(user).username %></div>
+                  </a>
+                </li>
+              <% end %>
+              </ul>
+              <% end %>
+              
+              
+              
+              
+              
+              
               <div class="footer_details">
                 <span class="updated_dark">
                   <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>

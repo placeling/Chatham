@@ -33,6 +33,13 @@
       
       $(window).resize();
       
+      $('.liker_list').click(function(e){
+        e.preventDefault();
+        var target = "#likers_" + $(this).attr('id').substring(5, $(this).attr('id').length);
+        $(target).show("fast");
+        return false;
+      });
+      
       $('.lightboxGallery').each(function(){
         $('.lightbox', this).lightBox();
       });
