@@ -556,6 +556,11 @@ class UsersController < ApplicationController
       if params[:email] &&  params[:email] != @user.email
         #update email logic coming soon
       end
+
+      if params[:city]
+        #update email logic coming soon
+        @user.city = params[:city]
+      end
       
       if params[:image]
         @user.avatar = params[:image]
