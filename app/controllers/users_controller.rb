@@ -51,7 +51,11 @@ class UsersController < ApplicationController
     return unless params[:format] == :json
 
     lat = params[:lat].to_f
-    lng = params[:long].to_f
+    lng = params[:lng].to_f
+
+    if lng.nil? or lng == 0
+      lng = params[:long].to_f
+    end
 
     if (params[:facebook_access_token])
       user = User.new(:username =>params[:username].strip,
@@ -60,10 +64,8 @@ class UsersController < ApplicationController
       if user.valid?
         #these trigger an implicit save that seems to override validations
         user.confirm! #indicates that it doesn't need a confirmation, since we got email from Facebook
-        
-        Resque.enqueue( WelcomeEmail, current_user.id)
-        
         auth = user.authentications.build(:provider => "facebook", :uid =>params[:facebook_id], :token => params[:facebook_access_token])
+        Resque.enqueue( WelcomeEmail, user.id)
       end
     else
       user = User.new(:username =>params[:username].strip,

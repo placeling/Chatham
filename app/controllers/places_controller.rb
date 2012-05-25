@@ -232,7 +232,7 @@ class PlacesController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
 
-    radius = params[:radius].to_f unless params[:radius].nil?
+    span = params[:span].to_f unless params[:span].nil?
 
     query = params[:query]
     category = params[:category]
@@ -254,12 +254,9 @@ class PlacesController < ApplicationController
     loc = [lat, lng]
 
     n = 40
-    if !radius
-      span = 0.04
-    else
+    if !span
       span = 0.04
     end
-    span = 0.04
     radius = 1000
 
     #preprocess for query
