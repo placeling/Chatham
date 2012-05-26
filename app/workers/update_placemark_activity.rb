@@ -16,7 +16,24 @@ class UpdatePlacemarkActivity
     activity.push_to_followers( actor1 )
 
     if fb_post && actor1.facebook && !(Rails.env.development? || Rails.env.test?)
-      actor1.facebook.og_action!("placeling:placemark", :location => perspective.og_path )
+      image_url=nil
+      for picture in perspective.pictures
+        if !picture.fb_posted
+          image_url = picture.main_cache_url
+          picture.fb_posted = true
+          picture.save
+          break
+        end
+      end
+
+      if !image_url.nil?
+        actor1.facebook.og_action!("placeling:placemark",
+                                 :location => perspective.og_path,
+                                 "image[0][url]" => perspective.pictures[0].main_cache_url,
+                                  "image[0][user_generated]" =>true)
+      else
+        actor1.facebook.og_action!("placeling:placemark",:location => perspective.og_path)
+      end
     end
   end
 end

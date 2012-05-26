@@ -13,6 +13,7 @@ class Picture
   field :remote_url, :type => String
 
   field :deleted, :type =>Boolean, :default => false
+  field :fb_posted, :type =>Boolean, :default => false
 
   mount_uploader :image, PictureUploader, mount_on: :image_filename
   
