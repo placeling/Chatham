@@ -161,6 +161,8 @@ en:
     embed_howto: "Embed a copy of your map on your website or blog"
     embed_title: "Embed your map"
     create_embed: "Create Embed Code"
+    facebook_friend_join: "When a facebook friend joins Placeling"
+    near_highlighted: "Near a location you highlighted"
     
   inprogress:
     start_submit: "Start Upload"

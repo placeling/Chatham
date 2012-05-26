@@ -65,6 +65,16 @@
           <td align="center"><%= us.check_box :remark_notify %></td>
         </tr>
         <tr>
+          <td><%= t('account.facebook_friend_join')%></td>
+          <td align="center"><%= us.check_box :facebook_friend_email %></td>
+          <td align="center"><%= us.check_box :facebook_friend_notify %></td>
+        </tr>
+        <tr>
+          <td><%= t('account.near_highlighted')%></td>
+          <td align="center"></td>
+          <td align="center"><%= us.check_box :near_highlighted_notify %></td>
+        </tr>
+        <tr>
           <td><%= t('account.weekly_email')%></td>
           <td align="center"><%= us.check_box :weekly_email %></td>
           <td></td>

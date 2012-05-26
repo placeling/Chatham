@@ -20,7 +20,7 @@ class PerspectivesController < ApplicationController
     end
 
     @perspective.save!
-    ActivityFeed.add_new_perspective(@perspective.user, @perspective, true)
+    ActivityFeed.add_new_perspective(@perspective.user, @perspective, false)
 
     respond_to do |format|
       format.html
