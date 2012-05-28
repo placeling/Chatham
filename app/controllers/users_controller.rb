@@ -8,6 +8,9 @@ DEFAULT_EMBED_ZOOM = 15
 DEFAULT_WIDTH = 450
 DEFAULT_HEIGHT = 500
 
+MAX_POPULAR = 20
+DEFAULT_USER_ZOOM = 14
+
 class UsersController < ApplicationController
   include ApplicationHelper
   
@@ -380,6 +383,173 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user } ) } }
     end
+  end
+  
+  def nearby
+    @users = {}
+    
+    valid_params = true
+    
+    if params[:top_lat].nil? || params[:bottom_lat].nil? || params[:left_lng].nil? || params[:right_lng].nil? || params[:center_lat].nil? || params[:center_lng].nil?
+      valid_params = false
+    else
+      if params[:zoom].nil?
+        zoom = DEFAULT_USER_ZOOM
+      else
+        zoom = params[:zoom].to_i
+        if zoom == 0
+          zoom = DEFAULT_USER_ZOOM
+        end
+      end
+      
+      center_lat = params[:center_lat].to_f
+      if center_lat > 90 or center_lat < -90
+        valid_params = false
+      end
+      
+      top_lat = params[:top_lat].to_f
+      if top_lat > 90 or top_lat < -90
+        valid_params = false
+      end
+      
+      if valid_params
+        bottom_lat = params[:bottom_lat].to_f
+        if bottom_lat > 90 or top_lat < -90 or bottom_lat > top_lat
+          valid_params = false
+        end
+        
+        if valid_params
+          left_lng = params[:left_lng].to_f
+          if left_lng < -180 || left_lng > 180
+            valid_params = false
+          end
+          
+          center_lng = params[:center_lng].to_f
+          if center_lng < -180 || center_lng > 180
+            valid_params = false
+          end
+          
+          if valid_params
+            right_lng = params[:right_lng].to_f
+            if right_lng > 180 || right_lng < -180
+              valid_params = false
+            end
+          end
+        end
+      end
+      # Query fails if at exact edge, so reassign limits
+      top_lat = [ 89.999999,top_lat ].min
+      bottom_lat = [ -89.999999, bottom_lat ].max
+      right_lng = [ right_lng, 179.999999 ].min
+      right_lng = [ right_lng, -179.999999 ].max
+      left_lng = [ left_lng, 179.999999 ].min
+      left_lng = [ left_lng, -179.999999 ].max
+      
+      # Edge case where user zooms so far out on map that multiple earths are visible
+      if valid_params && right_lng < left_lng
+        right_lng, left_lng = left_lng, right_lng
+      end
+    end
+    
+    if zoom < 12 # Somewhat arbitrarily chosen: corresponds to roughly Manhattan on a MacBook Pro 15" display
+      @users["zoom"] = true
+    else
+      if valid_params && top_lat != bottom_lat && right_lng != left_lng
+        location = {"lat"=>center_lat, "lng"=>center_lng,"zoom"=>zoom}
+        
+        box = [[bottom_lat,left_lng],[top_lat,right_lng]]
+        
+        if current_user
+          following_counts = Perspective.collection.group(
+            cond:{:ploc=>{'$within'=>{'$box'=>box}},:uid=>{"$in"=>current_user.following_ids},:deleted_at=>{'$exists'=>false}},
+            key:'uid',
+            initial:{count:0},
+            reduce:"function(obj,prev) {prev.count++}"
+          )
+          
+          following_counts.sort! {|x,y| y["count"] <=> x["count"]}
+          
+          following = []
+          
+          @users["following"] = following
+          
+          following_counts.each do |person|
+            member = User.find(person["uid"])
+            following << {
+              "name" => member.username,
+              "pic" => member.thumb_cache_url,
+              "count" => person["count"].to_i,
+              "url" => user_path(member)+"?"+location.to_query
+            }
+          end
+          
+          popular_counts = Perspective.collection.group(
+            cond:{:ploc=>{'$within'=>{'$box'=>box}},:uid=>{"$nin"=>current_user.following_ids},:deleted_at=>{'$exists'=>false}},
+            key:'uid',
+            initial:{count:0},
+            reduce:"function(obj,prev) {prev.count++}"
+          )
+          
+          popular_counts.sort! {|x,y| y["count"] <=> x["count"]}
+          
+          if popular_counts.length > MAX_POPULAR + 1
+            popular_counts = popular_counts[0,MAX_POPULAR + 1]
+          end
+          
+          popular = []
+          
+          popular_counts.each do |person|
+            member = User.find(person["uid"])
+            if member != current_user
+              popular << {
+                "name" => member.username,
+                "pic" => member.thumb_cache_url,
+                "count" => person["count"].to_i,
+                "url" => user_path(member)+"?"+location.to_query
+              }
+            end
+          end
+          
+          if popular.length > MAX_POPULAR
+            popular = popular[0,MAX_POPULAR]
+          end
+          
+          @users["popular"] = popular
+        else
+          popular_counts = Perspective.collection.group(
+            cond:{:ploc=>{'$within'=>{'$box'=>box}},:deleted_at=>{'$exists'=>false}},
+            key:'uid',
+            initial:{count:0},
+            reduce:"function(obj,prev) {prev.count++}"
+          )
+          
+          popular_counts.sort! {|x,y| y["count"] <=> x["count"]}
+          
+          if popular_counts.length > MAX_POPULAR
+            popular_counts = popular_counts[0,MAX_POPULAR]
+          end
+          
+          popular = []
+          
+          popular_counts.each do |person|
+            member = User.find(person["uid"])
+            popular << {
+              "name" => member.username,
+              "pic" => member.thumb_cache_url,
+              "count" => person["count"].to_i,
+              "url" => user_path(member)+"?"+location.to_query
+            }
+          end
+          
+          @users["popular"] = popular
+        end
+      end
+    end
+    
+    respond_to do |format|
+      format.json { render :json => @users }
+    end
+    
   end
   
   def magazine
@@ -763,7 +933,6 @@ class UsersController < ApplicationController
       format.json { render :json => {:users => @users.as_json({:current_user => current_user}) } }
     end
   end
-
 
   def activity
     @user = User.find_by_username( params[:id] )

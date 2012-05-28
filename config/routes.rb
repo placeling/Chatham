@@ -54,6 +54,7 @@ Chatham::Application.routes.draw do
     resources :potential_perspectives, :only => [:index, :potential_to_real]
     member do
       get :bounds
+      get :nearby
       get :magazine
       get :followers
       get :following

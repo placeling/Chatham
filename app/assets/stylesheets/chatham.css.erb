@@ -596,7 +596,7 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 #location_drawer {
   position: absolute;
   width: 341px;
-  z-index: 10000;
+  z-index: 1;
 }
 
 #hide_locations {
@@ -685,6 +685,54 @@ a.active, a.active:link, a.active:hover, a.active:visited {
   margin-top: 20px;
   margin-left: 20px;
 }
+
+#nearby_users {
+  display: none;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+  background: none repeat scroll 0 0 #EBE4D0;
+  border: 2px solid #988F79;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#nearby_placemarks {
+  font-size: 20px;
+}
+
+#following, #popular {
+  font-size: 14px;
+}
+
+#following a, #popular a {
+  color: #B7614B;
+}
+
+#nearby_following_list, #nearby_popular_list {
+  display: none;
+}
+
+.nearby_person {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.nearby_person a {
+  color: #B7614B;
+}
+
+.nearby_pic {
+  height: 21px;
+  width: 21px;
+  border: 2px solid white;
+  background: #faf9f7;
+  box-shadow: 0 0 1px 0 #888;
+  vertical-align: bottom;
+}
+
+.nothing_nearby {font-size: 12px;}
 
 /* Infowindow
 =====================================================================*/

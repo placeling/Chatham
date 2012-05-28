@@ -643,6 +643,120 @@
         var callServer = false;
         var bounds = map.getBounds();
         
+        // Piggyback the update users list on this event
+        $.ajax({
+          url:'<%= nearby_user_path(@user) %>',
+          data: {
+            top_lat: bounds.getNorthEast().lat(),
+            bottom_lat: bounds.getSouthWest().lat(),
+            right_lng: bounds.getNorthEast().lng(),
+            left_lng: bounds.getSouthWest().lng(),
+            zoom: map.getZoom(),
+            center_lat: map.getCenter().lat(),
+            center_lng: map.getCenter().lng()
+          },
+          dataType:"json",
+          type:"GET",
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.debug( textStatus, errorThrown);
+          },
+          success: function(data) {
+            var html = "";
+            //If has key following, then signed in otherwise not
+            html += '<div id="nearby_placemarks">Nearby Placemarks</div>'
+            
+            if ("zoom" in data) {
+              html += '<span class="nothing_nearby">Zoom in to see nearby placemarks</span>'
+              
+              if ($("#nearby_users").is(":visible") == false) {
+                $('#nearby_users').fadeOut("fast")
+              }
+              
+              $('#nearby_users').html(html);
+              $('#nearby_users').fadeIn("fast");
+            } else {
+              var count = data["popular"].length;
+              if ("following" in data) {
+                count += data["following"].length;
+              }
+
+              if (count == 0) {
+                html += '<div id="no_data">None yet</div>';
+              } else {
+                html += '<div id="following">';
+
+                if ("following" in data) {
+                  if (data["following"].length == 0) {
+                    html += "";
+                  } else if (data["following"].length == 1) {
+                    html += '<a href="#" id="nearby_following">1 person you follow</a>';
+                  } else {
+                    html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' people you follow</a>';
+                  }
+                  html += "</div>";
+                } else {
+                  html += '<a href="<%= new_user_session_path %>">Sign in</a> to see people you follow</div>';
+                }
+
+                html += '<div id="popular">'
+                if (data["popular"].length == 0) {
+                  html += "";
+                } else if (data["popular"].length == 1) {
+                  html += '<a href="#" id="nearby_popular">1 local</a>';
+                } else {
+                  html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " locals</a>";
+                }
+              }
+
+              if ($("#nearby_users").is(":visible") == false) {
+                $('#nearby_users').fadeOut("fast")
+              }
+
+              $('#nearby_users').html(html);
+              $('#nearby_users').fadeIn("fast");
+
+              if (("following" in data) && (data["following"].length > 0)) {
+                var following_html = '<div id="nearby_following_list" title="People you follow">';
+
+                for (var i=0; i< data["following"].length; i++) {
+                  following_html = following_html + '<div class="nearby_person"><a href="' + data["following"][i]["url"] + '"><img class="nearby_pic" src="' + data["following"][i]["pic"] + '"></a> <a href="' + data["following"][i]["url"] + '">' + data["following"][i]["name"] + '</a> (' + data["following"][i]["count"] + ')</div>';
+                }
+
+                following_html += "</div>";
+                $("#nearby_users").after(following_html);
+
+                $("#nearby_following").click(function(e) {
+                  e.preventDefault();
+                  $( "#nearby_following_list" ).dialog({
+                    modal: true,
+                    height: 400
+                  });
+                  return false;
+                })
+              }
+              if (data["popular"].length > 0) {
+                var popular_html = '<div id="nearby_popular_list" title="Top locals">';
+
+                for (var i=0; i< data["popular"].length; i++) {
+                  popular_html = popular_html + '<div class="nearby_person"><a href="' + data["popular"][i]["url"] + '"><img class="nearby_pic" src="' + data["popular"][i]["pic"] + '"></a> <a href="' + data["popular"][i]["url"] + '">' + data["popular"][i]["name"] + '</a> (' + data["popular"][i]["count"] + ')</div>';
+                }
+
+                popular_html += "</div>";
+                $("#nearby_users").after(popular_html);
+
+                $("#nearby_popular").click(function(e) {
+                  e.preventDefault();
+                  $( "#nearby_popular_list" ).dialog({
+                    modal: true,
+                    height: 400
+                  });
+                  return false;
+                })
+              }
+            }
+          }
+        });
+        
         if ((typeof loadState["<%= @user.username %>"]['server'] !== "undefined") && (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && loadState["<%= @user.username %>"]['server'] === true) {
           var mapTop = map.getBounds().getNorthEast().lat();
           var mapBottom = map.getBounds().getSouthWest().lat();
@@ -941,7 +1055,7 @@
         $('#spinner').css({
           'left': 333,
           'top': $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 62
-        })
+        });
       });
       
       $(window).resize();
@@ -992,7 +1106,8 @@
         </li>
       </ul>
     </div>
-    <%= render :partial => "detail", :locals => {:user => @user} %>    
+    <%= render :partial => "detail", :locals => {:user => @user} %>
+    <div id="nearby_users"></div>
   </div>
   <div id="map_holder">
     <div id="filter_drawer">
