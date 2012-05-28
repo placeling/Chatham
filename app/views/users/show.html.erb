@@ -729,7 +729,8 @@
                   e.preventDefault();
                   $( "#nearby_following_list" ).dialog({
                     modal: true,
-                    height: 400
+                    height: 400,
+                    closeOnEscape: true
                   });
                   return false;
                 })
@@ -748,7 +749,8 @@
                   e.preventDefault();
                   $( "#nearby_popular_list" ).dialog({
                     modal: true,
-                    height: 400
+                    height: 400,
+                    closeOnEscape: true
                   });
                   return false;
                 })
