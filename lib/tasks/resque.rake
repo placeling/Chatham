@@ -11,7 +11,7 @@ def run_worker(queue, count = 1)
     ## Using Kernel.spawn and Process.detach because regular system() call would
     ## cause the processes to quit when capistrano finishes
 
-    pid = spawn(env_vars, "bundle exec rake resque:work", ops)
+    pid = spawn(env_vars, "VVERBOSE=1 bundle exec rake resque:work", ops)
     Process.detach(pid)
   }
 end
