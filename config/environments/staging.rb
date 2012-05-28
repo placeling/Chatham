@@ -31,6 +31,7 @@ Chatham::Application.configure do
 
   config.assets.compress = true
   config.assets.digest = true
+  config.force_ssl = true
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -60,5 +61,3 @@ Chatham::Application.configure do
 
 
 end
-
-Resque.inline = true
