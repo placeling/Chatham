@@ -476,12 +476,14 @@ class UsersController < ApplicationController
           following_counts.each do |person|
             member = User.find(person["uid"])
             following << {
-              "name" => member.username,
+              "name" => member.username.downcase,
               "pic" => member.thumb_cache_url,
               "count" => person["count"].to_i,
               "url" => user_path(member)+"?"+location.to_query
             }
           end
+          
+          following.sort! {|x,y| [y["count"], x["name"]] <=> [x["count"], y["name"]]}
           
           popular_counts = Perspective.collection.group(
             cond:{:ploc=>{'$within'=>{'$box'=>box}},:uid=>{"$nin"=>current_user.following_ids},:deleted_at=>{'$exists'=>false}},
@@ -502,7 +504,7 @@ class UsersController < ApplicationController
             member = User.find(person["uid"])
             if member != current_user
               popular << {
-                "name" => member.username,
+                "name" => member.username.downcase,
                 "pic" => member.thumb_cache_url,
                 "count" => person["count"].to_i,
                 "url" => user_path(member)+"?"+location.to_query
@@ -513,6 +515,8 @@ class UsersController < ApplicationController
           if popular.length > MAX_POPULAR
             popular = popular[0,MAX_POPULAR]
           end
+          
+          popular.sort! {|x,y| [y["count"], x["name"]] <=> [x["count"], y["name"]]}
           
           @users["popular"] = popular
         else
@@ -534,12 +538,14 @@ class UsersController < ApplicationController
           popular_counts.each do |person|
             member = User.find(person["uid"])
             popular << {
-              "name" => member.username,
+              "name" => member.username.downcase,
               "pic" => member.thumb_cache_url,
               "count" => person["count"].to_i,
               "url" => user_path(member)+"?"+location.to_query
             }
           end
+          
+          popular.sort! {|x,y| [y["count"], x["name"]] <=> [x["count"], y["name"]]}
           
           @users["popular"] = popular
         end
