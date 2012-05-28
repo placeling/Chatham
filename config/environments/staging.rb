@@ -29,8 +29,6 @@ Chatham::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
-  config.force_ssl = true
-
   config.assets.compress = true
   config.assets.digest = true
 
@@ -62,3 +60,5 @@ Chatham::Application.configure do
 
 
 end
+
+Resque.inline = true
