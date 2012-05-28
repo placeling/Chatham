@@ -221,7 +221,8 @@
             <p class="address_mini"><%= @perspective.place.street_address %><% if @perspective.place.city_data && @perspective.place.street_address %>, <% end %><% if @perspective.place.city_data %><%= @perspective.place.city_data %><% end %></p>
           <% end %>
           <div class="mini_map">
-            <div class="map_holder"><img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>&zoom=16&size=258x198&sensor=false&markers=color:blue%7C<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>" alt="map" class="map_perspective"></div>
+            <%# In google maps URL - don't use https for Placeling marker or won't render %>
+            <div class="map_holder"><img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>&zoom=16&size=258x198&sensor=false&markers=icon:http://www.placeling.com/images/marker.png%7C<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>" alt="map" class="map_perspective"></div>
             <% if @perspective.place.google_url %>
               <div class="google_url_holder">
                 <a href="<%= @perspective.place.google_url %>" class="google_url"><%= t('place.google_url') %></a>
