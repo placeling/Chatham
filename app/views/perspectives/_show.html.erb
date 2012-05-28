@@ -98,10 +98,12 @@
           <div class="like_holder <% if perspective.empty_perspective? %>empty_like<% end %>"><%= image_tag asset_path('starred.png'), :class => "liked" %></div>
           <ul class="my_likes <% if perspective.empty_perspective? %>empty_like<% end %>">
           <% perspective.favourite_perspective_ids.each_with_index do |perp, index| %>
+            <% if !Perspective.find(perp).nil?%>
             <li>
               <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><%= image_tag Perspective.find(perp).user.thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></a>
               <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><span><%= Perspective.find(perp).user.username %></span></a><% if index != perspective.favourite_perspective_ids.length - 1%>,<% end %>
             </li>
+            <% end %>
           <% end %>
           </ul>
         </div>
