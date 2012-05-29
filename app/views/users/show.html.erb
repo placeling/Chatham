@@ -17,8 +17,11 @@
 
 <% content_for :javascript do %>
   <script type="text/javascript">
+    $("body").css("overflow", "hidden");
+    
     var DEFAULT_ZOOM = 13;
     var DEFAULT_HEIGHT = 81;
+    var MAX_PHOTOS = 4;
     var persps = {};
     var myOptions;
     var placemark;
@@ -90,7 +93,7 @@
 
           // Edit vs. star
           if (perspective.mine) {
-              var action = '<div class="info_action"><a href="/perspectives/' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("pencil_24.png") %>"></a></div>';
+              var action = '<div class="info_action"><a href="/perspectives/' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("writer.png") %>"></a></div>';
               infoWindowHTML += action;
           } else {
             if (perspective.memo.length >0 || perspective.photos.length > 0) {
@@ -136,17 +139,21 @@
           if (perspective.photos.length > 0) {
             var pics = '<div class="info_pics lightboxGallery">';
             for (var i=0; i<perspective.photos.length; i++) {
-              pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb_url + '"></a></span>';
+              if (i < MAX_PHOTOS) {
+                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></a></span>';
+              } else {
+                pics += '<span class="hidden_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></a></span>';
+              }
             }
+            if (perspective.photos.length > MAX_PHOTOS) {
+              pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
+            }
+            
             pics += '</div>';
             infoWindowHTML += pics;
           }
 
-          var share = '<div class="info_action"><span class="social"><a href="https://twitter.com/share?url=https://www.placeling.com<%= user_path(@user) %>?pid=' + perspective.id + '&text=' + perspective.place.name + '" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, \'\', \'left=\'+H+\',top=\'+G+\',width=\'+D+\',height=\'+A+\',personalbar=0,toolbar=0,scrollbars=1,resizable=1\');return false;"><%= image_tag "twitter.png", :class=>"info_icon" %></a></span>';
-
-          share += '<span class="social"><a href="" onclick="javascript:var d=document,f=\'https://www.facebook.com/share\',l=d.location,e=encodeURIComponent,p=\'.php?src=bm&v=4&i=1323211438&u=\'+e(\'https://www.placeling.com/perspectives/' + perspective.id + '\')+\'&t=\'+e(\'' + perspective.place.name + '\');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+\'r\'+p,\'sharer\',\'toolbar=0,status=0,resizable=1,width=626,height=436\'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :class=>"info_icon" %></a></span>';
-
-          share += '<span><a href="https://www.placeling.com<%= user_path(@user) %>?pid=' + perspective.id + '" onclick="javascript:return false;" class="email"><img src="<%= asset_path("email.png"); %>" class="info_icon"></a></span>';
+          var share = '<div class="info_action"><span><a href="https://www.placeling.com<%= user_path(@user) %>?pid=' + perspective.id + '" onclick="javascript:return false;" class="email"><img src="<%= asset_path("email.png"); %>" class="info_icon"></a></span>';
 
           share += "</div>";
 
@@ -607,6 +614,7 @@
         scaleControl: false,
         streetViewControl: false,
         overviewMapControl: false,
+        keyboardShortcuts: false,
         zoomControlOptions: {
           position: google.maps.ControlPosition.LEFT_CENTER
         },

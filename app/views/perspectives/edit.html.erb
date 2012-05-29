@@ -55,7 +55,7 @@
     <div class="picture_holder">
       <div id="existing_pictures">
         <%= f.fields_for :pictures do |builder| %>
-          <div class="hidden_image narrow_photo"><%= builder.hidden_field :deleted, :class => "hidden_status" %><%= builder.hidden_field :thumb_url, :class => "hidden_url" %>
+          <div class="hidden_image narrow_photo"><%= builder.hidden_field :deleted, :class => "hidden_status" %><%= builder.hidden_field :mosaic_3_1_url, :class => "hidden_url" %>
             <p class="center"><%= builder.check_box :_destroy %> <%= builder.label :_destroy, "Remove" %></p>
           </div>
         <% end %>

@@ -321,8 +321,8 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  max-width:97px;
-  max-height: 97px;
+  width:97px;
+  height: 97px;
 }
 
 #profilepic {
@@ -776,7 +776,7 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .info_memo {
-  height: 52px;
+  max-height: 52px;
   overflow-y: auto;
   margin-right: -5px;
   margin-top: 3px;
@@ -788,19 +788,28 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .info_pics {
-  height: 76px;
   padding: 3px;
-  overflow-x: auto;
-  margin-right: -5px;
 }
 
 .info_pic {
   margin-right: 10px;
 }
 
+.hidden_pic {
+  display: none;
+}
+
+.more_photos {
+  font-size: 10px;
+  float:right;
+  padding-right:26px;
+  padding-top:54px;
+}
+
 .info_pic_thumb {
-  max-height: 60px;
-  max-width: 90px;
+  vertical-align: bottom;
+  height: 60px;
+  width: 60px;
   border: solid 6px white;
   -moz-box-shadow: 0 0 2px 0 #888;
   -webkit-box-shadow: 0 0 2px 0 #888;
