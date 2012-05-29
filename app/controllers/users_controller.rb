@@ -383,6 +383,17 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user } ) } }
     end
+    
+    
+    #@perspectives = []
+    #
+    #if valid_params && top_lat != bottom_lat && right_lng != left_lng
+    #  @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id).includes(:place)
+    #end
+    #
+    #respond_to do |format|
+    #  format.json {render :json => {:perspectives => @perspectives.as_json({:bounds => true})}}
+    #end
   end
   
   def nearby
@@ -390,14 +401,14 @@ class UsersController < ApplicationController
     
     valid_params = true
     
+    zoom = DEFAULT_USER_ZOOM
+    
     if params[:top_lat].nil? || params[:bottom_lat].nil? || params[:left_lng].nil? || params[:right_lng].nil? || params[:center_lat].nil? || params[:center_lng].nil?
       valid_params = false
     else
-      if params[:zoom].nil?
-        zoom = DEFAULT_USER_ZOOM
-      else
+      if params[:zoom]
         zoom = params[:zoom].to_i
-        if zoom == 0
+        if zoom < 1 || zoom > 20 # Only 20 levels of Google zoom
           zoom = DEFAULT_USER_ZOOM
         end
       end
