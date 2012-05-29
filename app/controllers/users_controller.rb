@@ -382,18 +382,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user } ) } }
-    end
-    
-    
-    #@perspectives = []
-    #
-    #if valid_params && top_lat != bottom_lat && right_lng != left_lng
-    #  @perspectives = Perspective.where(:ploc.within => {"$box" => [[bottom_lat, left_lng],[top_lat, right_lng]]}, :uid => @user.id).includes(:place)
-    #end
-    #
-    #respond_to do |format|
-    #  format.json {render :json => {:perspectives => @perspectives.as_json({:bounds => true})}}
-    #end
+    end    
   end
   
   def nearby
