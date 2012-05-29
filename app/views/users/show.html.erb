@@ -565,7 +565,12 @@
       var leftLng;
       var requests = 0;
       var runCount = 0;
-
+      
+      var current_top;
+      var current_right;
+      var current_bottom;
+      var current_left;
+      
       loadState = JSON.parse($.cookie('page_state'));
       if (loadState === null) {
         loadState = {};
@@ -651,121 +656,147 @@
         var callServer = false;
         var bounds = map.getBounds();
         
+        if (typeof current_top === "undefined") {
+          current_top = map.getBounds().getNorthEast().lat();
+        }
+        if (typeof current_right === "undefined") {
+          current_right = map.getBounds().getNorthEast().lng();
+        }
+        if (typeof current_bottom === "undefined") {
+          current_bottom = map.getBounds().getSouthWest().lat();
+        }
+        if (typeof current_left === "undefined") {
+          current_left = map.getBounds().getSouthWest().lng();
+        }
+        
         // Piggyback the update users list on this event
-        $.ajax({
-          url:'<%= nearby_user_path(@user) %>',
-          data: {
-            top_lat: bounds.getNorthEast().lat(),
-            bottom_lat: bounds.getSouthWest().lat(),
-            right_lng: bounds.getNorthEast().lng(),
-            left_lng: bounds.getSouthWest().lng(),
-            zoom: map.getZoom(),
-            center_lat: map.getCenter().lat(),
-            center_lng: map.getCenter().lng()
-          },
-          dataType:"json",
-          type:"GET",
-          error: function(jqXHR, textStatus, errorThrown) {
-              console.debug( textStatus, errorThrown);
-          },
-          success: function(data) {
-            var html = "";
-            //If has key following, then signed in otherwise not
-            html += '<div id="nearby_placemarks">Nearby Placemarks</div>'
-            
-            if ("zoom" in data) {
-              html += '<span class="nothing_nearby">Zoom in to see nearby placemarks</span>'
-              
-              if ($("#nearby_users").is(":visible") == false) {
-                $('#nearby_users').fadeOut("fast")
-              }
-              
-              $('#nearby_users').html(html);
-              $('#nearby_users').fadeIn("fast");
-            } else {
-              var count = data["popular"].length;
-              if ("following" in data) {
-                count += data["following"].length;
-              }
+        var temp_top = map.getBounds().getNorthEast().lat();
+        var temp_right = map.getBounds().getNorthEast().lng();
+        var temp_bottom = map.getBounds().getSouthWest().lat();
+        var temp_left = map.getBounds().getSouthWest().lng();
+        
+        if ((temp_top != current_top) || (temp_right != current_right) || (temp_left != current_left) || (temp_bottom != current_bottom) || (typeof topLat === "undefined")) {
+          current_top = temp_top;
+          current_right = temp_right;
+          current_left = temp_left;
+          current_bottom = temp_bottom;
+          
+          $.ajax({
+            url:'<%= nearby_user_path(@user) %>',
+            data: {
+              top_lat: current_top,
+              bottom_lat: current_bottom,
+              right_lng: current_right,
+              left_lng: current_left,
+              zoom: map.getZoom(),
+              center_lat: map.getCenter().lat(),
+              center_lng: map.getCenter().lng()
+            },
+            dataType:"json",
+            type:"GET",
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.debug( textStatus, errorThrown);
+            },
+            success: function(data) {
+              var html = "";
+              //If has key following, then signed in otherwise not
+              html += '<div id="nearby_placemarks">Nearby Placemarks</div>'
 
-              if (count == 0) {
-                html += '<div id="no_data">None yet</div>';
+              if ("zoom" in data) {
+                html += '<span class="nothing_nearby">Zoom in to see nearby placemarks</span>'
+
+                if ($("#nearby_users").is(":visible") == false) {
+                  $('#nearby_users').fadeOut("fast")
+                }
+
+                $('#nearby_users').html(html);
+                $('#nearby_users').fadeIn("fast");
               } else {
-                html += '<div id="following">';
-
+                var count = data["popular"].length;
                 if ("following" in data) {
-                  if (data["following"].length == 0) {
-                    html += "";
-                  } else if (data["following"].length == 1) {
-                    html += '<a href="#" id="nearby_following">1 person you follow</a>';
+                  count += data["following"].length;
+                }
+
+                if (count == 0) {
+                  html += '<div id="no_data">None yet</div>';
+                } else {
+                  html += '<div id="following">';
+
+                  if ("following" in data) {
+                    if (data["following"].length == 0) {
+                      html += "";
+                    } else if (data["following"].length == 1) {
+                      html += '<a href="#" id="nearby_following">1 person you follow</a>';
+                    } else {
+                      html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' people you follow</a>';
+                    }
+                    html += "</div>";
                   } else {
-                    html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' people you follow</a>';
+                    html += '<a href="<%= new_user_session_path %>">Sign in</a> to see people you follow</div>';
                   }
-                  html += "</div>";
-                } else {
-                  html += '<a href="<%= new_user_session_path %>">Sign in</a> to see people you follow</div>';
+
+                  html += '<div id="popular">'
+                  if (data["popular"].length == 0) {
+                    html += "";
+                  } else if (data["popular"].length == 1) {
+                    html += '<a href="#" id="nearby_popular">1 local</a>';
+                  } else {
+                    html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " locals</a>";
+                  }
+                }
+                
+                if ($("#nearby_users").is(":visible") == false) {
+                  $('#nearby_users').fadeOut("fast")
                 }
 
-                html += '<div id="popular">'
-                if (data["popular"].length == 0) {
-                  html += "";
-                } else if (data["popular"].length == 1) {
-                  html += '<a href="#" id="nearby_popular">1 local</a>';
-                } else {
-                  html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " locals</a>";
+                $('#nearby_users').html(html);
+                $('#nearby_users').fadeIn("fast")
+                
+                if (("following" in data) && (data["following"].length > 0)) {
+                  var following_html = '<div id="nearby_following_list" title="People you follow">';
+
+                  for (var i=0; i< data["following"].length; i++) {
+                    following_html = following_html + '<div class="nearby_person"><a href="' + data["following"][i]["url"] + '"><img class="nearby_pic" src="' + data["following"][i]["pic"] + '"></a> <a href="' + data["following"][i]["url"] + '">' + data["following"][i]["name"] + '</a> (' + data["following"][i]["count"] + ')</div>';
+                  }
+
+                  following_html += "</div>";
+                  $("#nearby_users").after(following_html);
+
+                  $("#nearby_following").click(function(e) {
+                    e.preventDefault();
+                    $( "#nearby_following_list" ).dialog({
+                      modal: true,
+                      height: 400,
+                      closeOnEscape: true
+                    });
+                    return false;
+                  })
                 }
-              }
+                
+                if (data["popular"].length > 0) {
+                  var popular_html = '<div id="nearby_popular_list" title="Top locals">';
 
-              if ($("#nearby_users").is(":visible") == false) {
-                $('#nearby_users').fadeOut("fast")
-              }
+                  for (var i=0; i< data["popular"].length; i++) {
+                    popular_html = popular_html + '<div class="nearby_person"><a href="' + data["popular"][i]["url"] + '"><img class="nearby_pic" src="' + data["popular"][i]["pic"] + '"></a> <a href="' + data["popular"][i]["url"] + '">' + data["popular"][i]["name"] + '</a> (' + data["popular"][i]["count"] + ')</div>';
+                  }
 
-              $('#nearby_users').html(html);
-              $('#nearby_users').fadeIn("fast");
-
-              if (("following" in data) && (data["following"].length > 0)) {
-                var following_html = '<div id="nearby_following_list" title="People you follow">';
-
-                for (var i=0; i< data["following"].length; i++) {
-                  following_html = following_html + '<div class="nearby_person"><a href="' + data["following"][i]["url"] + '"><img class="nearby_pic" src="' + data["following"][i]["pic"] + '"></a> <a href="' + data["following"][i]["url"] + '">' + data["following"][i]["name"] + '</a> (' + data["following"][i]["count"] + ')</div>';
+                  popular_html += "</div>";
+                  $("#nearby_users").after(popular_html);
+                  
+                  $("#nearby_popular").click(function(e) {
+                    e.preventDefault();
+                    $( "#nearby_popular_list" ).dialog({
+                      modal: true,
+                      height: 400,
+                      closeOnEscape: true
+                    });
+                    return false;
+                  })
                 }
-
-                following_html += "</div>";
-                $("#nearby_users").after(following_html);
-
-                $("#nearby_following").click(function(e) {
-                  e.preventDefault();
-                  $( "#nearby_following_list" ).dialog({
-                    modal: true,
-                    height: 400,
-                    closeOnEscape: true
-                  });
-                  return false;
-                })
-              }
-              if (data["popular"].length > 0) {
-                var popular_html = '<div id="nearby_popular_list" title="Top locals">';
-
-                for (var i=0; i< data["popular"].length; i++) {
-                  popular_html = popular_html + '<div class="nearby_person"><a href="' + data["popular"][i]["url"] + '"><img class="nearby_pic" src="' + data["popular"][i]["pic"] + '"></a> <a href="' + data["popular"][i]["url"] + '">' + data["popular"][i]["name"] + '</a> (' + data["popular"][i]["count"] + ')</div>';
-                }
-
-                popular_html += "</div>";
-                $("#nearby_users").after(popular_html);
-
-                $("#nearby_popular").click(function(e) {
-                  e.preventDefault();
-                  $( "#nearby_popular_list" ).dialog({
-                    modal: true,
-                    height: 400,
-                    closeOnEscape: true
-                  });
-                  return false;
-                })
               }
             }
-          }
-        });
+          });
+        }
         
         if ((typeof loadState["<%= @user.username %>"]['server'] !== "undefined") && (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") && loadState["<%= @user.username %>"]['server'] === true) {
           var mapTop = map.getBounds().getNorthEast().lat();
