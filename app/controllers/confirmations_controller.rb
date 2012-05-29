@@ -5,7 +5,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     if resource.errors.empty?
       sign_in(resource_name, resource)
       
-      Resque.enqueue( WelcomeEmail, current_user.id)
+      Notifier.welcome(current_user.id).deliver!
       
       respond_to do |format|
         format.html
