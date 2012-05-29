@@ -1,5 +1,5 @@
 class WelcomeEmail
-  @queue = :email_queue
+  @queue = :apns_queue
   
   def self.perform(user_id)
     user = User.find( user_id )
