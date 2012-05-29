@@ -1,3 +1,6 @@
+require 'resque/failure/multiple'
+require 'resque/failure/airbrake'
+require 'resque/failure/redis'
 
 REDIS_CONFIG = YAML.load( File.open( Rails.root.join("config/redis.yml") ) )
 
