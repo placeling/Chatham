@@ -252,6 +252,9 @@ GEM
       redis (>= 2.0.1)
       resque (>= 1.19.0)
       rufus-scheduler
+    resque_mailer (2.0.3)
+      actionmailer (>= 3.0.0)
+      resque (>= 1.2.3)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
       rspec-expectations (~> 2.7.0)
@@ -357,6 +360,7 @@ DEPENDENCIES
   redis-namespace
   resque
   resque-scheduler (= 2.0.0.h)
+  resque_mailer
   rspec-rails (= 2.7)
   rvm-capistrano
   sass-rails (~> 3.2.3)
