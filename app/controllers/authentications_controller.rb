@@ -104,7 +104,7 @@ class AuthenticationsController < ApplicationController
 
         @user.confirm!
         
-        Resque.enqueue( WelcomeEmail, current_user.id)
+        Notifier.welcome(current_user.id).deliver!
         
         @user.save!
         @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
