@@ -9,7 +9,7 @@ class Notifier < ActionMailer::Base
     
     if @user.loc
       counter = 0
-      nearby = User.where(:loc=>{"$near"=>user.loc,"$maxDistance"=>"0.05"}).desc(:pc, :username).excludes(:username=>'citysnapshots')
+      nearby = User.where(:loc=>{"$near"=>@user.loc,"$maxDistance"=>"0.05"}).desc(:pc, :username).excludes(:username=>'citysnapshots')
       nearby.each do |candidate|
         if candidate.id != @user.id
           @guides << candidate
