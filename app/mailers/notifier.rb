@@ -7,11 +7,11 @@ class Notifier < ActionMailer::Base
     
     @guides = []
     
-    if user.loc
+    if @user.loc
       counter = 0
       nearby = User.where(:loc=>{"$near"=>user.loc,"$maxDistance"=>"0.05"}).desc(:pc, :username).excludes(:username=>'citysnapshots')
       nearby.each do |candidate|
-        if candidate != user
+        if candidate.id != @user.id
           @guides << candidate
           counter += 1
           if counter == 3
@@ -21,7 +21,7 @@ class Notifier < ActionMailer::Base
       end
     end    
     
-    mail(:to => user.email, :from => "contact@placeling.com") do |format|
+    mail(:to => @user.email, :from => "contact@placeling.com") do |format|
       format.text
       format.html
     end
