@@ -102,7 +102,7 @@ class AuthenticationsController < ApplicationController
       end
     elsif current_user
       # Only occurs if already logged in and try to add your Facebook account
-      current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
+      current_user.authentications.create!( :expiry=>omniauth['provider'], :provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
       redirect_to return_to_link
     else
       @user = User.new
