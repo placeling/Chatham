@@ -9,10 +9,10 @@
   <% end %>
   <div class="<% if source == "magazine" %>perspective_and_action<% else %>perspective_and_wide_action<% end %>">
     <% if source == "magazine" %>
-      <div class="place_name"><%= link_to perspective.place.name, place_path(perspective.place), :class=>"place_name" %> <a href="<%= user_path(perspective.user, :pid => perspective.id) %>"><%= image_tag "placemarker.png", :class=>"placemarker" %></a></div>
+      <div class="place_name full_name" lat="<%= perspective.ploc[0] %>" lng="<%= perspective.ploc[1] %>" uid="<%= perspective.id %>"><%= link_to perspective.place.name, place_path(perspective.place), :class=>"place_name" %> <a href="<%= user_path(perspective.user, :pid => perspective.id) %>"><%= image_tag "placemarker.png", :class=>"placemarker" %></a></div>
       <div class="geo_info">
-        <p class="latitude"><%= perspective.place.location[0] %></p>
-        <p class="longitude"><%= perspective.place.location[1] %></p>
+        <p class="latitude"><%= perspective.ploc[0] %></p>
+        <p class="longitude"><%= perspective.ploc[1] %></p>
         <p class="distance"></p>
       </div>
     <% end %>
@@ -65,7 +65,7 @@
         <% if !perspective.tags.nil? && perspective.tags.length > 0 %>
         <ul>
           <% perspective.tags.each do |tag| %>
-          <% if request.path == magazine_user_path(perspective.user) %><a class="tag_link" href="<%=request.fullpath %>"><% end %>
+          <% if request.path == magazine_user_path(perspective.user) %><a class="tag_link" href="<%= magazine_user_path(perspective.user) %>?lat=<%= perspective.ploc[0] %>&amp;lng=<%= perspective.ploc[1] %>"><% end %>
           <li class="tags <% if tag == @tag %>highlighted_tag<% end %>">
               #<%= tag %>
           </li>

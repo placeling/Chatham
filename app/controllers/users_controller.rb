@@ -567,10 +567,10 @@ class UsersController < ApplicationController
         @tag = page_state[@user.username]["filterValue"]
       end
     else
+      page_state = {}
       @tag = nil
     end
-    
-    
+        
     if params[:start].nil?
       params[:start] = 0
     end
@@ -628,6 +628,17 @@ class UsersController < ApplicationController
     
     if @perspectives.length < count
       @noscroll = true
+    end
+    
+    if @lat && @lng
+      if !page_state.has_key?(@user.username)
+        page_state[@user.username] = {}
+      end
+        
+      page_state[@user.username]["lat"] = @lat
+      page_state[@user.username]["lng"] = @lng
+      
+      cookies[:page_state] = {:value => page_state.to_json}
     end
     
     respond_to do |format|

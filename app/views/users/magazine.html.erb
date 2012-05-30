@@ -130,6 +130,49 @@
         }
       });
       <% end %>
+      
+      $('#nearby_map').click(function(e){
+        <%# If there's a perpsective that starts in the top half of the page, take it %>
+        <%# Otherwise take the perspectives that's at the top of the page %>
+        var currentWinner = 0;
+        var permitUpdate = true;
+        var lat;
+        var lng;
+        
+        $('.full_name').each(function(index, value){
+          current = $(this).position().top - $("#header").height();
+          if (index == 0 && current > 0) {
+            currentWinner = 0;
+            lat = $(this).attr("lat");
+            lng = $(this).attr("lng");
+            uid = $(this).attr("uid");
+            permitUpdate = false;
+          } else if (current > 0 && current < ($("#footerbottom").offset().top - $("#header").height())/2) {
+            if (permitUpdate) {
+              currentWinner = index;
+              permitUpdate = false;
+              lat = $(this).attr("lat");
+              lng = $(this).attr("lng");
+              uid = $(this).attr("uid");
+            }
+          } else if (current < 0) {
+            currentWinner = index;
+            lat = $(this).attr("lat");
+            lng = $(this).attr("lng");
+            uid = $(this).attr("uid");
+          }
+        });
+        
+        if (typeof loadState[username] === "undefined") {
+          loadState[username] = {};
+        }
+        
+        loadState[username]["lat"] = lat;
+        loadState[username]["lng"] = lng;
+        loadState[username]["infowindow"] = uid;
+        
+        $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
+      });
     });
     $(window).load(function(){
       callToDownload(2000);
@@ -142,7 +185,7 @@
     <div class="toggle_view">
       <ul class="location_types">
         <li class="left active">
-          <a class="active" href="<%= user_path(@user) %>"><span class="type"><%= t('user.nearby') %></span></a>
+          <a class="active" href="<%= user_path(@user) %>" id="nearby_map"><span class="type"><%= t('user.nearby') %></span></a>
         </li>
         <li class="right inactive">
           <span class="type"><%= t('user.recent') %></span>
