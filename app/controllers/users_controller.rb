@@ -101,7 +101,7 @@ class UsersController < ApplicationController
         user.save
         
         respond_to do |format|
-          format.json { render :json => {:status =>"success", :token => access_token.to_query } }
+          format.json { render :json => {:status =>"success", :token => access_token.to_query, :user=>user.as_json({:current_user => current_user, :perspectives => :created_by})  } }
         end
       else
         respond_to do |format|

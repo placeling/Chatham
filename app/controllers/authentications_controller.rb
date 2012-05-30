@@ -11,6 +11,8 @@ class AuthenticationsController < ApplicationController
     token = params["token"]
     expiry = params["expiry"]
 
+    send_json = !params["newlogin"].nil?
+
     if token && !uid
       fb_user = get_me token
       uid = fb_user.identifier
@@ -19,14 +21,23 @@ class AuthenticationsController < ApplicationController
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
     if auth && auth.token == token
-      render :text => generate_keys_for( auth.user )
+      if send_json
+        render :json => {:status =>"success", :token => generate_keys_for( auth.user ), :user=>auth.user.as_json({:current_user => auth.user, :perspectives => :created_by})  }
+      else
+        render :text => generate_keys_for( auth.user )
+      end
+
     elsif auth && (fb_user || fb_user = get_me( token ) )
       if fb_user.identifier == auth.uid
         #this is kind of an odd case, but we shoudl probably update the token
         auth.token = token
         auth.save!
 
-        render :text => generate_keys_for( auth.user )
+        if send_json
+          render :json => {:status =>"success", :token => generate_keys_for( auth.user ), :user=>auth.user.as_json({:current_user => auth.user, :perspectives => :created_by})  }
+        else
+          render :text => generate_keys_for( auth.user )
+        end
       else
         render :text =>"FAIL"
       end
@@ -72,6 +83,7 @@ class AuthenticationsController < ApplicationController
 
   def create
     omniauth = request.env["omniauth.auth"]
+    send_json = !params["newlogin"].nil?
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
       authentication.token = omniauth['credentials']['token'] #update token for facebook
@@ -81,7 +93,11 @@ class AuthenticationsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to return_to_link }
         format.json {
-          render :text => generate_keys_for( authentication.user )
+          if send_json
+            render :json => {:status =>"success", :token => generate_keys_for( auth.user ), :user=>auth.user.as_json({:current_user => auth.user, :perspectives => :created_by})  }
+          else
+            render :text => generate_keys_for( auth.user )
+          end
         }
       end
     elsif current_user
@@ -112,7 +128,11 @@ class AuthenticationsController < ApplicationController
         respond_to do |format|
           format.html { redirect_to( confirm_username_user_path( @user ) ) }
           format.json {
-            render :text => generate_keys_for( authentication.user )
+            if send_json
+              render :json => {:status =>"success", :token => generate_keys_for( auth.user ), :user=>auth.user.as_json({:current_user => auth.user, :perspectives => :created_by})  }
+            else
+              render :text => generate_keys_for( auth.user )
+            end
           }
         end
       else

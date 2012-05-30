@@ -31,6 +31,8 @@ class OauthController < ApplicationController
 
   def access_token_with_xauth_test
 
+    send_json = !params["newlogin"].nil?
+
     if params[:x_auth_mode] == "client_auth"
       if current_client_application.nil?
         render :text => t("oauth.invalid"), :status => 401, :template=>nil
@@ -70,8 +72,12 @@ class OauthController < ApplicationController
       user.first_run.dismiss_app_ad = true
       user.first_run.downloaded_app = true
       user.save
-      
-      render :text => access_token.to_query
+
+      if send_json
+        render :json => {:status =>"success", :token => access_token.to_query, :user=>user.as_json({:current_user => user, :perspectives => :created_by})  }
+      else
+        render :text => access_token.to_query
+      end
 
     else
       self.access_token
