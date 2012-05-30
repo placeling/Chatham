@@ -1053,7 +1053,16 @@
       }
       
       $('#magazine').click(function() {
-        $(this).attr("href",$(this).attr("href")+"?lat="+map.getCenter().lat()+"&lng="+map.getCenter().lng());
+        var lat = map.getCenter().lat();
+        var lng = map.getCenter().lng();
+        
+        if (typeof loadState["<%= @user.username %>"]['infowindow'] !== "undefined") {
+          lat = infowindow.getPosition().lat();
+          lng = infowindow.getPosition().lng();
+          delete loadState["<%= @user.username %>"]['infowindow'];
+        }
+        $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
+        $(this).attr("href",$(this).attr("href")+"?lat="+lat+"&lng="+lng);
       })
     }
     
