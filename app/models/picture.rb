@@ -98,7 +98,8 @@ class Picture
     #TODO: reset thumb_url to iphone_url after NINA 1.2 fix
     attributes = attributes.merge(:thumb_url => self.iphone_url,
                                     :iphone_url => self.iphone_url,
-                                    :main_url => self.main_url)
+                                    :main_url => self.main_url,
+                                    :square_url => self.mosaic_3_1_url)
 
     if options && options[:current_user] && options[:current_user].id == self.perspective[:uid]
       attributes = attributes.merge(:mine => true)

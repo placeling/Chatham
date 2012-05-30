@@ -321,8 +321,8 @@ http://www.cssstickyfooter.com/using-sticky-footer-code.html
   -moz-box-shadow: 0 0 8px 0 #888;
   -webkit-box-shadow: 0 0 8px 0 #888;
   box-shadow: 0 0 8px 0 #888;
-  max-width:97px;
-  max-height: 97px;
+  width:97px;
+  height: 97px;
 }
 
 #profilepic {
@@ -776,7 +776,7 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .info_memo {
-  height: 52px;
+  max-height: 52px;
   overflow-y: auto;
   margin-right: -5px;
   margin-top: 3px;
@@ -788,19 +788,28 @@ a.active, a.active:link, a.active:hover, a.active:visited {
 }
 
 .info_pics {
-  height: 76px;
   padding: 3px;
-  overflow-x: auto;
-  margin-right: -5px;
 }
 
 .info_pic {
   margin-right: 10px;
 }
 
+.hidden_pic {
+  display: none;
+}
+
+.more_photos {
+  font-size: 10px;
+  float:right;
+  padding-right:26px;
+  padding-top:54px;
+}
+
 .info_pic_thumb {
-  max-height: 60px;
-  max-width: 90px;
+  vertical-align: bottom;
+  height: 60px;
+  width: 60px;
   border: solid 6px white;
   -moz-box-shadow: 0 0 2px 0 #888;
   -webkit-box-shadow: 0 0 2px 0 #888;
@@ -1704,6 +1713,11 @@ a.perspective_url, a.perspective_url:link, a.perspective_url:visited, a.perspect
   width: 200px;
   margin-right: 10px;
   float: left;
+}
+
+.nearby_clear {
+  clear: left;
+  padding-bottom: 10px;
 }
 
 a.nearby_name, a.nearby_name:link, a.nearby_name:visited, a.nearby_name:hover, a.nearby_name:focus, a.nearby_name:active {
