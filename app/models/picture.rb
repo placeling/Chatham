@@ -20,7 +20,7 @@ class Picture
   embedded_in :perspective
 
   #validates_presence_of :creation_environment, :on => :create
-  before_save :cache_urls
+  before_create :cache_urls
 
   def cache_urls
     self.creation_environment = Rails.env
@@ -52,13 +52,13 @@ class Picture
     end
   end
 
-  def main_url
+  def main_url( default = "https://www.placeling.com/images/default_profile.png")
     if Rails.env == self.creation_environment
       self.image_url(:main)
     elsif main_cache_url
       main_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return default
     end
   end
   
