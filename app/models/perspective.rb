@@ -213,6 +213,10 @@ class Perspective
     attributes.delete('uid')
     attributes.delete('url') unless !attributes['url'].nil?
     attributes[:place_id] = attributes.delete('plid')
+
+    if !self.modified_at
+      attributes[:modified_at] = self.updated_at.getutc
+    end
     attributes[:modified_timestamp] = attributes['updated_at'].getutc
 
     #if  self.starring_users.count == 1
