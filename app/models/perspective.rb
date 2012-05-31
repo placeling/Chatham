@@ -215,11 +215,11 @@ class Perspective
     attributes[:place_id] = attributes.delete('plid')
     attributes[:modified_timestamp] = attributes['updated_at'].getutc
 
-    if  self.starring_users.count == 1
-      attributes[:likers] = "#{self.starring_users.count} person"
-    elsif self.starring_users.count > 1
-      attributes[:likers] = "#{self.starring_users.count} people"
-    end
+    #if  self.starring_users.count == 1
+    #  attributes[:likers] = "#{self.starring_users.count} person"
+    #elsif self.starring_users.count > 1
+    #  attributes[:likers] = "#{self.starring_users.count} people"
+    #end
 
     if options[:current_user]
       current_user = options[:current_user]
