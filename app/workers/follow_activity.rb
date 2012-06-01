@@ -5,6 +5,8 @@ class FollowActivity
     actor1 = User.find( actor1_id )
     actor2 = User.find( actor2_id )
 
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.facebook.nil?}"
+
     activity = actor1.build_activity
 
     activity.activity_type = "FOLLOW"
@@ -21,6 +23,5 @@ class FollowActivity
     if actor1.facebook && !(Rails.env.development? || Rails.env.test?)
       actor1.facebook.og_action!("placeling:follow", :user =>actor2.og_path)
     end
-
   end
 end

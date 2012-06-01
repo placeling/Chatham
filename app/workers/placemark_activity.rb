@@ -6,6 +6,8 @@ class PlacemarkActivity
 
     perspective = Perspective.find( perspective_id )
 
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} placemarked #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
+
     activity = actor1.build_activity
 
     activity.activity_type = "NEW_PERSPECTIVE"
@@ -28,7 +30,7 @@ class PlacemarkActivity
       end
 
       if !image_url.nil?
-        Rails.logger.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{perspective.pictures[0].main_url(nil)}"
+        RESQUE_LOGGER.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{perspective.pictures[0].main_url(nil)}"
         actor1.facebook.og_action!("placeling:placemark",
                                  :location => perspective.og_path,
                                  "image[0][url]" => perspective.pictures[0].main_url(nil),

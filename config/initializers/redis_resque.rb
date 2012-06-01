@@ -16,6 +16,11 @@ end
 Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Airbrake]
 Resque::Failure.backend = Resque::Failure::Multiple
 
+unless defined?(RESQUE_LOGGER)
+  RESQUE_LOGGER = ActiveSupport::BufferedLogger.new("#{Rails.root}/log/resque.log")
+  RESQUE_LOGGER.auto_flushing = true
+end
+
 #Resque.schedule = YAML.load_file(File.join(Rails.root, 'config/resque_schedule.yml'))
 
 $redis = Redis::Namespace.new(REDIS_CONFIG[::Rails.env][:namespace], :redis => redis_base)
