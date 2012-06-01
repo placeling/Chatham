@@ -35,6 +35,7 @@ namespace :resque do
       require 'resque'
       require 'resque_scheduler'
       require 'resque/scheduler'
+      Resque.before_first_fork = Proc.new { Rails.logger = RESQUE_LOGGER }
   end
 
   desc "Restart running workers"
