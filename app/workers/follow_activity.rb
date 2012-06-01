@@ -23,5 +23,7 @@ class FollowActivity
     if actor1.facebook && !(Rails.env.development? || Rails.env.test?)
       actor1.facebook.og_action!("placeling:follow", :user =>actor2.og_path)
     end
+
+    RESQUE_LOGGER.flush
   end
 end

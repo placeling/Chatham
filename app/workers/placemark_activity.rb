@@ -39,5 +39,7 @@ class PlacemarkActivity
         actor1.facebook.og_action!("placeling:placemark",:location => perspective.og_path)
       end
     end
+
+    RESQUE_LOGGER.flush
   end
 end
