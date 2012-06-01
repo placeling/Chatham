@@ -21,7 +21,7 @@ class UpdatePlacemarkActivity
       image_url=nil
       for picture in perspective.pictures
         if !picture.fb_posted
-          image_url = picture.main_cache_url
+          image_url = picture.main_url(nil)
           picture.fb_posted = true
           picture.save
           break
@@ -32,7 +32,7 @@ class UpdatePlacemarkActivity
         RESQUE_LOGGER.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{perspective.pictures[0].main_url(nil)}"
         actor1.facebook.og_action!("placeling:placemark",
                                  :location => perspective.og_path,
-                                 "image[0][url]" => perspective.pictures[0].main_url(nil),
+                                 "image[0][url]" => image_url,
                                   "image[0][user_generated]" =>true)
       else
         actor1.facebook.og_action!("placeling:placemark",:location => perspective.og_path)
