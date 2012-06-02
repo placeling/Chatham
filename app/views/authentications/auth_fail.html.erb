@@ -3,7 +3,9 @@
 <% end %>
 
 <!--
-<%= @user.error_messages :message => "Errors" %>
+<%= @user.errors.full_messages.each do |msg| %>
+      <p><%= msg %></p>
+   <% end %>
 -->
 
 <div class="auth_inset">
