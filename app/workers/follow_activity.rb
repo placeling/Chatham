@@ -24,6 +24,5 @@ class FollowActivity
       actor1.facebook.og_action!("placeling:follow", :user =>actor2.og_path)
     end
 
-    RESQUE_LOGGER.flush
   end
 end

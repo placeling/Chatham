@@ -39,6 +39,5 @@ class UpdatePlacemarkActivity
       end
     end
 
-    RESQUE_LOGGER.flush
   end
 end
