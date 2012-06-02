@@ -51,7 +51,6 @@ gem "rspec-rails", "2.7"  #needs these outside to prevent rake break
 gem 'ci_reporter'
 
 gem 'mocha'
-gem 'json'
 gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
 gem 'factory_girl_rails', "~> 1.1.rc1"
 gem "database_cleaner"

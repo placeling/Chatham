@@ -342,7 +342,6 @@ DEPENDENCIES
   hashie
   httparty
   jquery-rails
-  json
   mini_magick
   mocha
   mongoid (~> 2.4.8)
