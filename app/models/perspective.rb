@@ -207,10 +207,15 @@ class Perspective
   end
 
   def as_json(options={})
-    attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false), :fav_count =>self.fav_count)
+    attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false).as_json, :fav_count =>self.fav_count)
     attributes[:id] = attributes['_id']
     attributes.delete('place_stub')
     attributes.delete('uid')
+    attributes.delete('accuracy')
+    attributes.delete('created_at')
+    attributes.delete('client_application_id')
+
+    attributes.delete('pictures') #covered under "photos"
     attributes.delete('url') unless !attributes['url'].nil?
     attributes[:place_id] = attributes.delete('plid')
 

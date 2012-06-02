@@ -321,16 +321,24 @@ class Place
     attributes = attributes.merge(:thumb_url => self.thumb_url)
     attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
     attributes[:id] = attributes['_id']
-    attributes[:categories] = attributes['venue_types']
 
     attributes = attributes.merge( {:lat => loc[0], :lng=> loc[1] } )
 
-    attributes.delete(:google_ref)
-    attributes.delete(:address_components)
-    attributes.delete(:client_application_id)
-    attributes.delete(:place_tags_last_update)
+    attributes.delete('address_components')
+    attributes.delete('client_application_id')
+    attributes.delete('place_tags_last_update')
+    attributes.delete('address_components')
+    attributes.delete('ptg')
+    attributes.delete('accurate_address')
+    attributes.delete('user_id')
+    attributes.delete('vicinity')
+    attributes.delete('created_at')
+    attributes.delete('cid')
+    attributes.delete('phone_number')
+
+
+
     attributes[:location] = attributes.delete('loc')
-    attributes[:place_tags] = attributes.delete('ptg')
     attributes[:google_id] = attributes.delete('gid')
     attributes[:perspective_count] = attributes.delete('pc')
     attributes[:map_url] = self.map_url
