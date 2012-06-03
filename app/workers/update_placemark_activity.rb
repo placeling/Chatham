@@ -8,6 +8,7 @@ class UpdatePlacemarkActivity
     activity = actor1.build_activity
 
     RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} updated placemark #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
+    puts "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} updated placemark #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
 
     activity.activity_type = "UPDATE_PERSPECTIVE"
 
@@ -30,6 +31,7 @@ class UpdatePlacemarkActivity
 
       if !image_url.nil?
         RESQUE_LOGGER.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{image_url}"
+        puts "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{image_url}"
         actor1.facebook.og_action!("placeling:placemark",
                                  :location => perspective.og_path,
                                  "image[0][url]" => image_url,
