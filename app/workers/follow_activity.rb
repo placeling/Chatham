@@ -5,7 +5,8 @@ class FollowActivity
     actor1 = User.find( actor1_id )
     actor2 = User.find( actor2_id )
 
-    Rails.logger.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.facebook.nil?}"
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.facebook.nil?}"
+    puts "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.facebook.nil?}"
 
     activity = actor1.build_activity
 

@@ -17,7 +17,7 @@ Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Ai
 Resque::Failure.backend = Resque::Failure::Multiple
 
 unless defined?(RESQUE_LOGGER)
-  f = File.open("#{Rails.root}/log/resque.log", 'w')
+  f = File.open("#{Rails.root}/log/resque.log", 'a')
   f.sync = true
   RESQUE_LOGGER = ActiveSupport::BufferedLogger.new f
 end
