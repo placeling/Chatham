@@ -6,6 +6,7 @@ class User
   include Mongoid::Paranoia
   include Mongoid::Timestamps
   include RedisHelper
+  include ApplicationHelper
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :lockable, :timeoutable and :omniauthable
@@ -195,9 +196,11 @@ class User
   end
 
   def cache_urls
-    self.creation_environment = Rails.env
-    self.thumb_cache_url = self.avatar_url(:thumb)
-    self.main_cache_url =  self.avatar_url(:main)
+    if !self.creation_environment
+      self.creation_environment = Rails.env
+      self.thumb_cache_url = self.avatar_url(:thumb)
+      self.main_cache_url =  self.avatar_url(:main)
+    end
   end
 
   def thumb_url
@@ -211,7 +214,7 @@ class User
     if url
       return url
     else
-      return "https://www.placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
 
@@ -226,7 +229,7 @@ class User
     if url
       return url
     else
-      return "https://www.placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
   

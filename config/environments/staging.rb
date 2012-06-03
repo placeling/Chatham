@@ -57,7 +57,7 @@ Chatham::Application.configure do
 
   # Only use best-standards-support built into browsers
 
-  config.action_mailer.default_url_options = { :host => 'staging.placeling.com' }
+  config.action_mailer.default_url_options = { :host => 'staging.placeling.com', :protocol=>'https'  }
 
 
 end

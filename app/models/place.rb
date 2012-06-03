@@ -5,6 +5,7 @@ class Place
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  include ApplicationHelper
   
   before_validation :fix_location, :remove_blank_categories, :parse_address
   
@@ -124,23 +125,23 @@ class Place
     end
 
     if !category
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
     end
 
     if CATEGORIES["Bars & Nightlife"].keys().include?(category) or CATEGORIES["Bars & Nightlife"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/NightLifePick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/NightLifePick.png")}"
     elsif CATEGORIES["Government"].keys().include?(category) or CATEGORIES["Government"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/GovernmentPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GovernmentPick.png")}"
     elsif CATEGORIES["Shopping"].keys().include?(category) or CATEGORIES["Shopping"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/ShoppingPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/ShoppingPick.png")}"
     elsif CATEGORIES["Beauty"].keys().include?(category) or CATEGORIES["Beauty"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/BeautyPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/BeautyPick.png")}"
     elsif CATEGORIES["Interesting & Outdoors"].keys().include?(category) or CATEGORIES["Interesting & Outdoors"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/TouristyPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyPick.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
     else
-      return "http://www.placeling.com/#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
 
     #elsif CATEGORIES["Services"].values().include?(category)
     #elsif CATEGORIES["Travel & Lodging"].values().include?(category)
@@ -310,7 +311,7 @@ class Place
   end
 
   def og_path
-    "https://#{ActionMailer::Base.default_url_options[:host]}#{ Rails.application.routes.url_helpers.place_path( self ) }"
+    "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path( self ) }"
   end
   
   def as_json(options={})

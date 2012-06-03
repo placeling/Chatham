@@ -1,6 +1,7 @@
 class Picture
   include Mongoid::Document
   include Mongoid::Timestamps
+  include ApplicationHelper
 
   field :creation_environment, :type => String
   field :thumb_cache_url, :type => String
@@ -20,16 +21,18 @@ class Picture
   embedded_in :perspective
 
   #validates_presence_of :creation_environment, :on => :create
-  before_create :cache_urls
+  before_save :cache_urls
 
   def cache_urls
-    self.creation_environment = Rails.env
-    self.thumb_cache_url = self.image_url(:thumb)
-    self.iphone_cache_url = self.image_url(:iphone)
-    self.main_cache_url =  self.image_url(:main)
-    self.mosaic_3_1_cache_url = self.image_url(:mosaic_3_1)
-    self.mosaic_3_2_cache_url = self.image_url(:mosaic_3_2)
-    self.mosaic_3_3_cache_url = self.image_url(:mosaic_3_3)
+    if !self.creation_environment
+      self.creation_environment = Rails.env
+      self.thumb_cache_url = self.image_url(:thumb)
+      self.iphone_cache_url = self.image_url(:iphone)
+      self.main_cache_url =  self.image_url(:main)
+      self.mosaic_3_1_cache_url = self.image_url(:mosaic_3_1)
+      self.mosaic_3_2_cache_url = self.image_url(:mosaic_3_2)
+      self.mosaic_3_3_cache_url = self.image_url(:mosaic_3_3)
+    end
   end
   
   def thumb_url
@@ -38,7 +41,7 @@ class Picture
     elsif thumb_cache_url
       thumb_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
 
@@ -48,11 +51,11 @@ class Picture
     elsif iphone_cache_url
       iphone_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
 
-  def main_url( default = "https://www.placeling.com/images/default_profile.png")
+  def main_url( default = "#{ApplicationHelper.get_hostname}/images/default_profile.png")
     if Rails.env == self.creation_environment
       self.image_url(:main)
     elsif main_cache_url
@@ -68,7 +71,7 @@ class Picture
     elsif mosaic_3_1_cache_url
       mosaic_3_1_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
   
@@ -78,7 +81,7 @@ class Picture
     elsif mosaic_3_2_cache_url
       mosaic_3_2_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
   
@@ -88,7 +91,7 @@ class Picture
     elsif mosaic_3_3_cache_url
       mosaic_3_3_cache_url
     else
-      return "http://placeling.com/images/default_profile.png"
+      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
   

@@ -24,7 +24,7 @@ Chatham::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   # config.action_mailer.default_url_options = { :host => 'dev.placeling.com:3000', :port => "3000" }
-  config.action_mailer.default_url_options = { :host => 'dev.placeling.com', :port => "3000" }
+  config.action_mailer.default_url_options = { :host => 'dev.placeling.com', :port => "3000", :protocol=>'http'  }
   config.action_mailer.delivery_method = :test
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.

@@ -5,6 +5,10 @@ module ApplicationHelper
   #    '24.85.231.190'
   #  end
   #end
+
+  def self.get_hostname
+    "#{ActionMailer::Base.default_url_options[:protocol]}://#{ActionMailer::Base.default_url_options[:host]}"
+  end
   
   def simple_format_with_tags(text, html_options={}, options={})
     text = '' if text.nil?
