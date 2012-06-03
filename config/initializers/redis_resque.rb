@@ -17,9 +17,9 @@ Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Ai
 Resque::Failure.backend = Resque::Failure::Multiple
 
 unless defined?(RESQUE_LOGGER)
-  f = File.open("#{Rails.root}/log/resque.log", 'a')
-  f.sync = true
-  RESQUE_LOGGER = ActiveSupport::BufferedLogger.new f
+  # f = File.open("#{Rails.root}/log/resque.log", 'a')
+  # f.sync = true
+  RESQUE_LOGGER = Log4r::Logger.new("#{Rails.root}/log/resque.log")
 end
 
 #Resque.schedule = YAML.load_file(File.join(Rails.root, 'config/resque_schedule.yml'))
