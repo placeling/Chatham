@@ -428,6 +428,20 @@ en:
     text_feedback: "If you even have any questions or feedback, please drop us a line at support@placeling.com."
     text_guide: "Now start being the guide to your world!"
   
+  notify:
+    address: "Placeling (Internet Services) Inc. 1515 West 2nd Ave, Suite 542, Vancouver, BC V6J 5C5"
+    no_more: "Don't want these messages any more?"
+    change: "Change your"
+    settings: "notification settings"
+    sent: "This message was sent to"
+    explore: "Explore"
+    map: "map"
+    hey: "Hey"
+    follow: "is now following you"
+    facebook: "Your Facebook friend"
+    placeling: "is now on Placeling"
+    like: "liked your placemark for"
+  
   devise:
     views:
       resend_unlock: "Resend unlock instructions"

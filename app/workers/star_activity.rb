@@ -21,6 +21,9 @@ class StarActivity
     if actor2.remark_notification?
       Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} liked your placemark on #{ perspective.place.name }!", "placeling://places/#{perspective.place.id}")
     end
+    if actor2.remark_email?
+      Notifier.remark(actor2.id, actor1.id, perspective.id).deliver!
+    end
 
     if actor1.facebook && !(Rails.env.development? || Rails.env.test?)
       actor1.facebook.og_action!("placeling:like", :location => perspective.og_path )

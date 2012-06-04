@@ -21,9 +21,32 @@ class Notifier < ActionMailer::Base
       end
     end    
     
-    mail(:to => @user.email, :from => "contact@placeling.com") do |format|
+    mail(:to => @user.email, :from => "contact@placeling.com", :subject =>"#{@user.username}, welcome to Placeling") do |format|
       format.text
       format.html
+    end
+  end
+  
+  def follow(owner_id, new_follow_id)
+    @user = User.find(owner_id)
+    @target = User.find(new_follow_id)
+    @type = "follow"
+    
+    mail(:to => @user.email, :from =>"contact@placeling.com", :subject => "#{@target.username} is now following you") do |format|
+      format.text {render 'notification'}
+      format.html {render 'notification'}
+    end
+  end
+  
+  def remark(owner_id, remarker_id, perspective_id)
+    @user = User.find(owner_id)
+    @target = User.find(remarker_id)
+    @perspective = Perspective.find(perspective_id)
+    @type = "remark"
+    
+    mail(:to => @user.email, :from =>"contact@placeling.com", :subject => "#{@target.username} liked your placemark") do |format|
+      format.text {render 'notification'}
+      format.html {render 'notification'}
     end
   end
 end
