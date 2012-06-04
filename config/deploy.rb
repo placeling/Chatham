@@ -9,8 +9,8 @@ before 'deploy:setup', 'ubuntu:required_packages'
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
-after "deploy:symlink", "deploy:restart_workers"
-after "deploy:symlink", "deploy:restart_scheduler"
+after "deploy:create_symlink", "deploy:restart_workers"
+after "deploy:create_symlink", "deploy:restart_scheduler"
 
 task :production do
   set :gateway, 'beagle.placeling.com:11235'
