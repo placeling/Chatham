@@ -316,9 +316,9 @@ class PerspectivesController < ApplicationController
       end
 
       if new_perspective
-        ActivityFeed.add_new_perspective(@perspective.user, @perspective, true)
+        ActivityFeed.add_new_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
       else
-        ActivityFeed.add_update_perspective(@perspective.user, @perspective, true)
+        ActivityFeed.add_update_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
       end
 
       if params[:photo_urls] #has to be done after save in case perspective didn't exist
