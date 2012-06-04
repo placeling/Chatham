@@ -87,6 +87,13 @@ class AuthenticationsController < ApplicationController
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
       authentication.token = omniauth['credentials']['token'] #update token for facebook
+
+      if omniauth['credentials']['expires'] && omniauth['credentials']['expires_at']
+        expiry_timestamp = omniauth['credentials']['expires_at']
+        authentication.expiry = Time.at( expiry_timestamp ).to_s
+        authentication.expires_at = Time.at( expiry_timestamp )
+      end
+
       authentication.save
 
       sign_in( authentication.user )
@@ -102,7 +109,13 @@ class AuthenticationsController < ApplicationController
       end
     elsif current_user
       # Only occurs if already logged in and try to add your Facebook account
-      current_user.authentications.create!( :expiry=>omniauth['provider'], :provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
+      current_user.authentications.create!( :expiry=>omniauth['provider'], :provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token']) do |a|
+        if omniauth['credentials']['expires'] && omniauth['credentials']['expires_at']
+          expiry_timestamp = omniauth['credentials']['expires_at']
+          a.expiry = Time.at( expiry_timestamp ).to_s
+          a.expires_at = Time.at( expiry_timestamp )
+        end
+      end
       redirect_to return_to_link
     else
       @user = User.new
@@ -119,11 +132,17 @@ class AuthenticationsController < ApplicationController
         end
 
         @user.confirm!
-        
-        Notifier.welcome(current_user.id).deliver!
+        Notifier.welcome(@user.id).deliver!
         
         @user.save!
-        @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token'])
+        @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token']) do |a|
+          if omniauth['credentials']['expires'] && omniauth['credentials']['expires_at']
+            expiry_timestamp = omniauth['credentials']['expires_at']
+            a.expiry = Time.at( expiry_timestamp ).to_s
+            a.expires_at = Time.at( expiry_timestamp )
+          end
+        end
+
         sign_in( @user )
         respond_to do |format|
           format.html { redirect_to( confirm_username_user_path( @user ) ) }

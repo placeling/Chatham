@@ -7,6 +7,7 @@ class Authentication
   field :uid, :type => String
   field :token, :type => String
   field :expiry, :type =>String
+  field :expires_at, :type => Time
 
   field :dict, :type => Hash
 
