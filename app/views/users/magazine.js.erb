@@ -5,6 +5,8 @@ var new_count = <%= @perspectives.length %>;
   $('#loading').html('');
   $(window).data('ajaxready', false);
 <% else %>
+  var username = $('.username').first().text();
+  
   <% if @noscroll.nil? %>
     $('#loading').hide();
   <% else %>
@@ -33,6 +35,35 @@ var new_count = <%= @perspectives.length %>;
     $(target).show("fast");
     return false;
   });
+  
+  $('.tag_link').click(function(e){
+    //e.preventDefault();
+    
+    var rawTag = $.trim($(this).children().first().text());
+    var tag = rawTag.substring(1,rawTag.length);
+    if ($(this).children().first().hasClass("highlighted_tag")) {
+      if (typeof loadState[username] !== "undefined") {
+        delete loadState[username]["filterType"];
+        delete loadState[username]["filterValue"];
+        loadState[username]["showFilters"] = false;
+        $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
+      }
+    } else {
+      if (typeof loadState[username] !== "undefined") {
+        loadState[username]["filterType"] = "tag";
+        loadState[username]["filterValue"] = tag;
+        loadState[username]["showFilters"] = true;
+      } else {
+        loadState[username] = {};
+        loadState[username]["filterType"] = "tag";
+        loadState[username]["filterValue"] = tag;
+        loadState[username]["showFilters"] = true;
+      }
+      $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
+    }
+    
+    //return false;
+  })
   
   $('.star_link').hover(
     function() {
