@@ -459,13 +459,35 @@ class User
 
   # get latest feed using reverse range lookup of sorted set
   # then decode raw JSON back into Ruby objects
-  def feed(obj=true, count=FEED_COUNT)
-    results=$redis.zrevrange key(:feed), 0, count
-    if obj && results.size > 0
+  def feed(start =0, count=FEED_COUNT)
+    results=$redis.zrevrange key(:feed), start, start + count
+    if results.size > 0
       results.collect {|r| Activity.decode(r)}
     else
-      results
+      []
     end
+  end
+
+  def old_feed
+    user = self
+    @activities = []
+    for user in current_user.following
+      if user.activity_feed
+        head = user.activity_feed.head_chunk
+        @activities =  @activities + head.activities
+        if !head.next.nil?
+          @activities =  @activities + head.next.activities
+        end
+      end
+    end
+
+    if current_user.activity_feed
+       @activities = @activities + current_user.activity_feed.activities
+    end
+
+    @activities.sort! { |a,b| a.created_at <=> b.created_at }
+    @activities.reverse!
+    @activities = @activities[start_pos, count]
   end
 
   # get older statuses by using reverse range by score lookup

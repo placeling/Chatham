@@ -29,7 +29,7 @@ class Activity
   # push to followers (assumes an array of follower ids)
   def push_to_followers( user )
     user.followers.each do |follower|
-      push( follower.id )
+      push( follower.id ) unless user.blocked?( follower )
     end
     #push onto the superfeed
     $redis.zadd "FIREHOSEFEED", timestamp, encoded
@@ -40,13 +40,15 @@ class Activity
   end
 
   def as_json(options={})
-    #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-
     if self.thumb1.nil?
       user = User.find_by_username(self.username1)
       if user && user.thumb_url
         self.thumb1 = user.thumb_url
       end
+    end
+
+    if !self.updated_at
+      self.updated_at = self.created_at
     end
 
     self.attributes
