@@ -102,6 +102,10 @@ class PerspectivesController < ApplicationController
 
    def show
      #returns the place page (or json) for perspectives' host
+     if !BSON::ObjectId.legal?( params[:id] )
+       raise ActionController::RoutingError.new('Not Found')
+     end
+
     @perspective = Perspective.find( params[:id] )
     not_found unless !@perspective.nil?
     @place = @perspective.place
