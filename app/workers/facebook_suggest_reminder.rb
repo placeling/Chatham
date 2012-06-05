@@ -10,7 +10,7 @@ class FacebookSuggestReminder
 
       friends_json = $redis.smembers("facebook_friends_#{user.id}")
       tally = friends_json.count
-      puts tally
+
       if tally > 2
         RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{user.username} notified of  #{tally-1} facebook friends on placeling"
         Resque.enqueue(SendNotifications, user_id, "You have #{tally-1} Facebook friends on Placeling, check them out!", "placeling://facebookfriends")
