@@ -177,7 +177,7 @@
               <% end %>
               <div class="footer_details">
                 <span class="updated_dark">
-                  <%=t('perspective.last_updated') %> <%= @perspective.updated_at.strftime('%B %d, %Y') %>
+                  <%=t('perspective.last_updated') %> <%= @perspective.modified_at.strftime('%B %d, %Y') %>
                 </span>
                 <span class="flag">
                   <% if @perspective.user == current_user %>

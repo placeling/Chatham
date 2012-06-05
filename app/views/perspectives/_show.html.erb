@@ -126,7 +126,7 @@
         </div>
       <% end %>
       <% if !perspective.empty_perspective? %>
-        <div class="perspective_date left_clear picture_spacer"><%= perspective.updated_at.strftime('%B %d, %Y') %>
+        <div class="perspective_date left_clear picture_spacer"><%= perspective.modified_at.strftime('%B %d, %Y') %>
         <% if !@lat.nil? && !@lng.nil? %>
           | <% if perspective.distance < 1000 %>
             <%= perspective.distance.round %>m
