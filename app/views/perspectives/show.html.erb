@@ -154,7 +154,7 @@
               <% @perspective.favourite_perspective_ids.each_with_index do |perp, index| %>
                 <% if !Perspective.find(perp).nil? %>
                 <li>
-                  <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><%= image_tag Perspective.find(perp).user.thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></a>
+                  <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><%= image_tag Perspective.find(perp).user.thumb_url, :class=>"mini_profile_pic", :alt=>"pic" %></a>
                   <a href="<%= user_path(Perspective.find(perp).user, :pid=>perp) %>"><span><%= Perspective.find(perp).user.username %></span></a><% if index != @perspective.favourite_perspective_ids.length - 1%>,<% end %>
                 <% end %>
                 </li>
@@ -168,7 +168,7 @@
               <% @perspective.starring_users.each do |user| %>
                 <li class="left_clear">
                   <a href="<%= user_path(User.find(user), :lat=>@perspective.ploc[0], :lng=>@perspective.ploc[1]) %>" class="likers_list_perspective">
-                    <div class="liked_pic"><%= image_tag User.find(user).thumb_cache_url, :class=>"mini_profile_pic", :alt=>"pic" %></div>
+                    <div class="liked_pic"><%= image_tag User.find(user).thumb_url, :class=>"mini_profile_pic", :alt=>"pic" %></div>
                     <div class="liked_name likers_list_perspective"><%= User.find(user).username %></div>
                   </a>
                 </li>
