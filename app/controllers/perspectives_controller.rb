@@ -85,12 +85,15 @@ class PerspectivesController < ApplicationController
     end
 
     @perspectives = []
+    perspectives_count = 0
     if !@place.nil?
       @following_perspectives = current_user.following_perspectives_for_place( @place )
-      perspectives_count = @following_perspectives.count
 
-      for perspective in @following_perspectives
-        @perspectives << perspective unless perspective.empty_perspective?
+      @following_perspectives.each do |perspective|
+        unless perspective.user.blocked?( current_user )
+          perspectives_count += 1
+          @perspectives << perspective unless perspective.empty_perspective?
+        end
       end
     end
 
