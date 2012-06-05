@@ -25,5 +25,7 @@ class NewFacebookUser
         end
         friends = friends.next
       end while friends.count > 0
+
+      Resque.enqueue_in( 1.day, FacebookSuggestReminder, user_id )
     end
 end
