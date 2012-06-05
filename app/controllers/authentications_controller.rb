@@ -196,6 +196,11 @@ class AuthenticationsController < ApplicationController
         end while friends.count > 0
 
       end
+
+      if !current_user.user_settings.facebook_friend_check
+        current_user.user_settings.facebook_friend_check = true
+        current_user.save
+      end
     end
 
     @users.sort! {|x,y| x.fullname <=> y.fullname }
