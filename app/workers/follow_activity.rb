@@ -23,7 +23,7 @@ class FollowActivity
       Notifier.follow(actor2.id, actor1.id).deliver!
     end
 
-    if actor1.facebook && !(Rails.env.development? || Rails.env.test?)
+    if actor1.facebook && Rails.env.production?
       actor1.facebook.og_action!("placeling:follow", :user =>actor2.og_path)
     end
 

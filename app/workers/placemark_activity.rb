@@ -18,7 +18,7 @@ class PlacemarkActivity
     activity.save
     activity.push_to_followers( actor1 )
 
-    if fb_post && actor1.facebook && !(Rails.env.development? || Rails.env.test?)
+    if fb_post && actor1.facebook && Rails.env.production?
       image_url=nil
       for picture in perspective.pictures
         if !picture.fb_posted
