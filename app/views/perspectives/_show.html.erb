@@ -17,6 +17,7 @@
       </div>
     <% end %>
     <div class="perspective_action <% if current_user == perspective.user && perspective.empty_perspective? %>edit_empty<% end %>">
+      <div class="interact_holder">
       <div class="interact">
         <% if current_user != perspective.user %>
           <% if !perspective.empty_perspective? %>
@@ -33,6 +34,7 @@
         <% else %>
           <a href="<%= edit_perspective_path(perspective) %>"><%= image_tag "writer.png" %></a>
         <% end %>
+      </div>
       </div>
       <div class="perspective_share">
         <% if !perspective.empty_perspective? %>
