@@ -74,6 +74,7 @@ class User
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
+  has_many :questions
 
   mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 

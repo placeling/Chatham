@@ -78,6 +78,8 @@ Chatham::Application.routes.draw do
       get :me
     end
   end
+
+  resources :questions
   
   resources :potential_perspectives, :only => [:update, :edit, :destroy]
 

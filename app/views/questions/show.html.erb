@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @question.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @question.description %>
+</p>
+
+<p>
+  <b>Lat:</b>
+  <%= @question.lat %>
+</p>
+
+<p>
+  <b>Lng:</b>
+  <%= @question.lng %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @question.owner %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @question.location %>
+</p>
+
+<p>
+  <b>Views:</b>
+  <%= @question.views %>
+</p>
+
+
+<%= link_to 'Edit', edit_question_path(@question) %> |
+<%= link_to 'Back', questions_path %>
