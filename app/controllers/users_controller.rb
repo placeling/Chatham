@@ -477,7 +477,7 @@ class UsersController < ApplicationController
             member = User.find(person["uid"])
             following << {
               "name" => member.username.downcase,
-              "pic" => member.thumb_cache_url,
+              "pic" => member.thumb_url,
               "count" => person["count"].to_i,
               "url" => user_path(member)+"?"+location.to_query
             }
@@ -505,7 +505,7 @@ class UsersController < ApplicationController
             if member != current_user
               popular << {
                 "name" => member.username.downcase,
-                "pic" => member.thumb_cache_url,
+                "pic" => member.thumb_url,
                 "count" => person["count"].to_i,
                 "url" => user_path(member)+"?"+location.to_query
               }
@@ -539,7 +539,7 @@ class UsersController < ApplicationController
             member = User.find(person["uid"])
             popular << {
               "name" => member.username.downcase,
-              "pic" => member.thumb_cache_url,
+              "pic" => member.thumb_url,
               "count" => person["count"].to_i,
               "url" => user_path(member)+"?"+location.to_query
             }
