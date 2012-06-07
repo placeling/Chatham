@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_filter :admin_required
+  before_filter :admin_required, :only =>[:new, :index, :create, :destroy, :edit, :update]
 
   # GET /questions
   # GET /questions.json
@@ -43,6 +43,7 @@ class QuestionsController < ApplicationController
   # POST /questions.json
   def create
     @question = Question.new(params[:question])
+    @question.user = current_user
 
     respond_to do |format|
       if @question.save

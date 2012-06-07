@@ -1,29 +1,100 @@
+<% content_for :head do %>
+  <title><%= t("question.title") %></title>
+<% end %>
+
+<% content_for :javascript_includes do %>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+  </script>
+<% end %>
+
+
 <%= form_for(@question) do |f| %>
-  <% if @question.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
+    <% if @question.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@question.errors.count, "error") %> prohibited this question from being saved:</h2>
 
-      <ul>
-      <% @question.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% @question.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :city_name %>
+      <br/>
+      <%= f.text_field :city_name, :class=>"search_box", :placeholder=>"Enter A City" %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_field :description %>
-  </div>
-  <div class="field">
-    <%= f.label :location %><br />
-    <%= f.text_field :location %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <input id="lat" name="question[location][]" type="hidden" value="<%= current_user.location[0] %>">
+    <input id="lng" name="question[location][]" type="hidden" value="<%= current_user.location[1] %>">
+
+    <div id="selector_map" class="map_style" style="height:300px; width: 488px;">
+      <div id="map_canvas" style="width:100%; height:100%"></div>
+    </div>
+
+    <div class="field">
+      <%= f.label :title %>
+      <br/>
+      <%= f.text_field :title, :size=>50 %>
+    </div>
+
+    <div class="actions" style="float:left;">
+      <%= f.submit :class=>"submit" %>
+    </div>
+<% end %>
+
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+    var main_map;
+    var t;
+
+
+    $(document).ready(function(){
+        var latlng_center = new google.maps.LatLng($("#lat").val(), $("#lng").val());
+
+        var myOptions = {
+          center: latlng_center,
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        main_map = new google.maps.Map(document.getElementById("map_canvas"),
+            myOptions);
+
+        var input = document.getElementById('question_city_name');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.bindTo('bounds',main_map);
+
+        google.maps.event.addListener(main_map, 'bounds_changed',function(){
+            lat = main_map.getCenter().lat();
+            lng = main_map.getCenter().lng();
+            $("#lat").val(lat);
+            $("#lng").val(lng);
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          main_map.setZoom(12);
+          if (place.geometry && place.geometry.viewport) {
+              main_map.setCenter(place.geometry.location);
+          } else {
+            main_map.setCenter(place.geometry.location);
+          }
+
+        });
+
+     });
+
+    function updateMapFactory(latLngObject) {
+      return function(event) {
+        event.preventDefault();
+        updateMap(latLngObject);
+      }
+    }
+
+  </script>
 <% end %>

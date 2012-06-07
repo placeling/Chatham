@@ -31,6 +31,12 @@ class Activity
     user.followers.each do |follower|
       push( follower.id ) unless user.blocked?( follower )
     end
+
+    push( user.id )
+
+    if user
+    end
+
     #push onto the superfeed
     $redis.zadd "FIREHOSEFEED", timestamp, encoded
   end

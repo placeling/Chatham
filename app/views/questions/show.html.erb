@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <title><%= @question.title %></title>
+<% end %>
+
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -11,28 +16,8 @@
 </p>
 
 <p>
-  <b>Lat:</b>
-  <%= @question.lat %>
-</p>
-
-<p>
-  <b>Lng:</b>
-  <%= @question.lng %>
-</p>
-
-<p>
-  <b>Owner:</b>
-  <%= @question.owner %>
-</p>
-
-<p>
   <b>Location:</b>
-  <%= @question.location %>
-</p>
-
-<p>
-  <b>Views:</b>
-  <%= @question.views %>
+  <%= @question.location[0] %>,<%= @question.location[1] %>
 </p>
 
 
