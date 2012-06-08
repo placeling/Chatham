@@ -88,7 +88,6 @@ class User
   embeds_one :user_setting
   embeds_one :first_run
   accepts_nested_attributes_for :user_setting
-  embeds_many :notifications
 
   validate :acceptable_name, :on => :create
   validate :acceptable_password
