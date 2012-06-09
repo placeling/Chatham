@@ -42,7 +42,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
    
    # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
    def extension_white_list
-     %w(jpg jpeg gif png)
+     %w(jpg jpeg gif png bmp)
    end
 
   # Override the filename of the uploaded files:
