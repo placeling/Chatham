@@ -33,16 +33,18 @@
 
    <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
       <b><%= t 'question.suggest_place' %></b><br/>
-      <input id="answer_place" name="answer[place_name]" placeholder="type a place" size="100" type="text" value="">
+      <input id="answer_place" name="place_name" placeholder="type a place" size="100" type="text" value="">
+      <input id="google_id_place" name="google_id_place" type="hidden" value="">
+      <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
 
       <div class="field">
         <%= a.text_area :comment, :size =>"40x5" %>
       </div>
-      <div class="all_places_holder">
-        <a href="<%= new_question_path %>" class="all_places">
-          <%= t('question.suggest') %>
-        </a>
-      </div>
+
+          <div class="actions" style="float:left;">
+      <input id="place_submit" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
+    </div>
+
 
    <% end %>
 
@@ -82,12 +84,16 @@
         var options = {
           bounds: defaultBounds,
           types: ['establishment']
+
         };
 
         var autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-          var place = autocomplete.getPlace();
+            var place = autocomplete.getPlace();
+            console.debug( place );
+            $("#google_id_place").val( place.id );
+            $("#google_ref_place").val( place.reference );
 
         });
 

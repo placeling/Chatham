@@ -3,9 +3,8 @@ class Answer
   include Mongoid::Timestamps
 
   field :comment, :type => String
-  field :upvotes, :type => Integer
-  field :downvotes, :type => Integer
-  has_one :place
+  field :upvotes, :type => Integer, :default => 0
+  belongs_to :place
 
   embedded_in :question
 
