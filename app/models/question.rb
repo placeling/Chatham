@@ -12,4 +12,22 @@ class Question
 
   index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
 
+  before_validation :fix_location
+
+  def fix_location
+    begin
+        if self.location[0].is_a? String
+          self.location[0] = self.location[0].to_f
+        end
+        if self.location[1].is_a? String
+          self.location[1] = self.location[1].to_f
+        end
+      rescue
+        errors.add(:base, "You didn't include a latitude and longitude")
+      end
+      if self.location[0] == 0.0 and self.location[1] == 0.0
+        errors.add(:base, "You didn't include a latitude and longitude")
+      end
+  end
+
 end
