@@ -2,7 +2,7 @@ class Answer
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :upvotes, :type => Integer, :default => 1
+  field :upvotes, :type => Integer, :default => 0
   field :voters, :type =>Hash, :default => {}
   belongs_to :place
 
