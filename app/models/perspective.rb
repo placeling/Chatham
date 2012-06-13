@@ -17,7 +17,8 @@ class Perspective
   field :ploc, :as => :place_location,    :type => Array
   field :flaggers, :type =>Array
   field :accuracy,      :type => Float
-
+  field :empty, :type => Boolean, :default => true
+  
   #contains starred perspectives this user has of on the place
   field :fp, :as => :favourite_perspective_ids,    :type => Array, :default =>[]
   field :su, :as => :starring_users, :type =>Array, :default =>[]
@@ -45,6 +46,7 @@ class Perspective
 
   before_validation :fix_location
   before_create :notify_modified
+  before_save :set_empty_status
   before_save :get_place_data
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
@@ -129,7 +131,16 @@ class Perspective
       
       return true
     end
-    #return (memo.nil? or memo.length ==0) && (self.pictures.count == 0)
+  end
+  
+  def set_empty_status
+    if self.empty_perspective?
+      self.empty = true
+    else
+      self.empty = false
+    end
+    # Must return true or execution will halt if set self.empty to false ("false" will be returned)
+    return true
   end
   
   def active_photos

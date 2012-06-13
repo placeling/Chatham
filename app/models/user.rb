@@ -239,9 +239,72 @@ class User
   end
 
   def self.top_nearby( lat, lng, top_n )
-    User.where(:loc.within => {"$center" => [[lat,lng],0.3]}).
-        desc( :pc ).
-        limit( top_n ).entries
+    # Find users with most non-empty perspectives nearby
+    nearby_counts = Perspective.collection.group(
+      cond:{:ploc=>{'$within'=>{'$center'=>[[lat,lng],0.3]}},:deleted_at=>{'$exists'=>false},:empty=>false},
+      key:'uid',
+      initial:{count:0},
+      reduce:"function(obj,prev) {prev.count++}"
+    )
+    
+    nearby_counts.sort! {|x,y| y["count"] <=> x["count"]}
+    
+    if nearby_counts.length > top_n
+      nearby_counts = nearby_counts[0,top_n]
+    end
+    
+    nearby = []
+    
+    nearby_counts.each do |person|
+      member = User.find(person["uid"])
+      nearby << member
+    end
+    
+    # If too short, see if there are nearby users with empty perspectives
+    if nearby.length < top_n
+      nearby_counts = Perspective.collection.group(
+        cond:{:ploc=>{'$within'=>{'$center'=>[[lat,lng],0.3]}},:deleted_at=>{'$exists'=>false}},
+        key:'uid',
+        initial:{count:0},
+        reduce:"function(obj,prev) {prev.count++}"
+      )
+      
+      nearby_counts.sort! {|x,y| y["count"] <=> x["count"]}
+      
+      if nearby_counts.length > 2*top_n
+        nearby_counts = nearby_counts[0,2*top_n]
+      end
+      
+      nearby_counts.each do |person|
+        member = User.find(person["uid"])
+        if !nearby.include?(member)
+          nearby << member
+          if nearby.length >= top_n
+            break
+          end
+        end
+      end
+      
+      if nearby.length > top_n
+        nearby = nearby[0,top_n]
+      end
+    end
+    
+    # If still too short, see if there are users based nearby
+    if nearby.length < top_n
+      candidates = User.where(:loc.within => {"$center" => [[lat,lng],0.3]}).desc( :pc ).limit( 2*top_n ).entries
+      
+      candidates.each do |candidate|
+        if !nearby.include?(candidate)
+          nearby << candidate
+          if nearby.length >= top_n
+            break
+          end
+        end
+      end
+    end
+    
+    return nearby
   end
 
   def self.find_by_username( username )
