@@ -5,21 +5,12 @@ class Notifier < ActionMailer::Base
   def welcome(user_id)
     @user = User.find( user_id )
     
-    @guides = []
+    @guides = User.top_nearby(@user.loc[0], @user.loc[1], 4)
     
-    if @user.loc
-      counter = 0
-      nearby = User.where(:loc=>{"$near"=>@user.loc,"$maxDistance"=>"0.05"}).desc(:pc, :username).excludes(:username=>'citysnapshots')
-      nearby.each do |candidate|
-        if candidate.id != @user.id
-          @guides << candidate
-          counter += 1
-          if counter == 3
-            break
-          end
-        end
-      end
-    end    
+    citysnapshots = User.find_by_username('citysnapshots')
+    @guides.delete(citysnapshots)
+    
+    @guides = @guides[0,3]
     
     mail(:to => @user.email, :from => "contact@placeling.com", :subject =>"#{@user.username}, welcome to Placeling") do |format|
       format.text
