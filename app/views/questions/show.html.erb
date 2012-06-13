@@ -8,8 +8,6 @@
 
     <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>" />
     <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
-
-
 <% end %>
 
 
@@ -19,32 +17,39 @@
   </script>
 <% end %>
 
-<table>
-  <tr>
-    <td>
-        <div id="question_member">
-          <div class="profile_pic_holder">
-            <a href="<%= user_path(@question.user) %>"><%= image_tag @question.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_question_pic" %></a>
-          </div>
-          <div class="question_poster_username">
-            <div><%= link_to @question.user.username, @question.user, :class=>"username_perspective_link" %></div>
-            <% if @question.user.perspective_count > 1 %>
-                <a href="<%= user_path(@question.user) %>?pid=<%= @question.id %>"><%= t('question.user_place_tally', {:tally => @question.user.perspective_count}) %></a>
-            <% end %>
-          </div>
-        </div>
-        <p>
-          <b><%= @question.title %></b><br>
-          <%= @question.description %>
-        </p>
+<div id="question_header">
+  <div id="question_member">
+    <div class="question_poster_username">
+      <div><%= link_to image_tag(@question.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_question_pic"), user_path(@question.user) %>
+      <%= link_to @question.user.username, @question.user %> <%= t'question.asked' %></div>
+      <div><%= @question.title %></div>
+    </div>
+  </div>
 
+  <div id="question_share">
+      <%= t'question.share' %><br>
+      <span class="social">
+        <a href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share" %></a>
+      </span>
+      <span class="social">
+        <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
+      </span>
+      <span class="social">
+        <a href="https://www.placeling.com<%= question_path(@question) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share" %></a>
+      </span>
+  </div>
+  <div class="question_clear"></div>
+</div>
+
+
+<div id="question_main">
+    <div id="question_left_column">
        <div id="answer_publisher">
        <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
-          <input id="answer_place" name="place_name" placeholder="type a place" size="70" type="text" value="">
+          <input id="answer_place" name="place_name" placeholder="<%= t'question.text_prompt' %>" size="40" type="text" value="">
           <input id="google_id_place" name="google_id_place" type="hidden" value="">
           <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
           <span id="new_place_name" style="display: none"></span>
-          <br/>
           <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
        <% end %>
        </div>
@@ -58,26 +63,21 @@
         <% end %>
 
        </ul>
-    </td>
-    <td>
-
-      <p>
-        <b><%= @question.city_name %></b>
-      </p>
+    </div>
+    <div id="question_right_column">
       <div class="map_holder">
-        <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @question.location[0] %>,<%= @question.location[1] %>&zoom=12&size=258x198&sensor=false" alt="map" class="map_perspective">
+        <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @question.location[0] %>,<%= @question.location[1] %>&zoom=12&size=258x198&sensor=false" alt="map" class="question_map">
       </div>
 
+      <div id="create_own_prompt"><%=  t'question.own_prompt' %></div>
       <div class="all_places_holder">
         <a href="<%= new_question_path %>" class="all_places">
           <%= t('question.make_own') %>
         </a>
       </div>
-
-    </td>
-  </tr>
-</table>
-
+  </div>
+  <div class="question_clear"></div>
+</div>
 
 <% content_for :javascript do %>
 

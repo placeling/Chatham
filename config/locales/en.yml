@@ -166,7 +166,8 @@ en:
 
   question:
     title: "Query Your Friends About a Place"
-    make_own: "Make Your Own"
+    own_prompt: "What do you want to know about a city?"
+    make_own: "Ask your friends"
     suggest: "Suggest Place"
     change: "Change"
     comment: "Comment"
@@ -174,6 +175,9 @@ en:
     place_tally_singular: "1 Suggested Place"
     user_place_tally: "%{tally} Places"
     user_place_tally_singular: "1 Place"
+    asked: "asked"
+    share: "Share this question"
+    text_prompt: "Start typing the name of your place..."
 
 
   inprogress:

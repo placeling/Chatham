@@ -1,20 +1,66 @@
 
 #answer_list{
-    width:600px;
+    width:100%;
 }
 
 .styled_question_pic{
-    height: 80px;
-    width: 80px;
+    height: 40px;
+    width: 40px;
 }
 
 #question_member{
     height: 100px;
+    float:left;
+    width: 500px;
+}
+
+#question_share{
+    float: left;
+
+}
+
+#question_header{
+    background-image: url(/assets/top_texture.png);
+    box-shadow: 0 0 5px #888;
+    padding: 20px;
+    min-height: 50px;
+    width: 100%;
+}
+
+.question_clear{
+    clear: both;
+}
+
+#question_main{
+    width: 900px;
+    margin: 30px auto;
+
+}
+
+#question_left_column{
+    float: left;
+    width: 500px;
+}
+
+#question_right_column{
+    float: left;
+    padding: 20px 0 0 40px;
+}
+
+.question_map{
+    border: 9px solid white;
+    background: #faf9f7;
+    box-shadow: 0 0 8px 0 #888;
 }
 
 .question_poster_username{
     margin-left: 93px;
     padding-top: 10px;
+}
+
+#answer_publisher{
+    height: 60px;
+
 }
 
 #answer_place{
