@@ -1,0 +1,48 @@
+
+#answer_list{
+    width:600px;
+}
+
+.styled_question_pic{
+    height: 80px;
+    width: 80px;
+}
+
+#question_member{
+    height: 100px;
+}
+
+.question_poster_username{
+    margin-left: 93px;
+    padding-top: 10px;
+}
+
+#answer_place{
+    font-family: Verdna;
+    font-size: 16px;
+}
+
+.place_answer {
+    display:block;
+    width:100%;
+    height:100px;
+}
+
+
+.left_place_column{
+    float:left;
+}
+
+
+.center_place_column{
+    float:left;
+}
+
+.right_place_column{
+    float:right;
+}
+
+
+.address_text{
+
+}

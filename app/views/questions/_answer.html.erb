@@ -1,0 +1,22 @@
+<li id="<%= answer.id %>" class="place_answer">
+  <div class="left_place_column" style="">
+    <span class="win_votes"><%= answer.upvotes %></span>
+    <%= link_to image_tag( asset_path('starred.png') ), upvote_question_answer_path(answer.question, answer),
+                :class=>"up_vote", :remote =>true, :method=>:post %>
+  </div>
+
+  <div class="center_place_column">
+      <b><%= link_to answer.place.name, answer.place  %></b>
+      <div class="address_text">
+        <%= answer.place.street_address %><br/>
+        <%= answer.place.city_data %>
+      </div>
+  </div>
+
+  <div class="right_place_column">
+    <% if true #should check if loggedin and bookmarked here %>
+      <span id="placemark"><%= link_to image_tag( "placemark.png", :alt=>"placemark", :class=>"placemark_img"), new_place_perspective_path(answer.place), :remote=>true, :method=>:post, :rel=>"nofollow"%></span>
+    <% end %>
+  </div>
+
+</li>

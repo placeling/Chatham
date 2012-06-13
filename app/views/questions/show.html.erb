@@ -1,5 +1,15 @@
 <% content_for :head do %>
   <title><%= @question.title %></title>
+
+    <meta name="description" content="<%= @question.title %>">
+    <meta property="og:title" content="<%= @question.title %>"/>
+    <meta property="og:url" content="<%= @question.og_path %>"/>
+    <meta property="og:type" content="webpage">
+
+    <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>" />
+    <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
+
+
 <% end %>
 
 
@@ -9,45 +19,45 @@
   </script>
 <% end %>
 
-<p id="notice"><%= notice %></p>
-
-
 <table>
   <tr>
     <td>
-    <div id="member">
-      <div class="profile_pic_holder">
-        <a href="<%= user_path(@question.user) %>"><%= image_tag @question.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_perspective_pic" %></a>
-      </div>
-      <div class="profile_username">
-        <div><%= link_to( @question.user.username, @question.user, :class=>"username_perspective_link")%></div>
-        <% if @question.user.perspective_count > 1 %>
-        <div class="all_places_holder"><a href="<%= user_path(@question.user) %>?pid=<%= @question.id %>" class="all_places"><%= t('perspective.count', {:count => @question.user.perspective_count}) %></a></div>
+        <div id="question_member">
+          <div class="profile_pic_holder">
+            <a href="<%= user_path(@question.user) %>"><%= image_tag @question.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_question_pic" %></a>
+          </div>
+          <div class="question_poster_username">
+            <div><%= link_to @question.user.username, @question.user, :class=>"username_perspective_link" %></div>
+            <% if @question.user.perspective_count > 1 %>
+                <a href="<%= user_path(@question.user) %>?pid=<%= @question.id %>"><%= t('question.user_place_tally', {:tally => @question.user.perspective_count}) %></a>
+            <% end %>
+          </div>
+        </div>
+        <p>
+          <b><%= @question.title %></b><br>
+          <%= @question.description %>
+        </p>
+
+       <div id="answer_publisher">
+       <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
+          <input id="answer_place" name="place_name" placeholder="type a place" size="70" type="text" value="">
+          <input id="google_id_place" name="google_id_place" type="hidden" value="">
+          <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
+          <span id="new_place_name" style="display: none"></span>
+          <br/>
+          <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
+       <% end %>
+       </div>
+
+       <b><%= t 'question.place_tally', :tally=>  @question.answers.count %></b>
+       <ul id="answer_list">
+        <% @question.answers.order_by([[:upvotes, :desc]]).each do |answer| %>
+          <% if !answer.new_record? %>
+            <%= render :partial => "answer", :locals => {:answer =>answer} %>
+          <% end %>
         <% end %>
-      </div>
-    </div>
-    <p>
-      <b><%= @question.title %></b><br>
-      <%= @question.description %>
-    </p>
 
-   <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
-      <b><%= t 'question.suggest_place' %></b><br/>
-      <input id="answer_place" name="place_name" placeholder="type a place" size="100" type="text" value="">
-      <input id="google_id_place" name="google_id_place" type="hidden" value="">
-      <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
-
-      <div class="field">
-        <%= a.text_area :comment, :size =>"40x5" %>
-      </div>
-
-          <div class="actions" style="float:left;">
-      <input id="place_submit" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
-    </div>
-
-
-   <% end %>
-
+       </ul>
     </td>
     <td>
 
@@ -94,6 +104,11 @@
             console.debug( place );
             $("#google_id_place").val( place.id );
             $("#google_ref_place").val( place.reference );
+
+            $("#answer_place").hide(10);
+            $("#place_submit").show(10);
+            $("#new_place_name").html( place.name );
+            $("#new_place_name").show();
 
         });
 

@@ -30,4 +30,10 @@ class Question
       end
   end
 
+
+
+  def og_path
+    "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.question_path( self ) }"
+  end
+
 end

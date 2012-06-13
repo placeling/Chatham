@@ -80,7 +80,12 @@ Chatham::Application.routes.draw do
   end
 
   resources :questions do
-    resources :answers, :only =>[:create]
+    resources :answers, :only =>[:create] do
+      member do
+        post :upvote
+      end
+    end
+
   end
   
   resources :potential_perspectives, :only => [:update, :edit, :destroy]

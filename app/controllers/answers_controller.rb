@@ -13,8 +13,22 @@ class AnswersController < ApplicationController
       place.save
     end
 
-    @answer = @question.answers.build( params[:answer] )
-    @answer.place = place
+    found = false
+    #check to see if place is already suggested
+    @question.answers.each do |answer|
+      if place.id == answer.place.id
+        found = true
+        @answer = answer
+        break
+      end
+    end
+
+    if !found
+      @answer = @question.answers.build( params[:answer] )
+      @answer.place = place
+    end
+
+    add_vote_to_history( @answer )
 
     respond_to do |format|
       if @answer.save
@@ -29,5 +43,45 @@ class AnswersController < ApplicationController
   end
 
   def upvote
+    @question =Question.find( params['question_id'])
+    @answer = @question.answers.where(:id => params['id']).first
+
+    add_vote_to_history( @answer )
+
+    respond_to do |format|
+      if @answer.save
+        format.html { redirect_to @question, notice: 'Voted!' }
+        format.json { render json: @answer, status: :created, location: @question }
+      else
+        format.html { redirect_to @question }
+        format.json { render json: @answer.errors, status: :unprocessable_entity }
+      end
+    end
   end
+
+
+  private
+
+  def add_vote_to_history( answer )
+
+    if current_user
+      if answer.voters.has_key? current_user.id.to_s
+        return false
+      else
+        answer.voters[ current_user.id.to_s ] = true
+        answer.upvotes += 1
+        return true
+      end
+    else
+      session_id = request.session_options[:id]
+      if answer.voters.has_key? session_id.to_s
+        return false
+      else
+        answer.voters[ session_id.to_s ] = true
+        answer.upvotes += 1
+        return true
+      end
+    end
+  end
+
 end
