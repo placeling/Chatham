@@ -1,7 +1,6 @@
 class SetPerspectiveEmptyStatus < Mongoid::Migration
   def self.up
-    perps = Perspective.all()
-    perps.each_with_index do |perp, index|
+    Perspective.all.each do |perp|
       if perp.empty_perspective?
         perp.empty = true
       else
