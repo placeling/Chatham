@@ -4,8 +4,11 @@
 }
 
 .styled_question_pic{
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
+    border: 4px solid white;
+    background: #faf9f7;
+    box-shadow: 0 0 8px 0 #888;
 }
 
 #question_member{
@@ -15,14 +18,15 @@
 }
 
 #question_share{
-    float: left;
+    float:left;
+    margin: 50px 0 0 150px;
 
 }
 
 #question_header{
     background-image: url(/assets/top_texture.png);
     box-shadow: 0 0 5px #888;
-    padding: 20px;
+    padding: 0px;
     min-height: 50px;
     width: 100%;
 }

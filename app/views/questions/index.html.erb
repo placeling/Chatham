@@ -3,10 +3,8 @@
 <table>
   <tr>
     <th>Title</th>
-    <th>Description</th>
     <th>Owner</th>
     <th>Location</th>
-    <th>Views</th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,10 +13,8 @@
 <% @questions.each do |question| %>
   <tr>
     <td><%= question.title %></td>
-    <td><%= question.description %></td>
-    <td><%= question.owner %></td>
+    <td><%= question.user.username %></td>
     <td><%= question.location %></td>
-    <td><%= question.views %></td>
     <td><%= link_to 'Show', question %></td>
     <td><%= link_to 'Edit', edit_question_path(question) %></td>
     <td><%= link_to 'Destroy', question, confirm: 'Are you sure?', method: :delete %></td>

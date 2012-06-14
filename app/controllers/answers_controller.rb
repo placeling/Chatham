@@ -44,7 +44,7 @@ class AnswersController < ApplicationController
 
   def upvote
     @question =Question.find( params['question_id'])
-    @answer = @question.answers.where(:id => params['id']).first
+    @answer = @question.answers.where(:_id => params['id']).first
 
     add_vote_to_history( @answer )
 
@@ -52,9 +52,11 @@ class AnswersController < ApplicationController
       if @answer.save
         format.html { redirect_to @question, notice: 'Voted!' }
         format.json { render json: @answer, status: :created, location: @question }
+        format.js { render action: "../questions/upvote" }
       else
         format.html { redirect_to @question }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
+        format.js { render :text => "" }
       end
     end
   end
