@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_filter :admin_required, :only =>[:new, :index, :create, :destroy, :edit, :update]
+  before_filter :login_required, :only =>[:new, :index, :create, :destroy, :edit, :update]
 
   # GET /questions
   # GET /questions.json
@@ -28,6 +28,7 @@ class QuestionsController < ApplicationController
   # GET /questions/new.json
   def new
     @question = Question.new
+    @question.location = [current_user.location[0], current_user.location[1]]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,10 +47,8 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     @question.user = current_user
 
-    @question.safely.save!
-
     respond_to do |format|
-      if @question.save
+      if @question.safely.save
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
         format.json { render json: @question, status: :created, location: @question }
       else

@@ -15,7 +15,7 @@
 
   <div class="right_place_column">
     <% if true #should check if loggedin and bookmarked here %>
-      <span id="placemark"><%= link_to image_tag( "placemark.png", :alt=>"placemark", :class=>"placemark_img"), new_place_perspective_path(answer.place), :remote=>true, :method=>:post, :rel=>"nofollow"%></span>
+      <span id="placemark"><%= link_to image_tag( "placemark.png", :alt=>"placemark", :class=>"placemark_img"), new_place_perspective_path(answer.place), :remote=>true, :method=>:put, :rel=>"nofollow"%></span>
     <% end %>
   </div>
 

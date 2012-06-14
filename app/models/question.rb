@@ -14,6 +14,10 @@ class Question
 
   before_validation :fix_location
 
+  validates_presence_of :loc
+  validates_length_of :title, :minimum => 3
+  validates_length_of :city_name, :minimum =>1
+
   def fix_location
     begin
         if self.location[0].is_a? String
