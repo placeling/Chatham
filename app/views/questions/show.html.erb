@@ -54,7 +54,7 @@
        <% end %>
        </div>
 
-       <b><%= t 'question.place_tally', :tally=>  @question.answers.count %></b>
+       <b><%= t 'question.place_tally', :tally => @question.answers.count %></b>
        <ul id="answer_list">
         <% @question.answers.order_by([[:upvotes, :desc]]).each do |answer| %>
           <% if !answer.new_record? %>
@@ -66,7 +66,7 @@
     </div>
     <div id="question_right_column">
       <div class="map_holder">
-        <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @question.location[0] %>,<%= @question.location[1] %>&zoom=12&size=258x198&sensor=false" alt="map" class="question_map">
+        <img src="<%= map_url( @question ) %>" alt="map" class="question_map">
       </div>
 
       <div id="create_own_prompt"><%=  t'question.own_prompt' %></div>
