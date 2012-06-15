@@ -16,6 +16,11 @@ class QuestionsController < ApplicationController
   # GET /questions/1.json
   def show
     @question = Question.find(params[:id])
+
+    if @question.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+
     @answer = @question.answers.build
 
     respond_to do |format|
@@ -28,7 +33,7 @@ class QuestionsController < ApplicationController
   # GET /questions/new.json
   def new
     @question = Question.new
-    @question.location = [current_user.location[0], current_user.location[1]]
+    @question.location = [0.0, 0.0]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -49,7 +54,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.safely.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        format.html { redirect_to @question }
         format.json { render json: @question, status: :created, location: @question }
       else
         format.html { render action: "new" }

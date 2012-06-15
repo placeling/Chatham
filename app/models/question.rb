@@ -15,8 +15,9 @@ class Question
   before_validation :fix_location
 
   validates_presence_of :loc
-  validates_length_of :title, :minimum => 3
-  validates_length_of :city_name, :minimum =>1
+  validates_presence_of :title
+  validates_length_of :title, :minimum => 10
+  validates_presence_of :city_name
 
   def fix_location
     begin

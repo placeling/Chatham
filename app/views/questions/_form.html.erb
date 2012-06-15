@@ -52,6 +52,24 @@
             if ( e.which == 13 ) return false;
         });
 
+        $("#question_city_name").focusout(function () {
+            var firstResult = $(".pac-container .pac-item:first").text();
+
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({"address":firstResult }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var lat = results[0].geometry.location.lat(),
+                    lng = results[0].geometry.location.lng(),
+                    placeName = results[0].address_components[0].long_name;
+
+                    $("#question_city_name").val(firstResult);
+
+                    $("#lat").val( lat );
+                    $("#lng").val( lng );
+
+                }
+            });
+        });
 
         var input = document.getElementById('question_city_name');
         var autocomplete = new google.maps.places.Autocomplete(input);
@@ -60,8 +78,8 @@
             var place = autocomplete.getPlace();
             console.debug( place );
             if ( place.geometry ){
-                $("#lat").val( place.geometry.location.ab);
-                $("#lng").val( place.geometry.location.cb);
+                $("#lat").val( place.geometry.location.lat() );
+                $("#lng").val( place.geometry.location.lng() );
             }
         });
 
