@@ -17,6 +17,12 @@
     width: 500px;
 }
 
+.question_field_box{
+    font-family: Verdna;
+    font-size: 18px;
+    width: 300px;
+}
+
 #question_share{
     float:left;
     margin: 50px 0 0 150px;

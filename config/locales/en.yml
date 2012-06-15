@@ -165,11 +165,12 @@ en:
     near_highlighted: "Near a location you highlighted"
 
   question:
-    title: "Query Your Friends About a Place"
+    title: "Ask Friends About..."
     own_prompt: "What do you want to know about a city?"
     make_own: "Ask your friends"
     suggest: "Suggest Place"
     change: "Change"
+    city: "City"
     comment: "Comment"
     place_tally: "%{tally} Suggested Places"
     place_tally_singular: "1 Suggested Place"
@@ -178,6 +179,9 @@ en:
     asked: "asked"
     share: "Share this question"
     text_prompt: "Start typing the name of your place..."
+    city_prompt: "Start typing the name of a city..."
+    question: "Question"
+
 
 
   inprogress:
