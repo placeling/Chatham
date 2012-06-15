@@ -93,8 +93,8 @@
 
         var options = {
           bounds: defaultBounds,
-          types: ['establishment']
-
+          types: ['establishment'],
+          componentRestrictions: {country: '<%= @question.country_code %>'}
         };
 
         var autocomplete = new google.maps.places.Autocomplete(input, options);

@@ -19,6 +19,7 @@ class Question
   validates_presence_of :title
   validates_length_of :title, :minimum => 10
   validates_presence_of :city_name
+  validates_presence_of :country_code
 
   def fix_location
     begin

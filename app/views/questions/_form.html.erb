@@ -57,13 +57,19 @@
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({"address":firstResult }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    var lat = results[0].geometry.location.lat(),
-                    lng = results[0].geometry.location.lng();
-
                     $("#question_city_name").val(firstResult);
 
-                    $("#lat").val( lat );
-                    $("#lng").val( lng );
+                    for ( var i=0; i< results[0].address_components.length; i++){
+                        component = results[0].address_components[i];
+
+                        if ( jQuery.inArray( "country", component.types ) >= 0 ){
+                            $("#country_code").val( component.short_name );
+                            break;
+                        }
+                    }
+
+                    $("#lat").val( results[0].geometry.location.lat() );
+                    $("#lng").val( results[0].geometry.location.lng() );
 
                 }
             });
@@ -76,6 +82,17 @@
             var place = autocomplete.getPlace();
             console.debug( place );
             if ( place.geometry ){
+
+                for ( var i=0; i< place.address_components.length; i++){
+                    component = place.address_components[i];
+
+                    if ( jQuery.inArray( "country", component.types ) >= 0 ){
+                        $("#country_code").val( component.short_name );
+                        break;
+                    }
+                }
+
+
                 $("#lat").val( place.geometry.location.lat() );
                 $("#lng").val( place.geometry.location.lng() );
             }
