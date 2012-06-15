@@ -5,6 +5,7 @@ class Question
   field :title, :type => String
   field :description, :type => String
   field :city_name, :type => String
+  field :country_code, :type => String
   field :loc, :as => :location, :type => Array
 
   embeds_many :answers
