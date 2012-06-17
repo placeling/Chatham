@@ -51,6 +51,7 @@
           <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
           <span id="new_place_name" style="display: none"></span>
           <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
+          <a href="#" id="cancel_link" style="display:none"><%= t'question.cancel'%></a>
        <% end %>
        </div>
 
@@ -109,7 +110,16 @@
             $("#place_submit").show(10);
             $("#new_place_name").html( place.name );
             $("#new_place_name").show();
+            $("#cancel_link").show();
+        });
 
+        $("#cancel_link").click( function(){
+            $("#answer_place").show(10);
+            $("#place_submit").hide(10);
+            $("#answer_place").val();
+            $("#new_place_name").html( "" );
+            $("#new_place_name").hide();
+            $("#cancel_link").hide();
         });
 
      });

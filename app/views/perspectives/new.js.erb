@@ -1,5 +1,5 @@
 $('.unplacemarked').fadeOut(100);
-$("#placemark").fadeOut(100);
+$("#<%= @perspective.place.id %>").fadeOut(100);
 var count = parseInt($('#placemark_count').text());
 count += 1;
 $('#placemark_count').text(count);

@@ -181,6 +181,7 @@ en:
     text_prompt: "Start typing the name of your place..."
     city_prompt: "Start typing the name of a city..."
     question: "Question"
+    cancel: "Change"
 
 
 

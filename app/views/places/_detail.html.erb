@@ -35,7 +35,7 @@
       <div class="placename_holder">
         <span class="placename"><%= place.name %></span>
         <% if !current_user || !my_perspective %>
-          <span id="placemark"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(place) %>"><%= image_tag "placemark.png", :alt=>"placemark", :class=>"placemark_img" %></a></span>
+          <span id="<%= place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(place) %>"><%= image_tag "placemark.png", :alt=>"placemark", :class=>"placemark_img" %></a></span>
         <% end %>
       </div>
       <div class="address_plus_link">
