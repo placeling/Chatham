@@ -8,14 +8,13 @@
   <div class="center_place_column">
       <b><%= link_to answer.place.name, answer.place  %></b>
       <div class="address_text">
-        <%= answer.place.street_address %><br/>
-        <%= answer.place.city_data %>
+        <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
       </div>
   </div>
 
   <div class="right_place_column">
     <% if !current_user || !current_user.perspective_for_place( answer.place ) %>
-      <span id="<%= answer.place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= image_tag "placemark.png", :alt=>"placemark", :class=>"placemark_img" %></a></span>
+      <span id="<%= answer.place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= image_tag "placemark.png", :alt=>"placemark", :class=>"question_placemark_img" %></a></span>
     <% end %>
   </div>
 
