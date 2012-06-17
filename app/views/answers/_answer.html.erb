@@ -14,7 +14,7 @@
 
   <div class="right_place_column">
     <% if !current_user || !current_user.perspective_for_place( answer.place ) %>
-      <span id="<%= answer.place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= image_tag "placemark.png", :alt=>"placemark", :class=>"question_placemark_img" %></a></span>
+      <span id="<%= answer.place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= image_tag "NewPlacemark.png", :alt=>"placemark", :class=>"question_placemark_img" %></a></span>
     <% end %>
   </div>
 

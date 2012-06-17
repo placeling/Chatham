@@ -111,7 +111,6 @@
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
-            console.debug(place);
 
             if ( place.reference ){
                 $("#google_id_place").val( place.id );
