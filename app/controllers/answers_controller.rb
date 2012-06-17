@@ -52,7 +52,7 @@ class AnswersController < ApplicationController
       if @answer.save
         format.html { redirect_to @question, notice: 'Voted!' }
         format.json { render json: @answer, status: :created, location: @question }
-        format.js { render action: "../questions/upvote" }
+        format.js
       else
         format.html { redirect_to @question }
         format.json { render json: @answer.errors, status: :unprocessable_entity }

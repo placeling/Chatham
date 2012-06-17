@@ -59,7 +59,7 @@
        <ul id="answer_list">
         <% @question.answers.order_by([[:upvotes, :desc]]).each do |answer| %>
           <% if !answer.new_record? %>
-            <%= render :partial => "answer", :locals => {:answer =>answer} %>
+            <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
           <% end %>
         <% end %>
 
@@ -75,6 +75,10 @@
         <a href="<%= new_question_path %>" class="all_places">
           <%= t('question.make_own') %>
         </a>
+      </div>
+
+      <div class="miranga_graphic">
+        <%=  image_tag asset_path("Miranda-01.png") %>
       </div>
   </div>
   <div class="question_clear"></div>
