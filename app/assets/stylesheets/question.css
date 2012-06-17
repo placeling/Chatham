@@ -97,6 +97,7 @@
 
 .center_place_column{
     float:left;
+    max-width: 300px;
 }
 
 .right_place_column{

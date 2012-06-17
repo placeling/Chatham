@@ -46,12 +46,17 @@
     <div id="question_left_column">
        <div id="answer_publisher">
        <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
-          <input id="answer_place" name="place_name" placeholder="<%= t'question.text_prompt' %>" size="40" type="text" value="">
-          <input id="google_id_place" name="google_id_place" type="hidden" value="">
-          <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
-          <span id="new_place_name" style="display: none"></span>
-          <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
-          <a href="#" id="cancel_link" style="display:none"><%= t'question.cancel'%></a>
+          <div class='center_place_column'>
+              <input id="answer_place" name="place_name" placeholder="<%= t'question.text_prompt' %>" size="40" type="text" value="">
+              <input id="google_id_place" name="google_id_place" type="hidden" value="">
+              <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
+              <div id="new_place_name" style="display: none; font-weight: bold"></div>
+              <div id="new_address" class="address_text"  style="display: none"></div>
+          </div>
+          <div class='right_place_column'>
+              <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
+              <a href="#" id="cancel_link" style="display:none"><%= t'question.cancel'%></a>
+          </div>
        <% end %>
        </div>
 
@@ -106,12 +111,14 @@
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
+            console.debug(place);
 
             if ( place.reference ){
                 $("#google_id_place").val( place.id );
                 $("#google_ref_place").val( place.reference );
-
+                $("#new_address").html( place.formatted_address );
                 $("#answer_place").hide(10);
+                $("#new_address").show();
                 $("#place_submit").show(10);
                 $("#new_place_name").html( place.name );
                 $("#new_place_name").show();
@@ -122,7 +129,9 @@
         $("#cancel_link").click( function(){
             $("#answer_place").show(10);
             $("#place_submit").hide(10);
-            $("#answer_place").val();
+            $("#answer_place").html("");
+            $("#new_address").hide();
+            $("#new_address").html( "" );
             $("#new_place_name").html( "" );
             $("#new_place_name").hide();
             $("#cancel_link").hide();
