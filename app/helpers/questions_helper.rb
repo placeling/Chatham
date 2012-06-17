@@ -20,7 +20,7 @@ module QuestionsHelper
   end
 
   def map_url( question )
-    url = "https://maps.googleapis.com/maps/api/staticmap?zoom=12&size=258x198&sensor=false"
+    url = "https://maps.googleapis.com/maps/api/staticmap?size=258x198&sensor=false"
 
     tally = 0
     lat = 0.0
@@ -35,10 +35,10 @@ module QuestionsHelper
 
     end
 
-    if tally > 1
+    if tally >= 1
       url += "&center=#{ lat/tally },#{ lng/tally }"
     else
-      url += "&center=#{ question.location[0]},#{ question.location[1] }"
+      url += "&center=#{ question.location[0]},#{ question.location[1] }&zoom=12"
     end
     return url
   end
