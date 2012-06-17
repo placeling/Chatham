@@ -102,15 +102,17 @@
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
-            console.debug( place );
-            $("#google_id_place").val( place.id );
-            $("#google_ref_place").val( place.reference );
 
-            $("#answer_place").hide(10);
-            $("#place_submit").show(10);
-            $("#new_place_name").html( place.name );
-            $("#new_place_name").show();
-            $("#cancel_link").show();
+            if ( place.reference ){
+                $("#google_id_place").val( place.id );
+                $("#google_ref_place").val( place.reference );
+
+                $("#answer_place").hide(10);
+                $("#place_submit").show(10);
+                $("#new_place_name").html( place.name );
+                $("#new_place_name").show();
+                $("#cancel_link").show();
+            }
         });
 
         $("#cancel_link").click( function(){
@@ -120,6 +122,10 @@
             $("#new_place_name").html( "" );
             $("#new_place_name").hide();
             $("#cancel_link").hide();
+        });
+
+        $('#answer_place').keypress(function(e){
+            if ( e.which == 13 ) return false;
         });
 
      });
