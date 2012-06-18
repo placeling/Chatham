@@ -35,7 +35,7 @@
         <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share" %></a>
       </span>
       <span class="social">
-        <a href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= @question.title %>&url=' + encodeURIComponent(window.location); return false"> <%= image_tag "http://www.reddit.com/static/spreddit1.gif", :alt=>"submit to reddit", :class=>"share" %></a>
+        <a href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= @question.title %>&url=' + encodeURIComponent(window.location); return false"> <%= image_tag "reddit.gif", :alt=>"submit to reddit", :class=>"share" %></a>
       </span>
   </div>
   <div class="question_clear"></div>
