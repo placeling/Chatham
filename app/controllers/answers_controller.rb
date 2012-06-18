@@ -15,11 +15,12 @@ class AnswersController < ApplicationController
 
     found = false
     #check to see if place is already suggested
+    score = 0
     @question.answers.each do |answer|
+      score += answer.upvotes
       if place.id == answer.place.id
         found = true
         @answer = answer
-        break
       end
     end
 
@@ -29,9 +30,10 @@ class AnswersController < ApplicationController
     end
 
     add_vote_to_history( @answer )
+    @question.score = score +1
 
     respond_to do |format|
-      if @answer.save
+      if @answer.save && @question.save
         format.html { redirect_to @question, notice: 'Submitted successfully.' }
         format.json { render json: @answer, status: :created, location: @question }
       else
@@ -47,9 +49,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.where(:_id => params['id']).first
 
     add_vote_to_history( @answer )
+    @question.score += 1
 
     respond_to do |format|
-      if @answer.save
+      if @answer.save && @question.save
         format.html { redirect_to @question, notice: 'Voted!' }
         format.json { render json: @answer, status: :created, location: @question }
         format.js

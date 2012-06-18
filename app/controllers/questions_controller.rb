@@ -84,7 +84,7 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     @question = Question.find(params[:id])
-    @question.destroy
+    @question.destroy unless current_user.id != @question.user.id
 
     respond_to do |format|
       format.html { redirect_to questions_url }

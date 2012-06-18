@@ -7,6 +7,7 @@ class Question
   field :city_name, :type => String
   field :country_code, :type => String
   field :loc, :as => :location, :type => Array
+  field :score, :type => Integer, :default => 0
 
   embeds_many :answers
   belongs_to :user
@@ -17,7 +18,7 @@ class Question
 
   validates_presence_of :loc
   validates_presence_of :title
-  validates_length_of :title, :minimum => 10
+  validates_length_of :title, :minimum => 10, :maximum => 80
   validates_presence_of :city_name
   validates_presence_of :country_code
 

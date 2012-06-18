@@ -5,7 +5,7 @@
     <th>Title</th>
     <th>Owner</th>
     <th>Location</th>
-    <th></th>
+    <th>Score</th>
     <th></th>
     <th></th>
   </tr>
@@ -15,8 +15,8 @@
     <td><%= question.title %></td>
     <td><%= question.user.username %></td>
     <td><%= question.location %></td>
+    <td><%= question.score %></td>
     <td><%= link_to 'Show', question %></td>
-    <td><%= link_to 'Edit', edit_question_path(question) %></td>
     <td><%= link_to 'Destroy', question, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
