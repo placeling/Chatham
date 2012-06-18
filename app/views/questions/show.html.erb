@@ -75,14 +75,14 @@
         <img src="<%= map_url( @question ) %>" alt="map" class="question_map">
       </div>
 
-      <div id="create_own_prompt"><%=  t'question.own_prompt' %></div>
-      <div class="all_places_holder">
+      <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
+      <div class="all_places_holder right_info">
         <a href="<%= new_question_path %>" class="all_places">
           <%= t('question.make_own') %>
         </a>
       </div>
 
-      <div class="miranga_graphic">
+      <div class="miranga_graphic right_info">
         <%=  image_tag asset_path("Miranda-01.png") %>
       </div>
   </div>
