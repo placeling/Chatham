@@ -3,10 +3,20 @@
     width:100%;
 }
 
+hr.questions {
+    width:100%;
+    height:0;
+    color:white;
+    background:none;
+    border:none;
+    border-top:1px solid #666;
+    border-bottom:1px solid #999;
+}
+
 .styled_question_pic{
-    height: 40px;
-    width: 40px;
-    border: 4px solid white;
+    height: 35px;
+    width: 35px;
+    border: 3px solid white;
     background: #faf9f7;
     box-shadow: 0 0 8px 0 #888;
 }
@@ -39,14 +49,21 @@
 #question_share{
     float:left;
     margin: 50px 0 0 150px;
+}
 
+#suggestion_tally {
+    width:100%;
+    text-align: right;
+    font-family: verdana;
+    font-size: 16px;
+    margin: 0 0 3px 0;
 }
 
 #question_header{
     background-image: url(/assets/top_texture.png);
     box-shadow: 0 0 5px #888;
     padding: 0px;
-    min-height: 50px;
+    min-height: 110px;
     width: 100%;
 }
 
@@ -102,6 +119,19 @@
     font-size: 20px;
 }
 
+.win_votes {
+    text-align: center;
+    font-family: verdana;
+    font-weight: bold;
+    font-size: 16;
+    margin-top:5px;
+}
+
+.place_name{
+    font-weight: bold;
+    font-size: 14pt;
+}
+
 #answer_place{
     font-family: Verdna;
     font-size: 16px;
@@ -111,18 +141,32 @@
 .place_answer {
     display:block;
     width:100%;
-    height:80px;
+    height:70px;
 }
 
 
+.posted_at{
+    font-size: 8pt;
+    font-family: verdana;
+
+}
+
 .left_place_column{
     float:left;
+    padding-top:5px;
 }
 
 
 .center_place_column{
     float:left;
-    max-width: 300px;
+    max-width: 290px;
+    margin-left: 10px;
+    padding-top:5px;
+}
+
+.placemark_button{
+    top:16px;
+    position: relative;
 }
 
 .right_place_column{

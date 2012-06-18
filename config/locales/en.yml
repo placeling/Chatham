@@ -182,6 +182,7 @@ en:
     city_prompt: "Start typing the name of a city..."
     question: "Question"
     cancel: "Change"
+    posted_at: "Posted %{created_at}"
 
 
 
