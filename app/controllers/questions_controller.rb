@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
-  before_filter :login_required, :only =>[:new, :index, :create, :destroy, :edit, :update]
+  before_filter :login_required, :only =>[:new, :create, :destroy, :edit, :update]
+  before_filter :admin_required, :only =>[:index]
 
   # GET /questions
   # GET /questions.json
