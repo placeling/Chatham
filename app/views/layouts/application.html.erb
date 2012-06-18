@@ -18,6 +18,33 @@
     <%= javascript_include_tag "externals" %>
     <%= javascript_include_tag "application" %>
 
+    <% if notice %>
+          <script type="text/javascript">
+            $(document).ready(function(){
+              noty({
+                        text: '<%= notice unless notice.blank? %>',
+                        layout : 'topRight',
+                        type: "information",
+                        timeout : 5000
+                      });
+            });
+          </script>
+
+        <% end %>
+      <% if alert %>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            noty({
+                      text: '<%= alert unless alert.blank? %>',
+                      layout : 'topRight',
+                      type: "error",
+                      timeout : 5000
+                    });
+          });
+        </script>
+
+      <% end %>
+
   <%= yield :javascript_includes %>
 
   <%= stylesheet_link_tag "application" %>
@@ -36,16 +63,6 @@
     <div id="wrapper">
       <%= render :partial => 'layouts/header' %>
       <div id="content">
-        <% if notice %>
-          <div id="notice" class="flash">
-            <%= content_tag :div, notice unless notice.blank? %>
-          </div>
-        <% end %>
-        <% if alert %>
-          <div id="alert" class="flash">
-            <%= content_tag :div, alert unless alert.blank? %>
-          </div>
-        <% end %>
         <div id="maincontent">
             <%= yield %>
         </div>
