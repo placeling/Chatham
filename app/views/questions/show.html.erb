@@ -62,9 +62,9 @@
 
        <div id="suggestion_tally"><%= t 'question.place_tally', :tally => @question.answers.count %></div>
        <ul id="answer_list">
-        <% @question.answers.order_by([[:upvotes, :desc]]).each do |answer| %>
+        <% @question.answers.order_by([[:upvotes, :desc]]).each_with_index do |answer, i| %>
           <% if !answer.new_record? %>
-            <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
+            <%= render :partial => "answers/answer", :locals => {:answer =>answer, :i =>i} %>
           <% end %>
         <% end %>
          <hr class="questions">

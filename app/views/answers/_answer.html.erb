@@ -1,5 +1,5 @@
 <hr class="questions">
-<li id="<%= answer.id %>" class="place_answer">
+<li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
 
   <div class="left_place_column" style="">
     <%= link_to image_tag( upvote_icon( answer, current_user, request.session_options ), :size=>"30x30" ), upvote_question_answer_path(answer.question, answer),
