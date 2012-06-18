@@ -166,7 +166,7 @@ en:
 
   question:
     title: "Ask Friends About..."
-    own_prompt: "What do you want to know about a city?"
+    own_prompt: "Want to know what's great in a city?"
     make_own: "Ask your friends"
     suggest: "Suggest Place"
     change: "Change"
