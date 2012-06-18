@@ -14,7 +14,20 @@
 #question_member{
     height: 100px;
     float:left;
-    width: 500px;
+    width: 600px;
+}
+
+#question_prompt{
+    font-family: Verdana;
+    font-size: 20px;
+    color: white;
+    padding-top: 10px;
+}
+
+.user_asked, .user_asked a {
+    font-family: Verdana;
+    font-style: italic;
+    color:white;
 }
 
 .question_field_box{
