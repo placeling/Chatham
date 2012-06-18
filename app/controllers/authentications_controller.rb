@@ -144,6 +144,8 @@ class AuthenticationsController < ApplicationController
         end
 
         sign_in( @user )
+
+        @mixpanel.track_event("Sign Up", {:username => @user.username})
         respond_to do |format|
           format.html { redirect_to( confirm_username_user_path( @user ) ) }
           format.json {

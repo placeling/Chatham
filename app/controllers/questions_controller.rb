@@ -22,6 +22,8 @@ class QuestionsController < ApplicationController
       raise ActionController::RoutingError.new('Not Found')
     end
 
+    @other_questions = Question.nearby_questions(@question.location[0], @question.location[1])
+
     @answer = @question.answers.build
 
     respond_to do |format|
@@ -55,6 +57,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.safely.save
+        @mixpanel.track_event("question_create")
         format.html { redirect_to @question }
         format.json { render json: @question, status: :created, location: @question }
       else

@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  after_filter :check_location, :reset_notifications, :only => [:create]
+  after_filter :check_location, :reset_notifications, :track_signup, :only => [:create]
   before_filter :check_timestamp, :only => :create
   before_filter :update_session, :only => :new
   
@@ -16,6 +16,12 @@ class RegistrationsController < Devise::RegistrationsController
       session[:"user_return_to"] = nil
     else
       session[:"user_return_to"] = request.referer
+    end
+  end
+
+  def track_signup
+    if current_user
+      @mixpanel.track_event("Sign Up", {:username => current_user.username})
     end
   end
   

@@ -89,6 +89,8 @@ class UsersController < ApplicationController
     if user.save
       auth.save! unless auth.nil?
 
+      @mixpanel.track_event("Sign Up", {:username => user.username})
+
       if current_client_application
         #send back some access keys so user can immediately start
         request_token = current_client_application.create_request_token
