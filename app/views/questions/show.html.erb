@@ -58,7 +58,10 @@
        <ul id="answer_list">
         <% @question.answers.order_by([[:upvotes, :desc]]).each_with_index do |answer, i| %>
           <% if !answer.new_record? %>
-            <%= render :partial => "answers/answer", :locals => {:answer =>answer, :i =>i} %>
+         <hr class="questions">
+         <li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+            <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
+         </li>
           <% end %>
         <% end %>
          <hr class="questions">
