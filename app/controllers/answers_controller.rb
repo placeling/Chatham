@@ -38,7 +38,8 @@ class AnswersController < ApplicationController
         format.html { redirect_to @question, notice: 'Submitted successfully.' }
         format.json { render json: @answer, status: :created, location: @question }
       else
-        format.html { redirect_to @question }
+        alert =  @answer.errors[:base][0] unless @answer.errors[:base].nil?
+        format.html { redirect_to @question, alert: alert }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
     end

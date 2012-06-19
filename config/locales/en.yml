@@ -183,6 +183,7 @@ en:
     question: "Question"
     cancel: "Change"
     posted_at: "Posted %{created_at}"
+    too_far: "%{name} too far away from selected city"
 
 
 

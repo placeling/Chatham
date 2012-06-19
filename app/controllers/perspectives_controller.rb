@@ -52,7 +52,7 @@ class PerspectivesController < ApplicationController
       @exists = Perspective.where(:uid => @user.id).and(:plid => @place.id)
       
       if @exists.length > 0
-        @perspective.errors.add_to_base("User already has a perspective for here")
+        @perspective.errors[:base] << "User already has a perspective for here"
       end
       
       if @perspective.errors.length > 0
