@@ -5,7 +5,12 @@ class Notifier < ActionMailer::Base
   def welcome(user_id)
     @user = User.find( user_id )
     
-    @guides = User.top_nearby(@user.loc[0], @user.loc[1], 4)
+    if @user.loc.nil?
+      @guides = []
+      @guides << User.find_by_username('topspotter')
+    else
+      @guides = User.top_nearby(@user.loc[0], @user.loc[1], 4)
+    end
     
     citysnapshots = User.find_by_username('citysnapshots')
     @guides.delete(citysnapshots)
