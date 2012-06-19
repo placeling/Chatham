@@ -71,12 +71,10 @@
 
       <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
       <div class="all_places_holder right_info">
-        <a href="<%= new_question_path %>" class="all_places">
-          <%= t('question.make_own') %>
-        </a>
+        <%=  link_to image_tag( asset_path("AskyourfriendsButton.png")), new_question_path %>
       </div>
 
-      <div class="miranga_graphic right_info">
+      <div class="miranda_graphic right_info">
         <%=  image_tag asset_path("Miranda-01.png") %>
       </div>
   </div>
