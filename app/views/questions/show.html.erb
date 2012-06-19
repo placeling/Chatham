@@ -91,7 +91,9 @@
     <% if Rails.env.production?%>
           <script type="text/javascript">
             $(document).ready(function(){
-                mixpanel.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
+                mpmetrics.track_links('.placemark_button a', 'placemark_click');
+                mpmetrics.track_links('.social_share', 'question_share_click');
+                mpmetrics.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
             });
           </script>
     <% end %>
