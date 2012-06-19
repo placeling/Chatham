@@ -75,7 +75,7 @@
       </div>
 
       <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
-      <div class="all_places_holder right_info">
+      <div id="ask_friends_button" class="all_places_holder right_info">
         <%=  link_to image_tag( asset_path("AskyourfriendsButton.png")), new_question_path %>
       </div>
 
@@ -91,6 +91,12 @@
     <% if Rails.env.production?%>
           <script type="text/javascript">
             $(document).ready(function(){
+
+                $("#ask_friends_button a").click(function() {
+                    // This sends us an event every time a user clicks the button
+                    mpmetrics.track("ask_friends_click");
+                });
+
                 mpmetrics.track_links('.placemark_button a', 'placemark_click');
                 mpmetrics.track_links('.social_share', 'question_share_click');
                 mpmetrics.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
