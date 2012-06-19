@@ -22,6 +22,12 @@ class Question
   validates_presence_of :city_name
   validates_presence_of :country_code
 
+  def self.nearby_questions(lat, long)
+      Question.where(:loc.within => {"$center" => [[lat,long],0.1]} ).
+          and(:score.gte => 1).
+          limit( 5 )
+  end
+
   def fix_location
     begin
         if self.location[0].is_a? String
