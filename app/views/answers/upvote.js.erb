@@ -1,1 +1,1 @@
-$("#<%= @answer.id %>").html("<%= escape_javascript(render :partial => "answer",:locals =>{ :answer => @answer}) %>")
+$("#<%= @answer.id %>").html("<%= escape_javascript(render :partial => "answer",:locals =>{ :answer => @answer, :i=>0}) %>")
