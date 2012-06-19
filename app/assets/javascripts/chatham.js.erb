@@ -8,6 +8,33 @@ $.ajaxSetup({
   }
 });
 
+
+$(document).ready(function(){
+    preload([
+        '<%= asset_path("reddit/reddit_hover.png") %>',
+        '<%= asset_path("facebook/facebook_hover.png") %>',
+        '<%= asset_path("twitter/twitter_hover.png") %>'
+    ]);
+
+    $(".reddit_button").mouseenter(function() {
+        $(this).attr("src", '<%= asset_path("reddit/reddit_hover.png") %>');
+      }).mouseleave(function() {
+        $(this).attr("src", '<%= asset_path("reddit/reddit_Static.png") %>');
+      });
+
+    $(".twitter_button").mouseenter(function() {
+        $(this).attr("src", '<%= asset_path("twitter/twitter_hover.png") %>');
+      }).mouseleave(function() {
+        $(this).attr("src", '<%= asset_path("twitter/twitter_static.png") %>');
+      });
+
+    $(".facebook_button").mouseenter(function() {
+        $(this).attr("src", '<%= asset_path("facebook/facebook_hover.png") %>');
+      }).mouseleave(function() {
+        $(this).attr("src", '<%= asset_path("facebook/facebook_Static.png") %>');
+      });
+});
+
 function fadeArrow() {
   $('#arrow_box').fadeOut(100);
   $(window).unbind('click', fadeArrow);
@@ -15,6 +42,14 @@ function fadeArrow() {
   $('.star_link').unbind('click', fadeArrow);
   $('.follow_link').unbind('click', fadeArrow);
   $('#star').unbind('click', fadeArrow);
+}
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
 }
 
 function firstRun() {
