@@ -11,3 +11,20 @@
       <%= link_to t('question.done'), @question, :class =>"all_places" %>
     </div>
 </div>
+
+
+
+<% content_for :javascript do %>
+
+    <% if Rails.env.production?%>
+          <script type="text/javascript">
+            $(document).ready(function(){
+
+                $("a.social").click(function() {
+                    // This sends us an event every time a user clicks the button
+                    mpmetrics.track("question_share_click",  {'question_id':'<%= @question.id %>'});
+                });
+            });
+          </script>
+    <% end %>
+<% end %>
