@@ -20,12 +20,12 @@ module QuestionsHelper
   end
 
   def map_url( question )
-    url = "https://maps.googleapis.com/maps/api/staticmap?size=258x198&sensor=false"
+    url = "https://maps.googleapis.com/maps/api/staticmap?size=450x128&sensor=false"
 
     tally = 0
     lat = 0.0
     lng = 0.0
-    question.answers.order_by([[:upvotes, :desc]]).limit(5).each do |answer|
+    question.answers.order_by([[:upvotes, :desc]]).limit(3).each do |answer|
       unless answer.new_record?
         url += "&markers=icon:http://www.placeling.com/images/marker.png%7Ccolor:red%7C#{answer.place.location[0]},#{answer.place.location[1]}"
         tally += 1

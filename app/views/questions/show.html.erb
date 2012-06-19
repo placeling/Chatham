@@ -5,6 +5,7 @@
     <meta property="og:title" content="<%= @question.title %>"/>
     <meta property="og:url" content="<%= @question.og_path %>"/>
     <meta property="og:type" content="webpage">
+    <meta property="og:image" content="<%= asset_path("Moustache.png") %>">
 
     <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>" />
     <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
@@ -58,7 +59,7 @@
 
        <div id="suggestion_tally"><%= t 'question.place_tally', :tally => @question.answers.count %></div>
        <ul id="answer_list">
-        <% @question.answers.order_by([[:upvotes, :desc]]).each_with_index do |answer, i| %>
+        <% @question.answers.order_by([[:upvotes, :desc]])[0..2].each_with_index do |answer, i| %>
           <% if !answer.new_record? %>
          <hr class="questions">
          <li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
@@ -66,13 +67,25 @@
          </li>
           <% end %>
         <% end %>
-         <hr class="questions">
-       </ul>
+
+         <div class="question_map_holder">
+           <img src="<%= map_url( @question ) %>" alt="map" class="question_map">
+         </div>
+       <% @question.answers.order_by([[:upvotes, :desc]])[3..-1].each_with_index do |answer, i| %>
+         <% if !answer.new_record? %>
+
+
+        <hr class="questions">
+        <li id="<%= answer.id %>" class="place_answer <%= i %2==0 ? "" : "colored_place_row" %>">
+           <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
+        </li>
+         <% end %>
+       <% end %>
+        <hr class="questions">
+      </ul>
     </div>
     <div id="question_right_column">
-      <div class="map_holder">
-        <img src="<%= map_url( @question ) %>" alt="map" class="question_map">
-      </div>
+
 
       <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
       <div id="ask_friends_button" class="all_places_holder right_info">
