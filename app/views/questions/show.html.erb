@@ -91,7 +91,6 @@
     <% if Rails.env.production?%>
           <script type="text/javascript">
             $(document).ready(function(){
-                mixpanel.track_links('a', 'clicked link');
                 mixpanel.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
             });
           </script>
