@@ -33,6 +33,14 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def share
+    @question = Question.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+    end
+  end
+
   # GET /questions/new
   # GET /questions/new.json
   def new
@@ -45,11 +53,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # GET /questions/1/edit
-  def edit
-    @question = Question.find(params[:id])
-  end
-
   # POST /questions
   # POST /questions.json
   def create
@@ -59,7 +62,7 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.safely.save
         @mixpanel.track_event("question_create")
-        format.html { redirect_to @question }
+        format.html { redirect_to share_question_path( @question ) }
         format.json { render json: @question, status: :created, location: @question }
       else
         format.html { render action: "new" }

@@ -85,6 +85,9 @@ Chatham::Application.routes.draw do
         post :upvote
       end
     end
+    member do
+      get :share
+    end
 
   end
   
