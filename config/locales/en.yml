@@ -184,6 +184,7 @@ en:
     cancel: "Change"
     posted_at: "Posted %{created_at}"
     too_far: "%{name} too far away from selected city"
+    other_questions: "Nearby Questions"
 
 
 

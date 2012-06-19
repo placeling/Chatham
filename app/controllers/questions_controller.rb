@@ -22,8 +22,9 @@ class QuestionsController < ApplicationController
       raise ActionController::RoutingError.new('Not Found')
     end
 
-    @other_questions = Question.nearby_questions(@question.location[0], @question.location[1])
+    @other_questions = Question.nearby_questions(@question.location[0], @question.location[1]).entries
 
+    @other_questions.delete( @question )
     @answer = @question.answers.build
 
     respond_to do |format|

@@ -85,7 +85,12 @@
       </ul>
     </div>
     <div id="question_right_column">
-
+        <div id="other_questions_prompt" class="right_info"><%=  t'question.other_questions' %></div>
+        <div id="other_questions" class="right_info">
+            <% @other_questions.each do |question| %>
+             <%= link_to question.title, question %><br>
+            <% end %>
+        </div>
 
       <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
       <div id="ask_friends_button" class="all_places_holder right_info">
