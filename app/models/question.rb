@@ -39,7 +39,7 @@ class Question
       rescue
         errors.add(:base, "You didn't include a latitude and longitude")
       end
-      if self.location[0] == 0.0 and self.location[1] == 0.0
+      if self.location.nil? || (self.location[0] == 0.0 and self.location[1] == 0.0)
         errors.add(:base, "You didn't include a latitude and longitude")
       end
   end

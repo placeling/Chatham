@@ -59,6 +59,8 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     @question.user = current_user
 
+    @question.location = [0.0, 0.0] unless !@question.location.nil?
+
     respond_to do |format|
       if @question.safely.save
         @mixpanel.track_event("question_create")
