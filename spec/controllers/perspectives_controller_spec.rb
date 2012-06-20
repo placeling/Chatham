@@ -16,7 +16,7 @@ describe PerspectivesController do
     json_place = JSON.parse( response.body )
 
     json_place['referring_perspectives'].should_not be(nil)
-    json_place['_id'].should ==  place.id.to_s
+    json_place['id'].should ==  place.id.to_s
   end
   
   it "returns parent perspective after a starring" do
@@ -33,7 +33,7 @@ describe PerspectivesController do
     json_perspective = JSON.parse( response.body )
 
     json_perspective['perspective'].should_not be(nil)
-    json_perspective['perspective']['place_id'].should == perspective.place.id.to_s
+    json_perspective['perspective']['place']['id'].should == perspective.place.id.to_s
 
    end
 
