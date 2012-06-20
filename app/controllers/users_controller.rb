@@ -439,13 +439,16 @@ class UsersController < ApplicationController
           end
         end
       end
+      
       # Query fails if at exact edge, so reassign limits
-      top_lat = [ 89.999999,top_lat ].min
-      bottom_lat = [ -89.999999, bottom_lat ].max
-      right_lng = [ right_lng, 179.999999 ].min
-      right_lng = [ right_lng, -179.999999 ].max
-      left_lng = [ left_lng, 179.999999 ].min
-      left_lng = [ left_lng, -179.999999 ].max
+      if valid_params
+        top_lat = [ 89.999999,top_lat ].min
+        bottom_lat = [ -89.999999, bottom_lat ].max
+        right_lng = [ right_lng, 179.999999 ].min
+        right_lng = [ right_lng, -179.999999 ].max
+        left_lng = [ left_lng, 179.999999 ].min
+        left_lng = [ left_lng, -179.999999 ].max
+      end
       
       # Edge case where user zooms so far out on map that multiple earths are visible
       if valid_params && right_lng < left_lng
