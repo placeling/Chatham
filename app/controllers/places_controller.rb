@@ -253,7 +253,7 @@ class PlacesController < ApplicationController
 
     loc = [lat, lng]
 
-    n = 40
+    n = 1000
     if !span
       span = 0.04
     end

@@ -337,7 +337,7 @@ class Place
         }
 
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
-    #attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
+    attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
 
     if options[:current_user]
       current_user = options[:current_user]
