@@ -226,7 +226,7 @@ class Perspective
         :memo =>self.memo,
         :url => self.url
     }
-    attributes = attributes.merge(:photos =>self.pictures.where(:deleted => false).as_json)
+    attributes = attributes.merge( :photos =>self.pictures.where(:deleted => false).as_json() )
 
     if !self.modified_at
       attributes[:modified_at] = self.updated_at.getutc
@@ -260,17 +260,17 @@ class Perspective
 
     if options[:detail_view] == true
       if current_user
-        attributes.merge(:place => self.place.as_json({:current_user => current_user, :stub => options[:stub] }),:user => self.user.as_json({:current_user => current_user, :stub => options[:stub] }))
+        attributes.merge(:place => self.place.as_json({:current_user => current_user }),:user => self.user.as_json({:current_user => current_user }))
       else
-        attributes.merge(:place => self.place.as_json( :stub => options[:stub] ),:user => self.user.as_json( :stub => options[:stub] ))
+        attributes.merge(:place => self.place.as_json(),:user => self.user.as_json( ))
       end
     elsif options[:place_view]
-      attributes.merge(:user => self.user.as_json({:current_user => current_user, :stub => options[:stub] }))
+      attributes.merge(:user => self.user.as_json({:current_user => current_user}))
     elsif options[:user_view]
       if current_user
-        attributes.merge(:place => self.place.as_json({:current_user => current_user, :stub => options[:stub] }) )
+        attributes.merge(:place => self.place.as_json({:current_user => current_user}) )
       else
-        attributes.merge(:place => self.place.as_json( :stub => options[:stub] ) )
+        attributes.merge(:place => self.place.as_json( ) )
       end
     else
       attributes

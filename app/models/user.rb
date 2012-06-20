@@ -414,20 +414,18 @@ class User
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
     attributes = {:id =>self['_id'],
                   :username => self['username'],
-                  :picture => {:id => self['_id'], :thumb_url => thumb_url, :main_url => main_url}
+                  :picture => {
+                      :id => self['_id'],
+                      :thumb_url => thumb_url,
+                      :main_url => main_url },
+                  :perspectives_count =>self['pc'],
+                  :url => self.url,
+                  :description => self.description,
+                  :main_url => main_url,
+                  :city =>self.city,
+                  :follower_count => followers.count,
+                  :following_count => following.count
     }
-
-    return attributes unless options[:stub].nil? || !options[:stub]
-
-    attributes = attributes.merge(
-                :perspectives_count =>self['pc'],
-                :url => self.url,
-                :description => self.description,
-                :main_url => main_url,
-                :city =>self.city,
-                :follower_count => followers.count,
-                :following_count => following.count
-    )
 
     attributes = attributes.merge( :lat => self.location[0], :lng=> self.location[1]  ) unless self.location.nil?
 

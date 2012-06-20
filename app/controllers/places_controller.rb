@@ -237,15 +237,7 @@ class PlacesController < ApplicationController
     query = params[:query]
     category = params[:category]
 
-    if ( params[:socialgraph] && !params[:query_type])
-      socialgraph = params[:socialgraph].downcase == "true"
-      if socialgraph
-        query_type = "following"
-      else
-        query_type =  "popular"
-      end
-
-    elsif ( params[:query_type] )
+    if ( params[:query_type] )
       query_type =  params[:query_type].downcase
     else
       query_type = "popular"
@@ -313,7 +305,7 @@ class PlacesController < ApplicationController
 
     @places = @places.sort_by { |place| place.distance }
 
-    if query_type ==  "popular" and !socialgraph and @places.count < 5
+    if query_type ==  "popular" and @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
       if category != nil and category.strip != ""
