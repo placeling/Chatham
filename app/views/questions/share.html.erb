@@ -1,6 +1,6 @@
 
 <div id="share_content" style="width:600px;margin:50px auto 0px auto;text-align: center;">
-    <div id="question_title"><%= @question.title %></div>
+    <div id="question_title_copy"><%= @question.title %></div>
     <div>
         <span class="question_share_prompt"><%= t'question.share_prompt' %></span><br>
           <a class="social" href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>&text=<%= u @question.title + " discuss on Placeling" %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag asset_path("twitter/twitter_static.png"), :alt=>"tweet", :class=>"twitter_button" %></a>
