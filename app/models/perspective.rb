@@ -218,22 +218,21 @@ class Perspective
   end
 
   def as_json(options={})
-    attributes = self.attributes.merge(:photos =>self.pictures.where(:deleted => false).as_json, :fav_count =>self.fav_count)
-    attributes[:id] = attributes['_id']
-    attributes.delete('place_stub')
-    attributes.delete('uid')
-    attributes.delete('accuracy')
-    attributes.delete('created_at')
-    attributes.delete('client_application_id')
 
-    attributes.delete('pictures') #covered under "photos"
-    attributes.delete('url') unless !attributes['url'].nil?
-    attributes[:place_id] = attributes.delete('plid')
+    attributes = {
+        :id =>self['_id'],
+        :place_id => self['plid'],
+        :tags => self.tags,
+        :memo =>self.memo,
+        :url => self.url
+    }
+    attributes = attributes.merge(:photos =>self.pictures.where(:deleted => false).as_json)
 
     if !self.modified_at
       attributes[:modified_at] = self.updated_at.getutc
+    else
+      attributes[:modified_at] = self.modified_at.getutc
     end
-    attributes[:modified_timestamp] = attributes['updated_at'].getutc
 
     #if  self.starring_users.count == 1
     #  attributes[:likers] = "#{self.starring_users.count} person"
@@ -261,17 +260,17 @@ class Perspective
 
     if options[:detail_view] == true
       if current_user
-        attributes.merge(:place => self.place.as_json({:current_user => current_user}),:user => self.user.as_json({:current_user => current_user}))
+        attributes.merge(:place => self.place.as_json({:current_user => current_user, :stub => options[:stub] }),:user => self.user.as_json({:current_user => current_user, :stub => options[:stub] }))
       else
-        attributes.merge(:place => self.place.as_json(),:user => self.user.as_json())
+        attributes.merge(:place => self.place.as_json( :stub => options[:stub] ),:user => self.user.as_json( :stub => options[:stub] ))
       end
     elsif options[:place_view]
-      attributes.merge(:user => self.user.as_json({:current_user => current_user}))
+      attributes.merge(:user => self.user.as_json({:current_user => current_user, :stub => options[:stub] }))
     elsif options[:user_view]
       if current_user
-        attributes.merge(:place => self.place.as_json({:current_user => current_user}) )
+        attributes.merge(:place => self.place.as_json({:current_user => current_user, :stub => options[:stub] }) )
       else
-        attributes.merge(:place => self.place.as_json() )
+        attributes.merge(:place => self.place.as_json( :stub => options[:stub] ) )
       end
     else
       attributes
