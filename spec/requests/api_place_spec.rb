@@ -245,8 +245,8 @@ describe "API - " do
 
       showPlace= JSON.parse( response.body )
       returned_perspectives = showPlace['perspectives']
-      returned_perspectives[0]['_id'].should == perspective.id.to_s
-      returned_perspectives[1]['_id'].should == perspective1.id.to_s
+      returned_perspectives[0]['id'].should == perspective.id.to_s
+      returned_perspectives[1]['id'].should == perspective1.id.to_s
       returned_perspectives.count.should == 2
 
     end

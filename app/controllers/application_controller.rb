@@ -229,7 +229,7 @@ class ApplicationController < ActionController::Base
 
   def initialize_mixpanel
     if defined?(MIXPANEL_TOKEN)
-      @mixpanel = Mixpanel.new(MIXPANEL_TOKEN, request.env)
+      @mixpanel = Mixpanel::Tracker.new(MIXPANEL_TOKEN, request.env)
     else
       @mixpanel = DummyMixpanel.new
     end
