@@ -317,32 +317,27 @@ class Place
   def as_json(options={})
     self.venue_types.delete("Establishment") #filter out establishment from return values
 
-    attributes = self.attributes.merge(:tags => self.tags)
+
+    attributes = {
+            :id =>self['_id'],
+            :name =>self['name'],
+            :lat => self.location[0],
+            :lng=> self.location[1],
+            :street_address => self.street_address,
+            :city_data => self.city_data,
+            :location => self.location,
+            :tags => self.tags,
+            :google_id => self['gid'],
+            :google_ref => self.google_ref,
+            :google_url =>self.google_url,
+            :perspective_count => self['pc'],
+            :thumb_url => self.thumb_url,
+            :map_url => self.map_url,
+            :venue_types => self.venue_types
+        }
+
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
-    attributes = attributes.merge(:thumb_url => self.thumb_url)
-    attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
-    attributes[:id] = attributes['_id']
-
-    attributes = attributes.merge( {:lat => loc[0], :lng=> loc[1] } )
-
-    attributes.delete('address_components')
-    attributes.delete('client_application_id')
-    attributes.delete('place_tags_last_update')
-    attributes.delete('address_components')
-    attributes.delete('ptg')
-    attributes.delete('accurate_address')
-    attributes.delete('user_id')
-    attributes.delete('vicinity')
-    attributes.delete('created_at')
-    attributes.delete('cid')
-    attributes.delete('phone_number')
-
-
-
-    attributes[:location] = attributes.delete('loc')
-    attributes[:google_id] = attributes.delete('gid')
-    attributes[:perspective_count] = attributes.delete('pc')
-    attributes[:map_url] = self.map_url
+    #attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
 
     if options[:current_user]
       current_user = options[:current_user]
