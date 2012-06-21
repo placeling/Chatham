@@ -5,7 +5,7 @@ class Perspective
   include Mongoid::Timestamps
   include Mongoid::Paranoia
   include Twitter::Extractor
-
+  
   field :memo,        :type => String, :default=>""
   field :tags,    :type => Array, :default =>[]
   field :url,       :type => String
@@ -111,7 +111,18 @@ class Perspective
       perspective.starring_users.delete( user.id )
     end
   end
-
+  
+  def html_memo
+    if self.memo && self.memo.length > 0
+      text = self.memo
+      text.gsub!(/\r\n?/, "</p><p>")
+      text.gsub!(/\n+/, "</p><p>")
+      return "<p>" + text + "</p>"
+    else
+      return nil
+    end
+  end
+  
   def notify_modified
     self.modified_at = Time.now
   end
@@ -227,7 +238,11 @@ class Perspective
         :url => self.url,
         :modified_at => self['modified_at']
     }
-    attributes = attributes.merge( :photos =>self.pictures.where(:deleted => false).as_json() )
+    if options[:bounds]
+      attributes = attributes.merge( :photos =>self.pictures.where(:deleted => false).as_json({:bounds => true }) )
+    else
+      attributes = attributes.merge( :photos =>self.pictures.where(:deleted => false).as_json() )
+    end
 
     if !self.modified_at
       attributes[:modified_at] = self.updated_at.getutc
@@ -238,7 +253,13 @@ class Perspective
     #elsif self.starring_users.count > 1
     #  attributes[:likers] = "#{self.starring_users.count} people"
     #end
-
+    
+    if options[:bounds]
+      attributes = attributes.merge(:ploc => self[:ploc])
+      attributes = attributes.merge(:modified_timestamp => self[:modified_at])
+      attributes[:memo] = self.html_memo
+    end
+    
     if options[:current_user]
       current_user = options[:current_user]
 
@@ -256,7 +277,7 @@ class Perspective
     else
       attributes = attributes.merge(:mine => false)
     end
-
+    
     if options[:detail_view] == true
       if current_user
         attributes.merge(:place => self.place.as_json({:current_user => current_user }),:user => self.user.as_json({:current_user => current_user }))
@@ -267,14 +288,21 @@ class Perspective
       attributes.merge(:user => self.user.as_json({:current_user => current_user}))
     elsif options[:user_view]
       if current_user
-        attributes.merge(:place => self.place.as_json({:current_user => current_user}) )
+        if options[:bounds]
+          attributes.merge(:place => self.place.as_json({:current_user => current_user, :bounds => true}))
+        else
+          attributes.merge(:place => self.place.as_json({:current_user => current_user}))
+        end
       else
-        attributes.merge(:place => self.place.as_json( ) )
+        if options[:bounds]
+          attributes.merge(:place => self.place.as_json({:bounds => true}) )
+        else
+          attributes.merge(:place => self.place.as_json( ) )
+        end
       end
-    else
-      attributes
+    #else
+    #  attributes
     end
-
   end
 
 

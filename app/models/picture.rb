@@ -101,7 +101,13 @@ class Picture
                   :iphone_url => self.iphone_url,
                   :main_url => self.main_url,
                   :square_url => self.mosaic_3_1_url }
-
+    
+    if options && options[:bounds]
+      attributes.delete(:id)
+      attributes.delete(:thumb_url)
+      attributes.delete(:iphone_url)
+    end
+    
     if options && options[:current_user] && options[:current_user].id == self.perspective[:uid]
       attributes = attributes.merge(:mine => true)
     else

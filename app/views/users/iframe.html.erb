@@ -71,21 +71,19 @@
     }
     
     .info_memo {
-      height: 52px;
+      max-height: 52px;
       overflow-y: auto;
-      margin-top: 3px;
+      margin-top: -2px;
       padding-left: 4px;
       font-size: 12px;
       font-family: Rockwell,Georgia,Serif;
       margin-bottom: 5px;
       color: #6A6147;
     }
-    
     .info_memo p {
-      font-size: 12px;
-      font-family: Rockwell,Georgia,Serif;
-      margin-bottom: 5px;
+      font-family: Georgia,"Times New Roman",Serif;
       color: #6A6147;
+      padding-top: 5px;
     }
     
     .info_pics {
@@ -100,12 +98,23 @@
     }
     
     .info_pic_thumb {
-      max-height: 60px;
-      max-width: 90px;
+      height: 60px;
+      width: 60px;
       border: solid 6px white;
       -moz-box-shadow: 0 0 2px 0 #888;
       -webkit-box-shadow: 0 0 2px 0 #888;
       box-shadow: 0 0 2px 0 #888;
+    }
+    
+    .hidden_pic {
+      display: none;
+    }
+    
+    .more_photos {
+      font-size: 10px;
+      float:right;
+      padding-right:15px;
+      padding-top:54px;
     }
     
     .info_mod {
@@ -176,8 +185,9 @@
   <script type="text/javascript">
     document.domain = "placeling.com";
 
-    DEFAULT_HEIGHT = 81;
-
+    var DEFAULT_HEIGHT = 81;
+    var MAX_PHOTOS = 3;
+    
     var persps = {};
     var myOptions;
     var placemark;
@@ -206,46 +216,44 @@
 
             infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a></div>';
 
-            if (perspective.place.venue_types.length > 0 || perspective.tags.length > 0) {
+            if (perspective.tags.length > 0) {
               infoWindowHTML += '<div class="info_cat_and_tags">';
-              if (perspective.place.venue_types.length > 0) {
-                infoWindowHTML += '<span class="tag">';
-                infoWindowHTML += perspective.place.venue_types.join('</span>, <span class="tag">');
-                infoWindowHTML += '</span>';
-                if (perspective.tags.length > 0) {
-                  infoWindowHTML += ' | ';
-                }
-              }
-              if (perspective.tags.length > 0) {
-                infoWindowHTML += '<span class="tag">#';
-                infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
-                infoWindowHTML += '</span>';
-              }
+              infoWindowHTML += '<span class="tag">#';
+              infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
+              infoWindowHTML += '</span>';
               infoWindowHTML += '</div>';
             }
-
-            if (typeof perspective.memo !== "undefined") {
+            
+            if (perspective.memo !== null && perspective.memo.length > 0) {
               infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
             }
 
-            if (typeof perspective.url !== "undefined") {
+            if (perspective.url !== null) {
               infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
             }
 
             if (perspective.photos.length > 0) {
-              var pics = '<div class="info_pics lightboxGallery">';
+              var pics = '<div class="info_pics">';
+              
               for (var i=0; i<perspective.photos.length; i++) {
-                pics += '<span class="info_pic"><a href="'+ perspective.photos[i].main_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[i].thumb_url + '"></a></span>';
+                if (i < MAX_PHOTOS) {
+                  pics += '<span class="info_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+                } else {
+                  pics += '<span class="hidden_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+                }
               }
+              if (perspective.photos.length > MAX_PHOTOS) {
+                pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
+              }
+
               pics += '</div>';
+              
               infoWindowHTML += pics;
             }
             
             var modified_at = new Date( perspective.modified_at );
             var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('M. dd, yy', modified_at ); + '</span>';
             
-            
-//            var mod_action = '<div class="info_update"><span class="info_mod">' + perspective.updated_at + '</span></div>';
             infoWindowHTML += mod_action;
 
             infoWindowHTML += '</div>';
@@ -254,10 +262,6 @@
             infowindow.setContent(infoWindowHTML);
             infowindow.setPosition(marker.getPosition());
             google.maps.event.trigger(map, 'idle');
-
-            $('.lightboxGallery').each(function(){
-              $('.lightbox', this).lightBox();
-            });
           }
         });
         marker.setVisible(false);

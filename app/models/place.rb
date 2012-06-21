@@ -316,8 +316,7 @@ class Place
   
   def as_json(options={})
     self.venue_types.delete("Establishment") #filter out establishment from return values
-
-
+    
     attributes = {
             :id =>self['_id'],
             :name =>self['name'],
@@ -338,7 +337,20 @@ class Place
 
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
     attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user =>options[:current_user], :place_view => true}))
-
+    
+    if options[:bounds]
+      attributes.delete(:lat)
+      attributes.delete(:lng)
+      attributes.delete(:street_address)
+      attributes.delete(:google_id)
+      attributes.delete(:google_ref)
+      attributes.delete(:google_url)
+      attributes.delete(:thumb_url)
+      attributes.delete(:map_url)
+      attributes.delete(:perspective_count)
+      attributes.delete(:city_data)
+    end
+    
     if options[:current_user]
       current_user = options[:current_user]
       bookmarked = self.perspectives.where(:uid=> current_user.id).count >0
