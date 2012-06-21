@@ -235,7 +235,8 @@ class Perspective
         :place_id => self['plid'],
         :tags => self.tags,
         :memo =>self.memo,
-        :url => self.url
+        :url => self.url,
+        :modified_at => self['modified_at']
     }
     if options[:bounds]
       attributes = attributes.merge( :photos =>self.pictures.where(:deleted => false).as_json({:bounds => true }) )
@@ -245,8 +246,6 @@ class Perspective
 
     if !self.modified_at
       attributes[:modified_at] = self.updated_at.getutc
-    else
-      attributes[:modified_at] = self.modified_at.getutc
     end
 
     #if  self.starring_users.count == 1
