@@ -1,0 +1,6 @@
+generate_sitemap:
+  cron: "0 0 */4 * *"
+  class: RegenerateSiteMap
+  queue: high
+  args:
+  description: "This job rebuilds the site map a couple times a day"
