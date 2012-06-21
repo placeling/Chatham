@@ -96,7 +96,7 @@
               var action = '<div class="info_action"><a href="/perspectives/' + perspective.id + "/edit" + '"><img class="info_img" src="<%= asset_path("writer.png") %>"></a></div>';
               infoWindowHTML += action;
           } else {
-            if (perspective.memo.length >0 || perspective.photos.length > 0) {
+            if ((perspective.memo !== null && perspective.memo.length >0) || perspective.photos.length > 0) {
               var action = '<div class="info_action"><a href="/" id="star">';
               if (perspective.starred == true) {
                 action += "<img class='info_img' src='<%= asset_path("starred.png") %>'>";
@@ -128,7 +128,7 @@
             infoWindowHTML += '</div>';
           }
 
-          if (typeof perspective.memo !== "undefined") {
+          if (perspective.memo !== null && perspective.memo.length > 0) {
             infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
           }
           

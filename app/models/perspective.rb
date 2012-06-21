@@ -5,7 +5,7 @@ class Perspective
   include Mongoid::Timestamps
   include Mongoid::Paranoia
   include Twitter::Extractor
-
+  
   field :memo,        :type => String, :default=>""
   field :tags,    :type => Array, :default =>[]
   field :url,       :type => String
@@ -111,7 +111,18 @@ class Perspective
       perspective.starring_users.delete( user.id )
     end
   end
-
+  
+  def html_memo
+    if self.memo && self.memo.length > 0
+      text = self.memo
+      text.gsub!(/\r\n?/, "</p><p>")
+      text.gsub!(/\n+/, "</p><p>")
+      return "<p>" + text + "</p>"
+    else
+      return nil
+    end
+  end
+  
   def notify_modified
     self.modified_at = Time.now
   end
@@ -247,6 +258,7 @@ class Perspective
     if options[:bounds]
       attributes = attributes.merge(:ploc => self[:ploc])
       attributes = attributes.merge(:modified_timestamp => self[:modified_at])
+      attributes[:memo] = self.html_memo
     end
     
     if options[:current_user]
