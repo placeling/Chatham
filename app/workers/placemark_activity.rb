@@ -29,7 +29,7 @@ class PlacemarkActivity
         end
       end
 
-      if !image_url.nil?
+      if false #!image_url.nil?
         RESQUE_LOGGER.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{image_url}"
 
         actor1.facebook.og_action!("placeling:placemark",
