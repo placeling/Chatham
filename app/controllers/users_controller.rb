@@ -327,7 +327,6 @@ class UsersController < ApplicationController
   end
   
   def bounds
-
     @user = User.find_by_username(params[:id])
     
     @perspectives = []
@@ -383,7 +382,7 @@ class UsersController < ApplicationController
     end
     
     respond_to do |format|
-      format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user } ) } }
+      format.json { render :json => {:perspectives => @perspectives.as_json({:user_view => true, :current_user => current_user, :bounds => true } ) } }
     end    
   end
   

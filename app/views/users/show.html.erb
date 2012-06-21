@@ -131,8 +131,8 @@
           if (typeof perspective.memo !== "undefined") {
             infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
           }
-
-          if (typeof perspective.url !== "undefined") {
+          
+          if (perspective.url !== null) {
             infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
           }
 
@@ -534,7 +534,7 @@
             var pics = '';
 
             for (var j=0; j<persps[persp].photos.length; j++) {
-              pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].thumb_url + '"></div>';
+              pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].square_url + '"></div>';
             }
             locationHTML += pics;
             count += 1;
