@@ -904,7 +904,7 @@ class UsersController < ApplicationController
     @title = t('user.follower_title', :username =>@user.username)
 
     respond_to do |format|
-      format.json { render :json => {:followers => @users} }
+      format.json { render :json => {:users => @users} }
       format.html { render :template => 'users/list'}
       format.js { render :template => 'users/list'}
     end
@@ -920,7 +920,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render :template => 'users/list'}
-      format.json { render :json => {:following => @users } }
+      format.json { render :json => {:users => @users } }
       format.js { render :template => 'users/list'}
     end
   end

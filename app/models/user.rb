@@ -438,9 +438,6 @@ class User
 
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
       if self.id == current_user.id
-        for auth in current_user.authentications
-          attributes = attributes.merge(auth.provider => auth)
-        end
         attributes = attributes.merge(:auths => self.authentications)
       end
     else
