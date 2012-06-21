@@ -25,12 +25,13 @@ describe "Quick Picks" do
       :format => 'json',
       :lat => '49.282049',
       :lng => '-123.107772',
-      :socialgraph =>true
+      :query_type => 'following'
     }
 
     response.status.should be(200)
 
     showPlace = JSON.parse( response.body )
+    pp showPlace
     showPlace['suggested_places'].count.should == 2
 
   end

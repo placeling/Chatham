@@ -122,8 +122,8 @@ describe "API - " do
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
-      returned_data.followers.count.should == 1
-      returned_data.followers[0].username.should == @ian.username
+      returned_data.users.count.should == 1
+      returned_data.users[0].username.should == @ian.username
     end
 
     it "have a list of their following returned" do
@@ -136,8 +136,8 @@ describe "API - " do
       response.status.should be(200)
 
       returned_data =  Hashie::Mash.new( JSON.parse( response.body ) )
-      returned_data.following.count.should == 1
-      returned_data.following[0].username.should == @lindsay.username
+      returned_data.users.count.should == 1
+      returned_data.users[0].username.should == @lindsay.username
     end
   end
 

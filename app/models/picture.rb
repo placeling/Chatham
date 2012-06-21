@@ -24,7 +24,7 @@ class Picture
   before_save :cache_urls
 
   def cache_urls
-    if !self.creation_environment
+    if self.creation_environment.nil?
       self.creation_environment = Rails.env
       self.thumb_cache_url = self.image_url(:thumb)
       self.iphone_cache_url = self.image_url(:iphone)
