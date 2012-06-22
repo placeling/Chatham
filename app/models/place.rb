@@ -51,10 +51,10 @@ class Place
   index :pc
 
 
-  def self.find( place_id )
+  def self.forgiving_find( place_id )
     if BSON::ObjectId.legal?( place_id )
       #it's a direct request for a place in our db
-      place = Place.where( :_id => place_id ).first
+      place = Place.find( place_id )
     else
       place = Place.find_by_slug place_id
       if place.nil?

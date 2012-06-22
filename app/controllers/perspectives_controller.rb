@@ -8,7 +8,7 @@ class PerspectivesController < ApplicationController
   before_filter :login_required, :except =>[:index, :show, :nearby, :all]
 
   def new
-    @place = Place.find(params[:place_id])
+    @place = Place.forgiving_find(params[:place_id])
     @perspective= current_user.perspective_for_place( @place )
 
     if @perspective.nil?
@@ -31,7 +31,7 @@ class PerspectivesController < ApplicationController
   def admin_create
     @perspective = Perspective.new(params[:perspective])
     
-    @place = Place.find( params['place_id'])
+    @place = Place.forgiving_find( params['place_id'])
     if !@place.nil?
       if params[:username] and admin_user?
         @user = User.find_by_username(params[:username])
@@ -77,7 +77,7 @@ class PerspectivesController < ApplicationController
   end
   
   def following
-    @place = Place.find( params['place_id'])
+    @place = Place.forgiving_find( params['place_id'])
 
     @perspectives = []
     perspectives_count = 0
@@ -135,7 +135,7 @@ class PerspectivesController < ApplicationController
   
 
   def all
-    @place = Place.find( params['place_id'])
+    @place = Place.forgiving_find( params['place_id'])
 
     @perspectives = []
     if !@place.nil?
@@ -260,7 +260,7 @@ class PerspectivesController < ApplicationController
       end
     else
       #this can also function as a "create", given that a user can only have one perspective for a place
-      @place = Place.find( params['place_id'])
+      @place = Place.forgiving_find( params['place_id'])
       
       @perspective= current_user.perspective_for_place( @place )
       
@@ -351,7 +351,7 @@ class PerspectivesController < ApplicationController
         redirect_path = user_path(current_user)
       end
     else
-      @place = Place.find( params['place_id'])
+      @place = Place.forgiving_find( params['place_id'])
       
       @perspective= current_user.perspective_for_place( @place )
     end
