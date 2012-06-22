@@ -25,7 +25,7 @@ SitemapGenerator::Sitemap.create do
        add question_path(question), :lastmod => question.updated_at, :changefreq => 'daily'
   end
 
-  Place.all.each do |place|
+  Place.where(:pc.gt => 0).each do |place|
     add place_path(place), :lastmod => place.updated_at
   end
 
