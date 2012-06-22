@@ -7,18 +7,18 @@
 <table border="1">
     <thead>
       <tr>
-      <td>Username</td>
-      <td>Place</td>
-      <td>Memo</td>
-      <td>Url</td>
-      <td>Created_at</td>
+      <th>Username</th>
+      <th>Place</th>
+      <th>Memo</th>
+      <th>Url</th>
+      <th>Created_at</th>
     </thead>
 
   <% for perspective in @perspectives %>
     <tr>
       <td><%= link_to perspective.user.username,  user_path( perspective.user ), :target =>"_blank"%></td>
       <td><%= link_to perspective.place.name,  place_path( perspective.place ), :target =>"_blank" %></td>
-      <td><%= perspective.memo %></td>
+      <td><%= perspective.memo[0..200] %></td>
       <td><%= link_to perspective.url,  perspective.url, :target =>"_blank" %></td>
       <td><%= perspective[:created_at] %></td>
     </tr>
