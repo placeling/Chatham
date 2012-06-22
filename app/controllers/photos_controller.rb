@@ -4,9 +4,9 @@ class PhotosController < ApplicationController
   def create
 
     #this can also function as a "create", given that a user can only have one perspective for a place
-    @place = Place.forgiving_find( params['place_id'])
+    @place = Place.forgiving_find(params['place_id'])
 
-    @perspective= current_user.perspective_for_place( @place )
+    @perspective= current_user.perspective_for_place(@place)
 
     if @perspective.nil?
       @perspective = @place.perspectives.build()
@@ -34,16 +34,11 @@ class PhotosController < ApplicationController
 
   def destroy
     #doesn't delete, just flags as deleted to be scooped up later
-        #this can also function as a "create", given that a user can only have one perspective for a place
-    if BSON::ObjectId.legal?( params['place_id'] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params['place_id'])
-    else
-      @place = Place.find_by_google_id( params['place_id'] )
-    end
+    #this can also function as a "create", given that a user can only have one perspective for a place
+    @place = Place.forgiving_find(params['place_id'])
 
-    @perspective= current_user.perspective_for_place( @place )
-    @picture = @perspective.pictures.find( params['id'] )
+    @perspective= current_user.perspective_for_place(@place)
+    @picture = @perspective.pictures.find(params['id'])
 
     @picture.deleted = true;
 
