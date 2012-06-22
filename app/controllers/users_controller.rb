@@ -928,12 +928,7 @@ class UsersController < ApplicationController
   def index
     follow_filter = params[:filter_follow]
 
-    if BSON::ObjectId.legal?( params[:place_id] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params[:place_id])
-    else
-      @place = Place.find_by_google_id( params[:place_id] )
-    end
+    @place = Place.forgiving_find( params[:place_id])
 
     @users = []
 
