@@ -171,6 +171,7 @@ en:
     suggest: "Suggest Place"
     change: "Change"
     city: "City"
+    questions: "Questions"
     comment: "Comment"
     place_tally: "%{tally} Suggested Places"
     place_tally_singular: "1 Suggested Place"
@@ -187,6 +188,7 @@ en:
     too_far: "%{name} too far away from selected city"
     other_questions: "Nearby Questions"
     share_prompt: "Share this question with your friends to get answers"
+
 
 
 

@@ -77,12 +77,7 @@ class PerspectivesController < ApplicationController
   end
   
   def following
-    if BSON::ObjectId.legal?( params['place_id'] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params['place_id'])
-    else
-      @place = Place.find_by_google_id( params['place_id'] )
-    end
+    @place = Place.find( params['place_id'])
 
     @perspectives = []
     perspectives_count = 0
@@ -140,12 +135,7 @@ class PerspectivesController < ApplicationController
   
 
   def all
-    if BSON::ObjectId.legal?( params['place_id'] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params['place_id'])
-    else
-      @place = Place.find_by_google_id( params['place_id'] )
-    end
+    @place = Place.find( params['place_id'])
 
     @perspectives = []
     if !@place.nil?
@@ -270,12 +260,7 @@ class PerspectivesController < ApplicationController
       end
     else
       #this can also function as a "create", given that a user can only have one perspective for a place
-      if BSON::ObjectId.legal?( params['place_id'] )
-        #it's a direct request for a place in our db
-        @place = Place.find( params['place_id'])
-      else
-        @place = Place.find_by_google_id( params['place_id'] )
-      end
+      @place = Place.find( params['place_id'])
       
       @perspective= current_user.perspective_for_place( @place )
       
@@ -366,12 +351,7 @@ class PerspectivesController < ApplicationController
         redirect_path = user_path(current_user)
       end
     else
-      if BSON::ObjectId.legal?( params['place_id'] )
-        #it's a direct request for a place in our db
-        @place = Place.find( params['place_id'])
-      else
-        @place = Place.find_by_google_id( params['place_id'] )
-      end
+      @place = Place.find( params['place_id'])
       
       @perspective= current_user.perspective_for_place( @place )
     end

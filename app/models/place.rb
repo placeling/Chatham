@@ -5,8 +5,9 @@ class Place
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
+  include Mongoid::Slug
   include ApplicationHelper
-  
+
   before_validation :fix_location, :remove_blank_categories, :parse_address
   
   field :loc, :as => :location, :type => Array
@@ -29,6 +30,8 @@ class Place
   field :ptg, :as => :place_tags, :type => Array
   field :place_tags_last_update, :type => DateTime
 
+  slug :name, :index => true, :permanent=>true
+
   has_many :perspectives, :foreign_key => 'plid'
   belongs_to :client_application, :foreign_key => 'cid' #indexes on these don't seem as important
   belongs_to  :user #not really that significant
@@ -46,6 +49,20 @@ class Place
   index :ptg, :background => true
   index :gid
   index :pc
+
+
+  def self.find( place_id )
+    if BSON::ObjectId.legal?( place_id )
+      #it's a direct request for a place in our db
+      place = Place.where( :_id => place_id ).first
+    else
+      place = Place.find_by_slug place_id
+      if place.nil?
+        place = Place.find_by_google_id( place_id )
+      end
+    end
+    return place
+  end
 
   def self.find_random(lat, long)
     places = Place.near(:loc => [lat,long]).

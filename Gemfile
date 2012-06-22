@@ -70,6 +70,7 @@ gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 gem 'resque_mailer'
 
 gem 'sitemap_generator'
+gem 'mongoid_slug'
 
 group :test, :development do
 

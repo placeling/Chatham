@@ -379,13 +379,8 @@ class PlacesController < ApplicationController
 
 
   def highlight
-    if BSON::ObjectId.legal?( params[:id] )
       #it's a direct request for a place in our db
-      @place = Place.find( params[:id])
-    else
-      @place = Place.find_by_google_id( params[:id] )
-    end
-
+    @place = Place.find( params[:id] )
     current_user.highlighted_places << @place.id
     current_user.save
 
@@ -396,12 +391,8 @@ class PlacesController < ApplicationController
   end
 
   def unhighlight
-    if BSON::ObjectId.legal?( params[:id] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params[:id])
-    else
-      @place = Place.find_by_google_id( params[:id] )
-    end
+
+    @place = Place.find( params[:id])
 
     current_user.highlighted_places.delete( @place.id )
     current_user.save
@@ -414,12 +405,7 @@ class PlacesController < ApplicationController
 
 
   def show
-    if BSON::ObjectId.legal?( params[:id] )
-      #it's a direct request for a place in our db
-      @place = Place.find( params[:id])
-    else
-      @place = Place.find_by_google_id( params[:id] )
-    end
+    @place = Place.find( params[:id])
 
     if @place.nil? && params['google_ref'] # && current_user
       #not here, and we need to fetch it

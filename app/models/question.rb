@@ -1,5 +1,6 @@
 class Question
   include Mongoid::Document
+  include Mongoid::Slug
   include Mongoid::Timestamps
 
   field :title, :type => String
@@ -8,6 +9,8 @@ class Question
   field :country_code, :type => String
   field :loc, :as => :location, :type => Array
   field :score, :type => Integer, :default => 0
+
+  slug :title, :index => true, :permanent=>true
 
   embeds_many :answers
   belongs_to :user

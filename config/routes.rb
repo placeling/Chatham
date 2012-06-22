@@ -88,6 +88,9 @@ Chatham::Application.routes.draw do
     member do
       get :share
     end
+    collection do
+      get :admin
+    end
 
   end
   
