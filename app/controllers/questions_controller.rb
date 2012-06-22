@@ -1,11 +1,26 @@
 class QuestionsController < ApplicationController
   before_filter :login_required, :only =>[:new, :create, :destroy, :edit, :update]
-  before_filter :admin_required, :only =>[:index]
+  before_filter :admin_required, :only =>[:admin, :index]
 
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+
+    loc = get_location
+    if loc["remote_ip"]
+      loc = loc["remote_ip"]
+    else
+      loc = loc['default']
+    end
+
+
+    if current_user
+      @myQuestions = current_user.questions
+    else
+      @myQuestions = []
+    end
+
+    @questions = Question.nearby_questions( loc[0], loc[1] )
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,10 +28,26 @@ class QuestionsController < ApplicationController
     end
   end
 
+  # GET /questions/admin
+  def admin
+    @questions = Question.all
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @questions }
+    end
+  end
+
+
   # GET /questions/1
   # GET /questions/1.json
   def show
-    @question = Question.find(params[:id])
+    if BSON::ObjectId.legal?( params[:id] )
+      @question = Question.find( params[:id] )
+    else
+      @question = Question.find_by_slug( params[:id] )
+    end
+
 
     if @question.nil?
       raise ActionController::RoutingError.new('Not Found')
@@ -73,27 +104,17 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # PUT /questions/1
-  # PUT /questions/1.json
-  def update
-    @question = Question.find(params[:id])
-
-    respond_to do |format|
-      if @question.update_attributes(params[:question])
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
-    @question = Question.find(params[:id])
-    @question.destroy unless current_user.id != @question.user.id
+    if BSON::ObjectId.legal?( params[:id] )
+      @question = Question.find( params[:id] )
+    else
+      @question = Question.find_by_slug( params[:id] )
+    end
+
+    @question.destroy if (current_user.id == @question.user.id || current_user.is_admin?)
 
     respond_to do |format|
       format.html { redirect_to questions_url }

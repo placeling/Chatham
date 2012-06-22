@@ -1,27 +1,46 @@
-<h1>Listing questions</h1>
-
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Owner</th>
-    <th>Location</th>
-    <th>Score</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @questions.each do |question| %>
-  <tr>
-    <td><%= question.title %></td>
-    <td><%= question.user.username %></td>
-    <td><%= question.location %></td>
-    <td><%= question.score %></td>
-    <td><%= link_to 'Show', question %></td>
-    <td><%= link_to 'Destroy', question, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+<% content_for :head do %>
+    <title><%= t'question.questions' %></title>
 <% end %>
-</table>
 
-<br />
 
-<%= link_to 'New Question', new_question_path %>
+<% content_for :javascript_includes do %>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+    </script>
+<% end %>
+
+<div id="question_header">
+  <div id="header_content">
+
+  </div>
+</div>
+
+
+<div id="question_main">
+  <div id="question_left_column">
+    <ul id="answer_list">
+      <% @questions.each_with_index do |question, i| %>
+              <hr class="questions">
+              <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+                <%= render :partial => "question", :locals => {:answer =>answer} %>
+              </li>
+      <% end %>
+
+      <div class="question_map_holder">
+        <img src="<%= map_url( @questions[0] ) %>" alt="map" class="question_map">
+      </div>
+      <hr class="questions">
+    </ul>
+  </div>
+  <div id="question_right_column">
+    <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
+    <div id="ask_friends_button" class="all_places_holder right_info">
+      <%=  link_to image_tag( asset_path("AskyourfriendsButton.png")), new_question_path %>
+    </div>
+
+    <div class="miranda_graphic right_info">
+      <%=  image_tag asset_path("Miranda-01.png") %>
+    </div>
+  </div>
+  <div class="question_clear"></div>
+</div>
