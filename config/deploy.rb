@@ -12,6 +12,8 @@ before 'deploy:setup', 'rvm:install_ruby'
 after "deploy:create_symlink", "deploy:restart_workers"
 after "deploy:create_symlink", "deploy:restart_scheduler"
 
+SitemapGenerator::Sitemap.sitemaps_path = 'shared/'
+
 task :production do
   set :gateway, 'beagle.placeling.com:11235'
   server '10.112.241.90', :app, :web, :db, :scheduler, :primary => true
