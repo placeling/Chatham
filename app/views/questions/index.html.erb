@@ -1,5 +1,5 @@
 <% content_for :head do %>
-    <title><%= t'question.questions' %></title>
+    <title><%= t 'question.questions' %></title>
 <% end %>
 
 
@@ -20,26 +20,23 @@
   <div id="question_left_column">
     <ul id="answer_list">
       <% @questions.each_with_index do |question, i| %>
-              <hr class="questions">
-              <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
-                <%= render :partial => "question", :locals => {:answer =>answer} %>
-              </li>
+          <hr class="questions">
+          <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+            <%= render :partial => "question", :locals => {:question => question} %>
+          </li>
       <% end %>
 
-      <div class="question_map_holder">
-        <img src="<%= map_url( @questions[0] ) %>" alt="map" class="question_map">
-      </div>
       <hr class="questions">
     </ul>
   </div>
   <div id="question_right_column">
-    <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
+    <div id="create_own_prompt" class="right_info"><%= t 'question.own_prompt' %></div>
     <div id="ask_friends_button" class="all_places_holder right_info">
-      <%=  link_to image_tag( asset_path("AskyourfriendsButton.png")), new_question_path %>
+      <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
     </div>
 
     <div class="miranda_graphic right_info">
-      <%=  image_tag asset_path("Miranda-01.png") %>
+      <%= image_tag asset_path("Miranda-01.png") %>
     </div>
   </div>
   <div class="question_clear"></div>

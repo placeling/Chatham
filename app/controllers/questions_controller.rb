@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_filter :login_required, :only =>[:new, :create, :destroy, :edit, :update]
-  before_filter :admin_required, :only =>[:admin, :index]
+  before_filter :login_required, :only => [:new, :create, :destroy, :edit, :update]
+  before_filter :admin_required, :only => [:admin, :index]
 
   # GET /questions
   # GET /questions.json
@@ -13,14 +13,13 @@ class QuestionsController < ApplicationController
       loc = loc['default']
     end
 
-
     if current_user
       @myQuestions = current_user.questions
     else
       @myQuestions = []
     end
 
-    @questions = Question.nearby_questions( loc[0], loc[1] )
+    @questions = Question.nearby_questions(loc["lat"].to_f, loc["lng"].to_f)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,10 +41,10 @@ class QuestionsController < ApplicationController
   # GET /questions/1
   # GET /questions/1.json
   def show
-    if BSON::ObjectId.legal?( params[:id] )
-      @question = Question.find( params[:id] )
+    if BSON::ObjectId.legal?(params[:id])
+      @question = Question.find(params[:id])
     else
-      @question = Question.find_by_slug( params[:id] )
+      @question = Question.find_by_slug(params[:id])
     end
 
 
@@ -55,7 +54,7 @@ class QuestionsController < ApplicationController
 
     @other_questions = Question.nearby_questions(@question.location[0], @question.location[1]).entries
 
-    @other_questions.delete( @question )
+    @other_questions.delete(@question)
     @answer = @question.answers.build
 
     respond_to do |format|
@@ -95,7 +94,7 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.safely.save
         @mixpanel.track_event("question_create")
-        format.html { redirect_to share_question_path( @question ) }
+        format.html { redirect_to share_question_path(@question) }
         format.json { render json: @question, status: :created, location: @question }
       else
         format.html { render action: "new" }
@@ -108,10 +107,10 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
-    if BSON::ObjectId.legal?( params[:id] )
-      @question = Question.find( params[:id] )
+    if BSON::ObjectId.legal?(params[:id])
+      @question = Question.find(params[:id])
     else
-      @question = Question.find_by_slug( params[:id] )
+      @question = Question.find_by_slug(params[:id])
     end
 
     @question.destroy if (current_user.id == @question.user.id || current_user.is_admin?)

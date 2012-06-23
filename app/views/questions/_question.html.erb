@@ -1,0 +1,17 @@
+<div class="left_place_column" style="">
+  <div class="win_votes"><%= question.score %></div>
+</div>
+
+<div class="center_place_column">
+  <span class="place_name"><%= link_to question.title, question %></span>
+
+  <div class="address_text">
+    <%= question.city_name %> | <%= question.country_code %>
+  </div>
+</div>
+
+<div class="right_place_column">
+  <div class="posted_at"><%= t('question.posted_at', :created_at => question.created_at.strftime("%b %d | %Y")) %></div>
+</div>
+
+<div class="question_clear"></div>
