@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
       @myQuestions = []
     end
 
-    @questions = Question.nearby_questions(loc["lat"].to_f, loc["lng"].to_f)
+    @questions = Question.nearby_questions(loc["lat"].to_f, loc["lng"].to_f).limit(20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -52,7 +52,7 @@ class QuestionsController < ApplicationController
       raise ActionController::RoutingError.new('Not Found')
     end
 
-    @other_questions = Question.nearby_questions(@question.location[0], @question.location[1]).entries
+    @other_questions = Question.nearby_questions(@question.location[0], @question.location[1]).limit(3).entries
 
     @other_questions.delete(@question)
     @answer = @question.answers.build

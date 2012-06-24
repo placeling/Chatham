@@ -27,8 +27,7 @@ class Question
 
   def self.nearby_questions(lat, long)
     Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
-        and(:score.gte => 1).
-        limit(5)
+        and(:score.gte => 1)
   end
 
   def self.nearby_random_questions(lat, long)
