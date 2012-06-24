@@ -2,7 +2,7 @@ require 'json'
 
 class GooglePlacesAutocomplete
   include HTTParty
-  debug_output $stdout
+  #debug_output $stdout
 
   # api docs: http://code.google.com/apis/maps/documentation/places/autocomplete.html
   base_uri "https://maps.googleapis.com/maps/api/place/autocomplete"
