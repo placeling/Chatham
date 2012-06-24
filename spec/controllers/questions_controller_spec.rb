@@ -5,8 +5,8 @@ describe QuestionsController do
 
   describe "GET index" do
     it "assigns all questions as @questions" do
-      Factory.create(:question, :title=>"What is the best dive bar in Vancouver?")
-      Factory.create(:question, :title=>"What is the best sushi in Vancouver?")
+      Factory.create(:question, :title => "What is the best dive bar in Vancouver?")
+      Factory.create(:question, :title => "What is the best sushi in Vancouver?")
 
       user = Factory.create(:admin)
       @request.env["devise.mapping"] = Devise.mappings[:user]
@@ -20,10 +20,19 @@ describe QuestionsController do
   describe "GET show" do
     it "assigns the requested question as @question" do
       question = Factory.create(:question)
-      get :show, :id => question.id
+      get :show, :id => question.slug
       response.should be_success
     end
   end
+
+  describe "GET show" do
+    it "assigns the requested question as @question" do
+      question = Factory.create(:question)
+      get :share, :id => question.slug
+      response.should be_success
+    end
+  end
+
 
   describe "GET new" do
     it "assigns a new question as @question" do
@@ -44,7 +53,7 @@ describe QuestionsController do
         sign_in user
 
         expect {
-          post :create, :question => {:city_name => "Toronto, ON, Canada", :title=>"Where can I get a milkshake in Toronto?", :country_code=>"ca", :location=>[49.261226, -123.1139268]}
+          post :create, :question => {:city_name => "Toronto, ON, Canada", :title => "Where can I get a milkshake in Toronto?", :country_code => "ca", :location => [49.261226, -123.1139268]}
         }.to change(Question, :count).by(1)
       end
 
@@ -70,7 +79,7 @@ describe QuestionsController do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in user
 
-      question =  Factory.create(:question, :user => user)
+      question = Factory.create(:question, :user => user)
       expect {
         delete :destroy, :id => question.id
       }.to change(Question, :count).by(-1)
@@ -82,7 +91,7 @@ describe QuestionsController do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       sign_in user
 
-      question =  Factory.create(:question)
+      question = Factory.create(:question)
       expect {
         delete :destroy, :id => question.id
       }.to change(Question, :count).by(0)

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_filter :login_required, :only => [:new, :create, :destroy, :edit, :update]
-  before_filter :admin_required, :only => [:admin, :index]
+  before_filter :admin_required, :only => [:admin]
 
   # GET /questions
   # GET /questions.json
@@ -64,7 +64,11 @@ class QuestionsController < ApplicationController
   end
 
   def share
-    @question = Question.find(params[:id])
+    if BSON::ObjectId.legal?(params[:id])
+      @question = Question.find(params[:id])
+    else
+      @question = Question.find_by_slug(params[:id])
+    end
 
     respond_to do |format|
       format.html # show.html.erb

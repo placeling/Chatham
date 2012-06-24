@@ -10,12 +10,12 @@ class Question
   field :loc, :as => :location, :type => Array
   field :score, :type => Integer, :default => 0
 
-  slug :title, :index => true, :permanent=>true
+  slug :title, :index => true, :permanent => true
 
   embeds_many :answers
   belongs_to :user
 
-  index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index [[:loc, Mongo::GEO2D]], :min => -180, :max => 180
 
   before_validation :fix_location
 
@@ -26,31 +26,37 @@ class Question
   validates_presence_of :country_code
 
   def self.nearby_questions(lat, long)
-      Question.where(:loc.within => {"$center" => [[lat,long],0.1]} ).
-          and(:score.gte => 1).
-          limit( 5 )
+    Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
+        and(:score.gte => 1).
+        limit(5)
+  end
+
+  def self.nearby_random_questions(lat, long)
+    Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
+        and(:score.gte => 1).
+        order(:random)
+    limit(5)
   end
 
   def fix_location
     begin
-        if self.location[0].is_a? String
-          self.location[0] = self.location[0].to_f
-        end
-        if self.location[1].is_a? String
-          self.location[1] = self.location[1].to_f
-        end
-      rescue
-        errors.add(:base, "You didn't include a latitude and longitude")
+      if self.location[0].is_a? String
+        self.location[0] = self.location[0].to_f
       end
-      if self.location.nil? || (self.location[0] == 0.0 and self.location[1] == 0.0)
-        errors.add(:base, "You didn't include a latitude and longitude")
+      if self.location[1].is_a? String
+        self.location[1] = self.location[1].to_f
       end
+    rescue
+      errors.add(:base, "You didn't include a latitude and longitude")
+    end
+    if self.location.nil? || (self.location[0] == 0.0 and self.location[1] == 0.0)
+      errors.add(:base, "You didn't include a latitude and longitude")
+    end
   end
 
 
-
   def og_path
-    "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.question_path( self ) }"
+    "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.question_path(self) }"
   end
 
 end
