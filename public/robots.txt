@@ -4,4 +4,4 @@
 # User-Agent: *
 # Disallow: /
 
-Sitemap: https://www.placeling.com/sitemap_index.xml.gz
+Sitemap: https://www.placeling.com/shared/sitemap_index.xml.gz
