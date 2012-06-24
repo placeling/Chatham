@@ -458,10 +458,10 @@ class UsersController < ApplicationController
 
         if current_user
           following_counts = Perspective.collection.group(
-              cond: {:ploc => {'$within' => {'$box' => box}}, :uid => {"$in" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
-              key :'uid',
-                  initial: {count: 0},
-                  reduce :"function(obj,prev) {prev.count++}"
+              :cond => {:ploc => {'$within' => {'$box' => box}}, :uid => {"$in" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
+              :key => 'uid',
+              :initial => {count: 0},
+              :reduce => "function(obj,prev) {prev.count++}"
           )
 
           following_counts.sort! { |x, y| y["count"] <=> x["count"] }
@@ -483,10 +483,10 @@ class UsersController < ApplicationController
           following.sort! { |x, y| [y["count"], x["name"]] <=> [x["count"], y["name"]] }
 
           popular_counts = Perspective.collection.group(
-              cond: {:ploc => {'$within' => {'$box' => box}}, :uid => {"$nin" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
-              key :'uid',
-                  initial: {count: 0},
-                  reduce :"function(obj,prev) {prev.count++}"
+              :cond => {:ploc => {'$within' => {'$box' => box}}, :uid => {"$nin" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
+              :key => 'uid',
+              :initial => {count: 0},
+              :reduce => "function(obj,prev) {prev.count++}"
           )
 
           popular_counts.sort! { |x, y| y["count"] <=> x["count"] }
@@ -518,10 +518,10 @@ class UsersController < ApplicationController
           @users["popular"] = popular
         else
           popular_counts = Perspective.collection.group(
-              cond: {:ploc => {'$within' => {'$box' => box}}, :deleted_at => {'$exists' => false}},
-              key :'uid',
-                  initial: {count: 0},
-                  reduce :"function(obj,prev) {prev.count++}"
+              :cond => {:ploc => {'$within' => {'$box' => box}}, :deleted_at => {'$exists' => false}},
+              :key => 'uid',
+              :initial => {count: 0},
+              :reduce => "function(obj,prev) {prev.count++}"
           )
 
           popular_counts.sort! { |x, y| y["count"] <=> x["count"] }
