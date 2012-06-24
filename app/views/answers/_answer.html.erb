@@ -1,21 +1,24 @@
-  <div class="left_place_column" style="">
-    <%= link_to image_tag( upvote_icon( answer, current_user, request.session_options ), :size=>"30x30" ), upvote_question_answer_path(answer.question, answer),
-                :class=>"up_vote", :remote =>true, :method=>:post %>
-    <div class="win_votes"><%= answer.upvotes %></div>
-  </div>
+<div class="left_place_column" style="">
+  <%= link_to image_tag(upvote_icon(answer, current_user, request.session_options), :size => "30x30"), upvote_question_answer_path(answer.question, answer),
+              :class => "up_vote", :remote => true, :method => :post %>
+  <div class="win_votes"><%= answer.upvotes %></div>
+</div>
 
-  <div class="center_place_column">
-      <span class="place_name"><%= link_to answer.place.name, answer.place  %></span>
-      <div class="address_text">
-        <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
+<div class="center_place_column">
+  <span class="place_name"><%= link_to answer.place.name, answer.place %></span>
+
+  <div class="address_text">
+    <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
+  </div>
+</div>
+
+<div class="right_place_column">
+  <div class="posted_at"><%= t('question.posted_at', :created_at => answer.created_at.strftime("%b %d | %Y")) %></div>
+  <% if !current_user || !current_user.perspective_for_place(answer.place) %>
+      <div style="font-size: 11px;text-align: right;top:40px;" class="placemark_button" id="<%= answer.place.id %>">
+        <a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= t 'question.save_this_place' %></a>
       </div>
-  </div>
+  <% end %>
+</div>
 
-  <div class="right_place_column">
-    <div class="posted_at"><%= t('question.posted_at', :created_at => answer.created_at.strftime("%b %d | %Y") ) %></div>
-    <% if !current_user || !current_user.perspective_for_place( answer.place ) %>
-      <div style="display:none" class="placemark_button" id="<%= answer.place.id %>"><a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= image_tag "NewPlacemark.png", :alt=>"placemark", :class=>"question_placemark_img" %></a></div>
-    <% end %>
-  </div>
-
-  <div class="question_clear"></div>
+<div class="question_clear"></div>

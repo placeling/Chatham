@@ -1,118 +1,122 @@
 <% content_for :head do %>
-  <title><%= @question.title %></title>
+    <title><%= @question.title %></title>
 
     <meta name="description" content="<%= @question.title %>">
     <meta property="og:title" content="<%= @question.title %>"/>
     <meta property="og:url" content="<%= @question.og_path %>"/>
-    <meta property="og:type" content="webpage">
+    <meta property="og:type" content="placeling:question">
+    <meta property="og:article" content="a">
     <meta property="og:image" content="<%= ApplicationHelper.get_hostname + asset_path("Moustache.png") %>">
 
-    <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>" />
+    <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>"/>
     <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
 <% end %>
 
 
 <% content_for :javascript_includes do %>
-  <script type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
-  </script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+    </script>
 <% end %>
 
 <div id="question_header">
   <div id="header_content">
-      <div id="question_member">
-        <div class="question_poster_username">
-          <div><%= link_to image_tag(@question.user.thumb_url, :alt=>"Profile Pic", :class =>"styled_question_pic"), user_path(@question.user) %>
-          <span class="user_asked"><%= link_to @question.user.username, @question.user %> <%= t'question.asked' %></span></div>
-          <div id="question_prompt"><%= @question.title %></div>
+    <div id="question_member">
+      <div class="question_poster_username">
+        <div><%= link_to image_tag(@question.user.thumb_url, :alt => "Profile Pic", :class => "styled_question_pic"), user_path(@question.user) %>
+          <span class="user_asked"><%= link_to @question.user.username, @question.user %> <%= t 'question.asked' %></span>
         </div>
+        <div id="question_prompt"><%= @question.title %></div>
       </div>
+    </div>
 
-      <div id="question_share">
-          <span class="user_asked"><%= t'question.share' %></span><br>
-            <a class="social_share" href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>&text=<%= u @question.title + " Discuss on Placeling" %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag asset_path("twitter/twitter_static.png"), :alt=>"tweet", :class=>"twitter_button" %></a>
-            <a class="social_share" href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag asset_path("facebook/facebook_Static.png"), :alt=>"share on facebook", :class=>"facebook_button" %></a>
-             <a class="social_share" href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= u @question.title %>&url=https://www.placeling.com<%= question_path(@question) %>'; return false;" ><%= image_tag asset_path("reddit/reddit_Static.png"), :alt=>"submit to reddit", :class=>"reddit_button" %></a>
-      </div>
-      <div class="question_clear"></div>
+    <div id="question_share">
+      <span class="user_asked"><%= t 'question.share' %></span><br>
+      <a class="social_share" href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>&text=<%= u @question.title + " Discuss on Placeling" %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag asset_path("twitter/twitter_static.png"), :alt => "tweet", :class => "twitter_button" %></a>
+      <a class="social_share" href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag asset_path("facebook/facebook_Static.png"), :alt => "share on facebook", :class => "facebook_button" %></a>
+      <a class="social_share" href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= u @question.title %>&url=https://www.placeling.com<%= question_path(@question) %>'; return false;"><%= image_tag asset_path("reddit/reddit_Static.png"), :alt => "submit to reddit", :class => "reddit_button" %></a>
+    </div>
+    <div class="question_clear"></div>
   </div>
 </div>
 
 
 <div id="question_main">
-    <div id="question_left_column">
-       <div id="answer_publisher">
-       <%= form_for( @answer, :url => question_answers_path(@question) ) do |a| %>
+  <div id="question_left_column">
+    <div id="answer_publisher">
+      <%= form_for(@answer, :url => question_answers_path(@question)) do |a| %>
           <div class='center_place_column'>
-              <input id="answer_place" name="place_name" placeholder="<%= t'question.text_prompt' %>" size="40" type="text" value="">
-              <input id="google_id_place" name="google_id_place" type="hidden" value="">
-              <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
-              <div id="new_place_name" style="display: none; font-weight: bold"></div>
-              <div id="new_address" class="address_text"  style="display: none"></div>
+            <input id="answer_place" name="place_name" placeholder="<%= t 'question.text_prompt' %>" size="40" type="text" value="">
+            <input id="google_id_place" name="google_id_place" type="hidden" value="">
+            <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
+
+            <div id="new_place_name" style="display: none; font-weight: bold"></div>
+            <div id="new_address" class="address_text" style="display: none"></div>
           </div>
           <div class='right_place_column'>
-              <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
-              <a href="#" id="cancel_link" style="display:none"><%= t'question.cancel'%></a>
+            <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest') %>" name="commit">
+            <a href="#" id="cancel_link" style="display:none"><%= t 'question.cancel' %></a>
           </div>
-       <% end %>
-       </div>
-
-       <div id="suggestion_tally"><%= t 'question.place_tally', :tally => @question.answers.count %></div>
-       <ul id="answer_list">
-        <% @question.answers.order_by([[:upvotes, :desc]])[0..2].each_with_index do |answer, i| %>
-          <% if !answer.new_record? %>
-         <hr class="questions">
-         <li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
-            <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
-         </li>
-          <% end %>
-        <% end %>
-
-         <div class="question_map_holder">
-           <img src="<%= map_url( @question ) %>" alt="map" class="question_map">
-         </div>
-         <% if  @question.answers.count > 3 %>
-       <% @question.answers.order_by([[:upvotes, :desc]])[3..-1].each_with_index do |answer, i| %>
-         <% if !answer.new_record? %>
-
-
-        <hr class="questions">
-        <li id="<%= answer.id %>" class="place_answer <%= i %2==0 ? "" : "colored_place_row" %>">
-           <%= render :partial => "answers/answer", :locals => {:answer =>answer} %>
-        </li>
-         <% end %>
-                 <% end %>
-       <% end %>
-        <hr class="questions">
-      </ul>
+      <% end %>
     </div>
-    <div id="question_right_column">
-        <div id="other_questions_prompt" class="right_info"><%=  t'question.other_questions' %></div>
-        <div id="other_questions" class="right_info">
-            <% @other_questions.each do |question| %>
-             <%= link_to question.title, question %><br>
-            <% end %>
-        </div>
 
-      <div id="create_own_prompt" class="right_info"><%=  t'question.own_prompt' %></div>
-      <div id="ask_friends_button" class="all_places_holder right_info">
-        <%=  link_to image_tag( asset_path("AskyourfriendsButton.png")), new_question_path %>
-      </div>
+    <div id="suggestion_tally"><%= t 'question.place_tally', :tally => @question.answers.count %></div>
+    <ul id="answer_list">
+      <% @question.answers.order_by([[:upvotes, :desc]])[0..2].each_with_index do |answer, i| %>
+          <% if !answer.new_record? %>
+              <hr class="questions">
+              <li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+                <%= render :partial => "answers/answer", :locals => {:answer => answer} %>
+              </li>
+          <% end %>
+      <% end %>
 
-      <div class="miranda_graphic right_info">
-        <%=  image_tag asset_path("Miranda-01.png") %>
+      <div class="question_map_holder">
+        <img src="<%= map_url(@question) %>" alt="map" class="question_map">
       </div>
+      <% if  @question.answers.count > 3 %>
+          <% @question.answers.order_by([[:upvotes, :desc]])[3..-1].each_with_index do |answer, i| %>
+              <% if !answer.new_record? %>
+
+
+                  <hr class="questions">
+                  <li id="<%= answer.id %>" class="place_answer <%= i %2==0 ? "" : "colored_place_row" %>">
+                    <%= render :partial => "answers/answer", :locals => {:answer => answer} %>
+                  </li>
+              <% end %>
+          <% end %>
+      <% end %>
+      <hr class="questions">
+    </ul>
+  </div>
+  <div id="question_right_column">
+    <div id="other_questions_prompt" class="right_info"><%= t 'question.other_questions' %></div>
+    <div id="other_questions" class="right_info">
+      <% @other_questions.each do |question| %>
+          <%= link_to question.title, question %>
+          <br>
+      <% end %>
+    </div>
+
+    <div id="create_own_prompt" class="right_info"><%= t 'question.own_prompt' %></div>
+    <div id="ask_friends_button" class="all_places_holder right_info">
+      <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
+    </div>
+
+    <div class="miranda_graphic right_info">
+      <%= image_tag asset_path("Miranda-01.png") %>
+    </div>
   </div>
   <div class="question_clear"></div>
 </div>
 
 <% content_for :javascript do %>
 
-    <% if Rails.env.production?%>
-          <script type="text/javascript">
-            $(document).ready(function(){
+    <% if Rails.env.production? %>
+        <script type="text/javascript">
+            $(document).ready(function () {
 
-                $("#ask_friends_button a").click(function() {
+                $("#ask_friends_button a").click(function () {
                     // This sends us an event every time a user clicks the button
                     mpmetrics.track("ask_friends_click");
                 });
@@ -121,58 +125,58 @@
                 mpmetrics.track_links('.social_share', 'question_share_click');
                 mpmetrics.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
             });
-          </script>
+        </script>
     <% end %>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
 
-    $(document).ready(function(){
+        $(document).ready(function () {
 
-        var input = document.getElementById('answer_place');
-        var defaultBounds = new google.maps.LatLngBounds(
-          new google.maps.LatLng(<%= @question.location[0] %>, <%= @question.location[1] %>),
-          new google.maps.LatLng(<%= @question.location[0] %>, <%= @question.location[1] %>));
+            var input = document.getElementById('answer_place');
+            var defaultBounds = new google.maps.LatLngBounds(
+                    new google.maps.LatLng(<%= @question.location[0] %>, <%= @question.location[1] %>),
+                    new google.maps.LatLng(<%= @question.location[0] %>, <%= @question.location[1] %>));
 
-        var options = {
-          bounds: defaultBounds,
-          types: ['establishment'],
-          componentRestrictions: {country: '<%= @question.country_code %>'}
-        };
+            var options = {
+                bounds:defaultBounds,
+                types:['establishment'],
+                componentRestrictions:{country:'<%= @question.country_code %>'}
+            };
 
-        var autocomplete = new google.maps.places.Autocomplete(input, options);
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
 
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            var place = autocomplete.getPlace();
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
 
-            if ( place.reference ){
-                $("#google_id_place").val( place.id );
-                $("#google_ref_place").val( place.reference );
-                $("#new_address").html( place.formatted_address );
-                $("#answer_place").hide(10);
-                $("#new_address").show();
-                $("#place_submit").show(10);
-                $("#new_place_name").html( place.name );
-                $("#new_place_name").show();
-                $("#cancel_link").show();
-            }
+                if (place.reference) {
+                    $("#google_id_place").val(place.id);
+                    $("#google_ref_place").val(place.reference);
+                    $("#new_address").html(place.formatted_address);
+                    $("#answer_place").hide(10);
+                    $("#new_address").show();
+                    $("#place_submit").show(10);
+                    $("#new_place_name").html(place.name);
+                    $("#new_place_name").show();
+                    $("#cancel_link").show();
+                }
+            });
+
+            $("#cancel_link").click(function () {
+                $("#answer_place").show(10);
+                $("#place_submit").hide(10);
+                $("#answer_place").val("");
+                $("#new_address").hide();
+                $("#new_address").html("");
+                $("#new_place_name").html("");
+                $("#new_place_name").hide();
+                $("#cancel_link").hide();
+            });
+
+            $('#answer_place').keypress(function (e) {
+                if (e.which == 13) return false;
+            });
+
         });
 
-        $("#cancel_link").click( function(){
-            $("#answer_place").show(10);
-            $("#place_submit").hide(10);
-            $("#answer_place").val("");
-            $("#new_address").hide();
-            $("#new_address").html( "" );
-            $("#new_place_name").html( "" );
-            $("#new_place_name").hide();
-            $("#cancel_link").hide();
-        });
-
-        $('#answer_place').keypress(function(e){
-            if ( e.which == 13 ) return false;
-        });
-
-     });
-
-  </script>
+    </script>
 <% end %>

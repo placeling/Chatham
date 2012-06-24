@@ -188,6 +188,7 @@ en:
     too_far: "%{name} too far away from selected city"
     other_questions: "Nearby Questions"
     share_prompt: "Share this question with your friends to get answers"
+    save_this_place: "Save this place"
 
 
 
