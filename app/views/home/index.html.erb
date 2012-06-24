@@ -1,103 +1,103 @@
 <% content_for :head do %>
-  <title><%= t('home.marketing') %></title>
-  <meta name="description" content="<%= t('home.description')%>">
-  <meta property="og:title" content="Placeling" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.placeling.com" />
-  <meta property="og:image" content="https://www.placeling.com<%= asset_path("screenshot.png")%>" />
+    <title><%= t('home.marketing') %></title>
+    <meta name="description" content="<%= t('home.description') %>">
+    <meta property="og:title" content="Placeling"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://www.placeling.com"/>
+    <meta property="og:image" content="https://www.placeling.com<%= asset_path("screenshot.png") %>"/>
 <% end %>
 
 <% content_for :css do %>
-  #container {
+    #container {
     min-height: 0px;
-  }
-  
-  #wrapper {
+    }
+
+    #wrapper {
     padding-bottom: 0px;
     overflow-x: hidden;
-  }
-  
-  #footerbottom {
+    }
+
+    #footerbottom {
     margin-top:0px;
     clear: none;
-  }
+    }
 <% end %>
 
 <% content_for :javascript do %>
-<script type="text/javascript">
-  $(document).ready(function() {
-    var minWidth = parseInt($("#clear_bg").css("width"));
-    
-    $(window).resize(function() {
-      if ($(window).width() < minWidth) {
-        $("#clear_bg").css("margin-left", -1*(minWidth-$(window).width())/2 + "px");
-      } else {
-        $("#clear_bg").css("margin-left","auto");
-      }
-            
-      $("#footerbottom").height($(window).height() - $('#container').outerHeight(true));      
-    });
-    $(window).resize();
-  });
-  $(window).load(function() {
-    $("#binoculars").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/binoculars_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/binoculars.png") %>');
-      }
-    );
-    $("#iphone").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/iphone_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/iphone.png") %>');
-      }
-    );
-    $("#paper_plane").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/paper_plane_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/paper_plane.png") %>');
-      }
-    );
-    $("#facebook").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/facebook_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/facebook.png") %>');
-      }
-    );
-    $("#twitter").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/twitter_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/twitter.png") %>');
-      }
-    );
-    $("#blog").hover(
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/tumblr_hover.png") %>');
-      }, 
-      function() {
-        $(this).attr("src", '<%= path_to_image("home/tumblr.png") %>');
-      }
-    );
-    $("#sign_up").hover(
-      function() {
-        $(this).css({opacity:0.5});
-      }, 
-      function() {
-        $(this).css({opacity:1.0});
-      }
-    );
-  });
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var minWidth = parseInt($("#clear_bg").css("width"));
+
+            $(window).resize(function () {
+                if ($(window).width() < minWidth) {
+                    $("#clear_bg").css("margin-left", -1 * (minWidth - $(window).width()) / 2 + "px");
+                } else {
+                    $("#clear_bg").css("margin-left", "auto");
+                }
+
+                $("#footerbottom").height($(window).height() - $('#container').outerHeight(true));
+            });
+            $(window).resize();
+        });
+        $(window).load(function () {
+            $("#binoculars").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/binoculars_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/binoculars.png") %>');
+                    }
+            );
+            $("#iphone").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/iphone_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/iphone.png") %>');
+                    }
+            );
+            $("#paper_plane").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/paper_plane_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/paper_plane.png") %>');
+                    }
+            );
+            $("#facebook").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/facebook_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/facebook.png") %>');
+                    }
+            );
+            $("#twitter").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/twitter_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/twitter.png") %>');
+                    }
+            );
+            $("#blog").hover(
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/tumblr_hover.png") %>');
+                    },
+                    function () {
+                        $(this).attr("src", '<%= path_to_image("home/tumblr.png") %>');
+                    }
+            );
+            $("#sign_up").hover(
+                    function () {
+                        $(this).css({opacity:0.5});
+                    },
+                    function () {
+                        $(this).css({opacity:1.0});
+                    }
+            );
+        });
+    </script>
 <% end %>
 
 <div id="cityscape">
@@ -112,7 +112,7 @@
         <area onfocus="blur();" shape="rectangle" coords="565,379,640,445" href="https://placeling.com/places/4ec5ef6d6dd9562b7300001b">
         <area onfocus="blur();" shape="polygon" coords="738,349,745,503,906,507,891,401,796,392,780,350,780,350,773,350,773,350,770,350,749,348" href="https://placeling.com/vancouverbabies">
         <area onfocus="blur();" shape="polygon" coords="785,249,784,301,806,377,974,377,1001,300,1001,247,931,216,836,216" href="<%= new_user_registration_path %>">
-       </map>      
+      </map>
     </div>
   </div>
 </div>
@@ -123,54 +123,69 @@
       <li>
         <div class="info_holder">
           <div class="info_image image_iphone">
-            <a href="<%= map_path %>"><%= image_tag "home/iphone.png", :alt=>"iPhone", :id => "iphone"%></a>
+            <a href="<%= map_path %>"><%= image_tag "home/iphone.png", :alt => "iPhone", :id => "iphone" %></a>
           </div>
           <div class="info_text info_iphone">
-            <p class="first_para"><%= t('home.create')%></p>
-            <p><a href="<%= map_path %>" class="splash_link"><%= t('home.more')%></a></p>
+            <p class="first_para"><%= t('home.create') %></p>
+
+            <p><a href="<%= map_path %>" class="splash_link"><%= t('home.more') %></a></p>
           </div>
         </div>
       </li>
       <li>
         <div class="info_holder paper_plane_holder">
           <div class="info_image image_paper_plane">
-            <a href="<%= share_path %>"><%= image_tag "home/paper_plane.png", :alt=>"Paper Plane", :id=>"paper_plane" %></a>
+            <a href="<%= share_path %>"><%= image_tag "home/paper_plane.png", :alt => "Paper Plane", :id => "paper_plane" %></a>
           </div>
           <div class="info_text info_paper_plane">
-            <p class="first_para"><%= t('home.share')%></p>
-            <p><a href="<%= share_path %>" class="splash_link"><%= t('home.more')%></a></p>
+            <p class="first_para"><%= t('home.share') %></p>
+
+            <p><a href="<%= share_path %>" class="splash_link"><%= t('home.more') %></a></p>
           </div>
         </div>
       </li>
       <li>
         <div class="info_holder binoculars_holder">
           <div class="info_image image_binoculars">
-            <a href="<%= guide_path %>"><%= image_tag "home/binoculars.png", :alt=>"Binoculars", :id=>"binoculars"%></a>
+            <a href="<%= guide_path %>"><%= image_tag "home/binoculars.png", :alt => "Binoculars", :id => "binoculars" %></a>
           </div>
           <div class="info_text info_binoculars">
-            <p class="first_para"><%= t('home.guide')%></p>
-            <p><a href="<%= guide_path %>" class="splash_link"><%= t('home.more')%></a></p>
-          </div>        
+            <p class="first_para"><%= t('home.guide') %></p>
+
+            <p><a href="<%= guide_path %>" class="splash_link"><%= t('home.more') %></a></p>
+          </div>
         </div>
       </li>
       <li>
         <div class="info_holder sign_up">
           <ul class="stay_in_touch">
             <li>
-              <div class="stay_in_touch_wrapper stay_in_touch_spacer"><a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt=>"FB", :id=>"facebook" %></a></div>
+              <div class="stay_in_touch_wrapper stay_in_touch_spacer">
+                <a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt => "FB", :id => "facebook" %></a>
+              </div>
             </li>
             <li>
-              <div class="stay_in_touch_wrapper"><a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt=>"Twitter", :id=>"twitter"%></a></div>
+              <div class="stay_in_touch_wrapper">
+                <a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt => "Twitter", :id => "twitter" %></a>
+              </div>
             </li>
             <li>
-              <div class="stay_in_touch_wrapper"><a href="http://blog.placeling.com"><%= image_tag "home/tumblr.png", :alt=>"Blog", :id=>"blog" %></a></div>
+              <div class="stay_in_touch_wrapper">
+                <a href="http://blog.placeling.com"><%= image_tag "home/tumblr.png", :alt => "Blog", :id => "blog" %></a>
+              </div>
             </li>
           </ul>
           <div id="ribbon_sign_up">
-            <a href="<%= new_user_registration_path %>"><%= image_tag "home/sign_up_banner.png", :alt=>"Sign Up", :id=>"sign_up"%></a>
+            <a href="<%= new_user_registration_path %>"><%= image_tag "home/sign_up_banner.png", :alt => "Sign Up", :id => "sign_up" %></a>
           </div>
         </div>
-      </li>  
-    </ul>  
+      </li>
+    </ul>
   </div>
 </div>
+
+<% content_for :sub_footer do %>
+    <div style="width:100%;text-align: right;">
+      <a style="margin-right:10px" href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics"/></a>
+    </div>
+<% end %>
