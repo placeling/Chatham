@@ -7,7 +7,7 @@
     <meta property="og:type" content="placeling:question">
     <meta property="og:article" content="a">
     <meta property="og:image" content="<%= ApplicationHelper.get_hostname + asset_path("Moustache.png") %>">
-
+    <link rel="image_src" href="<%= ApplicationHelper.get_hostname + asset_path("Moustache.png") %>">
     <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>"/>
     <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
 <% end %>
