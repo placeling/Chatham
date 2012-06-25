@@ -1,5 +1,6 @@
 <div class="left_place_column" style="">
   <div class="win_votes"><%= question.answers.count %></div>
+  <div class="posted_at"><%= question.answers.count <= 1 ? t('question.answer') : t('question.answer').pluralize %></div>
 </div>
 
 <div class="center_place_column">

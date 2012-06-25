@@ -183,6 +183,7 @@ en:
     city_prompt: "Start typing the name of a city..."
     question: "Question"
     cancel: "Change"
+    answer: "Answer"
     done: "Done"
     posted_at: "Posted %{created_at}"
     too_far: "%{name} too far away from selected city"
