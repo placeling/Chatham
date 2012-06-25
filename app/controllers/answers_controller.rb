@@ -2,13 +2,19 @@ require 'google_places'
 
 class AnswersController < ApplicationController
   def create
-    @question =Question.find( params['question_id'])
-    place = Place.find_by_google_id( params['google_id_place'] )
+
+    if BSON::ObjectId.legal?(params['question_id'])
+      @question = Question.find(params['question_id'])
+    else
+      @question = Question.find_by_slug(params['question_id'])
+    end
+
+    place = Place.find_by_google_id(params['google_id_place'])
 
     if place.nil?
       #not here, and we need to fetch it
       gp = GooglePlaces.new
-      place = Place.new_from_google_place( gp.get_place( params['google_ref_place'] ) )
+      place = Place.new_from_google_place(gp.get_place(params['google_ref_place']))
       place.user = current_user
       place.save
     end
@@ -25,11 +31,11 @@ class AnswersController < ApplicationController
     end
 
     if !found
-      @answer = @question.answers.build( params[:answer] )
+      @answer = @question.answers.build(params[:answer])
       @answer.place = place
     end
 
-    add_vote_to_history( @answer )
+    add_vote_to_history(@answer)
     @question.score = score +1
     @mixpanel.track_event("answer_submit", {:qid => @question.id})
 
@@ -38,7 +44,7 @@ class AnswersController < ApplicationController
         format.html { redirect_to @question, notice: 'Submitted successfully.' }
         format.json { render json: @answer, status: :created, location: @question }
       else
-        alert =  @answer.errors[:base][0] unless @answer.errors[:base].nil?
+        alert = @answer.errors[:base][0] unless @answer.errors[:base].nil?
         format.html { redirect_to @question, alert: alert }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
@@ -47,10 +53,14 @@ class AnswersController < ApplicationController
   end
 
   def upvote
-    @question =Question.find( params['question_id'])
+    if BSON::ObjectId.legal?(params['question_id'])
+      @question = Question.find(params['question_id'])
+    else
+      @question = Question.find_by_slug(params['question_id'])
+    end
     @answer = @question.answers.where(:_id => params['id']).first
 
-    add_vote_to_history( @answer )
+    add_vote_to_history(@answer)
     @question.score += 1
 
     @mixpanel.track_event("upvote", {:qid => @question.id})
@@ -71,13 +81,13 @@ class AnswersController < ApplicationController
 
   private
 
-  def add_vote_to_history( answer )
+  def add_vote_to_history(answer)
 
     if current_user
       if answer.voters.has_key? current_user.id.to_s
         return false
       else
-        answer.voters[ current_user.id.to_s ] = true
+        answer.voters[current_user.id.to_s] = true
         answer.upvotes += 1
         return true
       end
@@ -86,7 +96,7 @@ class AnswersController < ApplicationController
       if answer.voters.has_key? session_id.to_s
         return false
       else
-        answer.voters[ session_id.to_s ] = true
+        answer.voters[session_id.to_s] = true
         answer.upvotes += 1
         return true
       end
