@@ -10,7 +10,7 @@ class Activity
   field :user1, :as => :actor1, :type => BSON::ObjectId
   field :username1, :type => String
   field :thumb1, :type => String
-  
+
   field :user2, :as => :actor2, :type => BSON::ObjectId
   field :username2, :type => String
 
@@ -27,12 +27,12 @@ class Activity
   end
 
   # push to followers (assumes an array of follower ids)
-  def push_to_followers( user )
+  def push_to_followers(user)
     user.followers.each do |follower|
-      push( follower.id ) unless user.blocked?( follower )
+      push(follower.id) unless user.blocked?(follower)
     end
 
-    push( user.id )
+    push(user.id)
 
     if user
     end
@@ -57,7 +57,7 @@ class Activity
       self.updated_at = self.created_at
     end
 
-    self.attributes
+    self.attributes.merge(:id => self[:_id])
   end
 
 end
