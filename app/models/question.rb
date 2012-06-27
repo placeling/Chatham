@@ -37,6 +37,10 @@ class Question
     limit(5)
   end
 
+  def self.suggest_for(user)
+    Question.first
+  end
+
   def fix_location
     begin
       if self.location[0].is_a? String

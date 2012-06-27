@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+<table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
+  <tr style="margin: 5px;padding: 0px;">
+    <td align="center" valign="top" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+      <table width="660" id="main" border="0" cellpadding="0" cellspacing="20">
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+            <p class="right" style="margin: 5px;padding: 0px;float: right;">
+              <img src="https://www.placeling.com/assets/logo.png"><a href="<%= root_url() %>"></a></p>
+          </td>
+        </tr>
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+            <p class="embiggen" style="margin: 5px;padding: 0px;font-size: 18px;"><%= t('welcome.hey') %>
+              <span class="emphasize" style="font-weight: bold;"><%= @user.username %></span>
+              - <%= t('welcome.welcome') %></p>
+
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.thanks') %></p>
+          </td>
+        </tr>
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.web') %></p>
+
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.go') %>
+              <a href="<%= user_url(@user) %>">placeling.com/<%= @user.username %></a> <%= t('welcome.map') %>.</p>
+
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.recommendations') %></p>
+          </td>
+        </tr>
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.more') %></p>
+            <ul style="margin: 0px;padding-left: 20px;">
+              <li class="content" style="margin: 0px;padding: 0px;margin-bottom: 5px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.wordpress') %>
+                <a href="http://wordpress.org/extend/plugins/placeling/"><%= t('welcome.plugin') %></a> <%= t('welcome.more_wordpress') %>
+                .
+              </li>
+              <li class="content" style="margin: 0px;padding: 0px;margin-bottom: 5px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.embed_1') %>
+                <a href="<%= bloggers_url() %>#embed"><%= t('welcome.embed_2') %></a>.
+              </li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.all') %></p>
+
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.support') %>
+              <a href="mailto:support@placeling.com">support@placeling.com</a>.</p>
+
+            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.guide_on') %></p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+

@@ -15,4 +15,7 @@ class UserSetting
   field :weekly_email, :type => Boolean, :default => true
 
   field :facebook_friend_check, :type => Boolean, :default => false
+
+  field :emailed_stuff, :type => Array, :default => []
+
 end

@@ -47,13 +47,15 @@ gem 'rack-rewrite', '~> 1.2.1'
 
 gem "recaptcha", :require => "recaptcha/rails"
 
-gem "rspec-rails", "2.7"  #needs these outside to prevent rake break
+gem "rspec-rails", "2.7" #needs these outside to prevent rake break
 gem 'ci_reporter'
 
 gem 'mocha'
 gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
 gem 'factory_girl_rails', "~> 1.1.rc1"
 gem "database_cleaner"
+
+gem 'mail_view', :git => 'https://github.com/37signals/mail_view.git'
 
 gem 'nested_form'
 gem 'fastercsv'
@@ -77,7 +79,7 @@ group :test, :development do
 end
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails', '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end

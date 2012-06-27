@@ -77,6 +77,11 @@ class Place
     end
   end
 
+  def self.suggest_for(user)
+    Place.first
+
+  end
+
   def tags
     t = CHATHAM_CONFIG['cache_tags_time_hours'].to_i
 
