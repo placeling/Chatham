@@ -14,37 +14,37 @@ class User
 
   FEED_COUNT=30
   FEED_LENGTH=240
-  
-  field :username,      :type =>String
+
+  field :username, :type => String
   field :du, :as => :downcase_username, :type => String
-  field :fullname,      :type =>String
+  field :fullname, :type => String
   alias :login :username
-  field :pc, :as => :perspective_count,  :type=>Integer, :default => 0 #property for easier lookup of of top users
+  field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
 
   ## Database authenticatable
-  field :email,              :type => String, :null => false, :default => ""
+  field :email, :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
 
   ## Recoverable
-  field :reset_password_token,   :type => String
+  field :reset_password_token, :type => String
   field :reset_password_sent_at, :type => Time
 
   ## Rememberable
   field :remember_created_at, :type => Time
 
   ## Trackable
-  field :sign_in_count,      :type => Integer, :default => 0
+  field :sign_in_count, :type => Integer, :default => 0
   field :current_sign_in_at, :type => Time
-  field :last_sign_in_at,    :type => Time
+  field :last_sign_in_at, :type => Time
   field :current_sign_in_ip, :type => String
-  field :last_sign_in_ip,    :type => String
+  field :last_sign_in_ip, :type => String
 
   ## Confirmable
-  field :confirmation_token,   :type => String
-  field :confirmed_at,         :type => Time
+  field :confirmation_token, :type => String
+  field :confirmed_at, :type => Time
   field :confirmation_sent_at, :type => Time
-  field :unconfirmed_email,    :type => String # Only if using reconfirmable
+  field :unconfirmed_email, :type => String # Only if using reconfirmable
 
   ## Token authenticatable
   # field :authentication_token, :type => String
@@ -53,24 +53,24 @@ class User
   field :city, :type => String, :default => ""
 
   field :description, :type => String, :default => ""
-  field :admin,       :type => Boolean, :default => false
+  field :admin, :type => Boolean, :default => false
 
   field :url, :type => String, :default => ""
 
   field :thumb_cache_url, :type => String
   field :main_cache_url, :type => String
-  field :ios_notification_token, :type =>String
+  field :ios_notification_token, :type => String
 
-  field :highlighted_places, :type =>Array, :default =>[]
-  field :blocked_users, :type=>Array, :default=>[]
-  
+  field :highlighted_places, :type => Array, :default => []
+  field :blocked_users, :type => Array, :default => []
+
   # For avatar cropping
   # Initial position of cropping + dimensions
   field :x, :type => Float
   field :y, :type => Float
   field :w, :type => Float
   field :h, :type => Float
-  
+
   has_many :perspectives, :foreign_key => 'uid'
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
@@ -81,8 +81,8 @@ class User
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
-  has_many :client_applications, :foreign_key =>'uid'
-  has_many :tokens, :class_name=>"OauthToken",:order=>"authorized_at desc", :foreign_key =>'uid'
+  has_many :client_applications, :foreign_key => 'uid'
+  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :foreign_key => 'uid'
 
   embeds_one :activity_feed
   embeds_one :user_setting
@@ -98,11 +98,11 @@ class User
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :encrypted_password, :admin, :description, :url, :user_setting_attributes, :city
-  
+
   index :unm
   index :email
   index :pc
-  index [[ :loc, Mongo::GEO2D ]], :min => -180, :max => 180
+  index [[:loc, Mongo::GEO2D]], :min => -180, :max => 180
   index :fp, :background => true
   index :du
 
@@ -117,7 +117,7 @@ class User
   after_create :follow_defaults, :attach_subdocs
 
   def cropping?
-    !x.blank? && !y.blank? && ! w.blank? && !h.blank?
+    !x.blank? && !y.blank? && !w.blank? && !h.blank?
   end
 
   def track_signup
@@ -134,8 +134,8 @@ class User
   end
 
   def get_city
-    if self.location != nil && self.location != [0,0] && self.city == ""
-      self.city =  CitynameFinder.getCity( self.location[0], self.location[1] )
+    if self.location != nil && self.location != [0, 0] && self.city == ""
+      self.city = CitynameFinder.getCity(self.location[0], self.location[1])
     end
   end
 
@@ -147,7 +147,7 @@ class User
     if !self.user_setting
       self.create_user_setting
     end
-    
+
     if !self.first_run
       self.create_first_run
     end
@@ -158,9 +158,9 @@ class User
       self.create_first_run
     end
   end
-  
+
   def follow_defaults
-    other = User.find_by_username( 'citysnapshots' )
+    other = User.find_by_username('citysnapshots')
     if other
       self.follow other
     end
@@ -200,7 +200,7 @@ class User
     if !self.creation_environment
       self.creation_environment = Rails.env
       self.thumb_cache_url = self.avatar_url(:thumb)
-      self.main_cache_url =  self.avatar_url(:main)
+      self.main_cache_url = self.avatar_url(:main)
     end
   end
 
@@ -209,7 +209,7 @@ class User
     if Rails.env == self.creation_environment
       url = self.avatar_url(:thumb)
     elsif thumb_cache_url
-      url =  thumb_cache_url
+      url = thumb_cache_url
     end
 
     if url
@@ -224,7 +224,7 @@ class User
     if Rails.env == self.creation_environment
       url = self.avatar_url(:main)
     elsif main_cache_url
-      url =  main_cache_url
+      url = main_cache_url
     end
 
     if url
@@ -233,48 +233,48 @@ class User
       return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
     end
   end
-  
-  def self.top_users( top_n )
-    self.desc( :pc ).limit( top_n )
+
+  def self.top_users(top_n)
+    self.desc(:pc).limit(top_n)
   end
 
-  def self.top_nearby( lat, lng, top_n )
+  def self.top_nearby(lat, lng, top_n)
     # Find users with most non-empty perspectives nearby
     nearby_counts = Perspective.collection.group(
-      cond:{:ploc=>{'$within'=>{'$center'=>[[lat,lng],0.3]}},:deleted_at=>{'$exists'=>false},:empty=>false},
-      key:'uid',
-      initial:{count:0},
-      reduce:"function(obj,prev) {prev.count++}"
+        cond: {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}, :empty => false},
+        key :'uid',
+            initial: {count: 0},
+            reduce :"function(obj,prev) {prev.count++}"
     )
-    
-    nearby_counts.sort! {|x,y| y["count"] <=> x["count"]}
-    
+
+    nearby_counts.sort! { |x, y| y["count"] <=> x["count"] }
+
     if nearby_counts.length > top_n
-      nearby_counts = nearby_counts[0,top_n]
+      nearby_counts = nearby_counts[0, top_n]
     end
-    
+
     nearby = []
-    
+
     nearby_counts.each do |person|
       member = User.find(person["uid"])
       nearby << member
     end
-    
+
     # If too short, see if there are nearby users with empty perspectives
     if nearby.length < top_n
       nearby_counts = Perspective.collection.group(
-        cond:{:ploc=>{'$within'=>{'$center'=>[[lat,lng],0.3]}},:deleted_at=>{'$exists'=>false}},
-        key:'uid',
-        initial:{count:0},
-        reduce:"function(obj,prev) {prev.count++}"
+          cond: {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}},
+          key :'uid',
+              initial: {count: 0},
+              reduce :"function(obj,prev) {prev.count++}"
       )
-      
-      nearby_counts.sort! {|x,y| y["count"] <=> x["count"]}
-      
+
+      nearby_counts.sort! { |x, y| y["count"] <=> x["count"] }
+
       if nearby_counts.length > 2*top_n
-        nearby_counts = nearby_counts[0,2*top_n]
+        nearby_counts = nearby_counts[0, 2*top_n]
       end
-      
+
       nearby_counts.each do |person|
         member = User.find(person["uid"])
         if !nearby.include?(member)
@@ -284,16 +284,16 @@ class User
           end
         end
       end
-      
+
       if nearby.length > top_n
-        nearby = nearby[0,top_n]
+        nearby = nearby[0, top_n]
       end
     end
-    
+
     # If still too short, see if there are users based nearby
     if nearby.length < top_n
-      candidates = User.where(:loc.within => {"$center" => [[lat,lng],0.3]}).desc( :pc ).limit( 2*top_n ).entries
-      
+      candidates = User.where(:loc.within => {"$center" => [[lat, lng], 0.3]}).desc(:pc).limit(2*top_n).entries
+
       candidates.each do |candidate|
         if !nearby.include?(candidate)
           nearby << candidate
@@ -303,27 +303,27 @@ class User
         end
       end
     end
-    
+
     return nearby
   end
 
-  def self.find_by_username( username )
-    self.where( :du => username.downcase ).first
+  def self.find_by_username(username)
+    self.where(:du => username.downcase).first
   end
 
-  def self.search_by_username( username )
-    self.where( :du => /^#{username.downcase}/i).limit( 20 )
+  def self.search_by_username(username)
+    self.where(:du => /^#{username.downcase}/i).limit(20)
   end
 
-  def remove_tokens_for( client_application )
-    self.tokens.where(:cid =>client_application.id).delete_all
+  def remove_tokens_for(client_application)
+    self.tokens.where(:cid => client_application.id).delete_all
   end
 
-  def perspective_for_place( place )
+  def perspective_for_place(place)
     place.perspectives.where(:uid => self.id).first
   end
 
-  def following_perspectives_for_place( place )
+  def following_perspectives_for_place(place)
     place.perspectives.where(:uid.in => self.following_ids).includes(:user).entries
   end
 
@@ -336,10 +336,10 @@ class User
     self.username
   end
 
-  def star( perspective )
+  def star(perspective)
 
     place = perspective.place
-    user_perspective = self.perspective_for_place( place )
+    user_perspective = self.perspective_for_place(place)
 
     #starring a perspective triggers a bookmark of it
     if user_perspective.nil?
@@ -357,31 +357,31 @@ class User
     return user_perspective
   end
 
-  def unstar( perspective )
+  def unstar(perspective)
 
     place = perspective.place
-    user_perspective = self.perspective_for_place( place )
+    user_perspective = self.perspective_for_place(place)
 
-    user_perspective.favourite_perspective_ids.delete( perspective.id )
+    user_perspective.favourite_perspective_ids.delete(perspective.id)
     user_perspective.save
 
-    perspective.starring_users.delete( self.id )
+    perspective.starring_users.delete(self.id)
     perspective.save
   end
 
-  def follows?( user )
-    following.include?( user )
+  def follows?(user)
+    following.include?(user)
   end
 
-  def follow( user )
+  def follow(user)
     if self.id != user.id && !self.following.include?(user)
       self.following << user
     end
   end
 
-  def unfollow( user )
+  def unfollow(user)
     self.following.to_a #hack to ensure in memory, not a problem for mongodb 2.0  https://github.com/mongoid/mongoid/issues/1369
-    self.following.delete( user )
+    self.following.delete(user)
   end
 
   def build_activity
@@ -412,29 +412,29 @@ class User
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-    attributes = {:id =>self['_id'],
+    attributes = {:id => self['_id'],
                   :username => self['username'],
                   :picture => {
                       :id => self['_id'],
                       :thumb_url => thumb_url,
-                      :main_url => main_url },
-                  :perspectives_count =>self['pc'],
+                      :main_url => main_url},
+                  :perspectives_count => self['pc'],
                   :url => self.url,
                   :description => self.description,
                   :main_url => main_url,
-                  :city =>self.city,
+                  :city => self.city,
                   :follower_count => followers.count,
                   :following_count => following.count
     }
 
-    attributes = attributes.merge( :lat => self.location[0], :lng=> self.location[1]  ) unless self.location.nil?
+    attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?
 
     if options[:current_user]
       current_user =options[:current_user]
       #check against raw ids so it doesnt have to go back to db
-      following = self['follower_ids'].include?( options[:current_user].id ) ||self.id == options[:current_user].id
-      follows_you = self['following_ids'].include?( options[:current_user].id )
-      attributes[:blocked] = current_user.blocked?( self )
+      following = self['follower_ids'].include?(options[:current_user].id) ||self.id == options[:current_user].id
+      follows_you = self['following_ids'].include?(options[:current_user].id)
+      attributes[:blocked] = current_user.blocked?(self)
 
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
       if self.id == current_user.id
@@ -445,38 +445,38 @@ class User
     end
 
     if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location] ).includes(:place).as_json({:user_view=>true,:current_user =>current_user })  )
-    elsif (options[:perspectives] == :created_by )
-      attributes.merge(:perspectives => self.perspectives.descending(:modified_at).includes(:place).limit(10).as_json({:user_view=>true,:current_user =>current_user }) )
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location]).includes(:place).as_json({:user_view => true, :current_user => current_user}))
+    elsif (options[:perspectives] == :created_by)
+      attributes.merge(:perspectives => self.perspectives.descending(:modified_at).includes(:place).limit(10).as_json({:user_view => true, :current_user => current_user}))
     else
       attributes
     end
   end
 
-  def apply_omniauth( omniauth )
+  def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank?
-    
+
     if username.blank?
       if omniauth['provider'] == "facebook" && omniauth['info']['nickname']
         username = omniauth['info']['nickname'].gsub(/\W+/, "")
       else
         username = omniauth['info']['name'].gsub(/\W+/, "")
       end
-      
+
       user = User.find_by_username(username)
       i = 1
       baseusername = username
-      
+
       while user
         username = baseusername + i.to_s
         user = User.find_by_username(username)
         i += 1
       end
-      
+
       self.username = username
     end
-    
-    
+
+
   end
 
   def remark_notification?
@@ -508,18 +508,18 @@ class User
     return self[:ios_notification_token]
   end
 
-  def highlighted?( place )
-    self.highlighted_places.include?( place.id )
+  def highlighted?(place)
+    self.highlighted_places.include?(place.id)
   end
 
-  def blocked?( user )
-    self.blocked_users.include?( user.id )
+  def blocked?(user)
+    self.blocked_users.include?(user.id)
   end
 
   def facebook
     for auth in self.authentications
       if auth.provider == 'facebook' && !auth.token.nil?
-        return FbGraph::User.me( auth.token )
+        return FbGraph::User.me(auth.token)
       end
     end
     return nil
@@ -530,7 +530,16 @@ class User
   def feed(start =0, count=FEED_COUNT)
     results=$redis.zrevrange key(:feed), start, start + count
     if results.size > 0
-      results.collect {|r| Activity.decode(r)}
+      results.collect { |r| Activity.decode(r) }
+    else
+      []
+    end
+  end
+
+  def notifications(start =0, count=100)
+    results=$redis.zrevrange key(:notifications), start, start + count
+    if results.size > 0
+      results.collect { |r| Notification.decode(r) }
     else
       []
     end
@@ -542,18 +551,18 @@ class User
     for user in current_user.following
       if user.activity_feed
         head = user.activity_feed.head_chunk
-        @activities =  @activities + head.activities
+        @activities = @activities + head.activities
         if !head.next.nil?
-          @activities =  @activities + head.next.activities
+          @activities = @activities + head.next.activities
         end
       end
     end
 
     if current_user.activity_feed
-       @activities = @activities + current_user.activity_feed.activities
+      @activities = @activities + current_user.activity_feed.activities
     end
 
-    @activities.sort! { |a,b| a.created_at <=> b.created_at }
+    @activities.sort! { |a, b| a.created_at <=> b.created_at }
     @activities.reverse!
     @activities = @activities[start_pos, count]
   end
@@ -562,7 +571,7 @@ class User
   def ofeed(max, obj=true, id=self.id_s, limit=FEED_COUNT, scores=false)
     results=$redis.zrevrangebyscore(key(:feed), "(#{max}", "-inf", :limit => [0, limit], :with_scores => scores)
     if obj && results.size > 0
-      results.collect {|r| Activity.decode(r)}
+      results.collect { |r| Activity.decode(r) }
     else
       results
     end
@@ -574,7 +583,7 @@ class User
   # then remove all keys with a lower score
   def trim_feed(id=self.id_s, location="feed", indx=FEED_LENGTH)
     k = key(:feed)
-    if ( $redis.zcard k ) >= indx
+    if ($redis.zcard k) >= indx
       n = indx - 1
       if (r = $redis.zrevrange k, n, n, :with_scores => true)
         $redis.zremrangebyscore k, "-inf", "(#{r.last}"
@@ -583,14 +592,14 @@ class User
   end
 
   def og_path
-    "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_path( self )}"
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_path(self)}"
   end
 
   protected
 
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
-    self.any_of({ :du => login.downcase }, { :email => login }).first
+    self.any_of({:du => login.downcase}, {:email => login}).first
   end
 
 end
