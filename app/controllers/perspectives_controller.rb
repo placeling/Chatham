@@ -384,7 +384,6 @@ class PerspectivesController < ApplicationController
       end
 
       @perspective.destroy
-      @place.perspective_count -= 1
       @place.save
     end
 
