@@ -241,10 +241,10 @@ class User
   def self.top_nearby(lat, lng, top_n)
     # Find users with most non-empty perspectives nearby
     nearby_counts = Perspective.collection.group(
-        cond: {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}, :empty => false},
-        key :'uid',
-            initial: {count: 0},
-            reduce :"function(obj,prev) {prev.count++}"
+        :cond => {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}, :empty => false},
+        :key => 'uid',
+        :initial => {count: 0},
+        :reduce => "function(obj,prev) {prev.count++}"
     )
 
     nearby_counts.sort! { |x, y| y["count"] <=> x["count"] }
@@ -263,10 +263,10 @@ class User
     # If too short, see if there are nearby users with empty perspectives
     if nearby.length < top_n
       nearby_counts = Perspective.collection.group(
-          cond: {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}},
-          key :'uid',
-              initial: {count: 0},
-              reduce :"function(obj,prev) {prev.count++}"
+          :cond => {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}},
+          :key => 'uid',
+          :initial => {count: 0},
+          :reduce => "function(obj,prev) {prev.count++}"
       )
 
       nearby_counts.sort! { |x, y| y["count"] <=> x["count"] }
