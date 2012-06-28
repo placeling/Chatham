@@ -54,7 +54,7 @@ class Perspective
   after_create :check_in
   before_destroy :scrub_stars
 
-  attr_accessor :post_delay, :distance
+  attr_accessor :post_delay, :distance, :liking_users
 
   def self.find_recent_for_user(user, start, count)
     user.perspectives.
@@ -243,7 +243,8 @@ class Perspective
         :tags => self.tags,
         :memo => self.memo,
         :url => self.url,
-        :modified_at => self['modified_at']
+        :modified_at => self['modified_at'],
+        :liking_users => self.liking_users
     }
     if options[:bounds]
       attributes = attributes.merge(:photos => self.pictures.where(:deleted => false).as_json({:bounds => true}))

@@ -88,6 +88,23 @@ class PerspectivesController < ApplicationController
         unless perspective.user.blocked?(current_user)
           perspectives_count += 1
           @perspectives << perspective unless perspective.empty_perspective?
+
+          for perspective_id in perspective.favourite_perspective_ids
+            hearted_perspective = Perspective.find(perspective_id)
+            found = false
+            for existing_perspective in @perspectives
+              if existing_perspective.id == hearted_perspective.id
+                found = true
+              end
+            end
+            if found
+              existing_perspective.liking_users << perspective.user.username
+            else
+              hearted_perspective.liking_users = [perspective.user.username]
+              @perspectives << hearted_perspective
+            end
+          end
+
         end
       end
     end

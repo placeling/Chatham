@@ -39,6 +39,33 @@ describe "API - Perspective" do
 
   end
 
+  it "are shown to liker's followers if liked" do
+    user = Factory.create(:user)
+    user2 = Factory.create(:user)
+    user3 = Factory.create(:user)
+    user.follow(user2)
+
+    perspective = Factory.create(:perspective, :user => user3, :memo => "THISTEST")
+
+    user2.star(perspective)
+    perspective.save
+    user2.save
+
+    post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+    get following_place_perspectives_path(perspective.place), {
+        :format => 'json'
+    }
+
+    response.status.should be(200)
+
+    showPlace = JSON.parse(response.body)
+    showPlace['perspectives'].count.should == 1
+    showPlace['perspectives'][0]['memo'].should == "THISTEST"
+    showPlace['perspectives'][0]['liking_users'].count.should ==1
+    showPlace['perspectives'][0]['liking_users'][0].should == user2.username
+  end
+
 
   it "can be deleted" do
     user = Factory.create(:user)
