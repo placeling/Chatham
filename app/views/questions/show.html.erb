@@ -27,6 +27,7 @@
           <span class="user_asked"><%= link_to @question.user.username, @question.user %> <%= t 'question.asked' %></span>
         </div>
         <div id="question_prompt"><%= @question.title %></div>
+        <div class="question_posted_at"><%= t('question.posted_at', :created_at => @question.created_at.strftime("%b %d | %Y")) %></div>
       </div>
     </div>
 
@@ -45,12 +46,12 @@
   <div id="question_left_column">
     <div id="answer_publisher">
       <%= form_for(@answer, :url => question_answers_path(@question)) do |a| %>
-          <div class='center_place_column'>
+          <div class='left_place_column'>
             <input id="answer_place" name="place_name" placeholder="<%= t 'question.text_prompt' %>" size="40" type="text" value="">
             <input id="google_id_place" name="google_id_place" type="hidden" value="">
             <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
 
-            <div id="new_place_name" style="display: none; font-weight: bold"></div>
+            <div id="new_place_name" class="place_name" style="display: none;"></div>
             <div id="new_address" class="address_text" style="display: none"></div>
           </div>
           <div class='right_place_column'>

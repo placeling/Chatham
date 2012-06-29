@@ -13,9 +13,8 @@
 </div>
 
 <div class="right_place_column">
-  <div class="posted_at"><%= t('question.posted_at', :created_at => answer.created_at.strftime("%b %d | %Y")) %></div>
   <% if !current_user || !current_user.perspective_for_place(answer.place) %>
-      <div style="font-size: 12px;text-align: right;top:40px;" class="placemark_button" id="<%= answer.place.id %>">
+      <div style="font-size: 12px;text-align: right;top:55px;" class="placemark_button" id="<%= answer.place.id %>">
         <a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= t 'question.save_this_place' %></a>
       </div>
   <% end %>
