@@ -187,13 +187,16 @@ en:
     done: "Done"
     posted_at: "Posted %{created_at}"
     too_far: "%{name} too far away from selected city"
+    my_questions: "Your Questions"
+    nearby_questions: "Questions for you"
     other_questions: "Nearby Questions"
     share_prompt: "Share this question with your friends to get answers"
     save_this_place: "Save this place"
     see_more: "See More"
     nearby_for: "Popular Questions %{city}"
-
-
+    placeholder_question: "What is the best..."
+    placeholder_city: "San Francisco..."
+    no_user_questions: "You haven't asked any questions yet!"
 
 
   inprogress:
