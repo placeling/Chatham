@@ -38,6 +38,7 @@ class AnswersController < ApplicationController
     add_vote_to_history(@answer)
     @question.score = score +1
     @mixpanel.track_event("answer_submit", {:qid => @question.id})
+    track! :question_answer
 
     respond_to do |format|
       if @answer.save && @question.save
@@ -62,6 +63,7 @@ class AnswersController < ApplicationController
 
     add_vote_to_history(@answer)
     @question.score += 1
+    track! :question_answer
 
     @mixpanel.track_event("upvote", {:qid => @question.id})
 
