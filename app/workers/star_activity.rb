@@ -35,8 +35,8 @@ class StarActivity
         email = true
       end
 
-      notification = Notification.new(:actor1 => actor1.id, :actor2 => actor2.id, :subject => perspective.id, :type => "STAR_PERSPECTIVE", :subject_name => perspective.place.name, :email => email, :apns => apns)
-      #notification.remember #redis backed
+      notification = Notification.new(:actor1 => actor1.id, :actor2 => actor2.id, :subject => perspective.id, :type => activity.activity_type, :subject_name => perspective.place.name, :email => email, :apns => apns)
+      notification.remember #redis backed
     end
   end
 end

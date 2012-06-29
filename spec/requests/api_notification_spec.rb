@@ -45,7 +45,7 @@ describe "API - " do
     it "shouldn't send multiple in a row of same star" do
       @ian = Factory.create(:user, :username => "imack")
       @lindsay = Factory.create(:user, :username => "lindsay")
-      perspective = Factory.create(:perspective, :user => @ian)
+      perspective = Factory.create(:perspective, :user => @lindsay)
 
       post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
 
@@ -58,6 +58,23 @@ describe "API - " do
       @lindsay.notifications.count.should == 1
       @lindsay.notifications[0].should_not be_nil
       @lindsay.notifications[0].subject_name.should == perspective.place.name
+    end
+
+    it "shouldn't send more than 5 notifications in an hour" do
+      @ian = Factory.create(:user, :username => "imack")
+
+      6.times do
+        user = Factory.create(:user)
+        post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
+
+        post follow_user_path(@ian), {:format => :json}
+        response.status.should be(200)
+
+        delete destroy_user_session_path
+      end
+
+      @ian.reload
+      @ian.notifications.count.should == 5
     end
 
 

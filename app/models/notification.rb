@@ -16,8 +16,16 @@ class Notification
 
   def self.veto(activity)
     user = User.find(activity.actor2)
+    notifications = user.notifications
 
-    for notification in user.notifications
+    if notifications.count >=5
+      notty = notifications[4]
+      if notty.created_at > 1.hour.ago
+        return true
+      end
+    end
+
+    for notification in notifications
       if notification.type == activity.activity_type
         if notification.actor1 == activity.actor1
           if notification.subject == activity.subject
