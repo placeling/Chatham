@@ -222,7 +222,7 @@ Chatham::Application.routes.draw do
   end
 
   if Rails.env.development?
-    mount Weekly::Preview => 'mail_view'
+    mount Notifier::Preview => 'mail_view'
   end
 
   #mount Resque::Server, :at => "/resque"
