@@ -164,12 +164,35 @@ class Place
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
     else
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
+    end
+  end
 
-      #elsif CATEGORIES["Services"].values().include?(category)
-      #elsif CATEGORIES["Travel & Lodging"].values().include?(category)
-      #elsif CATEGORIES["Religion"].values().include?(category)
-      #elsif CATEGORIES["Health"].values().include?(category)
+  def highlight_url
+    for type in self.venue_types
+      if type.downcase != "establishment"
+        category = type
+        break
+      end
+    end
 
+    if !category
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingBanner.png")}"
+    end
+
+    if CATEGORIES["Bars & Nightlife"].keys().include?(category) or CATEGORIES["Bars & Nightlife"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/NightLifeBanner.png")}"
+    elsif CATEGORIES["Government"].keys().include?(category) or CATEGORIES["Government"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GovernmentBanner.png")}"
+    elsif CATEGORIES["Shopping"].keys().include?(category) or CATEGORIES["Shopping"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/ShoppingBanner.png")}"
+    elsif CATEGORIES["Beauty"].keys().include?(category) or CATEGORIES["Beauty"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/BeautyBanner.png")}"
+    elsif CATEGORIES["Interesting & Outdoors"].keys().include?(category) or CATEGORIES["Interesting & Outdoors"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyBanner.png")}"
+    elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodBanner.png")}"
+    else
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingBanner.png")}"
     end
   end
 
@@ -354,6 +377,7 @@ class Place
         :google_url => self.google_url,
         :perspective_count => self['pc'],
         :thumb_url => self.thumb_url,
+        :highlight_url => self.highlight_url,
         :map_url => self.map_url,
         :venue_types => self.venue_types
     }
