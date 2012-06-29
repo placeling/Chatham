@@ -25,7 +25,7 @@ describe "API - " do
     end
 
 
-    it "shouldn't send multiple in a row of same subject" do
+    it "shouldn't send multiple in a row of same follow" do
       @ian = Factory.create(:user, :username => "imack")
       @lindsay = Factory.create(:user, :username => "lindsay")
 
@@ -40,6 +40,24 @@ describe "API - " do
       @lindsay.notifications.count.should == 1
       @lindsay.notifications[0].should_not be_nil
       @lindsay.notifications[0].subject_name.should == @ian.username
+    end
+
+    it "shouldn't send multiple in a row of same star" do
+      @ian = Factory.create(:user, :username => "imack")
+      @lindsay = Factory.create(:user, :username => "lindsay")
+      perspective = Factory.create(:perspective, :user => @ian)
+
+      post_via_redirect user_session_path, 'user[login]' => @ian.username, 'user[password]' => @ian.password
+
+      post star_perspective_path(perspective), {:format => :json}
+      post unstar_perspective_path(perspective), {:format => :json}
+      post star_perspective_path(perspective), {:format => :json}
+
+      response.status.should be(200)
+
+      @lindsay.notifications.count.should == 1
+      @lindsay.notifications[0].should_not be_nil
+      @lindsay.notifications[0].subject_name.should == perspective.place.name
     end
 
 
