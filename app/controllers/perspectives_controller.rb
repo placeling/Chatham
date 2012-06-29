@@ -101,7 +101,7 @@ class PerspectivesController < ApplicationController
               existing_perspective.liking_users << perspective.user.username
             else
               hearted_perspective.liking_users = [perspective.user.username]
-              @perspectives << hearted_perspective
+              @perspectives << hearted_perspective unless hearted_perspective.user.id == current_user.id
             end
           end
 
@@ -159,6 +159,12 @@ class PerspectivesController < ApplicationController
       @all_perspectives = @place.perspectives
       perspectives_count = @all_perspectives.count
       for perspective in @all_perspectives
+        perspective.liking_users = []
+        for user_id in perspective.starring_users
+          user = User.find(user_id)
+          perspective.liking_users << user.username
+        end
+
         @perspectives << perspective unless perspective.empty_perspective?
       end
     end

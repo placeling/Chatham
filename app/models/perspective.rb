@@ -256,12 +256,6 @@ class Perspective
       attributes[:modified_at] = self.updated_at.getutc
     end
 
-    #if  self.starring_users.count == 1
-    #  attributes[:likers] = "#{self.starring_users.count} person"
-    #elsif self.starring_users.count > 1
-    #  attributes[:likers] = "#{self.starring_users.count} people"
-    #end
-
     if options[:bounds]
       attributes = attributes.merge(:ploc => self[:ploc])
       attributes = attributes.merge(:modified_timestamp => self[:modified_at])
