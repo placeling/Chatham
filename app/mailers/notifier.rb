@@ -14,7 +14,8 @@ class Notifier < ActionMailer::Base
 
     citysnapshots = User.find_by_username('citysnapshots')
     @guides.delete(citysnapshots)
-
+    @guides.delete(@user)
+    
     @guides = @guides[0, 3]
 
     mail(:to => @user.email, :from => "contact@placeling.com", :subject => "#{@user.username}, welcome to Placeling") do |format|
@@ -48,21 +49,33 @@ class Notifier < ActionMailer::Base
 
   def weekly(user)
     @user = user
-
-    @place = Place.suggest_for(@user)
-    @questions = Question.suggest_for(@user)
-
-    mail(:to => @user.email, :subject => "#{@user.username}, check out #{@place.name}") do |format|
-      format.text
-      format.html
-    end
+    
+    @recos = user.get_recommendations
+    
+    if @recos
+      @pictures = false
+      if @recos['places'].length > 0
+        @recos['places'].each do |place|
+          if place.pictures.length > 0
+            @pictures = true
+            break
+          end
+        end
+      end
+      
+      
+      mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
+        format.text
+        format.html
+      end
+    end    
   end
 
 
   class Preview < MailView
     # Pull data from existing fixtures
     def weekly
-      user = User.find_by_username("imack")
+      user = User.find_by_username("andrewdilts")
       Notifier.weekly(user)
     end
 

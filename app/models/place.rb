@@ -228,6 +228,25 @@ class Place
     self.desc(:pc).limit(top_n)
   end
 
+  def self.top_nearby_places(lat, lng, span, top_n)
+    Place.where(:loc.within => {"$center" => [[lat, lng], span]}).where(:pc.gte => 1).desc(:pc).limit(top_n)
+  end
+  
+  def pictures
+    perps = Perspective.where(:plid => self.id)
+    photos = []
+    
+    perps.each do |perp|
+      perp.pictures.each do |pic|
+        if !pic.deleted
+          photos << pic
+        end
+      end
+    end
+    
+    return photos
+  end
+  
   def self.find_by_google_id(google_id)
     Place.where(:gid => google_id).first
   end

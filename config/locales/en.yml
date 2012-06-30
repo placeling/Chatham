@@ -460,6 +460,17 @@ en:
     text_feedback: "If you even have any questions or feedback, please drop us a line at support@placeling.com."
     text_guide: "Now start being the guide to your world!"
   
+  weekly:
+    intro: "Happy Thursday!"
+    weekend: "Let us help you get ready for the weekend."
+    explore: "Places to explore"
+    explore_why: "A few places we think you might like."
+    guides: "Explore With The Experts"
+    guides_why: "Let one of these guides show you around."
+    answers: "Local Advice"
+    all: "That's it for this week. Enjoy your weekend."
+    team: "- Team Placeling"
+  
   notify:
     address: "Placeling (Internet Services) Inc. 1515 West 2nd Ave, Suite 542, Vancouver, BC V6J 5C5"
     no_more: "Don't want these messages any more?"

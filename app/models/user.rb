@@ -86,6 +86,7 @@ class User
 
   embeds_one :activity_feed
   embeds_one :user_setting
+  embeds_one :user_recommendation
   embeds_one :first_run
   accepts_nested_attributes_for :user_setting
 
@@ -150,6 +151,10 @@ class User
 
     if !self.first_run
       self.create_first_run
+    end
+    
+    if !self.user_recommendation
+      self.create_user_recommendation
     end
   end
 
@@ -406,6 +411,95 @@ class User
     else
       self.user_setting = UserSetting.new
       return self.user_setting
+    end
+  end
+  
+  def get_recommendations
+    if self.loc && !self.loc.nil? && self.loc.length == 2
+      
+      
+      previous = self.user_recommendation.recommended_ids
+      
+      # Questions
+      questions = Question.nearby_questions(self.loc[0], self.loc[1]).shuffle # Want randomly organized
+      
+      clean_questions = []
+      
+      questions.each do |question|
+        if question.user != self && !previous.include?(question.id)
+          clean_questions << question
+        end
+      end
+      
+      questions = clean_questions[0,3]
+      
+      questions.each do |question|
+        self.user_recommendation.recommended_ids << question.id
+      end
+      
+      # Guides
+      candidates = User.top_nearby(self.loc[0], self.loc[1], 100)
+      
+      clean_candidates = []
+      
+      candidates.each do |candidate|
+        if !self.following_ids.include?(candidate.id) && !previous.include?(candidate.id)
+          clean_candidates << candidate
+        end
+      end
+      
+      if clean_candidates.include?(self)
+        clean_candidates.delete(self)
+      end
+      
+      city_snapshots = User.find_by_username('citysnapshots')
+      if clean_candidates.include?(city_snapshots)
+        clean_candidates.delete(city_snapshots)
+      end
+      
+      tyler = User.find_by_username('tyler')
+      if clean_candidates.include?(tyler)
+        clean_candidates.delete(tyler)
+      end
+      
+      candidates = clean_candidates[0,3]
+      
+      candidates.each do |candidate|
+        self.user_recommendation.recommended_ids << candidate.id
+      end
+      
+      # Places
+      candidate_places = Place.top_nearby_places(self.loc[0], self.loc[1], 0.3, 100).entries
+      
+      my_places = []
+      self.perspectives.each do |perspective|
+        my_places << perspective.place
+      end
+      
+      clean_places = []
+      
+      candidate_places.each do |place|
+        if !my_places.include?(place) && !previous.include?(place.id) && !place.venue_types.include?("Political")
+          clean_places << place
+        end
+      end
+      
+      growlab = Place.where('name'=>'Growlab').first()
+      if clean_places.include?(growlab)
+        clean_places.delete(growlab)
+      end
+      
+      places = clean_places[0,3]
+      
+      places.each do |place|
+        self.user_recommendation.recommended_ids << place.id
+      end
+      
+      self.save
+      
+      return {"guides" => candidates, "questions" => questions, "places" => places}
+    else
+      return nil
     end
   end
 
