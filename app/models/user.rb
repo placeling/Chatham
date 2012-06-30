@@ -482,6 +482,10 @@ class User
     !ios_notification_token.nil? && self.user_settings.new_follower_notify
   end
 
+  def facebook_friend_notification?
+    !ios_notification_token.nil? && self.user_settings.facebook_friend_notify
+  end
+
   def follow_email?
     self.confirmed? && self.user_settings.new_follower_email
   end
