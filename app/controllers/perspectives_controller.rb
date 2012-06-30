@@ -192,6 +192,7 @@ class PerspectivesController < ApplicationController
     @user_perspective = current_user.star(@perspective)
 
     ActivityFeed.add_star_perspective(current_user, @perspective.user, @perspective)
+    @mixpanel.track_event("star_perspective", {:pid => @perspective.id})
 
     # Need following for place page html: need to show blank perspective for current user
     if request.referer && URI(request.referer).path == place_path(@perspective.place)

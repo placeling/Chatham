@@ -817,6 +817,7 @@ class UsersController < ApplicationController
     @user.save!
     current_user.save!
 
+    @mixpanel.track_event("follow", {:user => @user.username})
     ActivityFeed.add_follow(current_user, @user)
 
     respond_to do |format|
