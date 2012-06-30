@@ -377,14 +377,12 @@ class PlacesController < ApplicationController
     @place = Place.new(params[:place])
     if @place.valid?
       @place = Place.new_from_user_input(@place)
-      track! :user_created_place
       @place.user = current_user
       @place.client_application = current_client_application unless current_client_application.nil?
     end
 
     if (params[:api_call] || verify_recaptcha(:model => @place, :message => "Invalid CAPTCHA")) && @place.save
       #by default, we placemark the new place
-      track! :placemark
       @perspective= @place.perspectives.build()
       @perspective.user = current_user
       @perspective.save

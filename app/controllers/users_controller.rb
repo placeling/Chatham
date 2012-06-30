@@ -817,7 +817,6 @@ class UsersController < ApplicationController
     @user.save!
     current_user.save!
 
-    track! :follow
     ActivityFeed.add_follow(current_user, @user)
 
     respond_to do |format|
@@ -877,11 +876,8 @@ class UsersController < ApplicationController
     current_user.save!
 
     if current_user != @user
-      track! :follow
       ActivityFeed.add_follow(current_user, @user)
     end
-
-    track! :download
 
     respond_to do |format|
       return redirect_to app_path

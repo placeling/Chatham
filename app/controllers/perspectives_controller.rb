@@ -12,7 +12,6 @@ class PerspectivesController < ApplicationController
     @perspective= current_user.perspective_for_place(@place)
 
     if @perspective.nil?
-      track! :placemark
       @perspective= @place.perspectives.build()
       @perspective.client_application = current_client_application unless current_client_application.nil?
       @perspective.user = current_user
@@ -192,7 +191,6 @@ class PerspectivesController < ApplicationController
 
     @user_perspective = current_user.star(@perspective)
 
-    track! :star
     ActivityFeed.add_star_perspective(current_user, @perspective.user, @perspective)
 
     # Need following for place page html: need to show blank perspective for current user
@@ -288,7 +286,6 @@ class PerspectivesController < ApplicationController
       @perspective= current_user.perspective_for_place(@place)
 
       if @perspective.nil?
-        track! :placemark
         @perspective= @place.perspectives.build(params.slice("memo", "url"))
         @perspective.client_application = current_client_application unless current_client_application.nil?
         @perspective.user = current_user
@@ -306,7 +303,6 @@ class PerspectivesController < ApplicationController
         #is a pinta
         if @perspective[:pinta_flag].nil?
           @perspective[:pinta_flag]= true
-          track! :wordpress_post
         end
         #pinta supercedes all for now, when it comes to tracking
         @perspective.client_application = current_client_application unless current_client_application.nil?

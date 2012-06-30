@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
 
   alias :logged_in? :user_signed_in?
 
-  use_vanity :current_user
 
   def first_run_app
     if !cookies[:first_run] && current_user

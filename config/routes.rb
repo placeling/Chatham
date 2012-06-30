@@ -45,7 +45,6 @@ Chatham::Application.routes.draw do
 
   post 'oauth/revoke', :to => 'oauth#revoke', :as => :oauth
 
-  match '/vanity(/:action(/:id(.:format)))', :controller => :vanity
   match '/app', :to => "admin#app"
   post '/users/resend', :to => 'users#resend', :as => :resend_password
 
@@ -224,6 +223,7 @@ Chatham::Application.routes.draw do
   if Rails.env.development?
     mount Notifier::Preview => 'mail_view'
   end
+  mount Split::Dashboard => 'split'
 
   #mount Resque::Server, :at => "/resque"
 
