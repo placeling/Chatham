@@ -15,6 +15,6 @@ staging:
   namespace: placeling_staging
 production:
   db: 0
-  host: ip-10-124-222-125.ec2.internal
+  host: ip-10-91-3-30.ec2.internal
   port: 6379
   namespace: placeling_production
