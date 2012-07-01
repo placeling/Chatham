@@ -227,6 +227,7 @@ class AuthenticationsController < ApplicationController
     # get rid of old auth tokens
 
     #user.remove_tokens_for( current_client_application )
+    return "" unless !current_client_application.nil? #mostly for testing where there isn't a live application
 
     request_token = current_client_application.create_request_token
     request_token.authorize!(user)
