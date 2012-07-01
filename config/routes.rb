@@ -30,7 +30,7 @@ Chatham::Application.routes.draw do
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/add' => 'authentications#add'
-  match '/auth/:provider/login' => 'authentications#add'
+  match '/auth/:provider/login' => 'authentications#login'
   match '/auth/:provider/friends' => 'authentications#friends'
 
   match '/oauth/test_request', :to => 'oauth#test_request', :as => :test_request
