@@ -35,5 +35,27 @@ describe "Facebook" do
 
   end
 
-  #"should allow a user to signup with facebook credentials"
+  it "should allow a user to signup with facebook credentials" do
+    @test_users = Koala::Facebook::TestUsers.new(:app_id => CHATHAM_CONFIG['facebook_app_id'], :secret => CHATHAM_CONFIG['facebook_app_secret'])
+
+    user = @test_users.create(true, "publish_stream")
+
+    post_via_redirect "/v1/users", {
+        :format => :json,
+        :facebook_id => user['id'],
+        :facebook_access_token => user['access_token'],
+        :facebook_expiry_date => 2.months.from_now,
+        :username => "test_username",
+        :email => user["email"]
+    }
+
+    response.status.should be(200)
+
+    response_dict = JSON.parse(response.body)
+    response_dict['status'].should == "success"
+    # response_dict['token'].should_not be_nil  won't have a token because there is no current_client_application
+    User.count.should == 1
+    User.first.authentications.count.should ==1
+
+  end
 end

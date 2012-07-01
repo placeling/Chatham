@@ -3,10 +3,10 @@ class Authentication
   include Mongoid::Paranoia
   include Mongoid::Timestamps
 
-  field :p, :as => :provider, :type =>String
+  field :p, :as => :provider, :type => String
   field :uid, :type => String
   field :token, :type => String
-  field :expiry, :type =>String
+  field :expiry, :type => String
   field :expires_at, :type => Time
 
   field :dict, :type => Hash
@@ -20,22 +20,22 @@ class Authentication
 
   after_create :social_graph_jobs
 
-  def self.find_by_provider_and_uid(provider,id)
-    self.where(:uid =>id).and(:p=>provider).first
+  def self.find_by_provider_and_uid(provider, id)
+    self.where(:uid => id).and(:p => provider).first
   end
 
   def as_json(options={})
-    attributes = {:provider =>self['p'], :uid => self['uid'],  :token =>self['token'],
-                    :expiry => self.expiry }
+    attributes = {:provider => self['p'], :uid => self['uid'], :token => self['token'],
+                  :expiry => self.expiry}
     attributes
   end
 
   def social_graph_jobs
-    if provider == "facebook" && !Rails.env.test? #no need for this in test
+    if provider == "facebook"
       Resque.enqueue(NewFacebookUser, self.user.id)
     end
 
-    if provider == "facebook" && !self.user.avatar?
+    if provider == "facebook" && !self.user.avatar? && !Rails.env.test? #no need for this in test
       self.user.remote_avatar_url = self.user.facebook.fetch.picture('large') #go get facebook profile
       self.user.save
     end

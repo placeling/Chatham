@@ -11,6 +11,6 @@ class SendNotifications
     end
 
 
-    APNS.send_notifications([n])
+    APNS.send_notifications([n]) if Rails.env.production?
   end
 end

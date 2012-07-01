@@ -95,7 +95,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_check
-    if params[:api_call]
+    if params[:api_call] && !Rails.env.test?
       if params[:key] && request.get?
         if ClientApplication.find_by_key(params[:key]).nil?
           oauth_app_required
