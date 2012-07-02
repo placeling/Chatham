@@ -56,9 +56,23 @@ class Notifier < ActionMailer::Base
       track! :email_sent
       use_vanity_mailer user
 
-      mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
-        format.text
-        format.html
+      if @recos['questions'].length > 0
+
+        if ab_test(:question_as_subject)
+          subject = @recos['questions'].first.title
+        else
+          subject = "#{@user.username}, it's almost the weekend"
+        end
+
+        mail(:to => @user.email, :subject => subject) do |format|
+          format.text
+          format.html
+        end
+      else
+        mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
+          format.text
+          format.html
+        end
       end
     end
   end
