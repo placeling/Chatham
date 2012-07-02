@@ -53,6 +53,9 @@ class Notifier < ActionMailer::Base
     @recos = user.get_recommendations
 
     if @recos
+      track! :email_sent
+      use_vanity_mailer user
+
       mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
         format.text
         format.html
