@@ -47,7 +47,7 @@
     <div id="answer_publisher">
       <%= form_for(@answer, :url => question_answers_path(@question)) do |a| %>
           <div class='left_place_column'>
-            <input id="answer_place" name="place_name" placeholder="<%= t('question.text_prompt', :test => ab_test("question_answered", "answer", "suggestion")) %>" size="40" type="text" value="">
+            <input id="answer_place" name="place_name" placeholder="<%= t('question.text_prompt', :test => split_ab_test("question_answered", "answer", "suggestion")) %>" size="40" type="text" value="">
             <input id="google_id_place" name="google_id_place" type="hidden" value="">
             <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
 
@@ -55,13 +55,13 @@
             <div id="new_address" class="address_text" style="display: none;width:100%"></div>
           </div>
           <div class='right_place_column'>
-            <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest', :test => ab_test("question_answered", "answer", "suggestion")) %>" name="commit">
+            <input id="place_submit" style="display:none" class="submit" type="submit" value="<%= t('question.suggest', :test => split_ab_test("question_answered", "answer", "suggestion")) %>" name="commit">
             <a href="#" id="cancel_link" style="display:none"><%= t 'question.cancel' %></a>
           </div>
       <% end %>
     </div>
 
-    <div id="suggestion_tally"><%= t('question.place_tally', :tally => @question.answers.count, :test => ab_test("question_answered", "answer", "suggestion")) %></div>
+    <div id="suggestion_tally"><%= t('question.place_tally', :tally => @question.answers.count, :test => split_ab_test("question_answered", "answer", "suggestion")) %></div>
     <ul id="answer_list">
       <% @question.answers.order_by([[:upvotes, :desc]])[0..2].each_with_index do |answer, i| %>
           <% if !answer.new_record? %>

@@ -66,10 +66,13 @@ gem "redis-namespace"
 #gem 'redis-store'
 
 gem "mixpanel"
-gem 'split', :require => 'split/dashboard'
+gem 'vanity'
+
+#gem "split", :path => "../split", :require => 'split/dashboard'
+gem "split", :git => "git://github.com/imackinn/split.git", :require => 'split/dashboard'
 
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
+gem 'resque-scheduler', "2.0.0", :require => 'resque_scheduler'
 gem 'resque_mailer'
 
 gem 'sitemap_generator'

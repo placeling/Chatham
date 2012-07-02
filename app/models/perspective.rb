@@ -103,6 +103,7 @@ class Perspective
         #don't fail just because we can't reach google
       end
     end
+    track! :placemark
   end
 
   def scrub_stars

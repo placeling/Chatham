@@ -12,5 +12,6 @@ class SendNotifications
 
 
     APNS.send_notifications([n]) if Rails.env.production?
+    track! :ios_notification
   end
 end
