@@ -27,6 +27,11 @@ class Authentication
   def as_json(options={})
     attributes = {:provider => self['p'], :uid => self['uid'], :token => self['token'],
                   :expiry => self.expiry}
+
+    if self.expiry.nil?
+      attributes[:expiry] = 1.month.from_now
+    end
+
     attributes
   end
 
