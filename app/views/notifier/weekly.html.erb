@@ -3,53 +3,54 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+<body style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
 <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
   <tr style="padding: 0px;">
-    <td align="center" valign="top" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+    <td align="center" valign="top" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
       <table width="660" id="main" border="0" cellpadding="0" cellspacing="0">
         <tr style="padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
             <p class="right" style="margin: 5px;padding: 0px;float: right;">
               <img src="https://www.placeling.com/assets/logo.png"><a href="<%= root_url() %>"></a></p>
           </td>
         </tr>
+        <!-- Intro -->
         <tr style="padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;padding: 0px;font-size: 18px;font-weight: bold;"><%= t('weekly.intro') %></p>
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.weekend')%></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-bottom:0px;padding: 0px;font-size: 18px;font-weight: bold;color:#357A80"><%= t('weekly.intro') %></p>
+            <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.weekend')%></p>
           </td>
         </tr>
 
         <!-- Places -->
         <% if @recos['places'].length > 0 %>
         <tr style="padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:20px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('weekly.explore') %></p>
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.explore_why')%></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:25px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.explore') %></p>
+            <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.explore_why')%></p>
           </td>
         </tr>
         
         <tr style="padding: 0px;">
           <!-- Pictures -->
-          <% if @pictures %>
-            <% @recos['places'].each do |place| %>
-              <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-                <% if place.pictures.length > 0 %>
-                  <div class="venue_pic_holder" style="margin: 0px;padding: 0px;float: left;width: 210px;height: 98px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
-                    <a href="<%= place_url(place) %>"><img class="profile_pic" src="<%= place.pictures[0].mosaic_3_2_url %>"  style="max-height: 98px;max-width: 210px;"></a>
-                  </div>
-                <% end %>
-              </td>
-            <% end %>
+          <% @recos['places'].each do |place| %>
+            <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+              <div class="venue_pic_holder" style="margin: 0px;padding: 0px;float: left;width: 210px;height: 98px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;"><a href="<%= place_url(place) %>">
+              <% if place.pictures.length > 0 %>
+                <img src="<%= place.pictures[0].mosaic_3_2_url %>"  style="max-height: 98px;max-width: 210px;"></a>
+              <% else %>
+                <img src="https://maps.google.com/maps/api/staticmap?center=<%= place.loc[0] %>,<%= place.loc[1] %>&zoom=14&size=210x98&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C<%= place.loc[0] %>,<%= place.loc[1] %>&sensor=false">
+              <% end %>
+              </a></div>
+            </td>
           <% end %>
         </tr>
         
           <!-- Names -->
           <% @recos['places'].each do |place| %>
-          <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <div style="margin: 0px;padding: 0px;">
-              <div class="username" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;"><a href="<%= place_url(place) %>" class="username_link" style="color: #E08574;font-size: 18px;"><%= place.name %></a></div>
+          <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <div style="margin: 0px;padding: 0px;text-align:center">
+              <div class="username" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;"><a href="<%= place_url(place) %>" class="username_link" style="color: #E08574;font-size: 14px;"><%= place.name %></a></div>
             </div>
           </td>
           <% end %>
@@ -58,20 +59,20 @@
         <!-- Guides -->
         <% if @recos['guides'].length > 0 %>
         <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:20px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('weekly.guides')%></p>
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.guides_why')%></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:20px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.guides')%></p>
+            <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.guides_why')%></p>
           </td>
         </tr>
         
         <tr style="margin: 5px;padding: 0px;">
           <% @recos['guides'].each do |guide| %>
-          <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+          <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
             <div style="margin: 0px;padding: 0px;">
               <div class="profile_pic_holder" style="margin: 0px;padding: 0px;float: left;width: 40px;height: 40px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
                 <a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>"><img class="profile_pic" src="<%= guide.thumb_url %>"  style="max-height: 40px;max-width: 40px;"></a>
               </div>
-              <div class="username" style="margin: 0px;padding: 0px;padding-top: 25px;margin-left: 55px;"><a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link" style="color: #E08574;font-size: 24px;"><%= guide.username %></a></div>
+              <div class="username" style="margin: 0px;padding: 0px;padding-top: 25px;margin-left: 55px;margin-bottom:10px"><a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link" style="color: #E08574;font-size: 18px;"><%= guide.username %></a></div>
             </div>
             <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= guide.description %></p>
           </td>
@@ -80,38 +81,39 @@
         
         <!-- Questions -->
         <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;margin-top:20px;margin-left:0px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('weekly.answers')%></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <p class="emphasize embiggen" style="margin: 5px;margin-top:20px;margin-left:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.answers')%></p>
           </td>
         </tr>
         <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
             <% if @recos['questions'].length > 0 %>
+              <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;margin-bottom:0px;"><%= t('weekly.answers_why')%></p>
               <% @recos['questions'].each do |question| %>
                 <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:5px;font-family: Georgia,&quot;Times New Roman&quot;, serif"><a href="<%= question_path(question) %>" style="color: #E08574;"><%= question.title %></a></p>
               <% end %>
               <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:5px;font-family: Georgia,&quot;Times New Roman&quot;, serif"><a href="<%= questions_path %>" style="color: #E08574;">Ask your own question</a> to get advice from your friends on where to go</p>
             <% else %>
-              <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:5px;font-family: Georgia,&quot;Times New Roman&quot;, serif"><a href="<%= questions_path %>" style="color: #E08574;">Ask your own question</a> to get advice from your friends on where to go</p>
+              <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;<% if @recos['questions'].length == 0 %>margin-top:-5px;<% else %>margin-top:5px;<% end %>font-family: Georgia,&quot;Times New Roman&quot;, serif"><a href="<%= questions_path %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %></p>
             <% end %>
           </td>
         </tr>
         
         <!-- Wrap up -->
         <tr style="padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="content" style="margin:0px;margin-bottom:5px;margin-top:40px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.all')%></p>
-            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.support')%> <a href="mailto:support@placeling.com" style="color: #E08574;">support@placeling.com</a>.</p>
-            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.team')%></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+            <p class="content" style="margin:0px;margin-bottom:5px;margin-top:25px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.all')%></p>
+            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('welcome.support')%> <a href="mailto:support@placeling.com" style="color: #E08574;"><%= t('weekly.support') %></a>.</p>
+            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.team')%></p>
           </td>
         </tr>
         
         <!-- Legal stuff -->
         <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: Helvetica,Arial,sans-serif; color:#666">
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:20px;font-family: Helvetica,Arial,sans-serif;"><%= t('notify.sent') %> <%= @user.email %></p>
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Helvetica,Arial,sans-serif;"><%= t('notify.no_more') %> <%= t('notify.change') %> <a href="<%= account_user_url(@user) %>" style="color: #E08574;"><%= t('notify.settings') %></a></p>
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Helvetica,Arial,sans-serif;"><%= t('notify.address') %></p>
+          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
+            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:20px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.sent') %> <%= @user.email %></p>
+            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.no_more') %> <%= t('notify.change') %> <a href="<%= account_user_url(@user) %>" style="color: #E08574;"><%= t('notify.settings') %></a></p>
+            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.address') %></p>
           </td>
         </tr>
       </table>

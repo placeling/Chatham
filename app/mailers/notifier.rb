@@ -53,17 +53,6 @@ class Notifier < ActionMailer::Base
     @recos = user.get_recommendations
     
     if @recos
-      @pictures = false
-      if @recos['places'].length > 0
-        @recos['places'].each do |place|
-          if place.pictures.length > 0
-            @pictures = true
-            break
-          end
-        end
-      end
-      
-      
       mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
         format.text
         format.html
