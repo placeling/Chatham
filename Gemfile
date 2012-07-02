@@ -21,6 +21,7 @@ gem 'omniauth-facebook'
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 
 gem "fb_graph"
+gem "koala"
 
 gem "httparty"
 gem "hashie"
@@ -64,8 +65,8 @@ gem "redis", "~> 2.2"
 gem "redis-namespace"
 #gem 'redis-store'
 
-gem "vanity"
 gem "mixpanel"
+gem 'split', :require => 'split/dashboard'
 
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'

@@ -5,7 +5,8 @@ class Notification
   include Mongoid::Timestamps
   include RedisHelper
 
-  field :user, :as => :actor1, :type => BSON::ObjectId
+  field :actor1, :type => BSON::ObjectId
+  field :actor2, :type => BSON::ObjectId
   field :subject, :type => BSON::ObjectId
   field :type, :type => String
   field :subject_name, :type => String
@@ -13,11 +14,26 @@ class Notification
   field :apns, :type => Boolean, :default => false
 
 
-  def self.veto(user, actor, notification_type)
+  def self.veto(activity)
+    user = User.find(activity.actor2)
+    notifications = user.notifications
 
-    for notification in user.notifications
-      if notification.type == notification_type && notification.subject == actor.id
+    if notifications.count >=5
+      notty = notifications[4]
+      if notty.created_at > 1.hour.ago
         return true
+      end
+    end
+
+    for notification in notifications
+      if notification.type == activity.activity_type
+        if notification.actor1 == activity.actor1
+          if notification.subject == activity.subject
+            if notification.actor2 == activity.actor2
+              return true
+            end
+          end
+        end
       end
     end
 
@@ -27,9 +43,8 @@ class Notification
   # push status to a specific feed
   def remember(location="notifications")
     self.created_at = Time.now
-    $redis.zadd key(location, self.actor1), timestamp, encoded
+    $redis.zadd key(location, self.actor2), timestamp, encoded
   end
-
 
   def self.decode(json)
     Notification.new(ActiveSupport::JSON.decode(json))

@@ -1,6 +1,6 @@
 module QuestionsHelper
 
-  def upvote_icon( answer, current_user, session_options )
+  def upvote_icon(answer, current_user, session_options)
 
     if current_user
       if answer.voters.has_key? current_user.id.to_s
@@ -19,8 +19,8 @@ module QuestionsHelper
 
   end
 
-  def map_url( question )
-    url = "https://maps.googleapis.com/maps/api/staticmap?size=450x128&sensor=false"
+  def map_url(question)
+    url = "https://maps.googleapis.com/maps/api/staticmap?size=480x128&sensor=false"
 
     tally = 0
     lat = 0.0

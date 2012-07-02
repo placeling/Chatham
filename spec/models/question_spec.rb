@@ -15,7 +15,6 @@ describe Question do
     it "should return not return far away questions" do
 
       q1 = Factory.create(:question, :title => "What is the best dive bar in Vancouver?", :score => 1)
-
       q2 = Factory.create(:question, :title => "What is the best sushi in Vancouver?")
 
       Question.nearby_questions(0.0, 0.0).count.should == 0

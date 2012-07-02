@@ -11,37 +11,104 @@
 
 <div id="question_header">
   <div id="header_content">
-    <div class="question_poster_username">
-      <div id="city_prompt">
-        <%= t('question.nearby_for', :city => 'Nearby') %>
-      </div>
+    <div id="question_index_header">
+
+      <%= form_for(@question) do |f| %>
+          <%= f.hidden_field :country_code, :id => "country_code" %>
+          <input id="lat" name="question[location][]" type="hidden" value="<%= @question.location[0] %>">
+          <input id="lng" name="question[location][]" type="hidden" value="<%= @question.location[1] %>">
+
+          <div class="field">
+            <%= f.text_field :title, :class => "header_question_field_box", :placeholder => t('question.placeholder_question') %>
+            <%= f.text_field :city_name, :class => "header_question_field_box", :placeholder => t('question.placeholder_city') %>
+            <%= f.submit :class => "submit", :style => "float:right;margin:10px 20px" %>
+          </div>
+      <% end %>
     </div>
   </div>
 </div>
 
+<div id="question_index">
+  <% if @myQuestions.nil? %>
+      <%= render :partial => "ask_prompt" %>
+  <% elsif @myQuestions.count == 0 %>
+      <%= render :partial => "ask_prompt" %>
+  <% else %>
+      <%= render :partial => "my_questions", :locals => {:myQuestions => @myQuestions} %>
+  <% end %>
+  <ul id="nearby_question_list">
+    <div class="question_section_title"><%= t 'question.nearby_questions' %></div>
+    <% @questions.each_with_index do |question, i| %>
+        <hr class="questions">
+        <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+          <%= render :partial => "question", :locals => {:question => question} %>
+        </li>
+    <% end %>
 
-<div id="question_main">
-  <div id="question_left_column">
-    <ul id="answer_list">
-      <% @questions.each_with_index do |question, i| %>
-          <hr class="questions">
-          <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
-            <%= render :partial => "question", :locals => {:question => question} %>
-          </li>
-      <% end %>
+    <hr class="questions">
+  </ul>
 
-      <hr class="questions">
-    </ul>
-  </div>
-  <div id="question_right_column">
-    <div id="create_own_prompt" class="right_info"><%= t 'question.own_prompt' %></div>
-    <div id="ask_friends_button" class="all_places_holder right_info">
-      <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
-    </div>
-
-    <div class="miranda_graphic right_info">
-      <%= image_tag asset_path("Miranda-01.png") %>
-    </div>
-  </div>
   <div class="question_clear"></div>
 </div>
+
+<% content_for :javascript do %>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#question_city_name').keypress(function (e) {
+                if (e.which == 13) return false;
+            });
+
+            $("#question_city_name").focusout(function () {
+                var firstResult = $(".pac-container .pac-item:first").text();
+
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({"address":firstResult }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        $("#question_city_name").val(firstResult);
+
+                        for (var i = 0; i < results[0].address_components.length; i++) {
+                            component = results[0].address_components[i];
+
+                            if (jQuery.inArray("country", component.types) >= 0) {
+                                $("#country_code").val(component.short_name);
+                                break;
+                            }
+                        }
+
+                        $("#lat").val(results[0].geometry.location.lat());
+                        $("#lng").val(results[0].geometry.location.lng());
+
+                    }
+                });
+            });
+
+            var input = document.getElementById('question_city_name');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                console.debug(place);
+                if (place.geometry) {
+
+                    for (var i = 0; i < place.address_components.length; i++) {
+                        component = place.address_components[i];
+
+                        if (jQuery.inArray("country", component.types) >= 0) {
+                            $("#country_code").val(component.short_name);
+                            break;
+                        }
+                    }
+
+
+                    $("#lat").val(place.geometry.location.lat());
+                    $("#lng").val(place.geometry.location.lng());
+                }
+            });
+
+        });
+
+    </script>
+<% end %>

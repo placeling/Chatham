@@ -21,7 +21,7 @@ class FollowActivity
       actor1.facebook.og_action!("placeling:follow", :user => actor2.og_path)
     end
 
-    unless Notification.veto(actor2, actor1, "FOLLOW")
+    unless Notification.veto(activity)
       apns = false
       email = false
       if actor2.follow_notification?
@@ -33,7 +33,7 @@ class FollowActivity
         email = true
       end
 
-      notification = Notification.new(:user => actor2.id, :subject => actor1.id, :type => "FOLLOW", :subject_name => actor1.username, :email => email, :apns => apns)
+      notification = Notification.new(:actor1 => actor1.id, :actor2 => actor2.id, :type => activity.activity_type, :subject_name => actor1.username, :email => email, :apns => apns)
       notification.remember #redis backed
     end
 

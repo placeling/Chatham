@@ -14,12 +14,13 @@ class QuestionsController < ApplicationController
     end
 
     if current_user
-      @myQuestions = current_user.questions
-    else
-      @myQuestions = []
+      @myQuestions = current_user.questions.order(:created_at, :desc)
     end
 
     @questions = Question.nearby_questions(loc["lat"].to_f, loc["lng"].to_f).limit(20)
+
+    @question = Question.new
+    @question.location = [0.0, 0.0]
 
     respond_to do |format|
       format.html # index.html.erb

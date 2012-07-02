@@ -114,15 +114,10 @@ class User
   after_validation :set_downcase_username
   # For updating avatar see http://railscasts.com/episodes/182-cropping-images
   after_update :process_avatar, :if => :cropping?
-  after_create :track_signup
   after_create :follow_defaults, :attach_subdocs
 
   def cropping?
     !x.blank? && !y.blank? && !w.blank? && !h.blank?
-  end
-
-  def track_signup
-    track! :signup
   end
 
   def process_avatar
@@ -579,6 +574,10 @@ class User
 
   def follow_notification?
     !ios_notification_token.nil? && self.user_settings.new_follower_notify
+  end
+
+  def facebook_friend_notification?
+    !ios_notification_token.nil? && self.user_settings.facebook_friend_notify
   end
 
   def follow_email?
