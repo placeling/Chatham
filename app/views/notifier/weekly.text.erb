@@ -1,13 +1,51 @@
-<%= t('welcome.hey') %> <%= @user.username %>. <%= t('welcome.welcome') %>
+<%= t('weekly.intro') %>
+<%= t('weekly.weekend') %>
+<% if @recos['places'].length > 0 %>
 
-<%= t('welcome.text_web') %>
-<%= user_url(@user) %>
 
-<% if !@user.first_run.downloaded_app %>
-    <%= t('welcome.text_download') %>
-    <%= app_url() %>
+<%= t('weekly.explore') %>
+<%= t('weekly.explore_why') %>
+
+<% @recos['places'].each do |place| %>
+<%= place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
+<% end %>
+<% end %>
+<% if @recos['guides'].length > 0 %>
+  
+  
+<%= t('weekly.guides') %>
+<%= t('weekly.guides_why') %>
+  
+<% @recos['guides'].each do |guide| %>
+<%= guide.username %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
+<% end %>
+<% end%>
+
+
+<%= t('weekly.answers')%>
+<% if @recos['questions'].length > 0 %>
+<%= t('weekly.answers_why') %>
+<% @recos['questions'].each do |question| %>
+<%= question.title %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
+<% end %>
 <% end %>
 
-<%= t('welcome.text_feedback') %>
+<%= t('weekly.ask')%> <%= t('weekly.get_answer') %>
+<%= url_for(:controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host])%>
 
-<%= t('welcome.text_guide') %>
+
+<%= t('weekly.all')%>
+<%= t('welcome.support')%>: support@placeling.com.
+<%= t('weekly.team')%>
+
+
+
+
+
+
+<%= t('notify.sent') %> <%= @user.email %>
+
+<%= t('notify.no_more') %> <%= t('notify.change') %> <%= t('notify.settings') %>:
+<%= account_user_url(@user) %>
+
+<%= t('notify.address') %>

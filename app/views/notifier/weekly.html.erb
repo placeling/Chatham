@@ -117,7 +117,7 @@
             <% @recos['places'].each do |place| %>
                 <td valign="top" width="220" class="table_style">
                   <div style="margin: 0px;padding: 0px;text-align:center">
-                    <div class="username" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;">
+                    <div class="username" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;width:210px;">
                       <%= link_to place.name, vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]), :class => "placename_link" %>
                     </div>
                   </div>
@@ -167,8 +167,7 @@
                     </p>
                 <% end %>
                 <p class="question_content">
-                  <a href="<%= questions_path %>" style="color: #E08574;">Ask your own question</a> to get advice from
-                  your friends on where to go</p>
+                  <a href="<%= questions_path %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %></p>
             <% else %>
                 <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;<% if @recos['questions'].length == 0 %>margin-top:-5px;<% else %>margin-top:5px;<% end %>font-family: Georgia,&quot;Times New Roman&quot;, serif">
                   <a href="<%= questions_path %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
