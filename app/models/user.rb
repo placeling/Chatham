@@ -414,8 +414,6 @@ class User
 
   def get_recommendations
     if self.loc && !self.loc.nil? && self.loc.length == 2
-
-
       previous = self.user_recommendation.recommended_ids
 
       # Questions
@@ -494,8 +492,12 @@ class User
       end
 
       self.save
-
-      return {"guides" => candidates, "questions" => questions, "places" => places}
+      
+      if candidates.length > 0 || questions.length > 0 || places.length >0
+        return {"guides" => candidates, "questions" => questions, "places" => places}
+      else
+        return nil
+      end      
     else
       return nil
     end
