@@ -3,48 +3,48 @@ require 'spec_helper'
 describe UsersController do
   render_views
 
-   describe "GET suggested" do
-      it "returns list of suggested users" do
-        maven = Factory.create(:maven, :username => "gladwell",:location =>[49, -121])
+  describe "GET suggested" do
+    it "returns list of suggested users" do
+      maven = Factory.create(:maven, :username => "gladwell", :location => [49, -121])
 
-        get :suggested, :lat => 49, :lng => -121, :format=>:json
-        response.should be_success
-        users = JSON.parse( response.body )
+      get :suggested, :lat => 49, :lng => -121, :format => :json
+      response.should be_success
+      users = JSON.parse(response.body)
 
-        users['suggested'][0]['username'].should == "gladwell"
-      end
+      users['suggested'][0]['username'].should == "gladwell"
+    end
 
-      it "returns nothing when given invalid co-ordinate" do
-        maven = Factory.create(:maven, :username => "gladwell",:location =>[49, -121])
+    it "returns nothing when given invalid co-ordinate" do
+      maven = Factory.create(:maven, :username => "gladwell", :location => [49, -121])
 
-        get :suggested, :lat => 193, :lng => -343, :format=>:json
-        response.should be_success
-        users = JSON.parse( response.body )
+      get :suggested, :lat => 193, :lng => -343, :format => :json
+      response.should be_success
+      users = JSON.parse(response.body)
 
-        users['suggested'].count.should == 0
-      end
-   end
+      users['suggested'].count.should == 0
+    end
+  end
 
   describe "GET /:id" do
     describe "with valid params" do
       it "returns imack's profile" do
-        user = Factory.create(:user, :username=>"imack")
+        user = Factory.create(:user, :username => "imack")
 
         get :show, :id => user.username
         response.should be_success
       end
 
       it "returns returns follower and followee count in json" do
-        user = Factory.create(:user, :username=>"imack")
-        user2 = Factory.create(:user, :username=>"lindsay")
+        user = Factory.create(:user, :username => "imack")
+        user2 = Factory.create(:user, :username => "lindsay")
 
-        user.follow( user2 )
+        user.follow(user2)
 
-        get :show, :id => user.username, :format=>:json
+        get :show, :id => user.username, :format => :json
 
         response.should be_success
 
-        user = JSON.parse( response.body )
+        user = JSON.parse(response.body)
 
         PP.pp user
         user['follower_count'].should == 0
@@ -53,18 +53,18 @@ describe UsersController do
       end
 
       it "returns relationship information" do
-        user = Factory.create(:user, :username=>"imack")
-        user2 = Factory.create(:user, :username=>"lindsay")
+        user = Factory.create(:user, :username => "imack")
+        user2 = Factory.create(:user, :username => "lindsay")
 
-        user.follow( user2 )
+        user.follow(user2)
 
         sign_in user
 
-        get :show, :id => user2.username, :format=>:json
+        get :show, :id => user2.username, :format => :json
 
         response.should be_success
 
-        user = JSON.parse( response.body )
+        user = JSON.parse(response.body)
 
         PP.pp user
         user['following'].should == true
@@ -76,7 +76,7 @@ describe UsersController do
 
     describe "with invalid params" do
       it "returns a 404" do
-        expect{get :profile, :username => "t"}.to raise_error(AbstractController::ActionNotFound)
+        expect { get :profile, :username => "t" }.to raise_error(ActionController::RoutingError)
       end
     end
   end
