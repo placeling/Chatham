@@ -6,6 +6,7 @@ gem 'rails', '3.2.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+
 gem "jquery-rails"
 
 gem "mongoid", "~> 2.4.8"
@@ -95,6 +96,7 @@ gem 'capistrano'
 gem "capistrano-ext"
 gem "rvm-capistrano", :require => false
 
+gem 'premailer-rails3'
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
 # gem 'ruby-debug19'

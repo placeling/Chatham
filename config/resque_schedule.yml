@@ -4,3 +4,10 @@ generate_sitemap:
   queue: high
   args:
   description: "This job rebuilds the site map a 4 times a day"
+
+weekly_emails:
+  cron: "0 14 * * 4"
+  class: WeeklyEmail
+  queue: high
+  args:
+  description: "Send the weekly recommendation emails"

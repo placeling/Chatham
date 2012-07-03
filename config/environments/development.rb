@@ -21,7 +21,7 @@ Chatham::Application.configure do
   #config.action_controller.asset_host = "d22k5192qedaz6.cloudfront.net"
 
   # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   #config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
@@ -33,13 +33,13 @@ Chatham::Application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  :address              => "smtp.gmail.com",
-  :port                 => 587,
-  :domain               => '@dev.placeling.com',
-  :user_name            => 'placeling.dev',
-  :password             => 'gmail4placeling',
-  :authentication       => 'plain',
-  :enable_starttls_auto => true  }
+      :address => "smtp.gmail.com",
+      :port => 587,
+      :domain => '@dev.placeling.com',
+      :user_name => 'placeling.dev',
+      :password => 'gmail4placeling',
+      :authentication => 'plain',
+      :enable_starttls_auto => true}
 
   #DON'T REMOVE THIS LINE! -Prevents test emails from going to users
   ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
@@ -47,7 +47,7 @@ Chatham::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.action_mailer.default_url_options = { :host => 'dev.placeling.com:3000', :protocol=>'http'  }
+  config.action_mailer.default_url_options = {:host => 'dev.placeling.com', :port => 3000, :protocol => 'http'}
 
 end
 

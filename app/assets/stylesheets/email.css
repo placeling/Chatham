@@ -1,0 +1,55 @@
+.table_style {
+    background-color: #FAF9F7;
+    font-size: 14px;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+
+}
+
+.username_link {
+    color: #E08574;
+    font-size: 18px;
+}
+
+.placename_link {
+    color: #E08574;
+    font-size: 14px;
+}
+
+.profile_pic {
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.profile_pic_holder {
+    margin: 0px;
+    padding: 0px;
+    float: left;
+    width: 40px;
+    height: 40px;
+    background: none repeat scroll 0 0 #FAF9F7;
+    border: 5px solid white;
+    box-shadow: 0 0 6px 0 #888888;
+}
+
+.guide_description {
+    margin: 5px;
+    padding: 0px;
+    font-family: Georgia, Times New Roman, serif;
+    font-style: italic;
+}
+
+.username {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 25px;
+    margin-left: 55px;
+    margin-bottom: 10px
+}
+
+.question_content {
+    margin: 5px;
+    margin-left: 0px;
+    padding: 0px;
+    margin-top: 5px;
+    font-family: Georgia, Times New Roman, serif;
+}
