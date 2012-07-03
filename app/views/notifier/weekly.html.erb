@@ -21,9 +21,9 @@
         <!-- Intro -->
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
-            <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-bottom:0px;padding: 0px;font-size: 18px;font-weight: bold;color:#357A80"><%= t('weekly.intro') %></p>
+            <p class="email_emphasize"><%= t('weekly.intro') %></p>
 
-            <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.weekend') %></p>
+            <p class="email_content" style="font-style:italic;"><%= t('weekly.weekend') %></p>
           </td>
         </tr>
 
@@ -33,7 +33,7 @@
               <td width="100%" colspan="3" class="table_style">
                 <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:25px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.explore') %></p>
 
-                <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.explore_why') %></p>
+                <p class="email_content"><%= t('weekly.explore_why') %></p>
               </td>
             </tr>
 
@@ -41,7 +41,7 @@
               <!-- Pictures -->
               <% @recos['places'].each do |place| %>
                   <td valign="top" width="220" class="table_style">
-                    <div class="venue_pic_holder" style="margin: 0px;padding: 0px;float: left;width: 210px;height: 98px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
+                    <div class="venue_pic_holder">
                       <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>">
                         <% if place.pictures.length > 0 %>
                             <img src="<%= place.pictures[0].mosaic_3_2_url %>" style="max-height: 98px;max-width: 210px;">
@@ -70,9 +70,9 @@
         <% if @recos['guides'].length > 0 %>
             <tr style="margin: 5px;padding: 0px;">
               <td width="100%" colspan="3" class="table_style">
-                <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:20px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.guides') %></p>
+                <p class="email_emphasize" style="margin-top:20px;"><%= t('weekly.guides') %></p>
 
-                <p class="content" style="margin: 5px;margin-left:0px;margin-top:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('weekly.guides_why') %></p>
+                <p class="question_content"><%= t('weekly.guides_why') %></p>
               </td>
             </tr>
 
@@ -95,13 +95,13 @@
         <!-- Questions -->
         <tr style="margin: 5px;padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
-            <p class="emphasize embiggen" style="margin: 5px;margin-top:20px;margin-left:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.answers') %></p>
+            <p class="email_emphasize" style="margin-top:20px;"><%= t('weekly.answers') %></p>
           </td>
         </tr>
         <tr style="margin: 5px;padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
             <% if @recos['questions'].length > 0 %>
-                <p class="question_content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;margin-bottom:0px;"><%= t('weekly.answers_why') %></p>
+                <p class="question_content"><%= t('weekly.answers_why') %></p>
                 <% @recos['questions'].each do |question| %>
                     <p class="question_content">
                       <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
@@ -121,24 +121,24 @@
         <!-- Wrap up -->
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
-            <p class="content" style="margin:0px;margin-bottom:5px;margin-top:25px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.all') %></p>
+            <p class="email_content" style="margin-top:25px;font-style:italic;"><%= t('weekly.all') %></p>
 
-            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('welcome.support') %>
+            <p class="email_content" style="font-style:italic;"><%= t('welcome.support') %>
               <a href="mailto:support@placeling.com" style="color: #E08574;"><%= t('weekly.support') %></a>.</p>
 
-            <p class="content" style="margin:0px;margin-bottom:5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;font-style:italic;"><%= t('weekly.team') %></p>
+            <p class="email_content" style="font-style:italic;"><%= t('weekly.team') %></p>
           </td>
         </tr>
 
         <!-- Legal stuff -->
         <tr style="margin: 5px;padding: 0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;margin-top:20px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.sent') %> <%= @user.email %></p>
+            <p class="email_content" style="margin-top:20px;"><%= t('notify.sent') %> <%= @user.email %></p>
 
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.no_more') %> <%= t('notify.change') %>
+            <p class="email_content"><%= t('notify.no_more') %> <%= t('notify.change') %>
               <a href="<%= account_user_url(@user) %>" style="color: #E08574;"><%= t('notify.settings') %></a></p>
 
-            <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;"><%= t('notify.address') %></p>
+            <p class="email_content"><%= t('notify.address') %></p>
           </td>
         </tr>
       </table>
