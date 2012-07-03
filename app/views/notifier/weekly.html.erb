@@ -140,10 +140,10 @@
                   <td valign="top" width="220" class="table_style">
                     <div style="margin: 0px;padding: 0px;">
                       <div class="profile_pic_holder">
-                        <%= link_to image_tag(guide.thumb_url, :class => "profile_pic"), vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
+                        <%= link_to image_tag(guide.thumb_url, :class => "profile_pic"), vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
                       </div>
                       <div class="username">
-                        <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link"><%= guide.username %></a>
+                        <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link"><%= guide.username %></a>
                       </div>
                     </div>
                     <p class="guide_description"><%= guide.description %></p>
@@ -163,14 +163,15 @@
                 <p class="question_content" style="margin: 5px;margin-left:0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;margin-bottom:0px;"><%= t('weekly.answers_why') %></p>
                 <% @recos['questions'].each do |question| %>
                     <p class="question_content">
-                      <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
+                      <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
                     </p>
                 <% end %>
                 <p class="question_content">
-                  <a href="<%= questions_path %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %></p>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
+                </p>
             <% else %>
                 <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;<% if @recos['questions'].length == 0 %>margin-top:-5px;<% else %>margin-top:5px;<% end %>font-family: Georgia,&quot;Times New Roman&quot;, serif">
-                  <a href="<%= questions_path %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
                 </p>
             <% end %>
           </td>
