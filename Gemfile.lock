@@ -389,6 +389,7 @@ DEPENDENCIES
   mongoid_rails_migrations (~> 0.0.13)
   mongoid_slug
   nested_form
+  nokogiri
   oauth (= 0.4.4)
   oauth-plugin!
   omniauth (~> 1.1)
