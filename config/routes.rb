@@ -69,6 +69,8 @@ Chatham::Application.routes.draw do
       post :unblock
       get :pic, :as => :pic
       put :update_pic, :as => :update_pic
+      get :location
+      put :update_location
       get :username, :to => :confirm_username, :as => :confirm_username
       put :username, :to => :update_username, :as => :update_username
       post :download

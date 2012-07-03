@@ -42,6 +42,13 @@
 
 
 
+<% if @user.city && @user.city.length > 0 %>
+<%= t('weekly.reco_info') %> <%= @user.city %>. <%= t('change_city')%>:
+<% else %>
+<%= t('weekly.reco_wrong') %> <%= t('weekly.change_your_city') %>:
+<% end %>
+<%= location_user_url(@user) %>
+
 
 <%= t('notify.sent') %> <%= @user.email %>
 

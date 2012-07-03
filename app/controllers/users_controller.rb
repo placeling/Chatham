@@ -1,4 +1,5 @@
 require 'json'
+require 'google_reverse_geocode'
 
 NEARBY_RADIUS = 0.0035
 DEFAULT_LAT = 49.9
@@ -14,7 +15,7 @@ DEFAULT_USER_ZOOM = 14
 class UsersController < ApplicationController
   include ApplicationHelper
 
-  before_filter :login_required, :only => [:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock]
+  before_filter :login_required, :only => [:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock, :pic, :update_pic, :location, :update_location]
   before_filter :download_app, :only => [:show]
 
   def me
@@ -695,7 +696,9 @@ class UsersController < ApplicationController
 
   def pic
     @user = User.find_by_username(params[:id])
-    return unless @user.id == current_user.id
+    if @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
 
     respond_to do |format|
       format.html
@@ -704,7 +707,9 @@ class UsersController < ApplicationController
 
   def update_pic
     @user = User.find_by_username(params[:id])
-    return unless @user.id == current_user.id
+    if @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
 
     if params[:user].blank?
       return redirect_to pic_user_path(@user)
@@ -723,7 +728,60 @@ class UsersController < ApplicationController
     end
 
   end
-
+  
+  def location
+    @user = User.find_by_username(params[:id])
+    if @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
+  end
+  
+  def update_location
+    @user = User.find_by_username(params[:id])
+    if @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
+    
+    if params[:lat] && params[:lng]
+      lat = params[:lat].to_f
+      lng = params[:lng].to_f
+      
+      valid_params = true
+      if lat > 90 || lat < -90 || lat == 0.0 #0.0 is text converted to float
+        valid_params = false
+      end
+      
+      if lng > 180 || lng < -180 || lng == 0.0
+        valid_params = false
+      end
+      
+      if valid_params
+        @user.loc = []
+        @user.loc[0] = lat
+        @user.loc[1] = lng
+        
+        # Reverse geocode
+        grg = GoogleReverseGeocode.new
+        raw_address = grg.reverse_geocode(lat, lng)
+        
+        city = ""
+        raw_address.address_components.each do |piece|
+          if piece.types.include?('locality')
+            city = piece.short_name
+          end
+        end
+        
+        @user.city = city # Want value of nil if no city via reverse geocode
+        
+        @user.save
+      end
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to account_user_path(@user), notice: 'Map center updated' } 
+    end
+  end
+  
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id

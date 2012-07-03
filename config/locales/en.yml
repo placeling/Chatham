@@ -150,7 +150,7 @@ en:
     notify: "Notifications"
     new_follower: "A user follows you"
     placemark_starred: "A user favourites one of your placemarks"
-    weekly_email: "Weekly Recommendations"
+    weekly_email: "Weekly recommendations"
     new_pic: "Change Your Profile Picture"
     pic_choose: "Select a .png, .jpeg or .gif file"
     change_pic: "Change your profile picture"
@@ -158,11 +158,18 @@ en:
     fb_connected: "Your account is connected to Facebook"
     update: "Update"
     embed: "embed"
-    embed_howto: "Embed a copy of your map on your website or blog"
+    embed_howto: "Put a copy of your map on your website/blog"
     embed_title: "Embed your map"
     create_embed: "Create Embed Code"
     facebook_friend_join: "When a facebook friend joins Placeling"
     near_highlighted: "Near a location you highlighted"
+    map_center: "Change Your Map Center"
+    center_instructions: "Simply center the map on your desired location."
+    center_impact: "Your profile page and weekly recommendations will reflect your new location."
+    update_map: "Update map center"
+    cancel: "Cancel"
+    center_map: "center map"
+    center_map_why: "Change the location of your map"
 
   question:
     title: "Ask Friends About..."
@@ -480,7 +487,11 @@ en:
     support: "support@placeling.com"
     ask: "Ask your own question"
     get_answer: "to get advice on where to go"
-  
+    reco_info: "You're getting recommendations for"
+    change_city: "Change city"
+    reco_wrong: "Getting recommendations for the wrong places?"
+    change_your_city: "Change your city"
+    
   notify:
     address: "Placeling (Internet Services) Inc. 1515 West 2nd Ave, Suite 542, Vancouver, BC V6J 5C5"
     no_more: "Don't want these messages any more?"
