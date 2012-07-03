@@ -108,10 +108,10 @@
                     </p>
                 <% end %>
                 <p class="question_content">
-                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
                 </p>
             <% else %>
-                <p class="content" style="margin: 5px;margin-left:0px;padding: 0px;<% if @recos['questions'].length == 0 %>margin-top:-5px;<% else %>margin-top:5px;<% end %>font-family: Georgia,&quot;Times New Roman&quot;, serif">
+                <p class="question_content">
                   <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= t('weekly.ask') %></a> <%= t('weekly.get_answer') %>
                 </p>
             <% end %>
