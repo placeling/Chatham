@@ -484,7 +484,11 @@ en:
     support: "support@placeling.com"
     ask: "Ask your own question"
     get_answer: "to get advice on where to go"
-  
+    reco_info: "You're getting recommendations for"
+    change_city: "Change city"
+    reco_wrong: "Getting recommendations for the wrong places?"
+    change_your_city: "Change your city"
+    
   notify:
     address: "Placeling (Internet Services) Inc. 1515 West 2nd Ave, Suite 542, Vancouver, BC V6J 5C5"
     no_more: "Don't want these messages any more?"

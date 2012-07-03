@@ -23,7 +23,7 @@
           <td width="100%" colspan="3" class="table_style">
             <p class="email_emphasize"><%= t('weekly.intro') %></p>
 
-            <p class="email_content" style="font-style:italic;"><%= t('weekly.weekend') %></p>
+            <p class="question_content" style="font-style:italic;"><%= t('weekly.weekend') %></p>
           </td>
         </tr>
 
@@ -33,7 +33,7 @@
               <td width="100%" colspan="3" class="table_style">
                 <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:25px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.explore') %></p>
 
-                <p class="email_content"><%= t('weekly.explore_why') %></p>
+                <p class="question_content"><%= t('weekly.explore_why') %></p>
               </td>
             </tr>
 
@@ -121,23 +121,21 @@
         <!-- Wrap up -->
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
-            <p class="email_content" style="margin-top:25px;font-style:italic;"><%= t('weekly.all') %></p>
-
-            <p class="email_content" style="font-style:italic;"><%= t('welcome.support') %>
+            <p class="question_content" style="margin-top:25px;font-style:italic;"><%= t('weekly.all') %></p>
+            <p class="question_content" style="font-style:italic;"><%= t('welcome.support') %>
               <a href="mailto:support@placeling.com" style="color: #E08574;"><%= t('weekly.support') %></a>.</p>
-
-            <p class="email_content" style="font-style:italic;"><%= t('weekly.team') %></p>
+            <p class="question_content" style="font-style:italic;"><%= t('weekly.team') %></p>
           </td>
         </tr>
         
         <!-- Change location -->
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
-            <p class="change_city">
+            <p class="change_city question_content">
             <% if @user.city && @user.city.length > 0 %>
-              You're getting recommendations for <%= @user.city %>. <a href="<%= location_user_url(@user) %>" style="color: #E08574;">Change city</a>.
+              <%= t('weekly.reco_info') %> <%= @user.city %>. <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('change_city')%></a>.
             <% else %>
-              Getting recommendations for the wrong places? <a href="<%= location_user_url(@user) %>" style="color: #E08574;">Change your city</a>.
+              <%= t('weekly.reco_wrong') %> <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('weekly.change_your_city') %></a>.
             <% end %>
             </p>
           </td>
