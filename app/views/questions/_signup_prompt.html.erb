@@ -1,3 +1,13 @@
 <div id="my_question_list">
-  SIGNUP!
+  <div class="question_section_title" style="margin-top:20px; text-align: center">
+    <%= t 'question.title_awkward' %>
+  </div>
+
+  <div class="question_signup_prompt" style="text-align: center">
+    <%= t 'question.ask_signup' %>
+  </div>
+  <div class="miranda_graphic" style="width:100%">
+    <%= link_to image_tag(asset_path("signup_post.png")), new_user_session_path %>
+  </div>
+  <div style="clear:both"></div>
 </div>

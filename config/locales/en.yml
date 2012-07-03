@@ -197,6 +197,9 @@ en:
     placeholder_question: "What is the best..."
     placeholder_city: "San Francisco..."
     no_user_questions: "You haven't asked any questions yet!"
+    title_awkward: "Well, this is awkward..."
+    ask_signup: "We can't show you your questions unless you're signed up for Placeling"
+
 
 
   inprogress:
