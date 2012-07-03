@@ -76,7 +76,7 @@ describe UsersController do
 
     describe "with invalid params" do
       it "returns a 404" do
-        expect { get :profile, :username => "t" }.to raise_error(ActionController::ActionNotFound)
+        expect { get :profile, :username => "t" }.to raise_error(ActionController::RoutingError)
       end
     end
   end
