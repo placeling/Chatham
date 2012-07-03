@@ -38,7 +38,7 @@
 </div>
 <div class="summary">
   <div class="username"><%= user.username %></div>
-  <% if user.city %>
+  <% if user.city && user.city.length > 0 %>
     <% if user.location && user.location.length == 2 %><div><a href="" class="home"><% end %><p class="city"><%= user.city %></p><% if user.location && user.location.length == 2 %></a></div><% end %>
   <% end %>
   <div class="description"><%= user.description %></div>
