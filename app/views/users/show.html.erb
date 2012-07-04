@@ -1148,7 +1148,7 @@
       $('#filters').css({top: $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#toggle_filters').outerHeight(true)});
       
       $('#map_holder').append('<div id="spinner"><img class="spinner" src="<%= asset_path("spinner.gif"); %>"></div>');
-      $('#spinner').width(30);
+      $('#spinner').width(80);
       $('#spinner').css({
         'position':'absolute',
         'z-index':'10003'
@@ -1180,7 +1180,7 @@
         
         $('#spinner').css({
           'left': 333,
-          'top': $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 62
+          'top': $('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 112
         });
       });
       
