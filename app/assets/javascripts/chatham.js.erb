@@ -18,23 +18,23 @@ $(document).ready(function () {
 
     $(".reddit_button").mouseenter(
             function () {
-                $(this).attr("src", '<%= asset_path("reddit/reddit_hover.png") %>');
+                $(this).addClass("reddit_button_hover");
             }).mouseleave(function () {
-                $(this).attr("src", '<%= asset_path("reddit/reddit_Static.png") %>');
+                $(this).removeClass("reddit_button_hover")
             });
 
     $(".twitter_button").mouseenter(
             function () {
-                $(this).attr("src", '<%= asset_path("twitter/twitter_hover.png") %>');
+                $(this).addClass("twitter_button_hover");
             }).mouseleave(function () {
-                $(this).attr("src", '<%= asset_path("twitter/twitter_static.png") %>');
+                $(this).removeClass("twitter_button_hover")
             });
 
     $(".facebook_button").mouseenter(
             function () {
-                $(this).attr("src", '<%= asset_path("facebook/facebook_Hover.png") %>');
+                $(this).addClass("facebook_button_hover");
             }).mouseleave(function () {
-                $(this).attr("src", '<%= asset_path("facebook/facebook_Static.png") %>');
+                $(this).removeClass("facebook_button_hover")
             });
 });
 

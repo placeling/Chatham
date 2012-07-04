@@ -87,7 +87,13 @@ hr.questions {
 }
 
 .social_share img {
-    max-height: 48px;
+    height: 48px;
+    width: 48px;
+}
+
+.social_main img {
+    height: 68px;
+    width: 68px;
 }
 
 #question_share {
@@ -308,4 +314,34 @@ hr.questions {
 .light_bulb_glyph {
     height: 50px;
     margin-left: 10px;
+}
+
+.reddit_button {
+    background-image: url(<%= asset_path("reddit/reddit_Static.png") %>);
+    background-size: 100%;
+}
+
+.reddit_button_hover {
+    background-image: url(<%= asset_path("reddit/reddit_hover.png") %>);
+    background-size: 100%;
+}
+
+.twitter_button {
+    background-image: url(<%= asset_path("twitter/twitter_static.png") %>);
+    background-size: 100%;
+}
+
+.twitter_button_hover {
+    background-image: url(<%= asset_path("twitter/twitter_hover.png") %>);
+    background-size: 100%;
+}
+
+.facebook_button {
+    background-image: url(<%= asset_path("facebook/facebook_Static.png") %>);
+    background-size: 100%;
+}
+
+.facebook_button_hover {
+    background-image: url(<%= asset_path("facebook/facebook_Hover.png") %>);
+    background-size: 100%;
 }
