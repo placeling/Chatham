@@ -776,10 +776,10 @@
             success: function(data) {
               var html = "";
               //If has key following, then signed in otherwise not
-              html += '<div id="nearby_placemarks">Nearby Placemarks</div>'
+              html += '<div id="nearby_placemarks"><%= t('user.nearby_placemarks')%></div>'
 
               if ("zoom" in data) {
-                html += '<span class="nothing_nearby">Zoom in to see nearby placemarks</span>'
+                html += '<span class="nothing_nearby"><%= t('user.zoom_in') %></span>'
 
                 if ($("#nearby_users").is(":visible") == false) {
                   $('#nearby_users').fadeOut("fast")
@@ -792,9 +792,11 @@
                 if ("following" in data) {
                   count += data["following"].length;
                 }
-
-                if (count == 0) {
+                
+                if (count == 0 && data['owner'] == false) {
                   html += '<div id="no_data">None yet</div>';
+                } else if (count == 0 && data['owner'] == true) {
+                  html += '<div id="no_data"><%= t('user.just') %></div>';
                 } else {
                   html += '<div id="following">';
 
@@ -802,22 +804,22 @@
                     if (data["following"].length == 0) {
                       html += "";
                     } else if (data["following"].length == 1) {
-                      html += '<a href="#" id="nearby_following">1 person you follow</a>';
+                      html += '<a href="#" id="nearby_following"><%= t('user.one_person') %></a>';
                     } else {
-                      html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' people you follow</a>';
+                      html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' <%= t('user.plural_follow') %></a>';
                     }
                     html += "</div>";
                   } else {
-                    html += '<a href="<%= new_user_session_path %>">Sign in</a> to see people you follow</div>';
+                    html += '<a href="<%= new_user_session_path %>"><%= t('user.nearby_sign_in') %></a> <%= t('user.see_follow') %></div>';
                   }
 
                   html += '<div id="popular">'
                   if (data["popular"].length == 0) {
                     html += "";
                   } else if (data["popular"].length == 1) {
-                    html += '<a href="#" id="nearby_popular">1 local</a>';
+                    html += '<a href="#" id="nearby_popular"><%= t('user.one_local') %></a>';
                   } else {
-                    html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " locals</a>";
+                    html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " <%= t('user.locals') %></a>";
                   }
                 }
                 
@@ -829,7 +831,7 @@
                 $('#nearby_users').fadeIn("fast")
                 
                 if (("following" in data) && (data["following"].length > 0)) {
-                  var following_html = '<div id="nearby_following_list" title="People you follow">';
+                  var following_html = '<div id="nearby_following_list" title="<%= t('user.people_you_follow') %>">';
 
                   for (var i=0; i< data["following"].length; i++) {
                     following_html = following_html + '<div class="nearby_person"><a href="' + data["following"][i]["url"] + '"><img class="nearby_pic" src="' + data["following"][i]["pic"] + '"></a> <a href="' + data["following"][i]["url"] + '">' + data["following"][i]["name"] + '</a> (' + data["following"][i]["count"] + ')</div>';
@@ -850,7 +852,7 @@
                 }
                 
                 if (data["popular"].length > 0) {
-                  var popular_html = '<div id="nearby_popular_list" title="Top locals">';
+                  var popular_html = '<div id="nearby_popular_list" title="<%= t('user.top_locals') %>">';
 
                   for (var i=0; i< data["popular"].length; i++) {
                     popular_html = popular_html + '<div class="nearby_person"><a href="' + data["popular"][i]["url"] + '"><img class="nearby_pic" src="' + data["popular"][i]["pic"] + '"></a> <a href="' + data["popular"][i]["url"] + '">' + data["popular"][i]["name"] + '</a> (' + data["popular"][i]["count"] + ')</div>';

@@ -382,7 +382,9 @@ class UsersController < ApplicationController
 
   def nearby
     @users = {}
-
+    
+    page_owner = User.find_by_username(params[:id])
+    
     valid_params = true
 
     zoom = DEFAULT_USER_ZOOM
@@ -456,7 +458,9 @@ class UsersController < ApplicationController
         location = {"lat" => center_lat, "lng" => center_lng, "zoom" => zoom}
 
         box = [[bottom_lat, left_lng], [top_lat, right_lng]]
-
+        
+        @users["owner"] = false
+        
         if current_user
           following_counts = Perspective.collection.group(
               :cond => {:ploc => {'$within' => {'$box' => box}}, :uid => {"$in" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
@@ -500,13 +504,16 @@ class UsersController < ApplicationController
 
           popular_counts.each do |person|
             member = User.find(person["uid"])
-            if member != current_user
+            if member != current_user && member != page_owner
               popular << {
                   "name" => member.username.downcase,
                   "pic" => member.thumb_url,
                   "count" => person["count"].to_i,
                   "url" => user_path(member)+"?"+location.to_query
               }
+            end
+            if member == page_owner
+              @users['owner'] = true
             end
           end
 
@@ -535,12 +542,17 @@ class UsersController < ApplicationController
 
           popular_counts.each do |person|
             member = User.find(person["uid"])
-            popular << {
-                "name" => member.username.downcase,
-                "pic" => member.thumb_url,
-                "count" => person["count"].to_i,
-                "url" => user_path(member)+"?"+location.to_query
-            }
+            if member != page_owner
+              popular << {
+                  "name" => member.username.downcase,
+                  "pic" => member.thumb_url,
+                  "count" => person["count"].to_i,
+                  "url" => user_path(member)+"?"+location.to_query
+              }
+            end
+            if member == page_owner
+              @users['owner'] = true
+            end
           end
 
           popular.sort! { |x, y| [y["count"], x["name"]] <=> [x["count"], y["name"]] }
