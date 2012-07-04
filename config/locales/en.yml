@@ -179,6 +179,7 @@ en:
     change: "Change"
     city: "City"
     questions: "Questions"
+    ask_question: "Ask Question"
     comment: "Comment"
     place_tally: "%{tally} %{test}s"
     place_tally_singular: "1 Place"
