@@ -53,8 +53,10 @@ describe QuestionsController do
         sign_in user
 
         expect {
-          post :create, :question => {:city_name => "Toronto, ON, Canada", :title => "Where can I get a milkshake in Toronto?", :country_code => "ca", :location => [49.261226, -123.1139268]}
+          post :create, :question => {:city_name => "Toronto, ON, Canada", :title => "Where can I get a milkshake", :country_code => "ca", :location => [49.261226, -123.1139268]}
         }.to change(Question, :count).by(1)
+
+        Question.first.title.should == "Where can I get a milkshake in Toronto, ON, Canada?"
       end
 
     end

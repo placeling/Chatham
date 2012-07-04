@@ -25,6 +25,12 @@ class Question
   validates_presence_of :city_name
   validates_presence_of :country_code
 
+  before_create :fixup_title
+
+  def fixup_title
+    self[:title] = "#{self[:title]} in #{self[:city_name]}?"
+  end
+
   def self.nearby_questions(lat, long)
     Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
         and(:score.gte => 1)
