@@ -32,7 +32,7 @@
 
 <div id="question_index">
   <% if @myQuestions.nil? %>
-      <%= render :partial => "ask_prompt" %>
+      <%= render :partial => "signup_prompt" %>
   <% elsif @myQuestions.count == 0 %>
       <%= render :partial => "ask_prompt" %>
   <% else %>
