@@ -1,13 +1,12 @@
-
 <div id="content_holder">
   <% content_for :head do %>
-    <title><%= t("question.title") %></title>
+      <title><%= t("question.title") %></title>
   <% end %>
 
   <% content_for :javascript_includes do %>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places">
-    </script>
+      <script type="text/javascript"
+              src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places">
+      </script>
   <% end %>
 
 
@@ -24,86 +23,80 @@
           </div>
       <% end %>
 
-      <div class="field">
-        <%= f.label t'question.city' %><br/>
-        <%= f.text_field :city_name, :class=>"question_field_box", :placeholder=>t('question.city_prompt') %>
-      </div>
-
-      <div class="field">
-        <%= f.label t'question.question' %><br/>
-        <%= f.text_field :title, :class=>"question_field_box" %>
-      </div>
-
-      <%= f.hidden_field :country_code, :id=>"country_code" %>
+      <%= f.hidden_field :country_code, :id => "country_code" %>
       <input id="lat" name="question[location][]" type="hidden" value="<%= @question.location[0] %>">
       <input id="lng" name="question[location][]" type="hidden" value="<%= @question.location[1] %>">
 
-
-      <div class="actions" style="float:left;">
-        <%= f.submit :class=>"submit" %>
+      <div class="field" id="question_creator" style="width:100%">
+        <div id="questions_bubble">
+          <%= f.text_field :title, :class => "header_question_field_box", :placeholder => t('question.placeholder_question') %>
+          <span class="header_question_field_box" style="margin-left:5px;margin-right:8px;"><%= t('question.in') %></span>
+          <%= f.text_field :city_name, :class => "header_question_field_box", :placeholder => t('question.placeholder_city'), :size => 20 %>
+        </div>
+        <%= f.submit :class => "submit", :style => "float:left;margin-top:30px;", :value => t("question.ask_question") %>
       </div>
   <% end %>
 
   <% content_for :javascript do %>
 
-    <script type="text/javascript">
+      <script type="text/javascript">
 
-      $(document).ready(function(){
+          $(document).ready(function () {
 
-          $('#question_city_name').keypress(function(e){
-              if ( e.which == 13 ) return false;
-          });
+              $('#question_city_name').keypress(function (e) {
+                  if (e.which == 13) return false;
+              });
 
-          $("#question_city_name").focusout(function () {
-              var firstResult = $(".pac-container .pac-item:first").text();
+              $("#question_city_name").focusout(function () {
+                  var firstResult = $(".pac-container .pac-item:first").text();
 
-              var geocoder = new google.maps.Geocoder();
-              geocoder.geocode({"address":firstResult }, function(results, status) {
-                  if (status == google.maps.GeocoderStatus.OK) {
-                      $("#question_city_name").val(firstResult);
+                  var geocoder = new google.maps.Geocoder();
+                  geocoder.geocode({"address":firstResult }, function (results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+                          $("#question_city_name").val(firstResult);
 
-                      for ( var i=0; i< results[0].address_components.length; i++){
-                          component = results[0].address_components[i];
+                          for (var i = 0; i < results[0].address_components.length; i++) {
+                              component = results[0].address_components[i];
 
-                          if ( jQuery.inArray( "country", component.types ) >= 0 ){
-                              $("#country_code").val( component.short_name );
+                              if (jQuery.inArray("country", component.types) >= 0) {
+                                  $("#country_code").val(component.short_name);
+                                  break;
+                              }
+                          }
+
+                          $("#lat").val(results[0].geometry.location.lat());
+                          $("#lng").val(results[0].geometry.location.lng());
+
+                      }
+                  });
+              });
+
+              var input = document.getElementById('question_city_name');
+              var autocomplete = new google.maps.places.Autocomplete(input);
+
+              google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                  var place = autocomplete.getPlace();
+                  console.debug(place);
+                  if (place.geometry) {
+
+                      for (var i = 0; i < place.address_components.length; i++) {
+                          component = place.address_components[i];
+
+                          if (jQuery.inArray("country", component.types) >= 0) {
+                              $("#country_code").val(component.short_name);
                               break;
                           }
                       }
 
-                      $("#lat").val( results[0].geometry.location.lat() );
-                      $("#lng").val( results[0].geometry.location.lng() );
 
+                      $("#lat").val(place.geometry.location.lat());
+                      $("#lng").val(place.geometry.location.lng());
                   }
               });
+
           });
 
-          var input = document.getElementById('question_city_name');
-          var autocomplete = new google.maps.places.Autocomplete(input);
-
-          google.maps.event.addListener(autocomplete, 'place_changed', function() {
-              var place = autocomplete.getPlace();
-              console.debug( place );
-              if ( place.geometry ){
-
-                  for ( var i=0; i< place.address_components.length; i++){
-                      component = place.address_components[i];
-
-                      if ( jQuery.inArray( "country", component.types ) >= 0 ){
-                          $("#country_code").val( component.short_name );
-                          break;
-                      }
-                  }
-
-
-                  $("#lat").val( place.geometry.location.lat() );
-                  $("#lng").val( place.geometry.location.lng() );
-              }
-          });
-
-       });
-
-    </script>
+      </script>
   <% end %>
 
 
