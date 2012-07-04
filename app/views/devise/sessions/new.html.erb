@@ -1,36 +1,38 @@
 <% content_for :head do %>
-  <title><%= t('user.sign_in') %></title>
+    <title><%= t('user.sign_in') %></title>
 <% end %>
 
 <% content_for :javascript_includes do %>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('.first_field').focus();
-    });
-  </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.first_field').focus();
+        });
+    </script>
 <% end %>
 
-<div class="auth_block" style="width:355px">
+<div class="auth_block" style="width:355px; float:left;">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.sign_in') %></div>
-     <div><%= t('user.register_prompt') %> <%= link_to t('user.sign_up'), new_user_registration_path, :class=>"register_link" %></div>
+    <div><%= t('user.register_prompt') %> <%= link_to t('user.sign_up'), new_user_registration_path, :class => "register_link" %></div>
   </div>
   <div id="auth_form">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.username'), :class=>"emphasize" %></p>
-        <p><%= f.text_field :login, :class=>"auth_field first_field", :tabindex=>1 %></p>
-      </div>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.password'), :class=>"emphasize" %> <%= link_to t('user.forgot_password'), new_user_password_path, :class => "reset_password" %></p>
-        <p><%= f.password_field :password, :class=>"auth_field", :tabindex=>2 %></p>
-      </div>
-      <div class="action_group">
-      <% if devise_mapping.rememberable? -%>
-        <div class="remember_me"><%= f.check_box :remember_me, {:tabindex=>3, :checked => true} %> <%= label_tag 'user_remember_me', t('user.remember_me') %></div>
-      <% end -%>
-        <div class="action"><%= f.submit t("user.sign_in"), :class=>"submit", :tabindex=>4 %></div>
-      </div>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.username'), :class => "emphasize" %></p>
+
+          <p><%= f.text_field :login, :class => "auth_field first_field", :tabindex => 1 %></p>
+        </div>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.password'), :class => "emphasize" %> <%= link_to t('user.forgot_password'), new_user_password_path, :class => "reset_password" %></p>
+
+          <p><%= f.password_field :password, :class => "auth_field", :tabindex => 2 %></p>
+        </div>
+        <div class="action_group">
+          <% if devise_mapping.rememberable? -%>
+              <div class="remember_me"><%= f.check_box :remember_me, {:tabindex => 3, :checked => true} %> <%= label_tag 'user_remember_me', t('user.remember_me') %></div>
+          <% end -%>
+          <div class="action"><%= f.submit t("user.sign_in"), :class => "submit", :tabindex => 4 %></div>
+        </div>
     <% end %>
   </div>
   <hr>
@@ -39,4 +41,8 @@
       <%= image_tag "facebook/fb-connect-large.png", :width => 200, :alt => "Connect with Facebook" %>
     </a>
   </div>
+</div>
+
+<div style="float:left;margin:50px 0 0 150px;">
+  <%= image_tag "lumberjack.png" %>
 </div>

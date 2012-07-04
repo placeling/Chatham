@@ -1,51 +1,75 @@
 <% content_for :head do %>
-  <title><%= t('user.sign_up') %></title>
+    <title><%= t('user.sign_up') %></title>
 <% end %>
 
-<% content_for :javascript_includes do %>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('.first_field').focus();
-    });
-  </script>
-<% end %>
-
-<div class="auth_block" style="width:355px">
+<div class="auth_block" style="width:355px; float:left;">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.signup_callout') %></div>
   </div>
   <div id="auth_form">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-      <%= hidden_field_tag 'page_timestamp', Time.now.to_i %>
-      <%= devise_error_messages! %>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.username'), :class=>"emphasize" %></p>
-        <p><%= f.text_field :username, :class=>"auth_field first_field" %></p>
-      </div>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.email_field'), :class=>"emphasize" %></p>
-        <p><%= f.text_field :email, :class=>"auth_field" %></p>
-      </div>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.password'), :class=>"emphasize" %></p>
-        <p><%= f.password_field :password, :class=>"auth_field" %></p>
-      </div>
-      <div class="field_group">
-        <p class="auth_label"><%= f.label t('basic.password_confirm'), :class=>"emphasize" %></p>
-        <p><%= f.password_field :password_confirmation, :class=>"auth_field" %></p>
-      </div>
-      <div class="action_group">
-        <div class="accept">By registering, you agree to our <%= link_to(t('home.privacy_policy'), privacy_policy_path) %> and <%= link_to(t('home.terms_of_service'), terms_of_service_path)%>
-        </div>
-        <div class="action_signup"><%= f.submit t("user.sign_up"), :class=>"submit" %></div>
-      </div>
-    <% end %>
-    <hr>
     <div style="padding-top: 10px;border-top: 2px black; text-align: center">
       <a href="/auth/facebook" class="auth_provider">
         <%= image_tag "facebook/fb-connect-large.png", :width => 200, :alt => "Connect with Facebook" %>
       </a>
     </div>
+
+    <hr>
+
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+        <%= hidden_field_tag 'page_timestamp', Time.now.to_i %>
+        <%= devise_error_messages! %>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.username'), :class => "emphasize" %></p>
+
+          <p><%= f.text_field :username, :class => "auth_field first_field" %></p>
+        </div>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.email_field'), :class => "emphasize" %></p>
+
+          <p><%= f.text_field :email, :class => "auth_field" %></p>
+        </div>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.password'), :class => "emphasize" %></p>
+
+          <p><%= f.password_field :password, :class => "auth_field" %></p>
+        </div>
+        <div class="field_group">
+          <p class="auth_label"><%= f.label t('basic.password_confirm'), :class => "emphasize" %></p>
+
+          <p><%= f.password_field :password_confirmation, :class => "auth_field" %></p>
+        </div>
+        <div class="action_group">
+
+          <div class="action_signup"><%= f.submit t("user.sign_up"), :class => "submit" %></div>
+        </div>
+    <% end %>
+  </div>
+  <div class="accept">By registering, you agree to our <%= link_to(t('home.privacy_policy'), privacy_policy_path) %>
+    and <%= link_to(t('home.terms_of_service'), terms_of_service_path) %>
   </div>
 
 </div>
+<div style="float:left;margin:50px 0 0 150px;">
+  <%= image_tag "lumberjack.png" %>
+</div>
+
+
+<% content_for :javascript do %>
+
+    <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $('.first_field').focus();
+
+                $("#ask_friends_button a").click(function () {
+                    // This sends us an event every time a user clicks the button
+                    mpmetrics.track("ask_friends_click");
+                });
+
+                mpmetrics.track('signup_view');
+            });
+        </script>
+    <% end %>
+
+<% end %>
