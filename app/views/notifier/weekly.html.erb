@@ -58,7 +58,7 @@
             <% @recos['places'].each do |place| %>
                 <td valign="top" width="220" class="table_style">
                   <div style="margin: 0px;padding: 0px;text-align:center">
-                    <div class="username" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;width:210px;">
+                    <div class="username_email" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;width:210px;">
                       <%= link_to place.name, vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]), :class => "placename_link" %>
                     </div>
                   </div>
@@ -83,7 +83,7 @@
                       <div class="profile_pic_holder">
                         <%= link_to image_tag(guide.thumb_url, :class => "profile_pic"), vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
                       </div>
-                      <div class="username">
+                      <div class="username_email">
                         <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link"><%= guide.username %></a>
                       </div>
                     </div>

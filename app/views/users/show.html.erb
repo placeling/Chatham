@@ -593,8 +593,6 @@
         <% end %>
       <% end %>
       
-
-      
       <% if @zoom %>
         var zoom = <%= @zoom %>;
         loadState["<%= @user.username %>"]['zoom'] = <%= @zoom %>;
@@ -611,6 +609,82 @@
         loadState["<%= @user.username %>"]['sort'] = 'count';
       }
       
+      var styles = [{
+          elementType: "geometry",
+          stylers: [ { visibility: "simplified" } ]
+        }, {
+          featureType: "landscape",
+          stylers: [
+            { lightness: -9 },
+            { color: "#f4daa6" }
+          ]
+        }, {
+          featureType: "poi.park",
+          stylers: [
+            { color: "#e1e255" },
+            { lightness: -22 },
+            { saturation: -45 }
+          ]
+        },{
+          featureType: "water",
+          stylers: [
+            { color: "#96eafe" },
+            { saturation: -41 }
+          ]
+        },{
+          featureType: "road.highway",
+          stylers: [
+            { color: "#e78080" }
+          ]
+        },{
+          featureType: "road.arterial",
+          stylers: [
+            { color: "#f6dec9" },
+            { lightness: -20 }
+          ]
+        },{ elementType: "labels.text", stylers: [ { color: "#3e3e3e" }, { weight: 0.1 } ] }  ,{
+            featureType: "landscape.man_made",
+            stylers: [
+              { lightness: -8 }
+            ]
+          },{
+            featureType: "transit.line",
+            stylers: [
+              { color: "#da8052" }
+            ]
+          },{
+            featureType: "poi.sports_complex",
+            stylers: [
+              { visibility: "off" }
+            ]
+          },{
+            featureType: "poi.business",
+            stylers: [
+              { visibility: "off" }
+            ]
+          },{
+            featureType: "poi.government",
+            stylers: [
+              { visibility: "off" }
+            ]
+          },{
+            featureType: "poi.medical",
+            stylers: [
+              { visibility: "off" }
+            ]
+          },{
+            featureType: "poi.place_of_worship",
+            stylers: [
+              { visibility: "off" }
+            ]
+          },{
+            featureType: "poi.school",
+            stylers: [
+              { visibility: "off" }
+            ]
+          }
+      ];
+      
       myOptions = {
         center: new google.maps.LatLng(lat, lng),
         zoom: zoom,
@@ -626,6 +700,8 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("main_map"), myOptions);
+      
+      map.setOptions({styles:styles});
       
       placemark = new google.maps.MarkerImage(
         '/images/placemarker.png',

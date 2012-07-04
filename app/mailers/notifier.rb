@@ -18,7 +18,7 @@ class Notifier < ActionMailer::Base
 
     @guides = @guides[0, 3]
 
-    mail(:to => @user.email, :from => "contact@placeling.com", :subject => "#{@user.username}, welcome to Placeling") do |format|
+    mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@user.username}, welcome to Placeling") do |format|
       format.text
       format.html
     end
@@ -29,7 +29,7 @@ class Notifier < ActionMailer::Base
     @target = User.find(new_follow_id)
     @type = "follow"
 
-    mail(:to => @user.email, :from => "contact@placeling.com", :subject => "#{@target.username} is now following you") do |format|
+    mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@target.username} is now following you") do |format|
       format.text { render 'notification' }
       format.html { render 'notification' }
     end
@@ -41,7 +41,7 @@ class Notifier < ActionMailer::Base
     @perspective = Perspective.find(perspective_id)
     @type = "remark"
 
-    mail(:to => @user.email, :from => "contact@placeling.com", :subject => "#{@target.username} liked your placemark") do |format|
+    mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@target.username} liked your placemark") do |format|
       format.text { render 'notification' }
       format.html { render 'notification' }
     end
@@ -64,12 +64,12 @@ class Notifier < ActionMailer::Base
           subject = "#{@user.username}, it's almost the weekend"
         end
 
-        mail(:to => @user.email, :subject => subject) do |format|
+        mail(:to => @user.email, :subject => subject, :from => "\"Placeling Weekender\" <contact@placeling.com>") do |format|
           format.text
           format.html
         end
       else
-        mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
+        mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend", :from => "\"Placeling Weekender\" <contact@placeling.com>") do |format|
           format.text
           format.html
         end
