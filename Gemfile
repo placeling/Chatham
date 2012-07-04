@@ -73,7 +73,7 @@ gem 'vanity'
 gem "split", :git => "git://github.com/imackinn/split.git", :require => 'split/dashboard'
 
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', "2.0.0", :require => 'resque_scheduler'
+gem 'resque-scheduler', "2.0.0h", :require => 'resque_scheduler'
 gem 'resque_mailer'
 
 gem 'sitemap_generator'

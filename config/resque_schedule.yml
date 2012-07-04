@@ -11,3 +11,5 @@ weekly_emails:
   queue: high
   args:
   description: "Send the weekly recommendation emails"
+
+

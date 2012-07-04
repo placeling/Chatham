@@ -228,8 +228,7 @@ Chatham::Application.routes.draw do
     mount Notifier::Preview => 'mail_view'
   end
   mount Split::Dashboard => 'split'
-
-  #mount Resque::Server, :at => "/resque"
+  mount Resque::Server, :at => "resque"
 
   match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile
