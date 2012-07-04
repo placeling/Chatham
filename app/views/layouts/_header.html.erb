@@ -1,51 +1,61 @@
 <% content_for :javascript do %>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      var copy = "<%= t('header.call_to_action') %>"
-      $("#term").val(copy);
-      $("#term").css({'color':'grey'});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var copy = "<%= t('header.call_to_action') %>"
+            $("#term").val(copy);
+            $("#term").css({'color':'grey'});
 
-      $("#term").focus(function() {
-        this.value = "";
-        $(this).css({'color': 'black'});
-      })
+            $("#term").focus(function () {
+                this.value = "";
+                $(this).css({'color':'black'});
+            })
 
-      $("#term").blur(function() {
-        if (this.value == '') {
-          this.value = copy;
-          $(this).css({'color':'grey'});
-        }
-      })
-    });
-    $(window).load(function() {
-      firstRun();
-    });
-  </script>
+            $("#term").blur(function () {
+                if (this.value == '') {
+                    this.value = copy;
+                    $(this).css({'color':'grey'});
+                }
+            })
+        });
+        $(window).load(function () {
+            firstRun();
+        });
+    </script>
 <% end %>
 
 <div id="header">
-    <div id="search">
-      <form accept-charset="UTF-8" ><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
-        <a href="/" id="logo"><%= image_tag "logo.png" %></a>
-        <input id="term" type="text" class="search_box">
-        <input type="image" src="<%= asset_path "search.png" %>" value="submit" id="search_submit">
-      </form>
-    </div>
-    <div id="user_controls">
-      <% user_location %>
-      <ul>
-        <% if current_user %>
-          <li><a href="<%= user_path(current_user) %>"><%= image_tag current_user.thumb_url, :class=>"you", :alt=>"you" %></a></li>
-          <li><p class="holder"><%= link_to t("user.you"), (user_path :id=>current_user), :class=>"users" %></p></li>
+  <div id="search">
+    <form accept-charset="UTF-8">
+      <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+      <a href="/" id="logo"><%= image_tag "logo.png" %></a>
+      <input id="term" type="text" class="search_box">
+      <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
+    </form>
+  </div>
+  <div id="user_controls">
+    <% user_location %>
+    <ul>
+      <% if current_user %>
+          <li>
+            <a href="<%= (account_user_path :id => current_user) %>"><%= image_tag current_user.thumb_url, :class => "you", :alt => t("user.your_account") %></a>
+          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="holder"><%= link_to t("user.your_account"), (account_user_path :id=>current_user), :class=>"users" %></p></li>
+          <li>
+            <p class="holder"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></p>
+          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="holder"><%= link_to t("user.log_out"), destroy_user_session_path, :method=>:delete, :class=>"users" %></p></li>
-        <% else %>
-          <li><p class="holder"><%= link_to t("user.sign_in"), new_user_session_path, :class=>"users" %></p></li>
+          <li>
+            <p class="holder"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
+          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="holder"><%= link_to t("user.sign_up"), new_user_registration_path, :class=>"users" %></p></li>
-        <% end %>
-      </ul>
+          <li>
+            <p class="holder"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
+          </li>
+      <% else %>
+          <li><p class="holder"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
+          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
+          <li><p class="holder"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p></li>
+      <% end %>
+    </ul>
   </div>
 </div>
