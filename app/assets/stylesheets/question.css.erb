@@ -212,10 +212,13 @@ hr.questions {
 .header_question_field_box {
     font-family: museoSlab, Verdana;
     font-size: 22px;
+    margin-top: 30px;
+    margin-right: 5px;
+    float: left;
 }
 
 #question_index_header {
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 #other_questions_prompt {
@@ -308,7 +311,12 @@ hr.questions {
 }
 
 #questions_bubble {
-    background-image: url(<%= asset_path("questionSpeechBubble.png") %>)
+    background-image: url(<%= asset_path("questionSpeechBubble.png") %>);
+    background-size: 100% 100%;
+    height: 82px;
+    width: 720px;
+    padding-left: 25px;
+    float: left;
 }
 
 .light_bulb_glyph {

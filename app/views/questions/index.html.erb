@@ -12,20 +12,20 @@
 <div id="question_header">
   <div id="header_content">
     <div id="question_index_header">
+      <%= form_for(@question) do |f| %>
+          <%= f.hidden_field :country_code, :id => "country_code" %>
+          <input id="lat" name="question[location][]" type="hidden" value="<%= @question.location[0] %>">
+          <input id="lng" name="question[location][]" type="hidden" value="<%= @question.location[1] %>">
 
-      <div id="questions_bubble">
-        <%= form_for(@question) do |f| %>
-            <%= f.hidden_field :country_code, :id => "country_code" %>
-            <input id="lat" name="question[location][]" type="hidden" value="<%= @question.location[0] %>">
-            <input id="lng" name="question[location][]" type="hidden" value="<%= @question.location[1] %>">
-
-            <div class="field">
+          <div class="field" id="question_creator" style="width:100%">
+            <div id="questions_bubble">
               <%= f.text_field :title, :class => "header_question_field_box", :placeholder => t('question.placeholder_question') %>
-              <%= f.text_field :city_name, :class => "header_question_field_box", :placeholder => t('question.placeholder_city') %>
-              <%= f.submit :class => "submit", :style => "float:right;margin:10px 20px", :value => t("question.ask_question") %>
+              <span class="header_question_field_box" style="margin-left:5px;margin-right:8px;"><%= t('question.in') %></span>
+              <%= f.text_field :city_name, :class => "header_question_field_box", :placeholder => t('question.placeholder_city'), :size => 20 %>
             </div>
-        <% end %>
-      </div>
+            <%= f.submit :class => "submit", :style => "float:left;margin-top:30px;", :value => t("question.ask_question") %>
+          </div>
+      <% end %>
     </div>
   </div>
 </div>
