@@ -15,7 +15,7 @@
     font-size: 14px;
 }
 
-.profile_pic {
+.profile_pic_email {
     max-height: 40px;
     max-width: 40px;
 }
@@ -84,5 +84,5 @@
 }
 
 .change_city {
-  padding-top: 25px;
+    padding-top: 25px;
 }

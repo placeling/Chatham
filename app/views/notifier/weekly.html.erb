@@ -81,7 +81,7 @@
                   <td valign="top" width="220" class="table_style">
                     <div style="margin: 0px;padding: 0px;">
                       <div class="profile_pic_holder">
-                        <%= link_to image_tag(guide.thumb_url, :class => "profile_pic"), vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
+                        <%= link_to image_tag(guide.thumb_url, :class => "profile_pic_email"), vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
                       </div>
                       <div class="username_email">
                         <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link"><%= guide.username %></a>
@@ -122,31 +122,37 @@
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
             <p class="question_content" style="margin-top:25px;font-style:italic;"><%= t('weekly.all') %></p>
+
             <p class="question_content" style="font-style:italic;"><%= t('welcome.support') %>
               <a href="mailto:support@placeling.com" style="color: #E08574;"><%= t('weekly.support') %></a>.</p>
+
             <p class="question_content" style="font-style:italic;"><%= t('weekly.team') %></p>
           </td>
         </tr>
-        
+
         <!-- Change location -->
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
             <p class="change_city question_content">
-            <% if @user.city && @user.city.length > 0 %>
-              <%= t('weekly.reco_info') %> <%= @user.city %>. <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('change_city')%></a>.
-            <% else %>
-              <%= t('weekly.reco_wrong') %> <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('weekly.change_your_city') %></a>.
-            <% end %>
+              <% if @user.city && @user.city.length > 0 %>
+                  <%= t('weekly.reco_info') %> <%= @user.city %>.
+                  <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('change_city') %></a>.
+              <% else %>
+                  <%= t('weekly.reco_wrong') %>
+                  <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('weekly.change_your_city') %></a>.
+              <% end %>
             </p>
           </td>
         </tr>
-        
+
         <!-- Legal stuff -->
         <tr style="margin: 5px;padding: 0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
             <p class="email_content" style="margin-top:20px;"><%= t('notify.sent') %> <%= @user.email %></p>
+
             <p class="email_content"><%= t('notify.no_more') %> <%= t('notify.change') %>
               <a href="<%= account_user_url(@user) %>" style="color: #E08574;"><%= t('notify.settings') %></a></p>
+
             <p class="email_content"><%= t('notify.address') %></p>
           </td>
         </tr>

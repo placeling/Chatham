@@ -383,6 +383,8 @@ class UsersController < ApplicationController
   def nearby
     @users = {}
 
+    page_owner = User.find_by_username(params[:id])
+
     valid_params = true
 
     zoom = DEFAULT_USER_ZOOM
@@ -457,6 +459,8 @@ class UsersController < ApplicationController
 
         box = [[bottom_lat, left_lng], [top_lat, right_lng]]
 
+        @users["owner"] = false
+
         if current_user
           following_counts = Perspective.collection.group(
               :cond => {:ploc => {'$within' => {'$box' => box}}, :uid => {"$in" => current_user.following_ids}, :deleted_at => {'$exists' => false}},
@@ -500,13 +504,16 @@ class UsersController < ApplicationController
 
           popular_counts.each do |person|
             member = User.find(person["uid"])
-            if member != current_user
+            if member != current_user && member != page_owner
               popular << {
                   "name" => member.username.downcase,
                   "pic" => member.thumb_url,
                   "count" => person["count"].to_i,
                   "url" => user_path(member)+"?"+location.to_query
               }
+            end
+            if member == page_owner
+              @users['owner'] = true
             end
           end
 
@@ -535,12 +542,17 @@ class UsersController < ApplicationController
 
           popular_counts.each do |person|
             member = User.find(person["uid"])
-            popular << {
-                "name" => member.username.downcase,
-                "pic" => member.thumb_url,
-                "count" => person["count"].to_i,
-                "url" => user_path(member)+"?"+location.to_query
-            }
+            if member != page_owner
+              popular << {
+                  "name" => member.username.downcase,
+                  "pic" => member.thumb_url,
+                  "count" => person["count"].to_i,
+                  "url" => user_path(member)+"?"+location.to_query
+              }
+            end
+            if member == page_owner
+              @users['owner'] = true
+            end
           end
 
           popular.sort! { |x, y| [y["count"], x["name"]] <=> [x["count"], y["name"]] }
@@ -728,60 +740,60 @@ class UsersController < ApplicationController
     end
 
   end
-  
+
   def location
     @user = User.find_by_username(params[:id])
     if @user.id != current_user.id
       raise ActionController::RoutingError.new('Not Found')
     end
   end
-  
+
   def update_location
     @user = User.find_by_username(params[:id])
     if @user.id != current_user.id
       raise ActionController::RoutingError.new('Not Found')
     end
-    
+
     if params[:lat] && params[:lng]
       lat = params[:lat].to_f
       lng = params[:lng].to_f
-      
+
       valid_params = true
       if lat > 90 || lat < -90 || lat == 0.0 #0.0 is text converted to float
         valid_params = false
       end
-      
+
       if lng > 180 || lng < -180 || lng == 0.0
         valid_params = false
       end
-      
+
       if valid_params
         @user.loc = []
         @user.loc[0] = lat
         @user.loc[1] = lng
-        
+
         # Reverse geocode
         grg = GoogleReverseGeocode.new
         raw_address = grg.reverse_geocode(lat, lng)
-        
+
         city = ""
         raw_address.address_components.each do |piece|
           if piece.types.include?('locality')
             city = piece.short_name
           end
         end
-        
+
         @user.city = city # Want value of nil if no city via reverse geocode
-        
+
         @user.save
       end
     end
-    
+
     respond_to do |format|
-      format.html { redirect_to account_user_path(@user), notice: 'Map center updated' } 
+      format.html { redirect_to account_user_path(@user), notice: 'Map center updated' }
     end
   end
-  
+
   def update
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id

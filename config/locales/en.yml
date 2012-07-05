@@ -289,6 +289,17 @@ en:
     categories: "Categories"
     and: "and"
     photos: "Photos"
+    nearby_placemarks: "Nearby Placemarks"
+    zoom_in: "Zoom in to see nearby placemarks"
+    just: "Just what you see"
+    one_person: "1 person you follow"
+    plural_follow: "people you follow"
+    nearby_sign_in: "Sign in"
+    see_follow: "to see people you follow"
+    one_local: "1 local"
+    locals: "locals"
+    people_you_follow: "People you follow"
+    top_locals: "Top locals"
     
   oauth:
     registered_successfully: "Registered the information successfully"
