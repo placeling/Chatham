@@ -6,13 +6,13 @@ class WeeklyEmail
     if Rails.env.production?
       User.all.each do |user|
         if user.weekly_email? && !user.loc.nil?
-          Notifier.weekly(user).deliver
+          Notifier.weekly(user.id).deliver
         end
       end
     else
       User.all.limit(20).each do |user|
         if user.weekly_email? && !user.loc.nil?
-          Notifier.weekly(user).deliver
+          Notifier.weekly(user.id).deliver
         end
       end
     end

@@ -47,14 +47,14 @@ class Notifier < ActionMailer::Base
     end
   end
 
-  def weekly(user)
-    @user = user
+  def weekly(user_id)
+    @user = User.find(user_id)
 
-    @recos = user.get_recommendations
+    @recos = @user.get_recommendations
 
     if @recos
       track! :email_sent
-      use_vanity_mailer user
+      use_vanity_mailer @user
 
       if @recos['questions'].length > 0
 
@@ -82,7 +82,7 @@ class Notifier < ActionMailer::Base
     # Pull data from existing fixtures
     def weekly
       user = User.skip(rand(User.count)).first
-      Notifier.weekly(user)
+      Notifier.weekly(user.id)
     end
 
     def welcome
