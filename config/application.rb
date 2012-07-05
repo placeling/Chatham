@@ -22,9 +22,10 @@ module Chatham
     # -- all .rb files in that directory are automatically loaded.
 
     config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
-      r301 %r{.*}, 'https://www.placeling.com$&', :if => Proc.new {|rack_env|
+      r301 %r{.*}, 'https://www.placeling.com$&', :if => Proc.new { |rack_env|
         rack_env['SERVER_NAME'].start_with?("iframe.")
       }
+      r301 %r{(.*)click_user\?lat(.*)}, '$1click_user&lat$2'
     end
 
     # Custom directories with classes and modules you want to be autoloadable.
@@ -32,7 +33,7 @@ module Chatham
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
-    config.plugins = [ :dynamic_form ]
+    config.plugins = [:dynamic_form]
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/images" << "#{Rails.root}/vendor/assets" << "#{Rails.root}/vendor/assets/images"
 
@@ -60,8 +61,8 @@ module Chatham
     config.middleware.insert_before ActionDispatch::Session::CookieStore, Rack::P3p
 
     config.generators do |g|
-      g.orm             :mongoid
-      g.test_framework  :rspec
+      g.orm :mongoid
+      g.test_framework :rspec
       g.template_engine :erb
     end
 
