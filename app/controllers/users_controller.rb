@@ -135,7 +135,20 @@ class UsersController < ApplicationController
       format.json { render :json => {:status => "success", :users => @users.as_json({:current_user => current_user})} }
     end
   end
-
+  
+  def wimdu
+    @user = User.find_by_username('lindsayrgwatt')
+    @zoom = 13
+    @lat = 52.50198
+    @lng = 13.41770
+    @width = 700
+    @height = 488
+    
+    respond_to do |format|
+      format.html { render :layout => 'blank' }
+    end
+  end
+  
   def iframe
     @user = User.find_by_username(params[:id])
 
