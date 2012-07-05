@@ -136,7 +136,7 @@
             <p class="change_city question_content">
               <% if @user.city && @user.city.length > 0 %>
                   <%= t('weekly.reco_info') %> <%= @user.city %>.
-                  <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('change_city') %></a>.
+                  <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('weekly.change_city') %></a>.
               <% else %>
                   <%= t('weekly.reco_wrong') %>
                   <a href="<%= location_user_url(@user) %>" style="color: #E08574;"><%= t('weekly.change_your_city') %></a>.
