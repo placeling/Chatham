@@ -43,7 +43,7 @@ class UpdatePlacemarkActivity
                                    "image[0][url]" => image_url,
                                    "image[0][user_generated]" => true)
       else
-        actor1.facebook.og_action!("placeling:placemark", :location => perspective.og_path)
+        actor1.facebook.og_action!("placeling:placemark", :location => perspective.place.og_path, :placemark => perspective.og_path)
       end
     end
 
