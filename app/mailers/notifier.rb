@@ -54,7 +54,7 @@ class Notifier < ActionMailer::Base
 
     if @recos
       track! :email_sent
-      use_vanity_mailer @user
+      use_vanity_mailer nil
 
       if @recos['questions'].length > 0
 
