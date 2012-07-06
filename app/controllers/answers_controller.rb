@@ -41,7 +41,7 @@ class AnswersController < ApplicationController
     finished('question_answered', :reset => false)
 
     if current_user
-      ActivityFeed.answer_question(actor1, question)
+      ActivityFeed.answer_question(current_user, question)
     end
 
     respond_to do |format|
