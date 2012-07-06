@@ -785,19 +785,20 @@ class UsersController < ApplicationController
         @user.loc[0] = lat
         @user.loc[1] = lng
 
-        # Reverse geocode
         grg = GoogleReverseGeocode.new
         raw_address = grg.reverse_geocode(lat, lng)
 
-        city = ""
-        raw_address.address_components.each do |piece|
-          if piece.types.include?('locality')
-            city = piece.short_name
+        city = "" # Default value if no successful reverse geocode
+        if !raw_address.nil? && !raw_address.address_components.nil?
+          raw_address.address_components.each do |piece|
+            if piece.types.include?('locality')
+              city = piece.short_name
+            end
           end
-        end
-
-        @user.city = city # Want value of nil if no city via reverse geocode
-
+        end        
+        
+        @user.city = city
+        
         @user.save
       end
     end
