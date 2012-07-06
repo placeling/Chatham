@@ -14,6 +14,14 @@ class FollowActivity
 
     activity.actor2 = actor2.id
     activity.username2 = actor2.username
+
+    #check if a "recent" activity, most recent 20
+    actor1.activity_feed.activities.each do |act|
+      if act.activity_type == activity.activity_type && activity.actor2 == act.actor2
+        return
+      end
+    end
+
     activity.save
     activity.push_to_followers(actor1)
 

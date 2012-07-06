@@ -16,11 +16,19 @@ class StarActivity
 
     activity.subject = perspective.id
     activity.subject_title = perspective.place.name
+
+    #check if a "recent" activity, most recent 20
+    actor1.activity_feed.activities.each do |act|
+      if act.activity_type == "STAR_PERSPECTIVE" && activity.actor2 == act.actor2 && activity.subject == act.subject
+        return
+      end
+    end
+
     activity.save
     activity.push_to_followers(actor1)
 
     if actor1.facebook && Rails.env.production?
-      actor1.facebook.og_action!("placeling:like", :location => perspective.og_path)
+      actor1.facebook.og_action!("og.likes", :object => perspective.og_path)
     end
 
     unless Notification.veto(activity)
