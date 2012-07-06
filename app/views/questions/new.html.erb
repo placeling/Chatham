@@ -9,6 +9,8 @@
       </script>
   <% end %>
 
+  <%= javascript_include_tag "questions/question" %>
+
 
   <%= form_for(@question) do |f| %>
       <% if @question.errors.any? %>
