@@ -97,7 +97,11 @@ class PerspectivesController < ApplicationController
               end
             end
             if found
-              existing_perspective.liking_users << perspective.user.username
+              if existing_perspective.liking_users
+                existing_perspective.liking_users << perspective.user.username
+              else
+                existing_perspective.liking_users = [perspective.user.username]
+              end
             else
               hearted_perspective.liking_users = [perspective.user.username]
               @perspectives << hearted_perspective unless hearted_perspective.user.id == current_user.id
