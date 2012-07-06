@@ -9,6 +9,8 @@
     </script>
 <% end %>
 
+<%= javascript_include_tag "questions/question" %>
+
 <div id="question_header">
   <div id="header_content">
     <div id="question_index_header">
@@ -52,65 +54,3 @@
 
   <div class="question_clear"></div>
 </div>
-
-<% content_for :javascript do %>
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            $('#question_city_name').keypress(function (e) {
-                if (e.which == 13) return false;
-            });
-
-            $("#question_city_name").focusout(function () {
-                var firstResult = $(".pac-container .pac-item:first").text();
-
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({"address":firstResult }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        $("#question_city_name").val(firstResult);
-
-                        for (var i = 0; i < results[0].address_components.length; i++) {
-                            component = results[0].address_components[i];
-
-                            if (jQuery.inArray("country", component.types) >= 0) {
-                                $("#country_code").val(component.short_name);
-                                break;
-                            }
-                        }
-
-                        $("#lat").val(results[0].geometry.location.lat());
-                        $("#lng").val(results[0].geometry.location.lng());
-
-                    }
-                });
-            });
-
-            var input = document.getElementById('question_city_name');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-
-            google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                var place = autocomplete.getPlace();
-                console.debug(place);
-                if (place.geometry) {
-
-                    for (var i = 0; i < place.address_components.length; i++) {
-                        component = place.address_components[i];
-
-                        if (jQuery.inArray("country", component.types) >= 0) {
-                            $("#country_code").val(component.short_name);
-                            break;
-                        }
-                    }
-
-
-                    $("#lat").val(place.geometry.location.lat());
-                    $("#lng").val(place.geometry.location.lng());
-                }
-            });
-
-        });
-
-    </script>
-<% end %>

@@ -20,8 +20,7 @@ class Question
   before_validation :fix_location
 
   validates_presence_of :loc
-  validates_presence_of :title
-  validates_length_of :title, :minimum => 10, :maximum => 80
+  validates_length_of :title, :minimum => 6, :maximum => 80
   validates_presence_of :city_name
   validates_presence_of :country_code
 
