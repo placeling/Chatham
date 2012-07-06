@@ -31,7 +31,7 @@ class ActivityFeed
   end
 
   def self.answer_question(actor1, question)
-    Resque.enqueue(AnswerQuestion, actor1.id, actor2.id, question.id)
+    Resque.enqueue(AnswerQuestion, actor1.id, question.id)
   end
 
   def head_chunk
