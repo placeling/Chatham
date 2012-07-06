@@ -63,6 +63,7 @@ Chatham::Application.routes.draw do
       post :unfollow
       get :activity
       get :iframe
+      get :wimdu
       get :embed
       get :account
       post :block

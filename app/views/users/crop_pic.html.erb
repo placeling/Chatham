@@ -52,6 +52,6 @@ This is because we need images to be fully loaded before showing cropping lines
     <% for attribute in [:x, :y, :w, :h] %>
       <%= f.hidden_field attribute, :id => attribute %>
     <% end %>
-    <p class="submit_holder"><%= f.submit t('user.save_crop_changes') %></p>
+    <p class="submit_holder"><%= f.submit t('user.save_crop_changes'), :class=>"submit" %></p>
   <% end %>
 </div>
