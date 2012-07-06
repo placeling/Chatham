@@ -20,7 +20,7 @@ class StarActivity
     activity.push_to_followers(actor1)
 
     if actor1.facebook && Rails.env.production?
-      actor1.facebook.og_action!("placeling:like", :location => perspective.og_path)
+      actor1.facebook.og_action!("og.likes", :location => perspective.og_path)
     end
 
     unless Notification.veto(activity)
