@@ -1,4 +1,3 @@
-
 class ActivityFeed
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -13,7 +12,7 @@ class ActivityFeed
 
   def self.add_new_perspective(actor, perspective, fb_post = false)
     if perspective.post_delay
-      Resque.enqueue_in( perspective.post_delay.seconds, PlacemarkActivity, actor.id, perspective.id, fb_post)
+      Resque.enqueue_in(perspective.post_delay.seconds, PlacemarkActivity, actor.id, perspective.id, fb_post)
     else
       Resque.enqueue(PlacemarkActivity, actor.id, perspective.id, fb_post)
     end
@@ -21,7 +20,7 @@ class ActivityFeed
 
   def self.add_update_perspective(actor, perspective, fb_post = false)
     if perspective.post_delay
-      Resque.enqueue_in( perspective.post_delay.seconds, UpdatePlacemarkActivity, actor.id, perspective.id, fb_post)
+      Resque.enqueue_in(perspective.post_delay.seconds, UpdatePlacemarkActivity, actor.id, perspective.id, fb_post)
     else
       Resque.enqueue(UpdatePlacemarkActivity, actor.id, perspective.id, fb_post)
     end
@@ -31,16 +30,20 @@ class ActivityFeed
     Resque.enqueue(StarActivity, actor1.id, actor2.id, perspective.id)
   end
 
+  def self.answer_question(actor1, question)
+    Resque.enqueue(AnswerQuestion, actor1.id, actor2.id, question.id)
+  end
+
   def head_chunk
     head = self.activity_feed_chunks.where(:current => true).first
     if head == nil
-      chunk = self.activity_feed_chunks.build(:current =>true, :first_update => Time.now)
+      chunk = self.activity_feed_chunks.build(:current => true, :first_update => Time.now)
       chunk.activity_feed = self
       chunk.save
     elsif head.is_full?
       head.current = false
       head.next = chunk
-      chunk = self.activity_feed_chunks.build(:current =>true, :first_update => Time.now)
+      chunk = self.activity_feed_chunks.build(:current => true, :first_update => Time.now)
     else
       chunk = head
     end
@@ -66,7 +69,7 @@ class ActivityFeed
         chunk = chunk.next
         i = i + chunk.activities.count
       else
-        j =  start - i
+        j = start - i
       end
     end
     i = i + j

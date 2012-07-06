@@ -40,6 +40,10 @@ class AnswersController < ApplicationController
     @mixpanel.track_event("answer_submit", {:qid => @question.id})
     finished('question_answered', :reset => false)
 
+    if current_user
+      ActivityFeed.answer_question(actor1, question)
+    end
+
     respond_to do |format|
       if @answer.save && @question.save
         format.html { redirect_to @question, notice: 'Submitted successfully.' }
@@ -66,6 +70,10 @@ class AnswersController < ApplicationController
     finished('question_answered', :reset => false)
 
     @mixpanel.track_event("upvote", {:qid => @question.id})
+
+    if current_user
+      ActivityFeed.answer_question(actor1, question)
+    end
 
     respond_to do |format|
       if @answer.save && @question.save
