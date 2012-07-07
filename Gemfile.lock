@@ -9,15 +9,6 @@ GIT
       rack
 
 GIT
-  remote: git://github.com/imackinn/split.git
-  revision: 9bb4faf56c4a113913e794767516b457e1803e7a
-  specs:
-    split (0.4.2)
-      redis (>= 2.1)
-      redis-namespace (>= 1.0.3)
-      sinatra (>= 1.2.6)
-
-GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: d76987f1213dea6d9dca59f655479f931cac6b49
   specs:
@@ -405,7 +396,6 @@ DEPENDENCIES
   rvm-capistrano
   sass-rails (~> 3.2.3)
   sitemap_generator
-  split!
   twitter-text!
   uglifier (>= 1.0.3)
   uuidtools

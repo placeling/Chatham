@@ -228,7 +228,7 @@ Chatham::Application.routes.draw do
   if Rails.env.development?
     mount Notifier::Preview => 'mail_view'
   end
-  mount Split::Dashboard => 'split'
+
   mount Resque::Server, :at => "resque"
 
   match "/me" => "users#me", :as => :my_profile

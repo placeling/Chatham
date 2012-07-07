@@ -69,9 +69,6 @@ gem "redis-namespace"
 gem "mixpanel"
 gem 'vanity'
 
-#gem "split", :path => "../split", :require => 'split/dashboard'
-gem "split", :git => "git://github.com/imackinn/split.git", :require => 'split/dashboard'
-
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler', "2.0.0h", :require => 'resque_scheduler'
 gem 'resque_mailer'
