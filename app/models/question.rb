@@ -31,12 +31,12 @@ class Question
   end
 
   def self.nearby_questions(lat, long)
-    Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
+    Question.where(:loc.within => {"$center" => [[lat, long], 0.2]}).
         and(:score.gte => 1)
   end
 
   def self.nearby_random_questions(lat, long)
-    Question.where(:loc.within => {"$center" => [[lat, long], 0.1]}).
+    Question.where(:loc.within => {"$center" => [[lat, long], 0.2]}).
         and(:score.gte => 1).
         order(:random)
     limit(5)
