@@ -24,6 +24,7 @@ end
 task :staging do
   server 'staging.placeling.com', :app, :web, :db, :scheduler, :primary => true
   ssh_options[:forward_agent] = true
+  set :deploy_via, :remote_cache
   set :user, 'ubuntu'
   set :port, '11235'
   set :use_sudo, false
