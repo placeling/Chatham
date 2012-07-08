@@ -135,7 +135,7 @@ class UsersController < ApplicationController
       format.json { render :json => {:status => "success", :users => @users.as_json({:current_user => current_user})} }
     end
   end
-  
+
   def wimdu
     @user = User.find_by_username('lindsayrgwatt')
     @zoom = 13
@@ -143,12 +143,12 @@ class UsersController < ApplicationController
     @lng = 13.41770
     @width = 700
     @height = 488
-    
+
     respond_to do |format|
       format.html { render :layout => 'blank' }
     end
   end
-  
+
   def iframe
     @user = User.find_by_username(params[:id])
 
@@ -795,10 +795,10 @@ class UsersController < ApplicationController
               city = piece.short_name
             end
           end
-        end        
-        
+        end
+
         @user.city = city
-        
+
         @user.save
       end
     end
@@ -901,7 +901,7 @@ class UsersController < ApplicationController
     @user.save!
     current_user.save!
 
-    @mixpanel.track_event("follow", {:user => @user.username})
+    track! :follow
     ActivityFeed.add_follow(current_user, @user)
 
     respond_to do |format|
