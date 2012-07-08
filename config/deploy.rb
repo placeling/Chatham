@@ -3,7 +3,7 @@ require 'bundler/capistrano'
 set :application, "chatham"
 
 set :rvm_ruby_string, "ruby-1.9.3-p125"
-require "rvm/capistrano"                               # Load RVM's capistrano plugin.
+require "rvm/capistrano" # Load RVM's capistrano plugin.
 
 before 'deploy:setup', 'ubuntu:required_packages'
 before 'deploy:setup', 'rvm:install_rvm'
@@ -30,8 +30,8 @@ task :staging do
   set :rails_env, "staging"
 end
 
-default_run_options[:pty] = true  # Must be set for the password prompt from git to work
-set :repository, "git@github.com:imackinn/Chatham.git"  # Your clone URL
+default_run_options[:pty] = true # Must be set for the password prompt from git to work
+set :repository, "git@github.com:imackinn/Chatham.git" # Your clone URL
 set :scm, "git"
 
 set :deploy_to, "/var/www/apps/#{application}"
@@ -68,7 +68,7 @@ namespace :deploy do
   end
 
   desc "Restart Resque scheduler"
-  task :restart_scheduler,:roles => :scheduler do
+  task :restart_scheduler, :roles => :scheduler do
     run_remote_rake "resque:restart_scheduler"
   end
 
@@ -95,13 +95,5 @@ namespace :db do
   end
 end
 
-desc "Compile asets"
-task :assets do
-  run "cd #{release_path}; RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
-end
-
 require 'airbrake/capistrano'
-
-#after :deploy, "deploy:reload_god_config"
-        require './config/boot'
-        require 'airbrake/capistrano'
+require './config/boot'
