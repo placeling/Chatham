@@ -55,7 +55,7 @@
           <% @guides.each do |guide| %>
           <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
             <div style="margin: 0px;padding: 0px;">
-              <div class="profile_pic_holder" style="margin: 0px;padding: 0px;float: left;width: 40px;height: 40px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
+              <div class="profile_pic_holder_email" style="margin: 0px;padding: 0px;float: left;width: 40px;height: 40px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
                 <a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>"><img class="profile_pic" src="<%= guide.thumb_url %>"  style="max-height: 40px;max-width: 40px;"></a>
               </div>
               <div class="username" style="margin: 0px;padding: 0px;padding-top: 25px;margin-left: 55px;"><a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link" style="color: #E08574;font-size: 24px;"><%= guide.username %></a></div>

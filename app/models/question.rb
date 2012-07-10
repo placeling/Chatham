@@ -8,7 +8,7 @@ class Question
   field :city_name, :type => String
   field :country_code, :type => String
   field :loc, :as => :location, :type => Array
-  field :score, :type => Integer, :default => 0
+  field :score, :type => Integer, :default => 1
 
   slug :title, :index => true, :permanent => true
 

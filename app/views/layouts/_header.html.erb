@@ -41,20 +41,24 @@
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
+            <p class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
           </li>
       <% else %>
-          <li><p class="holder"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
+          <li>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
+          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="holder"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p></li>
+          <li><p class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
+          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
+          <li><p class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p></li>
       <% end %>
     </ul>
   </div>

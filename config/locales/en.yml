@@ -290,7 +290,7 @@ en:
     categories: "Categories"
     and: "and"
     photos: "Photos"
-    nearby_placemarks: "Nearby Placemarks"
+    nearby_stuff: "What\\'s Nearby?"
     zoom_in: "Zoom in to see nearby placemarks"
     just: "Just what you see"
     one_person: "1 person you follow"
@@ -301,6 +301,9 @@ en:
     locals: "locals"
     people_you_follow: "People you follow"
     top_locals: "Top locals"
+    question: "question"
+    questions: "questions"
+    nothing_yet: "Nothing yet"
     
   oauth:
     registered_successfully: "Registered the information successfully"

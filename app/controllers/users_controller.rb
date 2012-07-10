@@ -473,7 +473,16 @@ class UsersController < ApplicationController
         box = [[bottom_lat, left_lng], [top_lat, right_lng]]
 
         @users["owner"] = false
-
+        
+        questions = Question.nearby_questions(center_lat, center_lng)
+        
+        if questions.length > 0
+          @users["questions"] = {}
+          @users["questions"]["lat"] = center_lat
+          @users["questions"]["lng"] = center_lng
+          @users["questions"]["count"] = questions.length
+        end
+        
         if current_user
           following_counts = Perspective.collection.group(
               :cond => {:ploc => {'$within' => {'$box' => box}}, :uid => {"$in" => current_user.following_ids}, :deleted_at => {'$exists' => false}},

@@ -8,7 +8,7 @@ describe Question do
       q1 = Factory.create(:question, :title => "What is the best dive bar in Vancouver?")
       q2 = Factory.create(:question, :title => "What is the best sushi in Vancouver?")
 
-      Question.nearby_questions(q1.location[0], q1.location[1]).count.should == 0
+      Question.nearby_questions(q1.location[0], q1.location[1]).count.should == 2
 
     end
 
@@ -22,9 +22,9 @@ describe Question do
     end
 
 
-    it "should return questions that have  of the places" do
+    it "should return questions that have score greater than 1" do
 
-      q1 = Factory.create(:question, :title => "What is the best dive bar in Vancouver?", :score => 1)
+      q1 = Factory.create(:question, :title => "What is the best dive bar in Vancouver?", :score => 0)
       q2 = Factory.create(:question, :title => "What is the best sushi in Vancouver?")
 
       Question.nearby_questions(q1.location[0], q1.location[1]).count.should == 1

@@ -5,12 +5,39 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-
-    loc = get_location
-    if loc["remote_ip"]
-      loc = loc["remote_ip"]
+    
+    valid_latlng = false
+    if params[:lat] && params[:lng]
+      valid_lat = false
+      valid_lng = false
+      if params[:lat]
+        lat = params[:lat].to_f
+        if lat != 0.0 && lat < 90.0 && lat > -90.0
+          valid_lat = true
+        end
+      end
+      if params[:lng]
+        lng = params[:lng].to_f
+        if lng != 0.0 && lng < 180 && lng > -180
+          valid_lng = true
+        end
+      end
+      if valid_lat && valid_lng
+        valid_latlng = true
+      end
+    end
+    
+    if valid_latlng
+      loc = {}
+      loc["lat"] = lat
+      loc["lng"] = lng
     else
-      loc = loc['default']
+      loc = get_location
+      if loc["remote_ip"]
+        loc = loc["remote_ip"]
+      else
+        loc = loc['default']
+      end
     end
 
     if current_user
