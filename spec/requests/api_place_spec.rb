@@ -12,8 +12,8 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      post highlight_place_path( place ), {
-        :format => 'json'
+      post highlight_place_path(place), {
+          :format => 'json'
       }
 
       user.reload
@@ -31,8 +31,8 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      post unhighlight_place_path( place ), {
-        :format => 'json'
+      post unhighlight_place_path(place), {
+          :format => 'json'
       }
 
       user.reload
@@ -53,13 +53,13 @@ describe "API - " do
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      get place_path( place ), {
-        :format => 'json'
+      get place_path(place), {
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
 
       showPlace['highlighted'].should == true
     end
@@ -71,19 +71,19 @@ describe "API - " do
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
-      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+      perspective = Factory.create(:perspective, :place => place, :user => user2)
+      perspective2 = Factory.create(:perspective, :place => place, :user => user3)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
 
       get place_users_path(place), {
-        :format => 'json'
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      userlist = JSON.parse( response.body )
+      userlist = JSON.parse(response.body)
       userlist['users'].count.should == 2
     end
 
@@ -92,20 +92,20 @@ describe "API - " do
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
-      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+      perspective = Factory.create(:perspective, :place => place, :user => user2)
+      perspective2 = Factory.create(:perspective, :place => place, :user => user3)
       user.follow(user2)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get place_users_path(place), {
-        :format => 'json',
+          :format => 'json',
           :filter_follow => true
       }
 
       response.status.should be(200)
 
-      userlist = JSON.parse( response.body )
+      userlist = JSON.parse(response.body)
       userlist['users'].count.should == 1
       userlist['users'][0]['username'].should == user2.username
     end
@@ -118,19 +118,19 @@ describe "API - " do
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :place =>place, :user =>user2)
-      perspective2 = Factory.create(:perspective, :place =>place, :user =>user3)
+      perspective = Factory.create(:perspective, :place => place, :user => user2)
+      perspective2 = Factory.create(:perspective, :place => place, :user => user3)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
 
       get all_place_perspectives_path(place), {
-        :format => 'json'
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['perspectives'].count.should == 2
     end
 
@@ -138,27 +138,27 @@ describe "API - " do
       user = Factory.create(:user)
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
-      user4 = Factory.create(:user)  #control user who's perspective not being used'
+      user4 = Factory.create(:user) #control user who's perspective not being used'
 
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :memo=>"one", :place =>place, :user =>user2)
-      perspective2 = Factory.create(:perspective, :memo=>"two", :place =>place, :user =>user3)
-      perspective2 = Factory.create(:perspective, :memo=>"three", :place =>place, :user =>user4)
+      perspective = Factory.create(:perspective, :memo => "one", :place => place, :user => user2)
+      perspective2 = Factory.create(:perspective, :memo => "two", :place => place, :user => user3)
+      perspective2 = Factory.create(:perspective, :memo => "three", :place => place, :user => user4)
 
-      user2.star( perspective2 ) #star the third user's perspective
+      user2.star(perspective2) #star the third user's perspective
       user2.save
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
 
       get place_path(place), {
-        :format => 'json',
-        :rf => user2.username
+          :format => 'json',
+          :rf => user2.username
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['referring_perspectives'].count.should == 2
     end
 
@@ -167,20 +167,20 @@ describe "API - " do
       user2 = Factory.create(:user)
       user3 = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :memo=>"TEST1", :place =>place, :user =>user2)
-      perspective2 = Factory.create(:perspective, :memo=>"TEST2", :place =>place, :user =>user3)
-      user.follow( user2 )
+      perspective = Factory.create(:perspective, :memo => "TEST1", :place => place, :user => user2)
+      perspective2 = Factory.create(:perspective, :memo => "TEST2", :place => place, :user => user3)
+      user.follow(user2)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
 
       get following_place_perspectives_path(place), {
-        :format => 'json'
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['perspectives'].count.should == 1
       showPlace['perspectives'][0]['memo'].should == "TEST1"
     end
@@ -193,17 +193,17 @@ describe "API - " do
     it "should return random place if requested" do
       user = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :place =>place)
+      perspective = Factory.create(:perspective, :place => place)
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get random_places_path, {
-        :format => 'json',:lat => '49.8599827', :long =>'-129.2021282'
+          :format => 'json', :lat => '49.8599827', :lng => '-129.2021282'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['name'].should == place.name
 
     end
@@ -215,12 +215,12 @@ describe "API - " do
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get place_path(:id => place.google_id), {
-        :format => 'json'
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['name'].should == place.name
 
     end
@@ -228,22 +228,22 @@ describe "API - " do
     it "should return starred perspectives and user perspective" do
       user = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :place =>place, :user=>user, :memo=>"Memo1")
-      perspective1 = Factory.create(:perspective, :place =>place, :memo=>"Memo2")
-      perspective2 = Factory.create(:perspective, :place =>place, :memo=>"Memo3")
+      perspective = Factory.create(:perspective, :place => place, :user => user, :memo => "Memo1")
+      perspective1 = Factory.create(:perspective, :place => place, :memo => "Memo2")
+      perspective2 = Factory.create(:perspective, :place => place, :memo => "Memo3")
 
-      user.star( perspective1 )
+      user.star(perspective1)
       user.save
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
-      get place_path( place), {
-        :format => 'json'
+      get place_path(place), {
+          :format => 'json'
       }
 
-      response.status.should be( 200 )
+      response.status.should be(200)
 
-      showPlace= JSON.parse( response.body )
+      showPlace= JSON.parse(response.body)
       returned_perspectives = showPlace['perspectives']
       returned_perspectives[0]['id'].should == perspective.id.to_s
       returned_perspectives[1]['id'].should == perspective1.id.to_s
@@ -254,17 +254,17 @@ describe "API - " do
     it "should return an existing place with creator and relationship information" do
       user = Factory.create(:user)
       place = Factory.create(:place)
-      perspective = Factory.create(:perspective, :user =>user, :place =>place) #triggers a bookmark
+      perspective = Factory.create(:perspective, :user => user, :place => place) #triggers a bookmark
 
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get place_path(:id => place.google_id), {
-        :format => 'json'
+          :format => 'json'
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['bookmarked'].should_not be(nil)
       showPlace['bookmarked'].should be(true)
     end
@@ -276,23 +276,23 @@ describe "API - " do
       post_via_redirect user_session_path, 'user[login]' => user.username, 'user[password]' => user.password
 
       get place_path(:id => place.google_id), {
-        :format => 'json',
-        :google_ref => place.google_ref
+          :format => 'json',
+          :google_ref => place.google_ref
       }
 
       response.status.should be(200)
 
-      showPlace = JSON.parse( response.body )
+      showPlace = JSON.parse(response.body)
       showPlace['name'].should == place.name
     end
   end
 
   describe "GET nearby_places for JSON request" do
     it "should do show nearby places for a co-ordinate" do
-      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'100'}
+      get nearby_places_path, {:format => "json", :lat => '49.268547', :lng => '-123.15279', :accuracy => '100'}
       response.status.should be(200)
 
-      nearby = JSON.parse( response.body )
+      nearby = JSON.parse(response.body)
       place_found = false
       for place in nearby['places']
         if place['id'] == "bb7bcb22882a5676c8dece8aedfef37b2a7d81c1" #Kits lululemon
@@ -306,14 +306,14 @@ describe "API - " do
 
 
     it "should take a search term" do
-      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :query => "calhoun's", :accuracy=>'500'}
+      get nearby_places_path, {:format => "json", :lat => '49.268547', :lng => '-123.15279', :query => "sophie's", :accuracy => '500'}
       response.status.should be(200)
 
-      nearby = JSON.parse( response.body )
+      nearby = JSON.parse(response.body)
 
       place_found = false
       for place in nearby['places']
-        if place['id'] == "227eda8780805995c178f614fbf7aab34090f187"#calhouns
+        if place['id'] == "a648ca9b8af31e9726947caecfd062406dc89440" #sophies
           place_found = true
           break
         end
@@ -323,10 +323,10 @@ describe "API - " do
     end
 
     it "should return distances to places" do
-      get nearby_places_path, {:format => "json",:lat => '49.268547', :long =>'-123.15279', :accuracy=>'500'}
+      get nearby_places_path, {:format => "json", :lat => '49.268547', :lng => '-123.15279', :accuracy => '500'}
       response.status.should be(200)
 
-      nearby = JSON.parse( response.body )
+      nearby = JSON.parse(response.body)
 
       for place in nearby['places']
         place['distance'].should <= 500
