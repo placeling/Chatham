@@ -412,7 +412,7 @@ class User
     end
   end
 
-  def get_recommendations
+  def get_recommendations(num_places = 3)
     if self.loc && !self.loc.nil? && self.loc.length == 2
       previous = self.user_recommendation.recommended_ids
 
@@ -485,19 +485,19 @@ class User
         clean_places.delete(growlab)
       end
 
-      places = clean_places[0, 3]
+      places = clean_places[0, num_places]
 
       places.each do |place|
         self.user_recommendation.recommended_ids << place.id
       end
 
       self.save
-      
+
       if candidates.length > 0 || questions.length > 0 || places.length >0
         return {"guides" => candidates, "questions" => questions, "places" => places}
       else
         return nil
-      end      
+      end
     else
       return nil
     end

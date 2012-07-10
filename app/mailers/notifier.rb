@@ -49,12 +49,16 @@ class Notifier < ActionMailer::Base
 
   def weekly(user_id)
     @user = User.find(user_id)
+    use_vanity_mailer nil
 
-    @recos = @user.get_recommendations
+    if true #ab_test( :single_place_mail)
+      @recos = @user.get_recommendations(1)
+    else
+      @recos = @user.get_recommendations
+    end
 
     if @recos
       track! :email_sent
-      use_vanity_mailer nil
 
       if @recos['questions'].length > 0
 
