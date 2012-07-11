@@ -44,8 +44,7 @@
         </div>
     <% end %>
   </div>
-  <div class="accept">By registering, you agree to our <%= link_to(t('home.privacy_policy'), privacy_policy_path) %>
-    and <%= link_to(t('home.terms_of_service'), terms_of_service_path) %>
+  <div class="accept"><%= t('home.register_agree_1') %> <%= link_to(t('home.privacy_policy'), privacy_policy_path) %> <%= t('home.register_agree_2') %> <%= link_to(t('home.terms_of_service'), terms_of_service_path) %>
   </div>
 
 </div>

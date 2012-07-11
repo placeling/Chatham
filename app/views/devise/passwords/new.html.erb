@@ -1,3 +1,7 @@
+<% content_for :head do %>
+    <title><%= t('user.forgot_password_detail' )%></title>
+<% end %>
+
 <div class="auth_block">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.forgot_password_detail') %></div>
@@ -8,11 +12,12 @@
       <%= devise_error_messages! %>
       
       <div class="field_group">
-        <p class="auth_label"><%= t('user.password_reset_instructions') %></p>
-        <p><%= f.email_field :email, :class=>"auth_field first_field" %></p>
+        <p class="auth_label emphasize"><%= t('user.password_reset_instructions_1') %></p>
+        <p class="auth_label"><%= t('user.password_reset_instructions_2') %></p>
+        <p><%= f.email_field :email, :class=>"auth_field" %></p>
       </div>
       <div class="action_group">
-        <div class="reset_action"><%= f.submit t("user.send_reset_instructions"), :class=>"button" %></div>
+        <div class="reset_action"><%= f.submit t("user.send_reset_instructions"), :class=>"submit" %></div>
       </div>
     <% end %>
   </div>

@@ -287,7 +287,7 @@
         margin-left: 340px;
         overflow-y: auto;
         overflow-x: hidden;
-        min-width: 680px;
+        min-width: 700px;
     }
 
     #user_details {
@@ -890,9 +890,7 @@
         /* Perspectives - show
         =====================================================================*/
     .perspective {
-        clear: right;
-        margin-bottom: 10px;
-        padding-top: 10px;
+        clear: both;
     }
 
     .perspective_user {
@@ -908,15 +906,18 @@
 
     .perspective_and_action {
         width: 700px;
+        clear: both;
     }
 
     .perspective_and_wide_action {
-        width: 1050px;
+        width: 700px;
+        margin-left: 340px;
+        padding-top: 3px;
     }
 
     .perspective_wrapper {
         width: 450px;
-        clear: left;
+        float: left;
     }
 
     .centered_perspective {
@@ -1089,35 +1090,37 @@
     }
 
     .perspective_action {
-        float: right;
-        margin-right: 100px;
+        margin-left: 460px;
+        width: 240px;
     }
-
+    
+    .magazine_spacer {
+      padding-top: 30px;
+    }
+    
+    .perspective_details {
+      float: left;
+      width: 450px;
+    }
+    
+    .divider {
+      width: 650px;
+    }
+    
     .edit_empty {
         margin-right: 175px;
     }
 
-    .footer_elements {
-        float: left;
-        font-size: 10px;
-        margin-right: 10px;
+    .mini_action {
+      font-size:10px;
     }
-
-    .edit_flag {
-        clear: both;
-        padding-top: 10px;
-        margin-left: 5px;
-        font-size: 10px;
-    }
-
-    .interact_holder {
-        height: 50px;
-        width: 50px;
-        margin-bottom: 5px;
-    }
-
+    
     .share {
         max-height: 24px;
+    }
+    
+    .middle {
+      vertical-align: middle;
     }
 
     .social {
@@ -1185,6 +1188,11 @@
         padding: 20px;
         min-height: 110px;
     }
+    
+    .place_bottom_spacer {
+      clear: both;
+      margin-bottom:10px;
+    }
 
     #map {
         float: left;
@@ -1222,7 +1230,7 @@
 
     .my_empty {
         font-size: 24px;
-        padding-top: 4px;
+        padding-top: 2px;
     }
 
     .google_url {
@@ -1269,26 +1277,25 @@
         width: 430px;
     }
 
-    .nearby_map {
-        float: left;
+    .nearby_callout {
+      font-size: 36px;
+      color: #B7614B;
+      margin-bottom: 10px;
     }
-
+    
     .nearby {
         margin: 10px 0px;
     }
-
-    .mini_recent {
-        width: 230px;
-        margin-left: 220px;
-        margin-top: 10px;
-        text-align: right;
-        padding-top: 90px;
+    
+    .recent_holder {
+      width: 450px;
     }
-
-    #recent_perspectives_list {
-        clear: left;
+    
+    .recent_link {
+      float: right;
+      font-size: 12px;
     }
-
+    
     .place_category {
         height: 52px;
         font-size: 36px;
@@ -1298,6 +1305,11 @@
         margin-bottom: 10px;
         background-image: url(<%= asset_path 'header_bg.png' %>);
         box-shadow: 0 0 1px 0 #888;
+    }
+    
+    .place_category_spacer {
+      padding-top: 10px;
+      clear: both;
     }
 
     .more_placemarks {
@@ -1531,10 +1543,8 @@
     }
 
     .accept {
-        float: left;
         margin-top: 5px;
         font-size: 10px;
-        width: 200px;
     }
 
     .auth_inset {
@@ -1567,6 +1577,10 @@
     #bad_pun {
       text-align: center;
       margin-bottom: 50px;
+    }
+    
+    .password_submit {
+      margin-left: 148px;
     }
 
         /* Perspective path
@@ -1690,7 +1704,15 @@
     .member_perspective {
         clear: both;
     }
-
+    
+    .no_float {
+      float:none;
+    }
+    
+    #perspective_share {
+      margin-top: 5px;
+    }
+    
     .mini_star {
         float: left;
         margin-left: 100px;
@@ -2459,7 +2481,6 @@
     .info_holder {
         margin-top: 15px;
         float: left;
-        /*width: 250px;*/
     }
 
     .first_para {
