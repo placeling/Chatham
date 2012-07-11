@@ -1,5 +1,5 @@
 class WeeklyEmail
-  @queue = :email
+  @queue = :email_queue
 
   def self.perform()
 
