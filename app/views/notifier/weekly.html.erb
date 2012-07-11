@@ -29,7 +29,7 @@
 
         <!-- Places -->
         <% if @recos['places'].length > 0 %>
-            <% if true #ab_test( :single_place_mail)  %>
+            <% if ab_test(:single_place_mail) %>
                 <%= render :partial => "single_place_suggest", :locals => {:place => @recos['places'].first} %>
             <% else %>
                 <%= render :partial => "place_suggest", :locals => {:recos => @recos} %>

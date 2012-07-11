@@ -51,7 +51,7 @@ class Notifier < ActionMailer::Base
     @user = User.find(user_id)
     use_vanity_mailer nil
 
-    if true #ab_test( :single_place_mail)
+    if ab_test(:single_place_mail)
       @recos = @user.get_recommendations(1)
     else
       @recos = @user.get_recommendations
