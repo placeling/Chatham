@@ -76,6 +76,13 @@ describe "API - Perspective" do
     perspective.save
     user2.save
 
+    perspective2 = user2.perspective_for_place(perspective.place)
+    perspective2.memo = "BLAH BLAH BLAH"
+
+    user.star(perspective2)
+    perspective2.save
+    user.save
+
     p2 = user2.perspectives.first
     perspective.starring_users.count.should == 1
     p2.favourite_perspective_ids.count.should == 1

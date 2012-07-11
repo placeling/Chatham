@@ -108,7 +108,8 @@ class Perspective
 
   def scrub_stars
     user = self.user
-    for perspective in self.favourite_perspective_ids
+    for perspective_id in self.favourite_perspective_ids
+      perspective = Perspective.find(perspective_id)
       perspective.starring_users.delete(user.id)
     end
 
