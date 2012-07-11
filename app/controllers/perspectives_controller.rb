@@ -270,7 +270,7 @@ class PerspectivesController < ApplicationController
               photo = Picture.new
               photo.image = picture[1][:image]
               if photo.valid?
-                @perspective.pictures.concat([photo])
+                @perspective.pictures.push(photo)
               end
             else
               if picture[1]["_destroy"] == "1"
