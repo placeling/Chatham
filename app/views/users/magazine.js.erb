@@ -15,7 +15,7 @@ var new_count = <%= @perspectives.length %>;
   <% end %>
   var html = '';
   <% @perspectives.each do |perspective|%>
-    html = '<li class="perspective_wrapper" id="perspective_<%=perspective.id %>">';
+    html = '<li id="perspective_<%=perspective.id %>">';
     html += '<%= escape_javascript(render :partial => "perspectives/show", :locals => {:perspective => perspective, :source => "magazine"}) %>';
     html += '</li>';
     

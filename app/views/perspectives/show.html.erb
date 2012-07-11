@@ -120,8 +120,8 @@
           </div>
         </div>
         <div id="member_perspective">
-          <div id="perspective_<%= @perspective.id %>" class="perspective_details">
-            <div class="interact mini_star">
+          <div id="perspective_<%= @perspective.id %>" class="perspective_details no_float">
+            <div class="mini_star" id="interact_<%= @perspective.id %>">
               <% if current_user == @perspective.user %>
                   <a href="<%= edit_perspective_path(@perspective) %>"><%= image_tag 'writer.png' %></a>
               <% else %>

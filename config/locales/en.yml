@@ -304,6 +304,8 @@ en:
     question: "question"
     questions: "questions"
     nothing_yet: "Nothing yet"
+    recent_instead: "Show recent places instead"
+    places_near: "Places Near"
     
   oauth:
     registered_successfully: "Registered the information successfully"

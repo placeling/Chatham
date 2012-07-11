@@ -1,13 +1,19 @@
-$('#perspective_<%= @perspective.id %> .interact').fadeOut(100);
-$("#perspective_<%= @perspective.id %> .interact").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star" %></a>');
-$('#perspective_<%= @perspective.id %> .interact').fadeIn(100);
-$('#perspective_<%= @perspective.id %> .star_link').hover(
+$('#interact_<%= @perspective.id %>').fadeOut(100);
+$("#interact_<%= @perspective.id %>").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= star_perspective_path(@perspective) %>" class="star_link"><%= image_tag "unstarred.png", :alt=>"Star", :class=>"middle" %></a>');
+$('#interact_<%= @perspective.id %>').fadeIn(100);
+$('.star_link').unbind('hover');
+$('.star_link').hover(
   function() {
-    $('img', this).attr('src', '<%= asset_path('starred.png') %>');
-    $('img', this).css({'opacity':'0.4'});
+    var source = $('img', this).attr('src');
+    if (source.indexOf('unstarred.png') >= 0) {
+      $('img', this).attr('src', '<%= asset_path('starred.png') %>');
+      $('img', this).css({'opacity':'0.4'});
+    }
   }, 
   function() {
-    $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
-    $('img', this).css({'opacity':'1.0'});
+    if ($('img', this).css('opacity') == '0.4') {
+      $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
+      $('img', this).css({'opacity':'1.0'});
+    }
   }
 );
