@@ -231,11 +231,11 @@ class Place
   def self.top_nearby_places(lat, lng, span, top_n)
     Place.where(:loc.within => {"$center" => [[lat, lng], span]}).where(:pc.gte => 1).desc(:pc).limit(top_n)
   end
-  
+
   def pictures
     perps = Perspective.where(:plid => self.id)
     photos = []
-    
+
     perps.each do |perp|
       perp.pictures.each do |pic|
         if !pic.deleted
@@ -243,10 +243,10 @@ class Place
         end
       end
     end
-    
+
     return photos
   end
-  
+
   def self.find_by_google_id(google_id)
     Place.where(:gid => google_id).first
   end
@@ -376,6 +376,15 @@ class Place
 
   def og_path
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path(self) }"
+  end
+
+  def alpha_perspective
+    perspectives = self.perspectives
+    perspectives.sort_by do |perspective|
+      [-perspective.starring_users.count, -perspective.memo.length]
+    end
+
+    perspectives.first
   end
 
   def as_json(options={})

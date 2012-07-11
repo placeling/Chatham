@@ -29,41 +29,12 @@
 
         <!-- Places -->
         <% if @recos['places'].length > 0 %>
-            <tr style="padding: 0px;">
-              <td width="100%" colspan="3" class="table_style">
-                <p class="emphasize embiggen" style="margin: 5px;margin-left:0px;margin-top:25px;margin-bottom:0px;padding: 0px;font-weight: bold;font-size: 18px;color:#357A80"><%= t('weekly.explore') %></p>
-
-                <p class="question_content"><%= t('weekly.explore_why') %></p>
-              </td>
-            </tr>
-
-            <tr style="padding: 0px;">
-              <!-- Pictures -->
-              <% @recos['places'].each do |place| %>
-                  <td valign="top" width="220" class="table_style">
-                    <div class="venue_pic_holder">
-                      <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>">
-                        <% if place.pictures.length > 0 %>
-                            <img src="<%= place.pictures[0].mosaic_3_2_url %>" style="max-height: 98px;max-width: 210px;">
-                            </a>
-                        <% else %>
-                            <img src="https://maps.google.com/maps/api/staticmap?center=<%= place.loc[0] %>,<%= place.loc[1] %>&zoom=14&size=210x98&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C<%= place.loc[0] %>,<%= place.loc[1] %>&sensor=false">
-                        <% end %>
-                        </a></div>
-                  </td>
-              <% end %>
-            </tr>
-
-            <!-- Names -->
-            <% @recos['places'].each do |place| %>
-                <td valign="top" width="220" class="table_style">
-                  <div style="margin: 0px;padding: 0px;text-align:center">
-                    <div class="username_email" style="margin:5px;<% if @pictures == false %>margin-left:0px;<% end %>padding: 0px;width:210px;">
-                      <%= link_to place.name, vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]), :class => "placename_link" %>
-                    </div>
-                  </div>
-                </td>
+            <% if true #ab_test( :single_place_mail)  %>
+                <%= render :partial => "single_place_suggest", :locals => {:place => @recos['places'].first} %>
+            <% else %>
+                <%= render :partial => "place_suggest", :locals => {:recos => @recos} %>
             <% end %>
+
         <% end %>
 
         <!-- Guides -->

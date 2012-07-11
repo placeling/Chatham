@@ -1,5 +1,6 @@
 require 'google_places'
 require 'google_reverse_geocode'
+require 'google_places_autocomplete'
 
 class PlacesController < ApplicationController
   before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]

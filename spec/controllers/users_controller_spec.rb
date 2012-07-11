@@ -46,7 +46,6 @@ describe UsersController do
 
         user = JSON.parse(response.body)
 
-        PP.pp user
         user['follower_count'].should == 0
         user['following_count'].should == 1
 
@@ -66,7 +65,6 @@ describe UsersController do
 
         user = JSON.parse(response.body)
 
-        PP.pp user
         user['following'].should == true
         user['follows_you'].should == false
 
