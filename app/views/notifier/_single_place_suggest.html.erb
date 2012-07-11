@@ -6,7 +6,7 @@
 
 <tr style="padding: 0px;">
   <td valign="top" width="220" class="table_style">
-    <div class="venue_pic_holder">
+    <div class="venue_pic_holder" style="margin-top:5px;">
       <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>">
         <% if place.pictures.length > 0 %>
             <img src="<%= place.pictures[0].main_url %>" style="max-height: 210px;max-width: 210px;">
