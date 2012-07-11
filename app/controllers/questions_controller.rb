@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    
+
     valid_latlng = false
     if params[:lat] && params[:lng]
       valid_lat = false
@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
         valid_latlng = true
       end
     end
-    
+
     if valid_latlng
       loc = {}
       loc["lat"] = lat
@@ -121,6 +121,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     @question.user = current_user
 
+    @question.title = "#{ @question.title } in #{ @question.city_name }?"
     @question.location = [0.0, 0.0] unless !@question.location.nil?
 
     respond_to do |format|
