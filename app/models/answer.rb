@@ -4,7 +4,7 @@ class Answer
   include ApplicationHelper
 
   field :upvotes, :type => Integer, :default => 0
-  field :voters, :type =>Hash, :default => {}
+  field :voters, :type => Hash, :default => {}
   belongs_to :place
 
   embedded_in :question
@@ -15,7 +15,7 @@ class Answer
   validate :acceptable_distance, :on => :create
 
   def acceptable_distance
-    dist = haversine_distance( self.question.location[0], self.question.location[1], self.place.location[0], self.place.location[1] )
+    dist = haversine_distance(self.question.location[0], self.question.location[1], self.place.location[0], self.place.location[1])
 
     if dist["km"] >50
       #too far away
@@ -23,4 +23,14 @@ class Answer
     end
   end
 
+  def upvoters
+    upvoters = []
+    for element_id in voters.keys()
+      if BSON::ObjectId.legal?(element_id)
+        user = User.find(element_id)
+        upvoters << user
+      end
+    end
+    return upvoters[0..5]
+  end
 end

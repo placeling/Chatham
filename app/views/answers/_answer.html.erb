@@ -10,6 +10,13 @@
   <div class="address_text">
     <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
   </div>
+
+  <% if answer.upvoters.count > 0 %>
+      <div class="upvoters">
+        <%= t 'question.upvoted_by' %>
+        <span class='names'><%= h answer.upvoters.collect { |u| u.username }.join(", ") %></span>
+      </div>
+  <% end %>
 </div>
 
 <div class="right_place_column">
