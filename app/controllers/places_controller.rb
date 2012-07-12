@@ -404,7 +404,10 @@ class PlacesController < ApplicationController
   def highlight
     #it's a direct request for a place in our db
     @place = Place.forgiving_find(params[:id])
-    current_user.highlighted_places << @place.id
+
+    if current_user.highlighted_places.index(@place.id).nil?
+      current_user.highlighted_places << @place.id
+    end
     current_user.save
 
     respond_to do |format|
