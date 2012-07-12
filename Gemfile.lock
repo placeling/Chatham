@@ -69,7 +69,6 @@ GEM
       activesupport
       builder
     arel (3.0.2)
-    attr_required (0.0.5)
     aws-ses (0.4.4)
       builder
       mail (> 2.2.5)
@@ -129,10 +128,6 @@ GEM
     faraday (0.8.1)
       multipart-post (~> 1.1)
     fastercsv (1.5.5)
-    fb_graph (2.4.17)
-      httpclient (>= 2.2.0.2)
-      rack-oauth2 (>= 0.14.4)
-      tzinfo
     ffi (1.0.11)
     fog (1.4.0)
       builder
@@ -155,7 +150,6 @@ GEM
       multi_json (~> 1.0)
       multi_xml
     httpauth (0.1)
-    httpclient (2.2.5)
     i18n (0.6.0)
     journey (1.0.4)
     jquery-rails (2.0.2)
@@ -231,13 +225,6 @@ GEM
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
-    rack-oauth2 (0.14.4)
-      activesupport (>= 2.3)
-      attr_required (>= 0.0.5)
-      httpclient (>= 2.2.0.2)
-      i18n
-      json (>= 1.4.3)
-      rack (>= 1.1)
     rack-p3p (0.5.0)
       rack (>= 1.0.1)
     rack-protection (1.2.0)
@@ -362,7 +349,6 @@ DEPENDENCIES
   execjs
   factory_girl_rails (~> 1.1.rc1)
   fastercsv
-  fb_graph
   fog
   geocoder
   geoip
