@@ -25,7 +25,7 @@ class UpdatePlacemarkActivity
     activity.save
     activity.push_to_followers(actor1)
 
-    if fb_post && actor1.facebook && Rails.env.production?
+    if fb_post && actor1.new_facebook && Rails.env.production?
       image_url=nil
       for picture in perspective.pictures
         if !picture.fb_posted
@@ -36,15 +36,7 @@ class UpdatePlacemarkActivity
         end
       end
 
-      if false #!image_url.nil?
-        RESQUE_LOGGER.info "Sending Placemark for #{actor1.username} on #{perspective.place.name} to facebook with image #{image_url}"
-        actor1.facebook.og_action!("placeling:placemark",
-                                   :location => perspective.og_path,
-                                   "image[0][url]" => image_url,
-                                   "image[0][user_generated]" => true)
-      else
-        actor1.facebook.og_action!("placeling:set", :placemark => perspective.og_path)
-      end
+      actor1.new_facebook.put_connection("me", "placeling:set", :placemark => perspective.og_path)
     end
 
   end

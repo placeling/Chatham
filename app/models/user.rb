@@ -623,6 +623,10 @@ class User
     return nil
   end
 
+  def new_facebook
+    @new_facebook ||= self.koala_facebook
+  end
+
   # get latest feed using reverse range lookup of sorted set
   # then decode raw JSON back into Ruby objects
   def feed(start =0, count=FEED_COUNT)
@@ -698,6 +702,15 @@ class User
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
     self.any_of({:du => login.downcase}, {:email => login}).first
+  end
+
+  def koala_facebook
+    for auth in self.authentications
+      if auth.provider == 'facebook' && !auth.token.nil?
+        return Koala::Facebook::API.new(oauth_token)
+      end
+    end
+    return nil
   end
 
 end
