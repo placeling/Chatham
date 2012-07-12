@@ -25,7 +25,7 @@ class UpdatePlacemarkActivity
     activity.save
     activity.push_to_followers(actor1)
 
-    if fb_post && actor1.new_facebook && Rails.env.production?
+    if fb_post && actor1.post_facebook? && Rails.env.production?
       image_url=nil
       for picture in perspective.pictures
         if !picture.fb_posted

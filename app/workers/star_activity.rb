@@ -27,7 +27,7 @@ class StarActivity
     activity.save
     activity.push_to_followers(actor1)
 
-    if actor1.new_facebook && Rails.env.production?
+    if actor1.post_facebook? && Rails.env.production?
       actor1.new_facebook.put_connection("me", "og.likes", :object => perspective.og_path)
     end
 

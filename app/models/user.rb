@@ -627,6 +627,11 @@ class User
     @new_facebook ||= self.koala_facebook
   end
 
+  def post_facebook?
+    #determines whether user has permissions to post to facebook ie. publish_actions
+    self.new_facebook && self.new_facebook.get_connection("me", "permissions")[0].has_key?("publish_actions")
+  end
+
   # get latest feed using reverse range lookup of sorted set
   # then decode raw JSON back into Ruby objects
   def feed(start =0, count=FEED_COUNT)
