@@ -6,11 +6,12 @@ describe "Facebook" do
   before(:all) do
     #clear existing facebook users before we start a test
     @test_users = Koala::Facebook::TestUsers.new(:app_id => CHATHAM_CONFIG['facebook_app_id'], :secret => CHATHAM_CONFIG['facebook_app_secret'])
+    @test_users.delete_all
+  end
 
-    @test_users.list.each do |user|
-      @test_users.delete(user)
-    end
-
+  before(:each) do
+    #this is cool because each environment has its own namespace
+    $redis.flushall
   end
 
   it "checked already logged in and return false for new user" do
@@ -114,5 +115,38 @@ describe "Facebook" do
     User.first.authentications.count.should ==1
 
   end
+
+  it "checks for existing facebook friends, notifies them, and pre-seeds friends list" do
+    @test_users = Koala::Facebook::TestUsers.new(:app_id => CHATHAM_CONFIG['facebook_app_id'], :secret => CHATHAM_CONFIG['facebook_app_secret'])
+
+    fb_user1 = @test_users.create(true, "publish_stream")
+    fb_user2 = @test_users.create(true, "publish_stream")
+    fb_user3 = @test_users.create(true, "publish_stream")
+
+    @test_users.befriend(fb_user1, fb_user2)
+    @test_users.befriend(fb_user1, fb_user3)
+
+    user2 = Factory.create(:user, :email => fb_user2["email"])
+    user2.ios_notification_token = "FAKEIOSTOKENFORTESTING"
+    user2.save
+    user2.authentications.create(:expiry => 2.months.from_now, :provider => "facebook", :uid => fb_user2['id'], :token => fb_user2['access_token'])
+
+    user3 = Factory.create(:user, :email => fb_user3["email"])
+    user3.authentications.create(:expiry => 2.months.from_now, :provider => "facebook", :uid => fb_user3['id'], :token => fb_user3['access_token'])
+
+    user1 = Factory.create(:user, :email => fb_user1["email"])
+    user1.authentications.create(:expiry => 2.months.from_now, :provider => "facebook", :uid => fb_user1['id'], :token => fb_user1['access_token'])
+
+    $redis.smembers("facebook_friends_#{user1.id}").count.should == 2
+
+    User.count.should == 3
+    Authentication.count.should == 3
+
+    user2.notifications.count.should == 1 #notifications should be sent
+    user2.notifications[0].type.should == "FACEBOOK_FRIEND"
+    user3.notifications.count.should == 0
+
+  end
+
 
 end

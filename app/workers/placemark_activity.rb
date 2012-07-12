@@ -7,7 +7,7 @@ class PlacemarkActivity
 
     perspective = Perspective.find(perspective_id)
 
-    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} placemarked #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} placemarked #{perspective.place.name}, OG?: #{!actor1.new_facebook.nil?}"
 
     activity = actor1.build_activity
 

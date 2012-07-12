@@ -53,12 +53,12 @@ class AuthenticationsController < ApplicationController
     expiry = params["expiry"]
 
     fb_user = get_me token #verifies that token is good
-    if fb_user.nil? or (uid && uid != fb_user.identifier)
+    if fb_user.nil? or (uid && uid != fb_user['id'])
       render :json => {:status => "FAIL"} #invalid token
       return
     end
 
-    uid = fb_user.identifier unless !uid.nil?
+    uid = fb_user['id'] unless !uid.nil?
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
     if current_user && auth && current_user.id != auth.user.id
@@ -238,9 +238,9 @@ class AuthenticationsController < ApplicationController
 
 
   def get_me(token)
-    user = FbGraph::User.me(token) #see if the given token is any good
+    user = Koala::Facebook::API.new(token) #see if the given token is any good
     begin
-      return user.fetch
+      return user.get_object("me")
     rescue
       return nil
     end

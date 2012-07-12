@@ -614,15 +614,6 @@ class User
     self.blocked_users.include?(user.id)
   end
 
-  def facebook
-    for auth in self.authentications
-      if auth.provider == 'facebook' && !auth.token.nil?
-        return FbGraph::User.me(auth.token)
-      end
-    end
-    return nil
-  end
-
   def new_facebook
     @new_facebook ||= self.koala_facebook
   end
@@ -712,7 +703,7 @@ class User
   def koala_facebook
     for auth in self.authentications
       if auth.provider == 'facebook' && !auth.token.nil?
-        return Koala::Facebook::API.new(oauth_token)
+        return Koala::Facebook::API.new(auth.token)
       end
     end
     return nil
