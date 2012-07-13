@@ -6,7 +6,7 @@ class FollowActivity
     actor1 = User.find(actor1_id)
     actor2 = User.find(actor2_id)
 
-    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.new_facebook.nil?}"
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} followed #{actor2.username}, notification?:#{actor2.follow_notification?}, OG?: #{!actor1.facebook.nil?}"
 
     activity = actor1.build_activity
 
@@ -26,7 +26,8 @@ class FollowActivity
     activity.push_to_followers(actor1)
 
     if actor1.post_facebook? && Rails.env.production?
-      actor1.new_facebook.put_connection("me", "placeling:follow", :user => actor2.og_path)
+      actor1.facebook.put_connection("me", "placeling:follow", :user => actor2.og_path)
+      #actor1.facebook.put_connection("me", "og:follows", :profile => actor2.og_path)
     end
 
     unless Notification.veto(activity)

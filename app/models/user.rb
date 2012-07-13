@@ -614,13 +614,13 @@ class User
     self.blocked_users.include?(user.id)
   end
 
-  def new_facebook
-    @new_facebook ||= self.koala_facebook
+  def facebook
+    @facebook ||= self.koala_facebook
   end
 
   def post_facebook?
     #determines whether user has permissions to post to facebook ie. publish_actions
-    self.new_facebook && self.new_facebook.get_connection("me", "permissions")[0].has_key?("publish_actions")
+    self.facebook && self.facebook.get_connection("me", "permissions")[0].has_key?("publish_actions")
   end
 
   # get latest feed using reverse range lookup of sorted set

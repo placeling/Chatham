@@ -8,7 +8,7 @@ class UpdatePlacemarkActivity
     actor1 = User.find(actor_id)
     activity = actor1.build_activity
 
-    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} updated placemark #{perspective.place.name}, OG?: #{!actor1.new_facebook.nil?}"
+    RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} updated placemark #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
 
     activity.activity_type = "UPDATE_PERSPECTIVE"
 
@@ -36,7 +36,7 @@ class UpdatePlacemarkActivity
         end
       end
 
-      actor1.new_facebook.put_connection("me", "placeling:set", :placemark => perspective.og_path)
+      actor1.facebook.put_connection("me", "placeling:set", :placemark => perspective.og_path)
     end
 
   end

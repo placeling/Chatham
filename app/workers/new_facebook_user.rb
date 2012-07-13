@@ -4,12 +4,12 @@ class NewFacebookUser
   def self.perform(user_id)
     user = User.find(user_id)
 
-    me = user.new_facebook.get_object("me")
+    me = user.facebook.get_object("me")
 
     Resque.enqueue_in(1.day, FacebookSuggestReminder, user_id)
 
     begin
-      user.new_facebook.get_connection("me", "friends").each do |friend|
+      user.facebook.get_connection("me", "friends").each do |friend|
         if auth = Authentication.find_by_provider_and_uid("facebook", friend['id'])
 
           auth.user.fullname = friend['name']

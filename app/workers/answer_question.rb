@@ -16,8 +16,8 @@ class AnswerQuestion
     #activity.save
     #activity.push_to_followers(actor1)
 
-    if actor1.new_facebook && Rails.env.production?
-      actor1.new_facebook.put_connection("me", "placeling:answer", :question => question.og_path)
+    if actor1.post_facebook? && Rails.env.production?
+      actor1.facebook.put_connection("me", "placeling:answer", :question => question.og_path)
     end
 
   end
