@@ -407,7 +407,8 @@ class Place
         :thumb_url => self.thumb_url,
         :highlight_url => self.highlight_url,
         :map_url => self.map_url,
-        :venue_types => self.venue_types
+        :venue_types => self.venue_types,
+        :slug => self.slug
     }
 
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
