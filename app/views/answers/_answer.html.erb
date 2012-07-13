@@ -13,15 +13,18 @@
 
   <% if answer.upvoters.count > 0 %>
       <div class="upvoters">
-        <%= t 'question.upvoted_by' %>
-        <span class='names'><%= h answer.upvoters.collect { |u| u.username }.join(", ") %></span>
+        <%= image_tag "header/AnswersGlyph_lightbulb.png/", :width => "15px" %>
+        <span class="names_text middle">
+            <span class='names'><%= h answer.upvoters.collect { |u| u.username }.join(", ") %></span>
+          <%= t 'question.as_well_as', :n => (answer.upvotes - answer.upvoters.count) unless answer.upvotes - answer.upvoters.count ==0 %>
+        </span>
       </div>
   <% end %>
 </div>
 
 <div class="right_place_column">
   <% if !current_user || !current_user.perspective_for_place(answer.place) %>
-      <div style="font-size: 12px;text-align: right;top:55px;" class="placemark_button" id="<%= answer.place.id %>">
+      <div class="save_place_button" id="<%= answer.place.id %>">
         <a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= t 'question.save_this_place' %></a>
       </div>
   <% end %>

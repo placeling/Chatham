@@ -28,7 +28,7 @@ class Answer
     for element_id in voters.keys()
       if BSON::ObjectId.legal?(element_id)
         user = User.find(element_id)
-        upvoters << user
+        upvoters << user unless user.id == self.question.user.id
       end
     end
     return upvoters[0..5]
