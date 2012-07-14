@@ -97,7 +97,8 @@ class User
   validates_format_of :username, :with => /\A[a-zA-Z0-9_]+\Z/, :message => "may only contain letters, numbers and underscores"
   validates_format_of :email, :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => "is not valid"
   validates_length_of :username, :within => 3..20, :too_long => "must be shorter", :too_short => "must be longer"
-  validates_uniqueness_of :username, :email, :case_sensitive => false
+  validates_uniqueness_of :username, :case_sensitive => false
+  validates_uniqueness_of :email, :case_sensitive => false
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :encrypted_password, :admin, :description, :url, :user_setting_attributes, :city
 
   index :unm

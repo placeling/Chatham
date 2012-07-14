@@ -6,7 +6,7 @@ describe User do
     bob = Factory.create(:user, :username => 'bill', :email => "billbob@null.com")
     lib_square_perspective = Factory.create(:lib_square_perspective, :user => bob)
 
-    users = User.top_users( 1 )
+    users = User.top_users(1)
     users.first.username.should == bob.username
 
   end
@@ -14,7 +14,7 @@ describe User do
   it "should add a follower to a user" do
     ian = Factory.create(:user, :username => 'imack')
     lindsay = Factory.create(:user, :username => 'lindsay')
-    ian.follow( lindsay )
+    ian.follow(lindsay)
     ian.save
 
     lindsay.followers.should include(ian)
@@ -27,7 +27,7 @@ describe User do
     ian = Factory.create(:user, :username => 'imack')
     lindsay = Factory.create(:user, :username => 'lindsay')
 
-    ian.follow( lindsay )
+    ian.follow(lindsay)
 
     ian.reload
     lindsay.reload
@@ -35,7 +35,7 @@ describe User do
     lindsay.followers.should include(ian)
     ian.following.should include(lindsay)
 
-    ian.unfollow( lindsay )
+    ian.unfollow(lindsay)
 
     ian.reload
     lindsay.reload
@@ -83,6 +83,21 @@ describe User do
   it "has User settings" do
     user = Factory.create(:user)
     user.user_settings.should_not be(nil)
+  end
+
+
+  it "can't be created with duplicate username or email'" do
+    user = Factory.create(:user, :username => "test", :email => "test@placeling.com")
+    user2 = Factory.build(:user, :username => "test")
+
+    user2.save.should == false
+    user2.errors.count.should == 1
+
+    user3 = Factory.build(:user, :email => "test@placeling.com")
+    user3.save.should == false
+    user3.errors.count.should >= 1
+
+    User.count.should == 1
   end
 
 end
