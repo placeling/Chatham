@@ -28,7 +28,7 @@ class AuthenticationsController < ApplicationController
       end
 
     elsif auth && (fb_user || fb_user = get_me(token))
-      if fb_user.identifier == auth.uid
+      if fb_user['id'] == auth.uid
         #this is kind of an odd case, but we shoudl probably update the token
         auth.token = token
         auth.save!
