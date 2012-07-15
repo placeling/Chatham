@@ -36,7 +36,7 @@ class UpdatePlacemarkActivity
         end
       end
 
-      actor1.facebook.put_connection("me", "placeling:set", :placemark => perspective.og_path)
+      actor1.facebook.put_connections("me", "placeling:set", :placemark => perspective.og_path)
     end
 
   end
