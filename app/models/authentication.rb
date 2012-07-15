@@ -29,7 +29,7 @@ class Authentication
                   :expiry => self.expiry}
 
     if self.expiry.nil?
-      attributes[:expiry] = 1.day.ago
+      attributes[:expiry] = 1.month.from_now
     end
 
     attributes
