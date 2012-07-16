@@ -183,7 +183,7 @@ class AuthenticationsController < ApplicationController
           @users << user
         end
       else
-        $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.fetch.identifier, current_user.facebook.fetch.name].to_json)
+        $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.get_object("me")['id'], current_user.facebook.get_object("me")['name']].to_json)
         friends = current_user.facebook.friends
 
         begin
