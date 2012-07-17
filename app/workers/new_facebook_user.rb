@@ -16,7 +16,7 @@ class NewFacebookUser
           $redis.sadd("facebook_friends_#{user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
 
           if $redis.smembers("facebook_friends_#{auth.user.id}").count > 0 #only do it for other user if already initialized
-            $redis.sadd("facebook_friends_#{auth.user.id}", [user.id, me.identifier, me.name].to_json)
+            $redis.sadd("facebook_friends_#{auth.user.id}", [user.id, me['id'], me['name']].to_json)
           end
 
           if (auth.user.notifications.count == 0 || (auth.user.notifications.count > 0 && auth.user.notifications[0].created_at < 1.day.ago)) && !auth.user.follows?(user)
