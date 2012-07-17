@@ -33,6 +33,7 @@
                 mpmetrics.track_links('.map_link', 'map_link');
                 mpmetrics.track_links('.share_link', 'share_link');
                 mpmetrics.track_links('#sign_up', 'signup_link');
+                mpmetrics.track_links('.image_map_link', 'image_map_link');
                 mpmetrics.track('index_view');
             });
         </script>
@@ -40,6 +41,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $(".map_link").click(function () {
+                alert("test");
+            });
             var minWidth = parseInt($("#clear_bg").css("width"));
 
             $(window).resize(function () {
@@ -119,13 +124,13 @@
     <div id="clear_bg">
       <%= image_tag "home/clear_bg.png", :usemap => "#action" %>
       <map name="action">
-        <area onfocus="blur();" shape="rectangle" coords="26,175,231,441" href="<%= map_path %>">
-        <area onfocus="blur();" shape="rectangle" coords="251,366,308,495" href="https://placeling.com/places/4efe738057b4e30c7e00007f">
-        <area onfocus="blur();" shape="rectangle" coords="268,215,409,314" href="https://placeling.com/meg">
-        <area onfocus="blur();" shape="rectangle" coords="426,70,774,263" href="<%= guide_path %>">
-        <area onfocus="blur();" shape="rectangle" coords="565,379,640,445" href="https://placeling.com/places/4ec5ef6d6dd9562b7300001b">
-        <area onfocus="blur();" shape="polygon" coords="738,349,745,503,906,507,891,401,796,392,780,350,780,350,773,350,773,350,770,350,749,348" href="https://placeling.com/vancouverbabies">
-        <area onfocus="blur();" shape="polygon" coords="785,249,784,301,806,377,974,377,1001,300,1001,247,931,216,836,216" href="<%= new_user_registration_path %>">
+        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="26,175,231,441" href="<%= map_path %>">
+        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="251,366,308,495" href="https://placeling.com/places/4efe738057b4e30c7e00007f">
+        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="268,215,409,314" href="https://placeling.com/meg">
+        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="426,70,774,263" href="<%= guide_path %>">
+        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="565,379,640,445" href="https://placeling.com/places/4ec5ef6d6dd9562b7300001b">
+        <area onfocus="blur();" class="image_map_link" shape="polygon" coords="738,349,745,503,906,507,891,401,796,392,780,350,780,350,773,350,773,350,770,350,749,348" href="https://placeling.com/vancouverbabies">
+        <area onfocus="blur();" class="image_map_link" shape="polygon" coords="785,249,784,301,806,377,974,377,1001,300,1001,247,931,216,836,216" href="<%= new_user_registration_path %>">
       </map>
     </div>
   </div>
