@@ -29,7 +29,7 @@ class Authentication
                   :expiry => self.expiry}
 
     if self.expiry.nil?
-      attributes[:expiry] = 1.day.from_now
+      attributes[:expiry] = 1.month.from_now
     end
 
     attributes
@@ -41,7 +41,7 @@ class Authentication
     end
 
     if provider == "facebook" && !self.user.avatar? && !Rails.env.test? #no need for this in test
-                                                                        #self.user.remote_avatar_url = self.user.facebook.fetch.picture('large') #go get facebook profile
+      self.user.remote_avatar_url = self.user.facebook.get_picture("me", :type => "large") #go get facebook profile
       self.user.save
     end
 
