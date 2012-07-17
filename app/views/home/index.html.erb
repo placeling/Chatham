@@ -24,6 +24,19 @@
 <% end %>
 
 <% content_for :javascript do %>
+
+    <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                mpmetrics.track_links('.guide_link', 'guide_link');
+                mpmetrics.track_links('.map_link', 'map_link');
+                mpmetrics.track_links('.share_link', 'share_link');
+                mpmetrics.track('index_view');
+            });
+        </script>
+    <% end %>
+
     <script type="text/javascript">
         $(document).ready(function () {
             var minWidth = parseInt($("#clear_bg").css("width"));
@@ -123,36 +136,36 @@
       <li>
         <div class="info_holder">
           <div class="info_image image_iphone">
-            <a href="<%= map_path %>"><%= image_tag "home/iphone.png", :alt => "iPhone", :id => "iphone" %></a>
+            <a class="map_link" href="<%= map_path %>"><%= image_tag "home/iphone.png", :alt => "iPhone", :id => "iphone" %></a>
           </div>
           <div class="info_text info_iphone">
             <p class="first_para"><%= t('home.create') %></p>
 
-            <p><a href="<%= map_path %>" class="splash_link"><%= t('home.more') %></a></p>
+            <p><a class="map_link" href="<%= map_path %>" class="splash_link"><%= t('home.more') %></a></p>
           </div>
         </div>
       </li>
       <li>
         <div class="info_holder paper_plane_holder">
           <div class="info_image image_paper_plane">
-            <a href="<%= share_path %>"><%= image_tag "home/paper_plane.png", :alt => "Paper Plane", :id => "paper_plane" %></a>
+            <a class="share_link" href="<%= share_path %>"><%= image_tag "home/paper_plane.png", :alt => "Paper Plane", :id => "paper_plane" %></a>
           </div>
           <div class="info_text info_paper_plane">
             <p class="first_para"><%= t('home.share') %></p>
 
-            <p><a href="<%= share_path %>" class="splash_link"><%= t('home.more') %></a></p>
+            <p><a class="share_link" href="<%= share_path %>" class="splash_link"><%= t('home.more') %></a></p>
           </div>
         </div>
       </li>
       <li>
         <div class="info_holder binoculars_holder">
           <div class="info_image image_binoculars">
-            <a href="<%= guide_path %>"><%= image_tag "home/binoculars.png", :alt => "Binoculars", :id => "binoculars" %></a>
+            <a class="guide_link" href="<%= guide_path %>"><%= image_tag "home/binoculars.png", :alt => "Binoculars", :id => "binoculars" %></a>
           </div>
           <div class="info_text info_binoculars">
             <p class="first_para"><%= t('home.guide') %></p>
 
-            <p><a href="<%= guide_path %>" class="splash_link"><%= t('home.more') %></a></p>
+            <p><a class="guide_link" href="<%= guide_path %>" class="splash_link"><%= t('home.more') %></a></p>
           </div>
         </div>
       </li>
