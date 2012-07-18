@@ -149,4 +149,41 @@ describe "Facebook" do
   end
 
 
+  it "gets facebook friends who are also on placeling" do
+    @test_users = Koala::Facebook::TestUsers.new(:app_id => CHATHAM_CONFIG['facebook_app_id'], :secret => CHATHAM_CONFIG['facebook_app_secret'])
+
+    fb_user1 = @test_users.create(true, "publish_stream")
+    fb_user2 = @test_users.create(true, "publish_stream")
+    fb_user3 = @test_users.create(true, "publish_stream")
+
+    @test_users.befriend(fb_user1, fb_user2)
+    @test_users.befriend(fb_user1, fb_user3)
+
+    user2 = Factory.create(:user, :email => fb_user2["email"])
+    user2.authentications.create(:expiry => 2.months.from_now, :provider => "facebook", :uid => fb_user2['id'], :token => fb_user2['access_token'])
+
+    user3 = Factory.create(:user)
+
+    user1 = Factory.create(:user, :email => fb_user1["email"])
+    user1.authentications.create(:expiry => 2.months.from_now, :provider => "facebook", :uid => fb_user1['id'], :token => fb_user1['access_token'])
+
+    User.count.should == 3
+    Authentication.count.should == 2
+
+    post_via_redirect user_session_path, 'user[login]' => user1.username, 'user[password]' => user1.password
+
+    get "/v1/auth/facebook/friends", {
+        :format => :json
+    }
+
+    response.status.should be(200)
+
+    response_dict = JSON.parse(response.body)
+    response_dict['users'].count.should == 1
+    response_dict['users'][0]['username'].should == user2.username
+    response_dict['users'][0]['fullname'].should_not be_nil
+
+  end
+
+
 end
