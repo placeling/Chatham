@@ -186,17 +186,13 @@ class AuthenticationsController < ApplicationController
         $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.get_object("me")['id'], current_user.facebook.get_object("me")['name']].to_json)
         friends = current_user.facebook.friends
 
-        begin
-          friends.each do |friend|
-            if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
-              auth.user.fullname = friend.name
-              @users << auth.user
-              $redis.sadd("facebook_friends_#{current_user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
-            end
+        user.facebook.get_connection("me", "friends").each do |friend|
+          if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
+            auth.user.fullname = friend['name']
+            @users << auth.user
+            $redis.sadd("facebook_friends_#{current_user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
           end
-          friends = friends.next
-        end while friends.count > 0
-
+        end
       end
 
       if !current_user.user_settings.facebook_friend_check
