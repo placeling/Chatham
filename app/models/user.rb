@@ -519,7 +519,8 @@ class User
                   :main_url => main_url,
                   :city => self.city,
                   :follower_count => followers.count,
-                  :following_count => following.count
+                  :following_count => following.count,
+                  :fullname => self['fullname']
     }
 
     attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?

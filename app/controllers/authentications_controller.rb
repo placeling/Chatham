@@ -175,7 +175,7 @@ class AuthenticationsController < ApplicationController
 
       friends_json = $redis.smembers("facebook_friends_#{current_user.id}")
       @users = []
-      if friends_json.count > 0 #friend self to differentiate empty from null
+      if false #friends_json.count > 0 #friend self to differentiate empty from null
         friends_json.each do |friend_json|
           friend = JSON.parse(friend_json)
           user = User.find(friend[0])
@@ -184,9 +184,8 @@ class AuthenticationsController < ApplicationController
         end
       else
         $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.get_object("me")['id'], current_user.facebook.get_object("me")['name']].to_json)
-        friends = current_user.facebook.friends
 
-        user.facebook.get_connection("me", "friends").each do |friend|
+        current_user.facebook.get_connection("me", "friends").each do |friend|
           if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
             auth.user.fullname = friend['name']
             @users << auth.user
