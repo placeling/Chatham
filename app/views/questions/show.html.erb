@@ -150,6 +150,12 @@
 
             var autocomplete = new google.maps.places.Autocomplete(input, options);
 
+            $(".comment_link").click(function () {
+                $(this).parent().find(".answer_comment").show();
+                $(this).hide();
+                return false;
+            });
+
             google.maps.event.addListener(autocomplete, 'place_changed', function () {
                 var place = autocomplete.getPlace();
 

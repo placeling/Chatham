@@ -16,7 +16,7 @@ Chatham::Application.routes.draw do
   get "/share", :to => 'admin#share', :as => :share
   get "/guide", :to => 'admin#guide', :as => :guide
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
-  get "/nearby", :to => "home#nearby", :as => :home_nearby
+  # get "/nearby", :to => "home#nearby", :as => :home_nearby
 
   get "/admin/status", :to => 'admin#heartbeat', :as => :status
   get "/admin/dashboard", :to => 'admin#dashboard', :as => :dashboard
@@ -88,6 +88,7 @@ Chatham::Application.routes.draw do
     resources :answers, :only => [:create] do
       member do
         post :upvote
+        post :comment
       end
     end
     member do

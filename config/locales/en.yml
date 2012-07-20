@@ -184,6 +184,7 @@ en:
     ask_question: "Ask Question"
     in: "in"
     comment: "Comment"
+    type_comment: "Write a comment"
     place_tally: "%{tally} answers"
     place_tally_singular: "1 Place"
     user_place_tally: "%{tally} Places"

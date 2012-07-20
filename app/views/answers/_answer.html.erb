@@ -20,6 +20,30 @@
         </span>
       </div>
   <% end %>
+  <ul class="answer_comments">
+    <% for answer_comment in answer.answer_comments %>
+        <%= render :partial => "../answers/answer_comment", :locals => {:answer_comment => answer_comment} %>
+    <% end %>
+  </ul>
+
+  <% if current_user && answer.answer_comments.count > 0 %>
+      <div class="answer_comment">
+        <%= form_for AnswerComment.new, :url => comment_question_answer_path(answer.question, answer) do |f| %>
+            <%= image_tag current_user.thumb_url, :width => 32, :class => "user_pic" %>
+            <p><%= f.text_field :comment, :placeholder => t('question.type_comment'), :class => "answer_comment_textfield" %><%= f.submit :style => "display:none;" %></p>
+        <% end %>
+      </div>
+  <% elsif current_user %>
+      <div class="answer_comment" style="display:none;">
+        <%= form_for AnswerComment.new, :url => comment_question_answer_path(answer.question, answer) do |f| %>
+            <%= image_tag current_user.thumb_url, :width => 32, :class => "user_pic" %>
+            <p><%= f.text_field :comment, :placeholder => t('question.type_comment'), :class => "answer_comment_textfield" %><%= f.submit :style => "display:none;" %></p>
+        <% end %>
+      </div>
+      <%= link_to t('question.comment'), new_user_session_path, :class => "comment_link" %>
+  <% else %>
+      <%= link_to t('question.comment'), new_user_session_path %>
+  <% end %>
 </div>
 
 <div class="right_place_column">

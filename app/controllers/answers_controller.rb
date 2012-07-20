@@ -1,6 +1,8 @@
 require 'google_places'
 
 class AnswersController < ApplicationController
+  before_filter :comment
+
   def create
 
     if BSON::ObjectId.legal?(params['question_id'])
@@ -77,6 +79,33 @@ class AnswersController < ApplicationController
       if @answer.save && @question.save
         format.html { redirect_to @question, notice: 'Voted!' }
         format.json { render json: @answer, status: :created, location: @question }
+        format.js
+      else
+        format.html { redirect_to @question }
+        format.json { render json: @answer.errors, status: :unprocessable_entity }
+        format.js { render :text => "" }
+      end
+    end
+  end
+
+
+  def comment
+    if BSON::ObjectId.legal?(params['question_id'])
+      @question = Question.find(params['question_id'])
+    else
+      @question = Question.find_by_slug(params['question_id'])
+    end
+    @answer = @question.answers.where(:_id => params['id']).first
+
+    @answer_comment = @answer.answer_comments.build(params[:answer_comment])
+    @answer_comment.user = current_user
+
+    @mixpanel.track_event("question_comment", {:qid => @question.id})
+
+    respond_to do |format|
+      if @answer_comment.save
+        format.html { redirect_to @question, notice: 'Voted!' }
+        format.json { render json: @answer_comment, status: :created, location: @question }
         format.js
       else
         format.html { redirect_to @question }
