@@ -11,15 +11,6 @@
     <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
   </div>
 
-  <% if answer.upvoters.count > 0 %>
-      <div class="upvoters">
-        <%= image_tag "header/AnswersGlyph_lightbulb.png/", :width => "15px" %>
-        <span class="names_text middle">
-            <span class='names'><%= h answer.upvoters.collect { |u| u.username }.join(", ") %></span>
-          <%= t 'question.as_well_as', :n => (answer.upvotes - answer.upvoters.count) unless answer.upvotes - answer.upvoters.count ==0 %>
-        </span>
-      </div>
-  <% end %>
   <ul class="answer_comments">
     <% for answer_comment in answer.answer_comments %>
         <%= render :partial => "../answers/answer_comment", :locals => {:answer_comment => answer_comment} %>
