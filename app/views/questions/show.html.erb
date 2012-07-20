@@ -152,6 +152,7 @@
 
             $(".comment_link").click(function () {
                 $(this).parent().find(".answer_comment").show();
+                $(this).parent().find(".answer_comment_textfield").focus();
                 $(this).hide();
                 return false;
             });
