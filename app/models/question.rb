@@ -40,6 +40,14 @@ class Question
     Question.first
   end
 
+  def comment_count
+    tally = 0
+    answers.each do |answer|
+      tally += answer.answer_comments.count
+    end
+    return tally
+  end
+
   def fix_location
     begin
       if self.location[0].is_a? String
