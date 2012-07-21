@@ -1,7 +1,7 @@
 require 'google_places'
 
 class AnswersController < ApplicationController
-  before_filter :comment
+  before_filter :login_required, :only => :comment
 
   def create
 
