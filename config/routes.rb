@@ -1,5 +1,9 @@
 Chatham::Application.routes.draw do
 
+  get "answer_comments/create"
+
+  get "answer_comments/delete"
+
   get "authentications/index"
   get "authentications/create"
 
@@ -85,7 +89,7 @@ Chatham::Application.routes.draw do
   end
 
   resources :questions do
-    resources :answers, :only => [:create] do
+    resources :answers, :only => [:create, :destroy] do
       member do
         post :upvote
         post :comment

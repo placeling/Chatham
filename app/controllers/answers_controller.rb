@@ -1,7 +1,7 @@
 require 'google_places'
 
 class AnswersController < ApplicationController
-  before_filter :login_required, :only => :comment
+  before_filter :login_required, :only => [:comment, :destroy]
 
   def create
 
@@ -88,7 +88,6 @@ class AnswersController < ApplicationController
     end
   end
 
-
   def comment
     if BSON::ObjectId.legal?(params['question_id'])
       @question = Question.find(params['question_id'])
@@ -112,6 +111,26 @@ class AnswersController < ApplicationController
         format.json { render json: @answer.errors, status: :unprocessable_entity }
         format.js { render :text => "" }
       end
+    end
+
+  end
+
+  def destroy
+    if BSON::ObjectId.legal?(params['question_id'])
+      @question = Question.find(params['question_id'])
+    else
+      @question = Question.find_by_slug(params['question_id'])
+    end
+
+    @answer = @question.answers.where(:_id => params['id']).first
+    @answer_comment = @answer.answer_comments.where(:_id => params['answer_comment_id']).first
+
+    @answer_comment.destroy unless @answer_comment.user.id != current_user.id
+
+    respond_to do |format|
+      format.html { redirect_to @question }
+      format.json { head :no_content }
+      format.js
     end
   end
 
