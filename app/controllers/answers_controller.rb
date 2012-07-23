@@ -103,7 +103,9 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer_comment.save
-        format.html { redirect_to @question, notice: 'Voted!' }
+        Resque.enqueue(AnswerCommentNotifications, @question.id, @answer.id, @answer_comment.id)
+
+        format.html { redirect_to @question, notice: 'Comment Posted!' }
         format.json { render json: @answer_comment, status: :created, location: @question }
         format.js
       else

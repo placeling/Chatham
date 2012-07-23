@@ -14,6 +14,8 @@ class UserSetting
   field :facebook_friend_email, :type => Boolean, :default => false
   field :weekly_email, :type => Boolean, :default => true
 
+  field :question_updates_email, :type => Boolean, :default => true
+
   field :facebook_friend_check, :type => Boolean, :default => false
 
   field :emailed_stuff, :type => Array, :default => []

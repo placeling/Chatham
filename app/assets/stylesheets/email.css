@@ -5,6 +5,33 @@
 
 }
 
+.username {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 5px;
+    margin-left: 5px;
+    font-size: 24px;
+}
+
+.profile_pic_holder_email {
+    margin: 0px;
+    padding: 0px;
+    float: left;
+    background: none repeat scroll 0 0 #FAF9F7;
+    border: 5px solid white;
+    box-shadow: 0 0 6px 0 #888888;
+}
+
+.email_answer_comment {
+    margin-bottom: 3px;
+    background-color: #FAFCFF;
+    margin-top: 1px;
+    padding: 5px 5px 4px;
+    min-height: 36px;
+    width: 430px;
+    font-style: italic;
+}
+
 .username_link {
     color: #E08574;
     font-size: 18px;

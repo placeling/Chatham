@@ -599,6 +599,10 @@ class User
     self.confirmed? && self.user_settings.weekly_email
   end
 
+  def question_email?
+    self.confirmed? && self.user_settings.question_updates_email
+  end
+
   def ios_notification_token
     return nil unless !self[:ios_notification_token].nil?
     res = self[:ios_notification_token].scan(/\<(.+)\>/).first
