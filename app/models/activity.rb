@@ -39,6 +39,7 @@ class Activity
 
     #push onto the superfeed
     $redis.zadd "FIREHOSEFEED", timestamp, encoded
+    trim_feed("FIREHOSEFEED")
   end
 
   def self.decode(json)
@@ -58,6 +59,16 @@ class Activity
     end
 
     self.attributes.merge(:id => self[:_id])
+  end
+
+
+  def trim_feed(key, max_feed=300)
+    if ($redis.zcard key) >= max_feed
+      n = max_feed - 100
+      if (r = $redis.zrevrange key, n, n, :with_scores => true)
+        $redis.zremrangebyscore key, "-inf", "(#{r.last}"
+      end
+    end
   end
 
 end
