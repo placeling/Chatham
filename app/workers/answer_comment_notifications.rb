@@ -3,8 +3,6 @@ class AnswerCommentNotifications
 
   def self.perform(question_id, answer_id, answer_comment_id)
 
-    @user = User.find(user1_id)
-
     @question = Question.find(question_id)
     @answer = @question.answers.where(:_id => answer_id).first
     @answer_comment = @answer.answer_comments.where(:_id => answer_comment_id).first
