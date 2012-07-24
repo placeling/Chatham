@@ -12,7 +12,7 @@ class AnswerCommentNotifications
     #first, we should send the author of the question the update provided they aren't "notified out"
     if @question.user.question_email? && @answer_comment.user.id != @question.user.id
       unless @question.user.notifications.count >= 5 && @question.user.notifications[4].created_at < 1.hour.ago
-        Notifier.answer_commented(@question.user.id, @answer_comment.id).deliver
+        Notifier.answer_commented(@question.user.id, @question.id, @answer.id, @answer_comment.id).deliver
 
         notification = Notification.new(:actor1 => @answer_comment.user.id, :actor2 => @question.user.id, :type => "ANSWER_COMMENT", :subject_name => @answer_comment.comment, :email => true, :apns => false)
         notification.remember #redis backed
@@ -30,7 +30,7 @@ class AnswerCommentNotifications
     commenting_users.each do |user|
       if user.question_email? && @answer_comment.user.id != @question.user.id && @answer_comment.user.id != user.id
         unless @question.user.notifications.count >= 5 && @question.user.notifications[4].created_at < 1.hour.ago
-          Notifier.answer_commented(@question.user.id, @answer_comment.id).deliver
+          Notifier.answer_commented(@question.user.id, @question.id, @answer.id, @answer_comment.id).deliver
 
           notification = Notification.new(:actor1 => @answer_comment.user.id, :actor2 => user.id, :type => "ANSWER_COMMENT", :subject_name => @answer_comment.comment, :email => true, :apns => false)
           notification.remember #redis backed
