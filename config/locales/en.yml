@@ -184,6 +184,8 @@ en:
     ask_question: "Ask Question"
     in: "in"
     comment: "Comment"
+    commented: " commented on %{place} for "
+    type_comment: "Write a comment"
     place_tally: "%{tally} answers"
     place_tally_singular: "1 Place"
     user_place_tally: "%{tally} Places"
@@ -212,6 +214,7 @@ en:
     ask_signup: "We can't show you your questions unless you're signed up for Placeling"
     pick_place: "Please start typing a city and select from drop-down"
     as_well_as: "+%{n} others"
+
 
 
 

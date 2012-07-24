@@ -11,14 +11,22 @@
     <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
   </div>
 
-  <% if answer.upvoters.count > 0 %>
-      <div class="upvoters">
-        <%= image_tag "header/AnswersGlyph_lightbulb.png/", :width => "15px" %>
-        <span class="names_text middle">
-            <span class='names'><%= h answer.upvoters.collect { |u| u.username }.join(", ") %></span>
-          <%= t 'question.as_well_as', :n => (answer.upvotes - answer.upvoters.count) unless answer.upvotes - answer.upvoters.count ==0 %>
-        </span>
+  <ul class="answer_comments">
+    <% for answer_comment in answer.answer_comments %>
+        <%= render :partial => "../answers/answer_comment", :locals => {:answer_comment => answer_comment} %>
+    <% end %>
+  </ul>
+
+  <% if current_user %>
+      <div class="answer_comment" style="display:none;">
+        <%= form_for AnswerComment.new, :url => comment_question_answer_path(answer.question, answer) do |f| %>
+            <%= image_tag current_user.thumb_url, :width => 32, :class => "user_pic" %>
+            <p><%= f.text_field :comment, :placeholder => t('question.type_comment'), :class => "answer_comment_textfield" %><%= f.submit :style => "display:none;" %></p>
+        <% end %>
       </div>
+      <%= link_to t('question.comment'), new_user_session_path, :class => "comment_link" %>
+  <% else %>
+      <%= link_to t('question.comment'), new_user_session_path %>
   <% end %>
 </div>
 

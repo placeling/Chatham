@@ -1,4 +1,4 @@
-class AnswerComment
+class PlacemarkComment
   include Mongoid::Document
   include Mongoid::Timestamps
 
@@ -8,9 +8,8 @@ class AnswerComment
   field :username, :type => String
 
   belongs_to :user
-  embedded_in :answer
+  embedded_in :perspective
 
   validates_presence_of :user
-  validates_presence_of :comment
 
 end

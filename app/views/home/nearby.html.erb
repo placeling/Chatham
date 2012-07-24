@@ -1,0 +1,58 @@
+<% content_for :head do %>
+    <title><%= t('home.marketing') %></title>
+    <meta name="description" content="<%= t('home.description') %>">
+    <meta property="og:title" content="Placeling"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://www.placeling.com"/>
+    <meta property="og:image" content="https://www.placeling.com<%= asset_path("screenshot.png") %>"/>
+<% end %>
+
+
+<% content_for :javascript_includes do %>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false&libraries=places">
+    </script>
+<% end %>
+
+<% content_for :javascript do %>
+
+    <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                mpmetrics.track('landing_view');
+            });
+        </script>
+    <% end %>
+<% end %>
+
+<%= javascript_include_tag "questions/question" %>
+
+<div id="question_header">
+  <div id="header_content">
+    <div id="question_index_header">
+
+    </div>
+  </div>
+</div>
+
+<div id="question_index">
+  <% @places.each_with_index do |place, i| %>
+      <hr class="questions">
+      <li <%= i %2==1 ? "" : "colored_place_row" %>>
+        <%= place.name %>
+      </li>
+  <% end %>
+  <ul id="nearby_question_list">
+    <div class="question_section_title"><%= t 'question.nearby_questions' %></div>
+    <% @questions.each_with_index do |question, i| %>
+        <hr class="questions">
+        <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
+          <%= render :partial => "../questions/question", :locals => {:question => question} %>
+        </li>
+    <% end %>
+
+    <hr class="questions">
+  </ul>
+
+  <div class="question_clear"></div>
+</div>

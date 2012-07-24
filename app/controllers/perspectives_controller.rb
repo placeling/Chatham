@@ -90,6 +90,7 @@ class PerspectivesController < ApplicationController
 
           for perspective_id in perspective.favourite_perspective_ids
             hearted_perspective = Perspective.find(perspective_id)
+            next unless !hearted_perspective.nil?
             found = false
             for existing_perspective in @perspectives
               if existing_perspective.id == hearted_perspective.id

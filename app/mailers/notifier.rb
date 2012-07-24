@@ -81,6 +81,21 @@ class Notifier < ActionMailer::Base
     end
   end
 
+  def answer_commented(user1_id, question_id, answer_id, answer_comment_id)
+    @target = User.find(user1_id)
+
+    @question = Question.find(question_id)
+    @answer = @question.answers.where(:_id => answer_id).first
+
+    @answer_comment = @answer.answer_comments.where(:_id => answer_comment_id).first
+    @user = @answer_comment.user
+
+    mail(:to => @target.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@user.username} commented on #{@answer_comment.answer.question.title}") do |format|
+      format.text
+      format.html
+    end
+  end
+
 
   class Preview < MailView
     # Pull data from existing fixtures
@@ -99,6 +114,16 @@ class Notifier < ActionMailer::Base
       user2 = User.find_by_username("imack")
 
       Notifier.follow(user1.id, user2.id)
+    end
+
+    def answer_commented
+      user1 = User.find_by_username("imack")
+
+      @question = Question.find_by_slug("wheres-the-best-brunch")
+      @answer = @question.answers.where(:_id => '4ff7725a0f677376a3000004').first
+      @answer_comment = @answer.answer_comments.where(:_id => "5009cead67e6e22360000520").first
+
+      Notifier.answer_commented(user1.id, @question.id, @answer.id, @answer_comment.id)
     end
 
 
