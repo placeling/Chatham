@@ -75,6 +75,7 @@ Chatham::Application.routes.draw do
       get :username, :to => :confirm_username, :as => :confirm_username
       put :username, :to => :update_username, :as => :update_username
       post :download
+      get :wir, :to => :week_in_review
     end
     collection do
       get :suggested

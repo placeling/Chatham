@@ -412,7 +412,94 @@ class User
       return self.user_setting
     end
   end
+  
+  def week_in_review
+    candidates = {}
+    scored = {}
+    guides = []
+    
+    weekago = Time.now - (24*60*60*7)
+    
+    self.following.each do |following|
+      # Guides
+      actions = ActivityFeedChunk.where("activities.user1"=>following.id, "activities.created_at" => {'$gte' => weekago}, "activities.activity_type" => "FOLLOW")
+      
+      actions.each do |chunk|
+        chunk.activities.each do |activity|
+          if activity.activity_type == "FOLLOW"
+            actor = User.find_by_username(activity.username2)
+            if !self.following.include?(actor)
+              if !guides.include?(actor)
+                guides << actor
+              end
+            end
+          end
+        end
+      end
+      
+      if guides.length > 0
+        guides.sort! {|a,b| a.followers.length <=> b.followers.length }
+        guides.reverse!
+      end
+      
+      #Places
+      recent = Perspective.where(:uid => following.id, :created_at=>{"$gte" => weekago})
+      if recent.length > 0
+        candidates[following] = []
+        recent.each do |perp|
+          if (perp.memo && perp.memo.length >0) || perp.pictures.length > 0
+            temp = {}
+            temp["perp"] = perp
+            
+            score = 0
+            
+            if !following.thumb_cache_url.nil?
+              score += 2 # 2 points for a profile picture
+            end
+            
+            if perp.pictures.length > 0
+              temp["pictures"] = true
+              score += 2 # 2 points for at least one photo
+            else
+              temp["pictures"] = false
+            end
 
+            if perp.memo && perp.memo.length > 0
+              temp["memo"] = true
+              score += 1 # 1 point for a memo
+            else
+              temp["memo"] = false
+            end
+
+            my_perspective = Perspective.where(:uid=>self.id,:plid=>perp.place.id)
+            if my_perspective.length > 0
+              temp["mine"] = true
+              if score > 0
+                score = 1 # Low score for places already on my map
+              end
+            else
+              temp["mine"] = false
+            end
+            
+            # If hearted, reduce score to 1
+            
+            temp["score"] = score
+            
+            scored[perp] = score
+            
+            candidates[following] << temp
+          end
+        end
+        
+        if candidates[following] == []
+          candidates.delete(following)
+        end
+      end
+    end
+    
+    return candidates, scored, guides
+  end
+  
   def get_recommendations(num_places = 3)
     if self.loc && !self.loc.nil? && self.loc.length == 2
       previous = self.user_recommendation.recommended_ids
