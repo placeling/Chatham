@@ -39,7 +39,7 @@ class Activity
 
     #push onto the superfeed
     $redis.zadd "FIREHOSEFEED", timestamp, encoded
-    trim_feed("FIREHOSEFEED")
+    #trim_feed("FIREHOSEFEED")
   end
 
   def self.decode(json)
