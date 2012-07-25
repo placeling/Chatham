@@ -17,7 +17,9 @@ class Notifier < ActionMailer::Base
     @guides.delete(@user)
 
     @guides = @guides[0, 3]
-
+    
+    @guides_filler = Array.new(size=(3-@guides.length))
+    
     mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@user.username}, welcome to Placeling") do |format|
       format.text
       format.html
@@ -226,7 +228,7 @@ class Notifier < ActionMailer::Base
     end
     
     def welcome
-      user = User.find_by_username("lindsayrgwatt")
+      user = User.skip(rand(User.count)).first
       Notifier.welcome(user.id)
     end
 

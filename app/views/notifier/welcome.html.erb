@@ -2,75 +2,87 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <%= stylesheet_link_tag "email" %>
 </head>
 <body style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
   <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
     <tr style="margin: 5px;padding: 0px;"><td align="center" valign="top" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-      <table width="660" id="main" border="0" cellpadding="0" cellspacing="20">
-        <tr style="margin: 5px;padding: 0px;">
+      <table width="660" id="main" border="0" cellpadding="0" cellspacing="0">
+        <tr style="padding:0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
             <p class="right" style="margin: 5px;padding: 0px;float: right;"><img src="https://www.placeling.com/assets/logo.png"><a href="<%= root_url() %>"></a></p>
           </td>
         </tr>
-        <tr style="margin: 5px;padding: 0px;">
+        <tr style="padding: 0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="embiggen" style="margin: 5px;padding: 0px;font-size: 18px;"><%= t('welcome.hey') %> <span class="emphasize" style="font-weight: bold;"><%= @user.username %></span> - <%= t('welcome.welcome') %></p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.thanks') %></p>
+            <p class="email_emphasize"><%= t('welcome.hey') %> <%= @user.username %> - <%= t('welcome.welcome') %></p>
+            <p class="content" style="margin: 0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.thanks') %></p>
           </td>
         </tr>
         <% if !@user.first_run.downloaded_app %>
-          <tr style="margin: 5px;padding: 0px;">
+          <tr style="padding: 0px;">
             <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-              <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.iphone')%></p>
-              <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><a href="<%= app_url() %>"><%= t('welcome.download_app')%></a> <%= t('welcome.pocket')%>.</p>
-              <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.follow') %></p>
+              <div class="email_spacer">
+                <p class="email_emphasize"><%= t('welcome.iphone')%></p>
+                <p class="content" style="margin: 0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><a href="<%= app_url() %>" class="email_link"><%= t('welcome.download_app')%></a> <%= t('welcome.pocket')%>.</p>
+              </div>
             </td>
           </tr>
         <% end %>
-        <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.web')%></p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.go')%> <a href="<%= user_url(@user) %>">placeling.com/<%= @user.username %></a> <%= t('welcome.map')%>.</p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.recommendations')%></p>
-          </td>
-        </tr>
-        <tr style="margin: 5px;padding: 0px;">
-          <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.more')%></p>
-            <ul style="margin: 0px;padding-left: 20px;">
-              <li class="content" style="margin: 0px;padding: 0px;margin-bottom: 5px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.wordpress')%> <a href="http://wordpress.org/extend/plugins/placeling/"><%= t('welcome.plugin')%></a> <%= t('welcome.more_wordpress')%>.</li>
-              <li class="content" style="margin: 0px;padding: 0px;margin-bottom: 5px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.embed_1')%> <a href="<%= bloggers_url() %>#embed"><%= t('welcome.embed_2')%></a>.</li>
-            </ul>
-          </td>
-        </tr>
         <% if @guides.length > 1 %>
-        <tr style="margin: 5px;padding: 0px;">
+        <tr style="padding: 0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="emphasize embiggen" style="margin: 5px;padding: 0px;font-weight: bold;font-size: 18px;"><%= t('welcome.find_guides')%></p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.perspective')%></p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.different')%></p>
+            <div class="email_spacer">
+              <p class="email_emphasize"><%= t('welcome.find_guides')%></p>
+              <p class="content" style="margin: 0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.perspective')%></p>
+            </div>
           </td>
         </tr>
-        <tr style="margin: 5px;padding: 0px;">
+        <tr style="padding: 0px;">
           <% @guides.each do |guide| %>
-          <td valign="top" width="220" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <div style="margin: 0px;padding: 0px;">
-              <div class="profile_pic_holder_email" style="margin: 0px;padding: 0px;float: left;width: 40px;height: 40px;background: none repeat scroll 0 0 #FAF9F7;border: 5px solid white;box-shadow: 0 0 6px 0 #888888;">
-                <a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>"><img class="profile_pic" src="<%= guide.thumb_url %>"  style="max-height: 40px;max-width: 40px;"></a>
+            <td valign="top" width="220px" colspan="1" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
+              <div style="margin: 0px;padding: 0px;">
+                <div class="email_guide_holder">
+                  <div><a href="<%=url_for(:controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><img src="<%= guide.thumb_url %>" class="email_profile_pic_large"><span class="email_profile_name"><%= guide.username %></span></a></div>
+                  <% if guide.description && guide.description.length > 0 %>
+                    <div class="email_description email_mini_spacer"><%= guide.description %></div>
+                  <% end %>
+                </div>
               </div>
-              <div class="username" style="margin: 0px;padding: 0px;padding-top: 25px;margin-left: 55px;"><a href="<%= user_url(guide) %>?lat=<%= @user.loc[0] %>&amp;lng=<%= @user.loc[1] %>" class="username_link" style="color: #E08574;font-size: 24px;"><%= guide.username %></a></div>
-            </div>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= guide.description %></p>
-          </td>
+            </td>
+          <% end %>
+          <% @guides_filler.each do |fake| %>
+            <td colspan="1" class="table_style" valign="top" width="220px">
+              <div class="email_guide_holder">
+                &nbsp;
+              </div>
+            </td>
           <% end %>
         <% end %>
-        <tr style="margin: 5px;padding: 0px;">
+        <tr style="padding: 0px;">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.all')%></p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.support')%> <a href="mailto:support@placeling.com">support@placeling.com</a>.</p>
-            <p class="content" style="margin: 5px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.guide_on')%></p>
+            <div class="email_spacer">
+              <p class="email_emphasize"><%= t('welcome.web')%></p>
+              <p class="content" style="margin:0px; padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;">See a big map of all your places at <a href="<%= user_url(@user) %>" class="email_link">placeling.com/<%= @user.username %></a>.</p>
+            </div>
           </td>
         </tr>
+        <tr style="padding: 0px;">
+          <td width="100%" colspan="3" class="table_style">
+            <p class="question_content" style="margin-top:25px;font-style:italic;"><%= t('welcome.all')%></p>
+            <p class="question_content" style="font-style:italic;"><%= t('welcome.support')%> <a href="mailto:support@placeling.com" class="email_link">support@placeling.com</a>.</p>
+            <p class="question_content" style="font-style:italic;"><%= t('weekly.team') %></p>
+          </td>
+        </tr>
+        
+        <tr style="margin: 5px;padding: 0px;">
+          <td width="100%" colspan="6" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
+            <p class="email_content" style="margin-top:20px;"><%= t('notify.sent') %> <%= @user.email %></p>
+            <p class="email_content"><%= t('notify.address') %></p>
+          </td>
+        </tr>
+        
+        
       </table>
     </td></tr>
   </table>
