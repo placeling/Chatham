@@ -13,6 +13,7 @@ class UserSetting
   field :remark_email, :type => Boolean, :default => false
   field :facebook_friend_email, :type => Boolean, :default => false
   field :weekly_email, :type => Boolean, :default => true
+  field :week_in_review_email, :type => Boolean, :default => true
 
   field :question_updates_email, :type => Boolean, :default => true
 

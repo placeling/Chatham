@@ -149,61 +149,6 @@ class UsersController < ApplicationController
     end
   end
   
-  def week_in_review
-    @user = User.find_by_username(params[:id])
-
-    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
-    
-    raw = @user.week_in_review
-    @candidates = raw[0]
-    
-    scored = raw[1].sort_by{|k,v| v}.reverse
-    
-    # Calculate top 3
-    @top3 = []
-    people = []
-    
-    # First see if 3 different people with perspective to show
-    scored.each do |perp|
-      if !people.include?(perp[0].uid)
-        @top3 << perp[0]
-        people << perp[0].uid
-      end
-      
-      break if @top3.length >= 3
-    end
-    
-    # Then add in more from previous people
-    if @top3.length < 3
-      scored.each do |perp|
-        if !@top3.include?(perp[0]) && ((perp[0].memo && perp[0].memo.length > 1) || perp[0].pictures.length > 0)
-          @top3 << perp[0]
-          if @top3.length == 3
-            break
-          end
-        end
-      end
-    end
-    
-    # Return any remaining photos
-    @with_pics = []
-    
-    scored.each do |perp|
-      if !@top3.include?(perp[0])
-        puts "top3"
-        puts perp[0]
-        @with_pics << perp[0]
-      end
-    end
-    
-    # Guides
-    @guides = raw[2]
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-  
   def iframe
     @user = User.find_by_username(params[:id])
 

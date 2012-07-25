@@ -519,7 +519,18 @@ en:
     change_city: "Change city"
     reco_wrong: "Getting recommendations for the wrong places?"
     change_your_city: "Change your city"
-    
+  
+  week_in_review:
+    intro: "It's Monday, so let's celebrate what happened over the past week."
+    placemarked: "You placemarked"
+    locations: "locations"
+    one_location: "one location"
+    busy: "The people you follow have been busy."
+    new_guides: "They found new guides to explore with:"
+    new_places: "They visited new places:"
+    advice: "They need your advice:"
+    last_week: "That's what happened last week. Hope this one's a great one."
+  
   notify:
     address: "Placeling (Internet Services) Inc. 1515 West 2nd Ave, Suite 542, Vancouver, BC V6J 5C5"
     no_more: "Don't want these messages any more?"

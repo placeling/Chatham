@@ -414,12 +414,26 @@ class User
   end
   
   def week_in_review
-    candidates = {}
     scored = {}
     guides = []
     
     weekago = Time.now - (24*60*60*7)
     
+    # User's activity that week
+    activity = {}
+    
+    last_week = Perspective.where(:uid=>self.id, :created_at=>{'$gte'=>weekago})
+    
+    activity['count'] = last_week.length
+    activity['photos'] = []
+    
+    last_week.each do |perp|
+      perp.pictures.each do |pic|
+        activity['photos'] << {'perp'=> perp, 'pic'=> pic}
+      end
+    end
+    
+    # Activity by guides the user follows
     self.following.each do |following|
       # Guides
       actions = ActivityFeedChunk.where("activities.user1"=>following.id, "activities.created_at" => {'$gte' => weekago}, "activities.activity_type" => "FOLLOW")
@@ -428,7 +442,7 @@ class User
         chunk.activities.each do |activity|
           if activity.activity_type == "FOLLOW"
             actor = User.find_by_username(activity.username2)
-            if !self.following.include?(actor)
+            if !self.following.include?(actor) && actor != self
               if !guides.include?(actor)
                 guides << actor
               end
@@ -445,7 +459,6 @@ class User
       #Places
       recent = Perspective.where(:uid => following.id, :created_at=>{"$gte" => weekago})
       if recent.length > 0
-        candidates[following] = []
         recent.each do |perp|
           if (perp.memo && perp.memo.length >0) || perp.pictures.length > 0
             temp = {}
@@ -481,23 +494,18 @@ class User
               temp["mine"] = false
             end
             
-            # If hearted, reduce score to 1
-            
             temp["score"] = score
             
             scored[perp] = score
-            
-            candidates[following] << temp
           end
-        end
-        
-        if candidates[following] == []
-          candidates.delete(following)
         end
       end
     end
     
-    return candidates, scored, guides
+    # Questions
+    q = Question.where(:user_id => {'$in'=>self.following_ids}, :created_at=>{"$gte" => weekago})
+    
+    return scored, guides, activity, q
   end
   
   def get_recommendations(num_places = 3)
