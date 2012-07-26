@@ -412,7 +412,102 @@ class User
       return self.user_setting
     end
   end
+  
+  def week_in_review
+    scored = {}
+    guides = []
+    
+    weekago = Time.now - (24*60*60*7)
+    
+    # User's activity that week
+    activity = {}
+    
+    last_week = Perspective.where(:uid=>self.id, :created_at=>{'$gte'=>weekago})
+    
+    activity['count'] = last_week.length
+    activity['photos'] = []
+    
+    last_week.each do |perp|
+      perp.pictures.each do |pic|
+        activity['photos'] << {'perp'=> perp, 'pic'=> pic}
+      end
+    end
+    
+    # Activity by guides the user follows
+    self.following.each do |following|
+      # Guides
+      actions = ActivityFeedChunk.where("activities.user1"=>following.id, "activities.created_at" => {'$gte' => weekago}, "activities.activity_type" => "FOLLOW")
+      
+      actions.each do |chunk|
+        chunk.activities.each do |activity|
+          if activity.activity_type == "FOLLOW"
+            actor = User.find_by_username(activity.username2)
+            if !self.following.include?(actor) && actor != self
+              if !guides.include?(actor)
+                guides << actor
+              end
+            end
+          end
+        end
+      end
+      
+      if guides.length > 0
+        guides.sort! {|a,b| a.followers.length <=> b.followers.length }
+        guides.reverse!
+      end
+      
+      #Places
+      recent = Perspective.where(:uid => following.id, :created_at=>{"$gte" => weekago})
+      if recent.length > 0
+        recent.each do |perp|
+          if (perp.memo && perp.memo.length >0) || perp.pictures.length > 0
+            temp = {}
+            temp["perp"] = perp
+            
+            score = 0
+            
+            if !following.thumb_cache_url.nil?
+              score += 2 # 2 points for a profile picture
+            end
+            
+            if perp.pictures.length > 0
+              temp["pictures"] = true
+              score += 2 # 2 points for at least one photo
+            else
+              temp["pictures"] = false
+            end
 
+            if perp.memo && perp.memo.length > 0
+              temp["memo"] = true
+              score += 1 # 1 point for a memo
+            else
+              temp["memo"] = false
+            end
+
+            my_perspective = Perspective.where(:uid=>self.id,:plid=>perp.place.id)
+            if my_perspective.length > 0
+              temp["mine"] = true
+              if score > 0
+                score = 1 # Low score for places already on my map
+              end
+            else
+              temp["mine"] = false
+            end
+            
+            temp["score"] = score
+            
+            scored[perp] = score
+          end
+        end
+      end
+    end
+    
+    # Questions
+    q = Question.where(:user_id => {'$in'=>self.following_ids}, :created_at=>{"$gte" => weekago})
+    
+    return scored, guides, activity, q
+  end
+  
   def get_recommendations(num_places = 3)
     if self.loc && !self.loc.nil? && self.loc.length == 2
       previous = self.user_recommendation.recommended_ids

@@ -13,14 +13,14 @@
     font-size: 24px;
 }
 
-.profile_pic_holder_email {
+/*.profile_pic_holder_email {
     margin: 0px;
     padding: 0px;
     float: left;
     background: none repeat scroll 0 0 #FAF9F7;
     border: 5px solid white;
     box-shadow: 0 0 6px 0 #888888;
-}
+}*/
 
 .email_answer_comment {
     margin-bottom: 3px;
@@ -81,6 +81,13 @@
     font-family: Georgia, Times New Roman, serif;
 }
 
+.email_ask_image {
+  height:36px;
+  vertical-align:middle;
+  margin-top:-3px;
+  margin-left:-3px;
+}
+
 .email_content {
     margin: 5px;
     margin-left: 0px;
@@ -110,4 +117,110 @@
 
 .change_city {
     padding-top: 25px;
+}
+
+/* Week in review */
+.email_perspective_pic_holder {
+  margin: 0px;
+  margin-top: 10px;
+  padding: 0px;
+  background: none repeat scroll 0 0 #FAF9F7;
+  border: 5px solid white;
+  box-shadow: 0 0 6px 0 #888888;
+  height: 100px;
+  width: 100px;  
+}
+
+.email_empty_perspective_pic_holder {
+  height: 110px;
+  width: 100px;
+}
+
+.email_profile_pic_large {
+  margin: 0px;
+  padding: 0px;
+  border: 5px solid white;
+  box-shadow: 0 0 6px 0 #888888;
+  height: 60px;
+  width: 60px;
+  vertical-align:bottom;
+  margin-bottom: -5px;
+}
+
+.email_profile_pic_small {
+  margin: 0px;
+  padding: 0px;
+  border: 3px solid white;
+  box-shadow: 0 0 6px 0 #888888;
+  height: 30px;
+  width: 30px;  
+}
+
+.email_guide_holder {
+  margin-top: 10px;
+}
+
+.email_profile_name {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.email_venue_pic_holder {
+  margin: 0px;
+  padding: 0px;
+  background: none repeat scroll 0 0 #FAF9F7;
+  border: 5px solid white;
+  box-shadow: 0 0 6px 0 #888888;
+  height: 98px;
+  width: 210px;
+}
+
+.email_link {
+  color: #E08574;
+}
+
+.email_middle {
+  vertical-align: middle;
+}
+
+.email_perspective_pic {
+  height: 100px;
+  width: 100px;
+}
+
+.email_description {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  margin: 5px;
+}
+
+.email_spacer {
+  margin-top: 20px;
+}
+
+.email_mini_spacer {
+  margin-top: 10px;
+}
+
+.email_place_name_holder {
+  text-align: center;
+}
+
+.email_place_name {
+  font-size:18px;
+  margin: 5px;
+}
+
+.email_place_guide_holder {
+  margin: 5px;
+  margin-top: 10px;
+}
+
+.email_place_guide_username {
+  margin-left: 6px;
+}
+
+.email_place_action {
+  text-align: center;
+  margin-top: 10px;
 }

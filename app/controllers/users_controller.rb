@@ -148,7 +148,7 @@ class UsersController < ApplicationController
       format.html { render :layout => 'blank' }
     end
   end
-
+  
   def iframe
     @user = User.find_by_username(params[:id])
 
