@@ -79,7 +79,7 @@
                     </p>
                 <% end %>
                 <p class="question_content">
-                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/AskyourfriendsButton.png" class="email_ask_image"></a>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "new", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/AskyourfriendsButton.png" class="email_ask_image"></a><%= t('weekly.for_recos') %>
                 </p>
             <% else %>
                 <p class="question_content">
