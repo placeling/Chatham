@@ -1,15 +1,5 @@
 <%= t('weekly.intro') %>
 <%= t('weekly.weekend') %>
-<% if @recos['places'].length > 0 %>
-
-
-<%= t('weekly.explore') %>
-<%= t('weekly.explore_why') %>
-
-<% @recos['places'].each do |place| %>
-<%= place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
-<% end %>
-<% end %>
 <% if @recos['guides'].length > 0 %>
   
   
@@ -20,6 +10,16 @@
 <%= guide.username %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
 <% end %>
 <% end%>
+<% if @recos['places'].length > 0 %>
+
+
+<%= t('weekly.explore') %>
+<%= t('weekly.explore_why') %>
+
+<% @recos['places'].each do |place| %>
+<%= place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
+<% end %>
+<% end %>
 
 
 <%= t('weekly.answers')%>

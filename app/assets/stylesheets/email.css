@@ -81,6 +81,13 @@
     font-family: Georgia, Times New Roman, serif;
 }
 
+.email_ask_image {
+  height:36px;
+  vertical-align:middle;
+  margin-top:-3px;
+  margin-left:-3px;
+}
+
 .email_content {
     margin: 5px;
     margin-left: 0px;

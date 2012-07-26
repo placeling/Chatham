@@ -61,9 +61,11 @@ class Notifier < ActionMailer::Base
 
     if @recos
       track! :email_sent
-
+      
+      @places_filler = Array.new(size=(3-@recos['places'].length))
+      @guides_filler = Array.new(size=(3-@recos['guides'].length))
+      
       if @recos['questions'].length > 0
-
         if ab_test(:question_as_subject)
           subject = @recos['questions'].first.title
         else
