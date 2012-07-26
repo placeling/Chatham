@@ -11,7 +11,7 @@
     <div class="venue_pic_holder email_mini_spacer">
       <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>">
         <% if place.pictures.length > 0 %>
-            <img src="<%= place.pictures[0].main_url %>" style="max-height: 210px;max-width: 210px;">
+            <img src="<%= place.pictures[0].main_url %>" style="max-height: 300px;max-width: 210px;">
             </a>
         <% else %>
             <img src="https://maps.google.com/maps/api/staticmap?center=<%= place.loc[0] %>,<%= place.loc[1] %>&zoom=14&size=210x210&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C<%= place.loc[0] %>,<%= place.loc[1] %>&sensor=false">
