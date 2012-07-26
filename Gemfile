@@ -87,6 +87,8 @@ end
 
 gem 'dynamic_form'
 
+gem 'high_voltage'
+
 # Deploy with Capistrano
 gem 'capistrano'
 gem "capistrano-ext"
