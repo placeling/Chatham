@@ -54,7 +54,7 @@ class PerspectivesController < ApplicationController
         @perspective.errors[:base] << "User already has a perspective for here"
       end
 
-      if @perspective.errors.length > 0
+      if !@perspective.errors.empty?
         render :action => "new"
       else
         @perspective.pictures.each do |picture|

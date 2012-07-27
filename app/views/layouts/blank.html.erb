@@ -3,42 +3,35 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <%= yield :head %>
-  
-      <!-- jQuery thats self.element.propAttr is not a functionloaded before document ready to prevent flickering - Rest are found at the bottom -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-  
+
+  <!-- jQuery thats self.element.propAttr is not a functionloaded before document ready to prevent flickering - Rest are found at the bottom -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
   <%= stylesheet_link_tag "vendor" %>
   <%= javascript_include_tag "externals" %>
-  
-  
+
+
   <%= yield :javascript_includes %>
-  
+
   <%= yield :css %>
 </head>
 <body>
-  <!--[if lte IE 7]><script src="javascripts/ie6/warning.js"></script><script>window.onload=function(){e("javascripts/ie6/")}</script><![endif]-->
-  <%= yield %>
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-25331124-1']);
-    _gaq.push(['_setDomainName', 'placeling.com']);
-    _gaq.push(['_trackPageview']);
-    
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
+<!--[if lte IE 7]>
+<script src="javascripts/ie6/warning.js"></script>
+<script>window.onload = function () {
+    e("javascripts/ie6/")
+}</script><![endif]-->
+<%= yield %>
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
+    js = d.createElement(s);
+    js.id = id;
     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-  </script>
-  <%= yield :javascript %>
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<%= yield :javascript %>
 </body>
 </html>
