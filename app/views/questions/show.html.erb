@@ -18,7 +18,6 @@
     </script>
 <% end %>
 
-
 <div id="question_header">
   <div id="header_content">
     <div id="question_member">
@@ -27,7 +26,7 @@
           <span class="user_asked"><%= link_to @question.user.username, @question.user %> <%= t 'question.asked' %></span>
         </div>
         <div id="question_prompt"><%= @question.title %></div>
-        <div class="question_posted_at"><%= t('question.posted_at', :created_at => @question.created_at.strftime("%b %d | %Y")) %></div>
+        <div class="question_posted_at"><%= t('question.posted_at', :created_at => @question.created_at.strftime("%b %d, %Y")) %></div>
       </div>
     </div>
 
@@ -45,8 +44,9 @@
 <div id="question_main">
   <div id="question_left_column">
     <div id="answer_publisher">
+      <%= image_tag(asset_path("moustache_mini.png"), :class=>"mr_moustache_img") %>
       <%= form_for(@answer, :url => question_answers_path(@question)) do |a| %>
-          <div class='left_place_column'>
+          <div class='left_place_column answer_input'>
             <input id="answer_place" name="place_name" placeholder="<%= t('question.text_prompt') %>" size="40" type="text" value="">
             <input id="google_id_place" name="google_id_place" type="hidden" value="">
             <input id="google_ref_place" name="google_ref_place" type="hidden" value="">
@@ -60,34 +60,23 @@
           </div>
       <% end %>
     </div>
-
-    <div id="suggestion_tally"><%= t('question.place_tally', :tally => @question.answers.count) %></div>
+    <div id="tally_holder">
+      <div id="suggestion_tally"><% if @question.answers.count == 1%><%= t('question.place_tally_singular') %><% else %><%= t('question.place_tally', :tally => @question.answers.count) %><% end %></div>
+      <div id="tally_clear"></div>
+    </div>
     <ul id="answer_list">
-      <% @question.answers.order_by([[:upvotes, :desc]])[0..2].each_with_index do |answer, i| %>
-          <% if !answer.new_record? %>
-              <hr class="questions">
-              <li id="<%= answer.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
-                <%= render :partial => "answers/answer", :locals => {:answer => answer} %>
-              </li>
-          <% end %>
+      <% @question.answers.order_by([[:upvotes, :desc]]).each_with_index do |answer, i| %>
+        <% if !answer.new_record? %>
+          <li id="<%= answer.id %>" class="place_answer <%= i %2 == 1 ? "" : "colored_place_row" %> <% if i != 2%>bottom_border<%end%> <% if i == 0%>top_border<% end %>">
+            <%= render :partial => "answers/answer", :locals => {:answer => answer}%>
+          </li>
+        <% end %>
+        <% if i == 2 %>
+        <li class="question_map_holder">
+          <img src="<%= map_url(@question) %>" alt="map" class="question_map">
+        </li>
+        <% end %>
       <% end %>
-
-      <div class="question_map_holder">
-        <img src="<%= map_url(@question) %>" alt="map" class="question_map">
-      </div>
-      <% if  @question.answers.count > 3 %>
-          <% @question.answers.order_by([[:upvotes, :desc]])[3..-1].each_with_index do |answer, i| %>
-              <% if !answer.new_record? %>
-
-
-                  <hr class="questions">
-                  <li id="<%= answer.id %>" class="place_answer <%= i %2==0 ? "" : "colored_place_row" %>">
-                    <%= render :partial => "answers/answer", :locals => {:answer => answer} %>
-                  </li>
-              <% end %>
-          <% end %>
-      <% end %>
-      <hr class="questions">
     </ul>
   </div>
   <div id="question_right_column">
@@ -95,11 +84,10 @@
         <div id="other_questions_prompt" class="right_info"><%= t 'question.other_questions' %></div>
         <div id="other_questions" class="right_info">
           <% @other_questions.each do |question| %>
-              <%= link_to question.title, question %>
+              <%= link_to question.title, question, :class=>"other_questions_detail" %>
               <br>
           <% end %>
-          <br>
-          <%= link_to "#{ t 'question.see_more' }...", questions_path %>
+          <p class="more_questions_spacer"><%= link_to "#{ t 'question.see_more' }...", questions_path, :class=>"other_questions_detail" %></p>
         </div>
     <% end %>
 
@@ -149,11 +137,13 @@
             };
 
             var autocomplete = new google.maps.places.Autocomplete(input, options);
-
+            
             $(".comment_link").click(function () {
-                $(this).parent().find(".answer_comment").show();
-                $(this).parent().find(".answer_comment_textfield").focus();
-                $(this).hide();
+                $(this).parent().parent().find(".answer_comment").show();
+                $(this).parent().parent().find(".answer_comment_textfield").focus();
+                
+                $(this).parent().find(".comment_link").hide();
+                //$(this).hide();
                 return false;
             });
 

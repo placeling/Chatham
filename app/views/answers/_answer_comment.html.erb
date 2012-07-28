@@ -1,11 +1,11 @@
 <li id="<%= answer_comment.id %>" class="answer_comment">
-  <%= image_tag answer_comment.user.thumb_url, :width => 32, :class => "user_pic" %>
-
-  <p class="comment_text"><%= link_to answer_comment.user.username, answer_comment.user %> -
-    <span><%= answer_comment.comment %></span><br>
-    <span class="comment_timestamp"><%= t('question.posted_at', :created_at => answer_comment.created_at.strftime("%b %d | %Y")) %></span>
-    <% if current_user && answer_comment.user.id == current_user.id %>
-        <%= link_to "Delete", question_answer_path(answer_comment.answer.question, answer_comment.answer, :answer_comment_id => answer_comment.id), :confirm => "Are you sure?", :method => :delete, :class => "comment_timestamp" %>
-    <% end %>
-  </p>
+  <%= image_tag answer_comment.user.thumb_url, :width => 32, :class => "user_pic left_pic" %>
+  <div class="right_comment full_comment">
+    <div class="comment_details"><%= link_to answer_comment.user.username, answer_comment.user %> <%= answer_comment.comment %></div>
+    <div class="comment_timestamp"><%= t('question.posted_at', :created_at => answer_comment.created_at.strftime("%b %d, %Y")) %>
+      <% if current_user && answer_comment.user.id == current_user.id %>
+          <%= link_to "Delete", question_answer_path(answer_comment.answer.question, answer_comment.answer, :answer_comment_id => answer_comment.id), :confirm => "Are you sure?", :method => :delete, :class => "comment_timestamp" %>
+      <% end %>
+    </div>
+  </div>
 </li>
