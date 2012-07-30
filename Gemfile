@@ -16,8 +16,9 @@ gem "bson_ext", "~> 1.3"
 
 gem "oauth", "0.4.4"
 gem "devise", "~> 2.1.0"
-gem "omniauth", "~> 1.1"
+
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 
