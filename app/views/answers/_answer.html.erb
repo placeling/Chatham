@@ -1,18 +1,20 @@
 <div class="left_place_column" style="">
-  <%= link_to image_tag(upvote_icon(answer, current_user, request.session_options), :size => "30x30"), upvote_question_answer_path(answer.question, answer),
+  <%= link_to image_tag(upvote_icon(answer, current_user, request.session_options), :size => "50x50", :class=>"up_vote"), upvote_question_answer_path(answer.question, answer),
               :class => "up_vote", :remote => true, :method => :post %>
-  <div class="win_votes"><%= answer.upvotes %></div>
+  <span class="win_votes"><%= answer.upvotes %></span>
 </div>
 
 <div class="center_place_column">
   <span class="place_name"><%= link_to answer.place.name, answer.place %></span>
 
   <div class="address_text">
-    <%= answer.place.street_address %>&nbsp;|&nbsp;<%= answer.place.city_data %>
+    <% if answer.place.street_address %>
+      <%= answer.place.street_address %>
+    <% end %>
   </div>
 
   <ul class="answer_comments">
-    <% for answer_comment in answer.answer_comments %>
+    <% answer.answer_comments.each do |answer_comment| %>
         <%= render :partial => "../answers/answer_comment", :locals => {:answer_comment => answer_comment} %>
     <% end %>
   </ul>
@@ -20,21 +22,17 @@
   <% if current_user %>
       <div class="answer_comment" style="display:none;">
         <%= form_for AnswerComment.new, :url => comment_question_answer_path(answer.question, answer) do |f| %>
-            <%= image_tag current_user.thumb_url, :width => 32, :class => "user_pic" %>
-            <p><%= f.text_field :comment, :placeholder => t('question.type_comment'), :class => "answer_comment_textfield" %><%= f.submit :style => "display:none;" %></p>
+            <%= image_tag current_user.thumb_url, :class => "user_pic comment_user_pic" %>
+            <%= f.text_field :comment, :placeholder => t('question.type_comment'), :class => "answer_comment_textfield" %><%= f.submit :style => "display:none;" %>
         <% end %>
       </div>
-      <%= link_to t('question.comment'), new_user_session_path, :class => "comment_link" %>
-  <% else %>
-      <%= link_to t('question.comment'), new_user_session_path %>
-  <% end %>
-</div>
-
-<div class="right_place_column">
-  <% if !current_user || !current_user.perspective_for_place(answer.place) %>
-      <div class="save_place_button" id="<%= answer.place.id %>">
-        <a rel="nofollow" data-remote="true" href="<%= new_place_perspective_path(answer.place) %>"><%= t 'question.save_this_place' %></a>
+      <div class="comment_button_holder">
+        <%= link_to image_tag(asset_path("comment.png"), :class=>"comment_glyph"), new_user_session_path, :class=>"comment_link" %><%= link_to t('question.comment'), new_user_session_path, :class=>"comment_link comment_action" %>
       </div>
+  <% else %>    
+    <div class="comment_button_holder">
+      <%= link_to image_tag(asset_path("comment.png"), :class=>"comment_glyph"), new_user_session_path %><%= link_to t('question.comment'), new_user_session_path, :class=>"comment_action" %>
+    </div>
   <% end %>
 </div>
 
