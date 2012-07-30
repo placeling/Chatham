@@ -6,8 +6,8 @@ DEFAULT_LAT = 49.9
 DEFAULT_LNG = -97.1
 DEFAULT_ZOOM = 3
 DEFAULT_EMBED_ZOOM = 15
-DEFAULT_WIDTH = 450
-DEFAULT_HEIGHT = 500
+DEFAULT_WIDTH = 280
+DEFAULT_HEIGHT = 200
 
 MAX_POPULAR = 20
 DEFAULT_USER_ZOOM = 14
@@ -178,7 +178,7 @@ class UsersController < ApplicationController
         @zoom = DEFAULT_ZOOM
       end
     end
-
+    
     if params[:h].nil?
       @height = DEFAULT_HEIGHT
     else
