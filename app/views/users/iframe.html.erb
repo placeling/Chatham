@@ -6,6 +6,12 @@
       font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
     }
     
+    body {
+      /* for Firefox */
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+    
     a,a:link,a:visited { 
       color:#1271b0;
       text-decoration:none; 
@@ -22,6 +28,12 @@
     a img { 
       border:0; 
     }
+        
+    #placeling_iframe_logo {
+      float:left;
+      margin-top: 3px;
+      margin-left: 10px;
+    }
     
     .filter_value a, a:link, a:hover, a:visited {
       color: #36757c;
@@ -37,9 +49,20 @@
     }
     
     .info_window {
-      width: 300px;
+      width:300px;
       background: #F9F7F5;
       padding: 5px;
+    }
+    
+    @media only screen 
+    and (max-width : 480px) {
+      #placeling_iframe_logo {
+        display: none;
+      }
+      
+      .info_window {
+        width: 200px;
+      }
     }
     
     .info_name {
@@ -139,7 +162,8 @@
     
     #action {
       background:#fff url(<%= asset_path 'background_tile.png' %>) repeat-x;
-      text-align: center;
+      /*text-align: center;*/
+      width:100%;
     }
     
     @font-face {
@@ -147,12 +171,22 @@
       src: url(<%= asset_path 'MuseoSlab.otf' %>);
     }
     
-    #intro {
+    #outro, #outro a {
       padding-top: 11px;
-      color: #000;
       font-family:MuseoSlab, Rockwell, 'Arial Black';
-      font-size:25px;
+      font-size:18px;
       text-shadow:#DDD 0 1px 0px;
+    }
+    
+    #outro {
+      color: #000;
+      <% if @width > 320 %>
+      line-height: 55px;
+      <% end %>
+      margin-left:auto;
+      margin-right:auto;
+      width:80%;
+      text-align: center;
     }
     
     #lat {
@@ -457,8 +491,7 @@
       var height = <%= @height %> - DEFAULT_HEIGHT;
       $('#map_holder').css({"height": height});
       $('#action').css({"height": DEFAULT_HEIGHT});
-      $('#action').width(<%= @width %>);
-
+      
       $('#map_holder').append('<div id="spinner"><img class="spinner" src="<%= asset_path("spinner.gif") %>"></div>');
       $('#spinner').css({
         'position':'absolute',
@@ -475,7 +508,9 @@
   <div id="main_map" style="width:100%; height:100%"></div>
 </div>
 <div id="action">
-  <div id="intro">Another Beautiful <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><img src="<%= asset_path("logo.png") %>" class="iframe_logo" ></a> Map</div>
-  <div id="outro"><%= t('iframe.explore') %><a href="<%= user_path(@user) %>" onclick="javascript:openWindow(this.href+'?lat='+$('#lat').text()+'&amp;lng='+$('#lng').text() + '&amp;zoom=' + $('#zoom').text());return false;"><%= @user.username %>'<% if @user.username[@user.username.length-1] != 's' %>s<% end %></a> <%= t('iframe.or') %> <a href="<%= root_url %>" onclick="javascript:openWindow(this.href);return false;"><%= t('iframe.yours') %></a></div>
+  <div id="placeling_iframe_logo">
+    <%= link_to image_tag("/images/blogFooterLogo.png"), root_path, :target=>"_blank" %>
+  </div>
+  <div id="outro">Get <a href="<%= app_path %>" rel="nofollow" target="_blank"><%= @user.username %>'<% if @user.username[@user.username.length-1] != 's' %>s<% end %></a> map on your iPhone.</div>
   <div id="lat"></div><div id="lng"></div><div id="zoom"></div>
 </div>
