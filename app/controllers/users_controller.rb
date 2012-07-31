@@ -8,6 +8,8 @@ DEFAULT_ZOOM = 3
 DEFAULT_EMBED_ZOOM = 15
 DEFAULT_WIDTH = 280
 DEFAULT_HEIGHT = 200
+PREVIEW_IFRAME_WIDTH = 400
+PREVIEW_IFRAME_HEIGHT = 500
 
 MAX_POPULAR = 20
 DEFAULT_USER_ZOOM = 14
@@ -220,8 +222,8 @@ class UsersController < ApplicationController
     end
 
     @zoom = DEFAULT_EMBED_ZOOM
-    @height = DEFAULT_HEIGHT
-    @width = DEFAULT_WIDTH
+    @height = PREVIEW_IFRAME_HEIGHT
+    @width = PREVIEW_IFRAME_WIDTH
 
     respond_to do |format|
       format.html

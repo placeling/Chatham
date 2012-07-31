@@ -35,6 +35,13 @@
       margin-left: 10px;
     }
     
+    #placeling_iframe_spacer {
+      float:right;
+      margin-top:3px;
+      margin-right:10px;
+      width: 117px;
+    }
+    
     .filter_value a, a:link, a:hover, a:visited {
       color: #36757c;
     }
@@ -56,7 +63,7 @@
     
     @media only screen 
     and (max-width : 480px) {
-      #placeling_iframe_logo {
+      #placeling_iframe_logo, #placeling_iframe_spacer {
         display: none;
       }
       
@@ -161,9 +168,9 @@
     }
     
     #action {
+      text-align:center;
       background:#fff url(<%= asset_path 'background_tile.png' %>) repeat-x;
-      /*text-align: center;*/
-      width:100%;
+      width:<%= @width %>px;
     }
     
     @font-face {
@@ -172,7 +179,7 @@
     }
     
     #outro, #outro a {
-      padding-top: 11px;
+      padding-top: 14px;
       font-family:MuseoSlab, Rockwell, 'Arial Black';
       font-size:18px;
       text-shadow:#DDD 0 1px 0px;
@@ -180,12 +187,9 @@
     
     #outro {
       color: #000;
-      <% if @width > 320 %>
-      line-height: 55px;
-      <% end %>
       margin-left:auto;
       margin-right:auto;
-      width:80%;
+      width:200px;
       text-align: center;
     }
     
@@ -511,6 +515,7 @@
   <div id="placeling_iframe_logo">
     <%= link_to image_tag("/images/blogFooterLogo.png"), root_path, :target=>"_blank" %>
   </div>
+  <div id="placeling_iframe_spacer">&nbsp;</div>
   <div id="outro">Get <a href="<%= app_path %>" rel="nofollow" target="_blank"><%= @user.username %>'<% if @user.username[@user.username.length-1] != 's' %>s<% end %></a> map on your iPhone.</div>
   <div id="lat"></div><div id="lng"></div><div id="zoom"></div>
 </div>
