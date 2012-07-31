@@ -44,7 +44,7 @@
 <div id="question_main">
   <div id="question_left_column">
     <div id="answer_publisher">
-      <%= image_tag(asset_path("moustache_mini.png"), :class=>"mr_moustache_img") %>
+      <%= image_tag(asset_path("moustache_mini.png"), :class => "mr_moustache_img") %>
       <%= form_for(@answer, :url => question_answers_path(@question)) do |a| %>
           <div class='left_place_column answer_input'>
             <input id="answer_place" name="place_name" placeholder="<%= t('question.text_prompt') %>" size="40" type="text" value="">
@@ -61,21 +61,28 @@
       <% end %>
     </div>
     <div id="tally_holder">
-      <div id="suggestion_tally"><% if @question.answers.count == 1%><%= t('question.place_tally_singular') %><% else %><%= t('question.place_tally', :tally => @question.answers.count) %><% end %></div>
+      <div id="suggestion_tally">
+        <% if @question.answers.count == 1 %><%= t('question.place_tally_singular') %>
+        <% else %><%= t('question.place_tally', :tally => @question.answers.count) %>
+        <% end %></div>
       <div id="tally_clear"></div>
     </div>
     <ul id="answer_list">
       <% @question.answers.order_by([[:upvotes, :desc]]).each_with_index do |answer, i| %>
-        <% if !answer.new_record? %>
-          <li id="<%= answer.id %>" class="place_answer <%= i %2 == 1 ? "" : "colored_place_row" %> <% if i != 2%>bottom_border<%end%> <% if i == 0%>top_border<% end %>">
-            <%= render :partial => "answers/answer", :locals => {:answer => answer}%>
-          </li>
-        <% end %>
-        <% if i == 2 %>
-        <li class="question_map_holder">
-          <img src="<%= map_url(@question) %>" alt="map" class="question_map">
-        </li>
-        <% end %>
+          <% if !answer.new_record? %>
+              <li id="<%= answer.id %>" class="place_answer <%= i %2 == 1 ? "" : "colored_place_row" %>
+                <% if i != 2 %>bottom_border
+                <% end %>
+                <% if i == 0 %>top_border
+                <% end %>">
+                <%= render :partial => "answers/answer", :locals => {:answer => answer} %>
+              </li>
+          <% end %>
+          <% if i == 2 %>
+              <li class="question_map_holder">
+                <img src="<%= map_url(@question) %>" alt="map" class="question_map">
+              </li>
+          <% end %>
       <% end %>
     </ul>
   </div>
@@ -84,10 +91,10 @@
         <div id="other_questions_prompt" class="right_info"><%= t 'question.other_questions' %></div>
         <div id="other_questions" class="right_info">
           <% @other_questions.each do |question| %>
-              <%= link_to question.title, question, :class=>"other_questions_detail" %>
+              <%= link_to question.title, question, :class => "other_questions_detail" %>
               <br>
           <% end %>
-          <p class="more_questions_spacer"><%= link_to "#{ t 'question.see_more' }...", questions_path, :class=>"other_questions_detail" %></p>
+          <p class="more_questions_spacer"><%= link_to "#{ t 'question.see_more' }...", questions_path, :class => "other_questions_detail" %></p>
         </div>
     <% end %>
 
@@ -105,22 +112,6 @@
 
 <% content_for :javascript do %>
 
-    <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                $("#ask_friends_button a").click(function () {
-                    // This sends us an event every time a user clicks the button
-                    mpmetrics.track("ask_friends_click");
-                });
-
-                mpmetrics.track_links('.placemark_button a', 'placemark_click');
-                mpmetrics.track_links('.social_share', 'question_share_click');
-                mpmetrics.track('question_view', {'question_id':'<%= @question.id %>', 'question':"<%= u @question.title %>"});
-            });
-        </script>
-    <% end %>
-
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -137,11 +128,11 @@
             };
 
             var autocomplete = new google.maps.places.Autocomplete(input, options);
-            
+
             $(".comment_link").click(function () {
                 $(this).parent().parent().find(".answer_comment").show();
                 $(this).parent().parent().find(".answer_comment_textfield").focus();
-                
+
                 $(this).parent().find(".comment_link").hide();
                 //$(this).hide();
                 return false;
