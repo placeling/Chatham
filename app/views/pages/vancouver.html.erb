@@ -1,24 +1,24 @@
 <% content_for :head do %>
-  <title>Placeling :: Your Map to Your World</title>
-  <meta name="description" content="Your wold's an interesting place; you need a map of it" />
-  <meta property="og:title" content="Placeling is your map to your world" />
+    <title>Placeling :: Your Map to Your World</title>
+    <meta name="description" content="Your world's an interesting place; you need a map of it"/>
+    <meta property="og:title" content="Placeling is your map to your world"/>
 <% end %>
 
 <% content_for :javascript do %>
-<script type="text/javascript">
-  $(window).load(function() {
-    $(function() {
-         $("#sign_up_banner").jScroll();
-    });
-  });
-</script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(function () {
+                $("#sign_up_banner").jScroll();
+            });
+        });
+    </script>
 <% end %>
 
 <div id="infographic_and_signup">
   <div id="sign_up_banner">
-    <a href="<%= new_user_registration_path %>"><%= image_tag "home/signup_banner.png", :alt=>"Signup" %></a>
+    <a href="<%= new_user_registration_path %>"><%= image_tag "home/signup_banner.png", :alt => "Signup" %></a>
   </div>
   <div class="infographic_holder">
-      <a href="<%= asset_path("infographics/vancouver_large.png") %>"><img src="<%= asset_path("infographics/vancouver_small.png") %>" class="infographic"></a>
+    <a href="<%= asset_path("infographics/vancouver_large.png") %>"><img src="<%= asset_path("infographics/vancouver_small.png") %>" class="infographic"></a>
   </div>
 </div>
