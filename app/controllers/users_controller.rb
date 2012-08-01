@@ -150,7 +150,7 @@ class UsersController < ApplicationController
       format.html { render :layout => 'blank' }
     end
   end
-  
+
   def iframe
     @user = User.find_by_username(params[:id])
 
@@ -180,7 +180,7 @@ class UsersController < ApplicationController
         @zoom = DEFAULT_ZOOM
       end
     end
-    
+
     if params[:h].nil?
       @height = DEFAULT_HEIGHT
     else
@@ -719,11 +719,13 @@ class UsersController < ApplicationController
       return redirect_to account_user_path(current_user)
     end
 
-    if @user.update_attributes(params[:user])
-      if  session[:"user_return_to"]
+    @user.update_attributes(params[:user])
+
+    if @user.save
+      if session[:"user_return_to"]
         redirect_to session[:"user_return_to"]
       else
-        redirect_to "/"
+        redirect_to account_user_path(@user)
       end
     else
       render :username
@@ -763,13 +765,6 @@ class UsersController < ApplicationController
       end
     end
 
-  end
-
-  def location
-    @user = User.find_by_username(params[:id])
-    if current_user && @user.id != current_user.id
-      raise ActionController::RoutingError.new('Not Found')
-    end
   end
 
   def update_location
