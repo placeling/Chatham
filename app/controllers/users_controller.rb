@@ -681,6 +681,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def current_location
+    @user = User.find_by_username(params[:id])
+    if current_user && @user.id != current_user.id
+      raise ActionController::RoutingError.new('Not Found')
+    end
+
+    respond_to do |format|
+      format.html { render :location }
+    end
+  end
+
   def account
     @user = User.find_by_username(params[:id])
     if @user.id != current_user.id
