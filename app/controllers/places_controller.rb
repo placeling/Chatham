@@ -251,6 +251,104 @@ class PlacesController < ApplicationController
     end
   end
 
+  def quickpick
+    #doesn't actually return perspectives, just places for given perspectives
+    lat = params[:lat].to_f
+    lng = params[:lng].to_f
+
+    span = params[:span].to_f unless params[:span].nil?
+
+    query = params[:query]
+    category = params[:category]
+
+    loc = [lat, lng]
+
+    n = 1000
+    if !span
+      span = 0.04
+    end
+    radius = 1000
+
+    @perspectives = Perspective.query_near(loc, span, query, category).includes(:user, :place).limit(n).entries
+
+    @places_dict = {}
+
+    @perspectives.each do |perspective|
+      place = perspective.place #saves lookup, effectively casts stub as real, DONT SAVE
+
+      if current_user && perspective.user.id == current_user.id
+        username = "You"
+      else
+        username = perspective.user.username
+      end
+      if @places_dict.has_key?(place.id)
+        place = @places_dict[place.id]
+        if username == "You"
+          place.users_bookmarking.insert(0, username)
+        else
+          place.users_bookmarking << username
+        end
+        place.placemarks << perspective
+      else
+        place.users_bookmarking = [username]
+        @places_dict[place.id] = place
+        place.placemarks = [perspective]
+      end
+    end
+
+    @places = @places_dict.values
+
+    @places.delete_if do |place|
+      if place.location.nil?
+        Rails.logger.warn "NULL LOCATION - #{place.name}, #{place.id}"
+        true
+      end
+    end
+
+    @places.each do |place|
+      #add distance to in meters
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat, lng], [place.location[0], place.location[1]], :units => :km)).floor
+    end
+
+    @places = @places.sort_by { |place| place.distance }
+
+    if @places.count < 5
+      gp = GooglePlaces.new
+      #covers "barrie problem" of no content
+      if category != nil and category.strip != ""
+        categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
+        @google_places = gp.find_nearby(lat, lng, radius, query, true, categories_array)
+      else
+        @google_places = gp.find_nearby(lat, lng, radius, query)
+      end
+
+      for gplace in @google_places
+        for place in @places
+          if place.id == gplace.id
+            @google_places.delete(gplace)
+            break
+          end
+        end
+      end
+
+      @processed_google_places = []
+      #this doesn't really work
+      for gplace in @google_places
+        #add distance to in meters
+        place = Place.new_from_google_place(gplace)
+        @processed_google_places << place
+      end
+
+      @places = @places + @processed_google_places
+    end
+
+
+    respond_to do |format|
+      format.json { render :json => {:suggested_places => @places.as_json({:current_user => current_user})} } #, :ad => Advertisement.new( "Admob" ) } }
+    end
+  end
+
+
   def suggested
     t = Time.now
     #doesn't actually return perspectives, just places for given perspectives
@@ -363,7 +461,6 @@ class PlacesController < ApplicationController
 
     logger.info "action: #{(Time.now - t) *1000}ms"
     respond_to do |format|
-      format.html
       format.json { render :json => {:suggested_places => @places.as_json({:current_user => current_user})} } #, :ad => Advertisement.new( "Admob" ) } }
     end
 

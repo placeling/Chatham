@@ -130,6 +130,7 @@ Chatham::Application.routes.draw do
       get :random
       get :search
       get :suggested
+      get :quickpick
       get :reference
       post :confirm
     end
@@ -213,6 +214,7 @@ Chatham::Application.routes.draw do
         get :search
         get :suggested
         get :reference
+        get :quickpick
       end
       member do
         post :highlight
