@@ -12,6 +12,7 @@ class Notification
   field :subject_name, :type => String
   field :email, :type => Boolean, :default => false
   field :apns, :type => Boolean, :default => false
+  field :thumb1, :type => String
 
 
   def self.veto(activity)
@@ -52,7 +53,7 @@ class Notification
 
   def as_json(options={})
 
-    user = user.find(self.actor1)
+    user = User.find(self.actor1)
 
     self.attributes.merge(:id => self[:_id], :thumb1 => user.thumb_url)
   end
