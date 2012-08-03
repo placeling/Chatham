@@ -85,6 +85,7 @@ Chatham::Application.routes.draw do
       get :suggested
       get :search
       get :me
+      get :notifications
     end
   end
 
@@ -193,6 +194,7 @@ Chatham::Application.routes.draw do
         get :search
         get :add_facebook
         get :me
+        get :notifications
       end
     end
 

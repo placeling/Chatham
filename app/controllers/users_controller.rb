@@ -17,7 +17,7 @@ DEFAULT_USER_ZOOM = 14
 class UsersController < ApplicationController
   include ApplicationHelper
 
-  before_filter :login_required, :only => [:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock, :pic, :update_pic, :location, :update_location]
+  before_filter :login_required, :only => [:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock, :pic, :update_pic, :location, :update_location, :notifications]
   before_filter :download_app, :only => [:show]
 
   def me
@@ -708,6 +708,19 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { render :account }
       format.json
+    end
+  end
+
+  def notifications
+
+    if params[:start]
+      @notifications = current_user.notifications(params[:start].to_i, 20)
+    else
+      @notifications = current_user.notifications(0, 20)
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:status => "success", :notifications => @notifications.as_json({:current_user => current_user})} }
     end
   end
 

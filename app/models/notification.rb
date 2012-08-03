@@ -51,7 +51,10 @@ class Notification
   end
 
   def as_json(options={})
-    self.attributes.merge(:id => self[:_id],)
+
+    user = user.find(self.actor1)
+
+    self.attributes.merge(:id => self[:_id], :thumb1 => user.thumb_url)
   end
 
 
