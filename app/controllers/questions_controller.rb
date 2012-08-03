@@ -1,57 +1,25 @@
 class QuestionsController < ApplicationController
+  include ApplicationHelper
   before_filter :login_required, :only => [:new, :create, :destroy, :edit, :update]
   before_filter :admin_required, :only => [:admin]
 
   # GET /questions
   # GET /questions.json
   def index
-
-    valid_latlng = false
-    if params[:lat] && params[:lng]
-      valid_lat = false
-      valid_lng = false
-      if params[:lat]
-        lat = params[:lat].to_f
-        if lat != 0.0 && lat < 90.0 && lat > -90.0
-          valid_lat = true
-        end
-      end
-      if params[:lng]
-        lng = params[:lng].to_f
-        if lng != 0.0 && lng < 180 && lng > -180
-          valid_lng = true
-        end
-      end
-      if valid_lat && valid_lng
-        valid_latlng = true
-      end
-    end
-
-    if valid_latlng
-      loc = {}
-      loc["lat"] = lat
-      loc["lng"] = lng
-    else
-      loc = get_location
-      if loc["remote_ip"]
-        loc = loc["remote_ip"]
-      else
-        loc = loc['default']
-      end
-    end
+    loc = user_location(params)
 
     if current_user
       @myQuestions = current_user.questions.order(:created_at, :desc)
     end
 
-    @questions = Question.nearby_questions(loc["lat"].to_f, loc["lng"].to_f).limit(20)
+    @questions = Question.nearby(loc[0], loc[1]).limit(10)
 
     @question = Question.new
     @question.location = [0.0, 0.0]
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @questions }
+      format.json { render :json => {:my_questions => @myQuestions, :questions => @questions} }
     end
   end
 
@@ -87,7 +55,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @question }
+      format.json { render :json => {:question => @question} }
     end
   end
 

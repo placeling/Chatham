@@ -6,6 +6,44 @@ module ApplicationHelper
   #  end
   #end
 
+  def user_location(params)
+    valid_latlng = false
+    if params[:lat] && params[:lng]
+      valid_lat = false
+      valid_lng = false
+      if params[:lat]
+        lat = params[:lat].to_f
+        if lat != 0.0 && lat < 90.0 && lat > -90.0
+          valid_lat = true
+        end
+      end
+      if params[:lng]
+        lng = params[:lng].to_f
+        if lng != 0.0 && lng < 180 && lng > -180
+          valid_lng = true
+        end
+      end
+      if valid_lat && valid_lng
+        valid_latlng = true
+      end
+    end
+
+    if valid_latlng
+      loc = [lat, lng]
+    else
+      if current_user && current_user.location && current_user.location != [0.0, 0.0]
+        loc= current_location.location
+      else
+        rloc = get_location
+        if rloc["remote_ip"]
+          loc = [rloc["remote_ip"]["lat"], rloc["remote_ip"]["lng"]]
+        else
+          loc = [rloc["default"]["lat"], rloc["default"]["lng"]]
+        end
+      end
+    end
+  end
+
   def self.get_hostname
     if ActionMailer::Base.default_url_options[:port] && ActionMailer::Base.default_url_options[:port].to_s != "80"
       "#{ActionMailer::Base.default_url_options[:protocol]}://#{ActionMailer::Base.default_url_options[:host]}:#{ActionMailer::Base.default_url_options[:port]}"
