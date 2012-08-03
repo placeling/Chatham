@@ -6,7 +6,6 @@ class Notification
   include RedisHelper
 
   field :actor1, :type => BSON::ObjectId
-  field :actor2, :type => BSON::ObjectId
   field :subject, :type => BSON::ObjectId
   field :type, :type => String
   field :subject_name, :type => String

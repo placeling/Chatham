@@ -24,7 +24,7 @@ class NewFacebookUser
           if auth.user.facebook_friend_notification?
             Resque.enqueue(SendNotifications, auth.user.id, "Your facebook friend, #{me['name']}, joined Placeling as #{user.username}!", "placeling://users/#{user.username}")
 
-            notification = Notification.new(:actor1 => user.id, :actor2 => auth.user.id, :type => "FACEBOOK_FRIEND", :subject_name => me['name'], :email => false, :apns => true)
+            notification = Notification.new(:actor1 => user.id, :type => "FACEBOOK_FRIEND", :subject_name => me['name'], :email => false, :apns => true)
             notification.remember #redis backed
           end
         end
