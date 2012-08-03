@@ -55,7 +55,7 @@ class Notification
 
     user = User.find(self.actor1)
 
-    self.attributes.merge(:id => self[:_id], :thumb1 => user.thumb_url)
+    self.attributes.merge(:id => self[:_id], :actor => user, :thumb1 => user.thumb_url)
   end
 
 
