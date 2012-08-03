@@ -6,6 +6,7 @@ class Notification
   include RedisHelper
 
   field :actor1, :type => BSON::ObjectId
+  field :actor2, :type => BSON::ObjectId
   field :subject, :type => BSON::ObjectId
   field :type, :type => String
   field :subject_name, :type => String
@@ -54,7 +55,7 @@ class Notification
 
     user = User.find(self.actor1)
 
-    self.attributes.merge(:id => self[:_id], :actor => user, :thumb1 => user.thumb_url)
+    self.attributes.merge(:id => self[:_id], :actor1 => user, :thumb1 => user.thumb_url)
   end
 
 
