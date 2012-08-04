@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    loc = user_location(params)
+    loc = current_user_location(params)
 
     if current_user
       @myQuestions = current_user.questions.order(:created_at, :desc)

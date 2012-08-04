@@ -6,7 +6,7 @@ module ApplicationHelper
   #  end
   #end
 
-  def user_location(params)
+  def current_user_location(params)
     valid_latlng = false
     if params[:lat] && params[:lng]
       valid_lat = false
