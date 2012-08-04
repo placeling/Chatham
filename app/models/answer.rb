@@ -33,4 +33,16 @@ class Answer
     end
     return upvoters[0..5]
   end
+
+  def as_json(options={})
+    attributes = {
+        :id => self['_id'],
+        :upvotes => self['upvotes'],
+        :created_at => self.created_at
+    }
+
+    attributes = attributes.merge(:place => self.place)
+    attributes = attributes.merge(:answer_comments => self.answer_comments)
+  end
+
 end

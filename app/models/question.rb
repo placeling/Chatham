@@ -74,4 +74,22 @@ class Question
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.question_path(self) }"
   end
 
+  def as_json(options={})
+    attributes = {
+        :id => self['_id'],
+        :title => self['title'],
+        :lat => self.location[0],
+        :lng => self.location[1],
+        :description => self.description,
+        :city_name => self.city_name,
+        :location => self.location,
+        :score => self.score,
+        :country_code => self.country_code,
+        :created_at => self.created_at
+    }
+
+    attributes = attributes.merge(:user => self.user)
+    attributes = attributes.merge(:answers => self.answers)
+  end
+
 end
