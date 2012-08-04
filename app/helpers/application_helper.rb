@@ -32,7 +32,7 @@ module ApplicationHelper
       loc = [lat, lng]
     else
       if current_user && current_user.location && current_user.location != [0.0, 0.0]
-        loc= current_location.location
+        loc= current_user.location
       else
         rloc = get_location
         if rloc["remote_ip"]
