@@ -123,6 +123,7 @@ Chatham::Application.routes.draw do
     collection do
       get :nearby
     end
+    resources :placemark_comments, :only => [:create, :index, :destroy]
   end
 
   resources :places, :except => [:index] do
@@ -220,6 +221,7 @@ Chatham::Application.routes.draw do
       collection do
         get :nearby
       end
+      resources :placemark_comments, :only => [:create, :index, :destroy]
     end
 
     resources :places, :except => [:index] do
