@@ -47,6 +47,7 @@ class AuthenticationsController < ApplicationController
   end
 
   def add
+
     provider = params['provider']
     uid = params['uid']
     token = params["token"]
@@ -64,10 +65,13 @@ class AuthenticationsController < ApplicationController
     if current_user && auth && current_user.id != auth.user.id
       render :json => "Facebook id already in use", :status => 400
     elsif current_user && auth && auth.token == token
+      auth.expiry = expiry
+      auth.save
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     elsif current_user && auth && auth.uid == uid
       #update tokens
       auth.token = token
+      auth.expiry = expiry
       auth.save
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     elsif current_user

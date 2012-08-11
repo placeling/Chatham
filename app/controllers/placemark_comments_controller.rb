@@ -23,7 +23,7 @@ class PlacemarkCommentsController < ApplicationController
 
     respond_to do |format|
       if @perspective.save
-        format.json { render json: {placemark_comments: @placemark_comment, status: :created} }
+        format.json { render json: {placemark_comment: @placemark_comment, status: :created} }
       else
         format.json { render json: @placemark_comment.errors, status: :unprocessable_entity }
       end
