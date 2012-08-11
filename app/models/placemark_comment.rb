@@ -11,5 +11,6 @@ class PlacemarkComment
   embedded_in :perspective
 
   validates_presence_of :user
+  validates_length_of :comment, :minimum => 1
 
 end

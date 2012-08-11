@@ -12,13 +12,17 @@ class PlacemarkCommentsController < ApplicationController
   def create
     @perspective = Perspective.find(params['perspective_id'])
 
-    @placemark_comment = @perspective.placemark_comments.build(params[:placemark_comments])
+    if params[:placemark_comment]
+      @placemark_comment = @perspective.placemark_comments.build(params[:placemark_comment])
+    else
+      @placemark_comment = @perspective.placemark_comments.build(:comment => params[:comment])
+    end
     @placemark_comment.user = current_user
 
     #ActivityFeed.answer_question(current_user, @question)
 
     respond_to do |format|
-      if @placemark_comment.save && @perspective.save
+      if @perspective.save
         format.json { render json: {placemark_comments: @placemark_comment, status: :created} }
       else
         format.json { render json: @placemark_comment.errors, status: :unprocessable_entity }
