@@ -19,8 +19,6 @@ class PlacemarkComment
                   :created_at => self.created_at}
 
     attributes.merge(:user => self.user)
-
-    attributes
   end
 
 end
