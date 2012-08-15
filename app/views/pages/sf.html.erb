@@ -1,0 +1,45 @@
+<% content_for :head do %>
+  <title>The Best of San Francisco</title>
+  <meta name="description" content="The best of San Francisco. Powered by Placeling" />
+  <meta property="og:title" content="The Best of San Francisco. Powered by Placeling" />
+  <meta property="og:image" content="<%= asset_path("infographics/sf_small.png") %>">
+<% end %>
+
+<% content_for :javascript do %>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(function () {
+                $("#sign_up_banner").jScroll();
+            });
+        });
+    </script>
+<% end %>
+
+<div id="infographic_and_signup">
+  <div id="sign_up_banner">
+    <a href="<%= new_user_registration_path %>" id="infographic_link">
+      <div id="infographic_call_to_action">
+        <div id="infographic_sell">Get these 25 places on your iPhone</div>
+        <div id="infographic_register">Sign up for Placeling</div>
+      </div>
+    </a>
+    <div id="infographic_social_share">
+      <span class="social">
+        <a href="https://twitter.com/share?url=https://www.placeling.com/pages/sf&text=The Best of San Francisco. Powered by Placeling" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share infographic_share" %></a>
+      </span>
+      <span class="social">
+        <a href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com/pages/sf')+'&t='+e('The Best of San Francisco. Powered by Placeling');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share infographic_share" %></a>
+      </span>
+    </div>
+  </div>
+  <div class="infographic_holder">
+    <a href="<%= new_user_registration_path %>"><img src="<%= asset_path("infographics/sf_small.png") %>" class="infographic"></a>
+    <div id="infographic_action_holder">
+      <div id="infographic_actions">
+        <span class="social">
+          <a href="<%= asset_path("infographics/sf_large.png") %>" class="infographic_mini_text">High Res</a>          
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
