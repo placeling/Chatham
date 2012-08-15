@@ -89,6 +89,8 @@ Chatham::Application.routes.draw do
     end
   end
 
+  resources :suggestions, :only => [:create, :new, :show]
+
   resources :questions do
     resources :answers, :only => [:create, :destroy] do
       member do
@@ -198,6 +200,8 @@ Chatham::Application.routes.draw do
         get :notifications
       end
     end
+
+    resources :suggestions, :only => [:create, :new, :show]
 
     resources :questions do
       resources :answers, :only => [:create, :destroy] do
