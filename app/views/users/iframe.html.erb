@@ -28,7 +28,7 @@
     a img { 
       border:0; 
     }
-        
+    
     #placeling_iframe_logo {
       float:left;
       margin-top: 3px;
@@ -46,8 +46,98 @@
       color: #36757c;
     }
     
+    #tag_filter {
+      position: absolute;
+      left: 8px;
+      top: 13px;
+      z-index: 1;
+    }
+    
+    #filter_bubble {
+      position: absolute;
+      left: 73px;
+      top: 7px;
+      z-index: 1;
+      display:none;
+    }
+    
     .tag {
       color: #BE6958;
+    }
+    
+    #grey_arrow_left {
+      background-image: url(<%= asset_path('grey_arrow_left.png') %>);
+    }
+    
+    #red_arrow_left {
+      background-image: url(<%= asset_path('red_arrow_left.png') %>);
+    }
+    
+    .arrow {
+      background-repeat: no-repeat;
+      background-position: left top;
+      position: absolute;
+      z-index:1;
+      left:62px;
+      height:22px;
+      width:11px;
+      top:17px;
+      display:none;
+    }
+    
+    .red_arrow_holder {
+      height: 28px;
+      background-image: url(<%= asset_path('red_background.png') %>);
+      border: 2px solid #BF4F41;
+      border-radius: 3px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 6px 7px 4px 7px;
+    }
+    
+    #filter_holder {
+      max-height: 300px;
+      width: 180px;
+      background-image: url(<%= asset_path('background_pattern.png') %>);
+      border: 2px solid #e9e6e4;
+      border-radius: 3px;
+    }
+    
+    .filter_header {
+      padding: 8px 0px 4px 7px;
+      background: #e9e6e4;
+    }
+    
+    #no_filters {
+      height: 28px;
+    }
+    
+    #available_filters {
+      overflow-y: auto;
+      max-height: 270px;
+    }
+    
+    #close_filters {
+      float: right;
+      margin-right: 5px;
+    }
+    
+    .close_filters {
+      height:14px;
+      width: 14px;
+    }
+    
+    .filter_tag {
+      padding: 2px 7px;
+    }
+    
+    .even {
+      background: #faf8f6;
+    }
+    
+    .odd {
+      background: #f3f2f1;
     }
     
     .spinner {
@@ -232,108 +322,276 @@
     var map;
     var shape;
     var infoWindow;
+    var filterTag;
+    var sortAlpha = true;
+    
+    function filter_term(a, b) {
+        if (a.term < b.term)
+            return -1;
+        if (a.term > b.term)
+            return 1;
+        return 0;
+    }
 
+    function filter_count(a, b) {
+        if (a.count > b.count)
+            return -1;
+        if (a.count < b.count)
+            return 1;
+        if (a.count == b.count) {
+            if (a.term < b.term)
+                return -1;
+            if (a.term > b.term)
+                return 1;
+            return 0;
+        }
+    }
+    
     function openWindow(url)
     {
       window.open(url, '_blank');
     }
 
     function createMarker(perspective) {
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
-          icon: placemark,
-          shape: shape,
-          map: map,
-          title: perspective.place.name
-        });
-        google.maps.event.addListener(marker, 'click', function(){
-          if (infowindow.getMap() && infowindow.getPosition() === marker.getPosition()) {
-            infowindow.close();
-          } else {
-            var infoWindowHTML = '<div class="info_window">';
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
+        icon: placemark,
+        shape: shape,
+        map: map,
+        title: perspective.place.name
+      });
+      google.maps.event.addListener(marker, 'click', function(){
+        if (infowindow.getMap() && infowindow.getPosition() === marker.getPosition()) {
+          infowindow.close();
+        } else {
+          var infoWindowHTML = '<div class="info_window">';
 
-            infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a></div>';
+          infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a></div>';
 
-            if (perspective.tags.length > 0) {
-              infoWindowHTML += '<div class="info_cat_and_tags">';
-              infoWindowHTML += '<span class="tag">#';
-              infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
-              infoWindowHTML += '</span>';
-              infoWindowHTML += '</div>';
-            }
-            
-            if (perspective.memo !== null && perspective.memo.length > 0) {
-              infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
-            }
-
-            if (perspective.url !== null) {
-              infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
-            }
-
-            if (perspective.photos.length > 0) {
-              var pics = '<div class="info_pics">';
-              
-              for (var i=0; i<perspective.photos.length; i++) {
-                if (i < MAX_PHOTOS) {
-                  pics += '<span class="info_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
-                } else {
-                  pics += '<span class="hidden_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
-                }
-              }
-              if (perspective.photos.length > MAX_PHOTOS) {
-                pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
-              }
-
-              pics += '</div>';
-              
-              infoWindowHTML += pics;
-            }
-            
-            var modified_at = new Date( perspective.modified_at );
-            var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('M. dd, yy', modified_at ); + '</span>';
-            
-            infoWindowHTML += mod_action;
-
+          if (perspective.tags.length > 0) {
+            infoWindowHTML += '<div class="info_cat_and_tags">';
+            infoWindowHTML += '<span class="tag">#';
+            infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
+            infoWindowHTML += '</span>';
             infoWindowHTML += '</div>';
-
-            infowindow.open(map, marker);
-            infowindow.setContent(infoWindowHTML);
-            infowindow.setPosition(marker.getPosition());
-            google.maps.event.trigger(map, 'idle');
           }
-        });
-        marker.setVisible(false);
-        return marker;
-      }
-
-      function updatePerspectives(perspectiveList) {
-        for (var i=0; i < perspectiveList.length; i++) {
-          if (typeof persps[perspectiveList[i]['place_id']] === "undefined") {
-            persps[perspectiveList[i]['place_id']] = perspectiveList[i];
-            persps[perspectiveList[i]['place_id']]['marker'] = createMarker(perspectiveList[i]);
+          
+          if (perspective.memo !== null && perspective.memo.length > 0) {
+            infoWindowHTML += '<div class="info_memo">' + perspective.memo + '</div>';
           }
+
+          if (perspective.url !== null) {
+            infoWindowHTML += '<div class="info_url"><a href="' + perspective.url + '" onclick="javascript:openWindow(this.href);return false;"><%= t('perspective.web_link') %></a></div>';
+          }
+
+          if (perspective.photos.length > 0) {
+            var pics = '<div class="info_pics">';
+            
+            for (var i=0; i<perspective.photos.length; i++) {
+              if (i < MAX_PHOTOS) {
+                pics += '<span class="info_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+              } else {
+                pics += '<span class="hidden_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+              }
+            }
+            if (perspective.photos.length > MAX_PHOTOS) {
+              pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
+            }
+
+            pics += '</div>';
+            
+            infoWindowHTML += pics;
+          }
+          
+          var modified_at = new Date( perspective.modified_at );
+          var mod_action = '<div class="info_update"><span class="info_mod">' + $.datepicker.formatDate('M. dd, yy', modified_at ); + '</span>';
+          
+          infoWindowHTML += mod_action;
+
+          infoWindowHTML += '</div>';
+
+          infowindow.open(map, marker);
+          infowindow.setContent(infoWindowHTML);
+          infowindow.setPosition(marker.getPosition());
+          google.maps.event.trigger(map, 'idle');
         }
+      });
+      marker.setVisible(false);
+      return marker;
+    }
+    
+    function hideFilters(){
+      $('#filter_bubble').fadeOut(100);
+      $('#red_arrow_left').fadeOut(100);
+      $('#grey_arrow_left').fadeOut(100);
+      window.setTimeout(function() {
+        filterTag = undefined;
         updateMap();
+      }, 100);
+    }
+    
+    function updateFilters(sortType) {
+        var filters = {}
+        
+        var bounds = map.getBounds();
+        for (var persp in persps) {
+            if (bounds.contains(persps[persp]["marker"].getPosition())) {
+              if (persps[persp].tags.length > 0) {
+                  for (var j = 0; j < persps[persp].tags.length; j++) {
+                      if (filters[persps[persp].tags[j]]) {
+                          filters[persps[persp].tags[j]] += 1;
+                      } else {
+                          filters[persps[persp].tags[j]] = 1;
+                      }
+                  }
+              }
+            }
+        }
+
+        var cleanFilters = [];
+
+        for (var tag in filters) {
+            cleanFilters.push({'term':tag, 'count':filters[tag]});
+        }
+        
+        var html = ""
+        if (typeof filterTag !== "undefined") {
+          html += "<div class='red_arrow_holder'>#";
+          html += filterTag;
+          html += " (";
+          var count = 0;
+          for (var i=0; i<cleanFilters.length; i++) {
+            if (cleanFilters[i]['term'] === filterTag) {
+              count = cleanFilters[i]['count'];
+              break;
+            }
+          }
+          html += count;
+          html += ")</div>";
+        } else {
+          html += '<div id="filter_holder">'
+          if (cleanFilters.length == 0) {
+            html += '<div class="filter_header" id="no_filters"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div><%= t('user.no_hashtags') %></div>';
+          } else {
+            html += '<div class="filter_header"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div>';
+            if (sortType === true) {
+              html += '<div id="sort_type">abc <a href="/" id="sort_count">321</a></div>';
+              cleanFilters.sort(filter_term);
+            } else {
+              html += '<div id="sort_type"><a href="/" id="sort_alpha">abc</a> 321</div>';
+              cleanFilters.sort(filter_count);
+            }
+            
+            html += '</div><div id="available_filters">';
+            
+            for (var i = 0; i < cleanFilters.length; i++) {
+                html += '<div class="filter_tag ';
+                html += (i % 2 == 0) ? "even" : "odd";
+                html += '"><a href="/" class="filter_value">#';
+                html += cleanFilters[i]["term"];
+                html += '</a> <span class="filter_count">(';
+                html += cleanFilters[i]["count"];
+                html += ')</span>';
+                html += "</div>";
+            }
+            html += "</div>";
+          }
+          html += "</div>";
+        }
+        
+        $('#filter_bubble').html(html);
+        
+        $('.filter_value').each(function () {
+            $(this).click(function (e) {
+                e.preventDefault();
+                if (infowindow.getMap()) {
+                  infowindow.close();
+                }
+                $('#red_arrow_left').show();
+                var term = $(this).text();
+                filterTag = term.substr(1, term.length - 1);
+                google.maps.event.trigger(map, 'idle');
+                return false;
+            })
+        })
+        
+        $('#sort_count').click(function (e) {
+            e.preventDefault();
+            sortAlpha = false;
+            google.maps.event.trigger(map, 'idle');
+            return false;
+        });
+
+        $('#sort_alpha').click(function (e) {
+            e.preventDefault();
+            sortAlpha = true;
+            google.maps.event.trigger(map, 'idle');
+            return false;
+        })
+        
+        $('.red_arrow_holder').click(function(e) {
+          e.preventDefault();
+          hideFilters();
+          return false;
+        });
+        
+        $('#close_filters_link').click(function(e) {
+          e.preventDefault();
+          hideFilters();
+          return false;
+        });
+    }
+    
+    
+    function updatePerspectives(perspectiveList) {
+      for (var i=0; i < perspectiveList.length; i++) {
+        if (typeof persps[perspectiveList[i]['place_id']] === "undefined") {
+          persps[perspectiveList[i]['place_id']] = perspectiveList[i];
+          persps[perspectiveList[i]['place_id']]['marker'] = createMarker(perspectiveList[i]);
+        }
+      }
+      updateMap();
+    }
+    
+    function updateMap() {
+      var currentBounds = map.getBounds();
+
+      for (var persp in persps) {
+        if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
+          // Filter for tags
+          if (typeof filterTag === "undefined") {
+              if (persps[persp]["marker"].getVisible() === false) {
+                  persps[persp]["marker"].setVisible(true);
+              }
+          } else {
+              var pass = false;
+              if (persps[persp].tags.length > 0) {
+                  for (var j = 0; j < persps[persp].tags.length; j++) {
+                      if (persps[persp].tags[j] === filterTag) {
+                          pass = true;
+                      }
+                  }
+              }
+              if (pass === true && persps[persp]["marker"].getVisible() === false) {
+                  persps[persp]["marker"].setVisible(true);
+              } else if (pass === false && persps[persp]["marker"].getVisible() === true) {
+                  persps[persp]["marker"].setVisible(false);
+              }
+          }
+        } else {
+          persps[persp]["marker"].setVisible(false);
+        }
       }
 
-      function updateMap() {
-        var currentBounds = map.getBounds();
-
-        for (var persp in persps) {
-          if (currentBounds.contains(persps[persp]["marker"].getPosition())) {
-            persps[persp]["marker"].setVisible(true);
-          } else {
-            persps[persp]["marker"].setVisible(false);
-          }
+      if (infowindow.getMap()) {
+        if (currentBounds.contains(infowindow.getPosition()) === false) {
+          infowindow.close();
         }
-
-        if (infowindow.getMap()) {
-          if (currentBounds.contains(infowindow.getPosition()) === false) {
-            infowindow.close();
-          }
-        }
-      };
-
+      }
+      
+      updateFilters(sortAlpha);
+    };
+    
     function initialize() {
       var zoom = <%= @zoom %>;
       var lat = <%= @lat %>;
@@ -486,7 +744,21 @@
           updateMap();
         }
       });
-
+      
+      $('#tag_filter_link').click(function(e) {
+        e.preventDefault();
+        if (infowindow.getMap()) {
+          infowindow.close();
+        }
+        if ($('#filter_bubble').is(':visible')) {
+          hideFilters();
+        } else {
+          $('#filter_bubble').fadeIn(100);
+          $('#grey_arrow_left').fadeIn(100);
+          updateFilters(sortAlpha);
+        }
+        return false;
+      });
     }
 
     $(document).ready(function(){
@@ -509,6 +781,12 @@
 
 
 <div id="map_holder">
+  <div id="tag_filter">
+    <a href="#" id="tag_filter_link"><%= image_tag asset_path("tag_icon.png") %></a>
+  </div>
+  <div id='grey_arrow_left' class="arrow"></div>
+  <div id='red_arrow_left' class="arrow"></div>
+  <div id="filter_bubble"></div>
   <div id="main_map" style="width:100%; height:100%"></div>
 </div>
 <div id="action">
