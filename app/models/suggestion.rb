@@ -20,4 +20,8 @@ class Suggestion
         limit(count)
   end
 
+
+  def as_json
+    attributes.merge(:sender => self.sender).merge(:place => self.place)
+  end
 end

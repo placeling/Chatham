@@ -57,6 +57,7 @@ Chatham::Application.routes.draw do
 
   resources :users, :except => [:index] do
     resources :perspectives, :only => [:index]
+    resources :suggestions, :only => [:create, :new, :index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
     member do
       get :bounds
@@ -89,7 +90,7 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :suggestions, :only => [:create, :new, :show]
+  resources :suggestions, :only => [:show, :destroy]
 
   resources :questions do
     resources :answers, :only => [:create, :destroy] do
@@ -183,6 +184,7 @@ Chatham::Application.routes.draw do
 
     resources :users do
       resources :perspectives, :only => [:index]
+      resources :suggestions, :only => [:create, :new, :index]
       member do
         get :followers
         get :following
@@ -201,7 +203,7 @@ Chatham::Application.routes.draw do
       end
     end
 
-    resources :suggestions, :only => [:create, :new, :show]
+    resources :suggestions, :only => [:show, :destroy]
 
     resources :questions do
       resources :answers, :only => [:create, :destroy] do
