@@ -8,6 +8,7 @@ class Authentication
   field :token, :type => String
   field :expiry, :type => String
   field :expires_at, :type => Time
+  field :secret, :type => String
 
   field :dict, :type => Hash
 
@@ -26,7 +27,7 @@ class Authentication
 
   def as_json(options={})
     attributes = {:provider => self['p'], :uid => self['uid'], :token => self['token'],
-                  :expiry => self.expiry}
+                  :expiry => self.expiry, :secret => self.secret}
 
     if self.expiry.nil?
       attributes[:expiry] = 1.month.from_now

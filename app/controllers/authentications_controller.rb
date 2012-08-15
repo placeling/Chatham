@@ -52,36 +52,15 @@ class AuthenticationsController < ApplicationController
     uid = params['uid']
     token = params["token"]
     expiry = params["expiry"]
+    secret = params["secret"]
 
-    fb_user = get_me token #verifies that token is good
-    if fb_user.nil? or (uid && uid != fb_user['id'])
-      render :json => {:status => "FAIL"} #invalid token
-      return
+
+    if provider == "facebook"
+      process_facebook(uid, token, expiry)
+    elsif provider == "twitter"
+      process_twitter(uid, token, secret)
     end
 
-    uid = fb_user['id'] unless !uid.nil?
-    auth = Authentication.find_by_provider_and_uid(provider, uid)
-
-    if current_user && auth && current_user.id != auth.user.id
-      render :json => "Facebook id already in use", :status => 400
-    elsif current_user && auth && auth.token == token
-      auth.expiry = expiry
-      auth.save
-      render :json => {:user => current_user.as_json({:current_user => current_user})}
-    elsif current_user && auth && auth.uid == uid
-      #update tokens
-      auth.token = token
-      auth.expiry = expiry
-      auth.save
-      render :json => {:user => current_user.as_json({:current_user => current_user})}
-    elsif current_user
-      #some update
-      auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token => token, :expiry => expiry)
-      auth.save
-      render :json => {:user => current_user.as_json({:current_user => current_user})}
-    else
-      render :json => {:status => "FAIL"}
-    end
   end
 
 
@@ -221,6 +200,64 @@ class AuthenticationsController < ApplicationController
   end
 
   protected
+
+
+  def process_facebook(uid, token, expiry)
+    provider = "facebook"
+    fb_user = get_me token #verifies that token is good
+    if fb_user.nil? or (uid && uid != fb_user['id'])
+      render :json => {:status => "FAIL"} #invalid token
+      return
+    end
+
+    uid = fb_user['id'] unless !uid.nil?
+    auth = Authentication.find_by_provider_and_uid(provider, uid)
+
+    if current_user && auth && current_user.id != auth.user.id
+      render :json => "Facebook id already in use", :status => 400
+    elsif current_user && auth && auth.token == token
+      auth.expiry = expiry
+      auth.save
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
+    elsif current_user && auth && auth.uid == uid
+      #update tokens
+      auth.token = token
+      auth.expiry = expiry
+      auth.save
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
+    elsif current_user
+      #some update
+      auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token => token, :expiry => expiry)
+      auth.save
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
+    else
+      render :json => {:status => "FAIL"}
+    end
+  end
+
+  def process_twitter(uid, token, secret, provider = "twitter")
+    auth = Authentication.find_by_provider_and_uid(provider, uid)
+
+    if current_user && auth && current_user.id != auth.user.id
+      render :json => "Twitter id already in use", :status => 400
+    elsif current_user && auth && auth.uid == uid
+      #update tokens
+      auth.token = token
+      auth.secret = secret
+      auth.save
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
+    elsif current_user
+      #some update
+      auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token => token, :expiry => "", :secret => secret)
+      auth.save
+      render :json => {:user => current_user.as_json({:current_user => current_user})}
+    else
+      render :json => {:status => "FAIL"}
+    end
+
+
+  end
+
 
   def generate_keys_for(user)
     # get rid of old auth tokens
