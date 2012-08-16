@@ -367,7 +367,13 @@
         } else {
           var infoWindowHTML = '<div class="info_window">';
 
-          infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a></div>';
+          infoWindowHTML += '<div class="info_name">';
+          if (perspective.url !== null) {
+            infoWindowHTML += '<a href="' + perspective.url + '"  onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a>';
+          } else {
+            infoWindowHTML += '<a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a>';
+          }
+          infoWindowHTML += '</div>';
 
           if (perspective.tags.length > 0) {
             infoWindowHTML += '<div class="info_cat_and_tags">';
