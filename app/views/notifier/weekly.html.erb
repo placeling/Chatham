@@ -9,7 +9,7 @@
 <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
   <tr style="padding: 0px;">
     <td align="center" valign="top" class="table_style">
-      <table width="660" id="main" border="0" cellpadding="0" cellspacing="0">
+      <table width="660" id="main" border="0" cellpadding="0" cellspacing="0" style="margin-left:5px;">
         <tr style="padding: 0px;">
           <td width="100%" colspan="3" class="table_style">
             <p class="right" style="margin: 5px;padding: 0px;float: right;">
@@ -76,11 +76,11 @@
                     </p>
                 <% end %>
                 <p class="question_content">
-                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/AskyourfriendsButton.png" class="email_ask_image"></a><%= t('weekly.for_recos') %>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/ask_your_friends_mini.png" class="email_ask_image"></a><%= t('weekly.for_recos') %>
                 </p>
             <% else %>
                 <p class="question_content">
-                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/AskyourfriendsButton.png" class="email_ask_image"></a><%= t('weekly.for_recos') %>
+                  <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question_new, :controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><img src="https://www.placeling.com/assets/ask_your_friends_mini.png" class="email_ask_image"></a><%= t('weekly.for_recos') %>
                 </p>
             <% end %>
           </td>
