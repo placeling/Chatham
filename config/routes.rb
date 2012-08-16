@@ -90,7 +90,11 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :suggestions, :only => [:show, :destroy]
+  resources :suggestions, :only => [:show, :destroy] do
+    collection do
+      get :user_search
+    end
+  end
 
   resources :questions do
     resources :answers, :only => [:create, :destroy] do
@@ -203,7 +207,11 @@ Chatham::Application.routes.draw do
       end
     end
 
-    resources :suggestions, :only => [:show, :destroy]
+    resources :suggestions, :only => [:show, :destroy] do
+      collection do
+        get :user_search
+      end
+    end
 
     resources :questions do
       resources :answers, :only => [:create, :destroy] do

@@ -27,6 +27,18 @@ class SuggestionsController < ApplicationController
     end
   end
 
+  def user_search
+    query = params[:query]
+
+    @users = User.search_by_username(query)
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {:status => "success", :users => @users.as_json({:current_user => current_user})} }
+    end
+  end
+
+
   # POST /suggestions
   # POST /suggestions.json
   def create
