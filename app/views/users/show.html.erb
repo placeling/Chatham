@@ -29,9 +29,9 @@
         var shape;
         var infowindow;
         var loadState;
-
+        var sortAlpha = false;
+        
         var filters = {
-            'categories':[],
             'tags':[]
         }
 
@@ -328,42 +328,34 @@
 
             $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
 
-            if ($('#filters').height() > 0) {
-                if (typeof loadState["<%= @user.username %>"]['sort'] !== "undefined") {
-                    if (loadState["<%= @user.username %>"]['sort'] === 'count') {
-                        updateFilters(true);
-                    } else {
-                        updateFilters();
-                    }
-                }
-            }
-
             if (loadState["<%= @user.username %>"]['location'] === 'places') {
                 updatePlaces();
             } else if (loadState["<%= @user.username %>"]['location'] === 'photos') {
                 updatePhotos();
             }
+            
+            updateFilters(sortAlpha);
+        }
+        
+        function hideFilters(){
+          delete loadState["<%= @user.username %>"]['filterType'];
+          delete loadState["<%= @user.username %>"]['filterValue'];
+          delete loadState["<%= @user.username %>"]['sort'];
+          $('#filter_bubble').fadeOut(100);
+          $('#red_arrow_left').fadeOut(100);
+          $('#grey_arrow_left').fadeOut(100);
+          window.setTimeout(function() {
+            filterTag = undefined;
+            updateMap();
+          }, 100);
         }
 
-
         function updateFilters(sortDown) {
-            filters['categories'] = {};
             filters['tags'] = {};
 
             var bounds = map.getBounds();
             for (var persp in persps) {
                 if (bounds.contains(persps[persp]["marker"].getPosition())) {
-                    // Create categories
-                    if (persps[persp].place.venue_types.length > 0) {
-                        for (var j = 0; j < persps[persp].place.venue_types.length; j++) {
-                            if (filters['categories'][persps[persp].place.venue_types[j]]) {
-                                filters['categories'][persps[persp].place.venue_types[j]] += 1;
-                            } else {
-                                filters['categories'][persps[persp].place.venue_types[j]] = 1;
-                            }
-                        }
-                    }
-
                     if (persps[persp].tags.length > 0) {
                         for (var j = 0; j < persps[persp].tags.length; j++) {
                             if (filters['tags'][persps[persp].tags[j]]) {
@@ -375,87 +367,78 @@
                     }
                 }
             }
-
-            var clean_filters = [];
-
-            for (var cat in filters['categories']) {
-                clean_filters.push({'term':cat, 'type':'category', 'count':filters['categories'][cat]});
-            }
-
+            
+            var cleanFilters = [];
+            
             for (var tag in filters['tags']) {
-                clean_filters.push({'term':tag, 'type':'tag', 'count':filters['tags'][tag]});
+                cleanFilters.push({'term':tag, 'type':'tag', 'count':filters['tags'][tag]});
             }
-
-            if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
-                if (loadState["<%= @user.username %>"]['filterType'] === "category") {
-                    if (typeof filters['categories'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
-                        clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'], 'type':'category', 'count':0});
-                    }
-                } else if (loadState["<%= @user.username %>"]['filterType'] === "tag") {
-                    if (typeof filters['tags'][loadState["<%= @user.username %>"]['filterValue']] === "undefined") {
-                        clean_filters.push({'term':loadState["<%= @user.username %>"]['filterValue'], 'type':'tag', 'count':0});
-                    }
-                }
-            }
-
+            
             var html = "";
-            if (clean_filters.length == 0) {
-                html += '<div class="no_places"><%= t('perspective.no_categories') %></div>';
-            } else {
-                var filterTerm = loadState["<%= @user.username %>"]['filterValue'];
-                var filterType = loadState["<%= @user.username %>"]['filterType'];
-
-                if (loadState["<%= @user.username %>"]['sort'] !== 'alpha') {
-                    html += '<div id="sort_type">Sort: <a href="/" id="sort_alpha">abc</a> 321</div>';
-                    clean_filters.sort(filter_count);
-                } else {
-                    html += '<div id="sort_type">Sort: abc <a href="/" id="sort_count">321</a></div>';
-                    clean_filters.sort(filter_term);
+            if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
+              html += "<div class='red_arrow_holder'>#";
+              html += loadState["<%= @user.username %>"]['filterValue'];
+              html += " (";
+              var count = 0;
+              for (var i=0; i<cleanFilters.length; i++) {
+                if (cleanFilters[i]['term'] === loadState["<%= @user.username %>"]['filterValue']) {
+                  count = cleanFilters[i]['count'];
+                  break;
                 }
+              }
+              html += count;
+              html += ")</div>";
+            } else {
+              html += '<div id="filter_holder">'
+              if (cleanFilters.length == 0) {
+                html += '<div class="filter_header" id="no_filters"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div><%= t('user.no_hashtags') %></div>';
+              } else {
+                html += '<div class="filter_header"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div>';
+                if (sortDown === false) {
+                  html += '<div id="sort_type"><a href="/" id="sort_alpha">abc</a> 321</div>';
+                  cleanFilters.sort(filter_count);
+                } else {
+                  html += '<div id="sort_type">abc <a href="/" id="sort_count">321</a></div>';
+                  cleanFilters.sort(filter_term);
+                }
+                
+                html += '</div><div id="available_filters">';
 
-                for (var i = 0; i < clean_filters.length; i++) {
-                    var chosen = false;
-                    if (typeof filterTerm !== "undefined" && typeof filterType != "undefined") {
-                        if (clean_filters[i]["type"] === filterType && clean_filters[i]["term"] === filterTerm) {
-                            chosen = true;
-                        }
-                    }
-
-                    if (chosen === true) {
-                        html += '<div class="filter selected">';
-                    } else {
-                        html += '<div class="filter">'
-                    }
-
-                    html += '<a href="/" class="filter_value">';
-                    if (clean_filters[i]["type"] === 'tag') {
-                        html += "#";
-                    }
-                    html += clean_filters[i]["term"];
+                for (var i = 0; i < cleanFilters.length; i++) {
+                    html += '<div class="filter_tag ';
+                    html += (i % 2 == 0) ? "even" : "odd";
+                    html += '"><a href="/" class="filter_value">#';
+                    html += cleanFilters[i]["term"];
                     html += '</a> <span class="filter_count">(';
-                    html += clean_filters[i]["count"];
+                    html += cleanFilters[i]["count"];
                     html += ')</span>';
-                    if (chosen === true) {
-                        html += ' <a href="/" id="show_all_filters"><%= t("perspective.show_all") %></a>';
-                    }
-
                     html += "</div>";
                 }
+                html += "</div>";
+              }
+              html += "</div>";
             }
-
-            $('#filters').html(html);
-
+            
+            $('#filter_bubble').html(html);
+            
+            if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
+              if (!$('#filter_bubble').is(":visible")) {
+                $('#filter_bubble').fadeIn(100);
+                $('#red_arrow_left').fadeIn(100);
+              }
+            }
+                        
             $('.filter_value').each(function () {
                 $(this).click(function (e) {
                     e.preventDefault();
-                    var term = $(this).text();
-                    if (term.charAt(0) === "#") {
-                        loadState["<%= @user.username %>"]['filterType'] = 'tag';
-                        loadState["<%= @user.username %>"]['filterValue'] = term.substr(1, term.length - 1);
-                    } else {
-                        loadState["<%= @user.username %>"]['filterType'] = 'category';
-                        loadState["<%= @user.username %>"]['filterValue'] = term;
+                    if (infowindow.getMap()) {
+                      infowindow.close();
+                      delete loadState["<%= @user.username %>"]['infowindow'];
                     }
+                    $('#red_arrow_left').show();
+                    var term = $(this).text();
+                    loadState["<%= @user.username %>"]['filterType'] = 'tag';
+                    loadState["<%= @user.username %>"]['filterValue'] = term.substr(1, term.length - 1);
                     google.maps.event.trigger(map, 'idle');
                     return false;
                 })
@@ -464,7 +447,7 @@
             $('#sort_count').click(function (e) {
                 e.preventDefault();
                 loadState["<%= @user.username %>"]['sort'] = 'count';
-                updateFilters(true);
+                sortAlpha = false;
                 google.maps.event.trigger(map, 'idle');
                 return false;
             });
@@ -472,17 +455,21 @@
             $('#sort_alpha').click(function (e) {
                 e.preventDefault();
                 loadState["<%= @user.username %>"]['sort'] = 'alpha';
-                updateFilters();
+                sortAlpha = true
                 google.maps.event.trigger(map, 'idle');
                 return false;
             })
 
-            $('#show_all_filters').click(function (e) {
-                e.preventDefault();
-                delete loadState["<%= @user.username %>"]['filterType'];
-                delete loadState["<%= @user.username %>"]['filterValue'];
-                google.maps.event.trigger(map, 'idle');
-                return false;
+            $('.red_arrow_holder').click(function(e) {
+              e.preventDefault();
+              hideFilters();
+              return false;
+            });
+
+            $('#close_filters_link').click(function(e) {
+              e.preventDefault();
+              hideFilters();
+              return false;
             });
         }
 
@@ -558,28 +545,32 @@
         }
 
         function initialize() {
-            persps = {};
-            var topLat;
-            var bottomLat;
-            var rightLng;
-            var leftLng;
-            var requests = 0;
-            var runCount = 0;
+          persps = {};
+          var topLat;
+          var bottomLat;
+          var rightLng;
+          var leftLng;
+          var requests = 0;
+          var runCount = 0;
 
-            var current_top;
-            var current_right;
-            var current_bottom;
-            var current_left;
+          var current_top;
+          var current_right;
+          var current_bottom;
+          var current_left;
 
-            loadState = JSON.parse($.cookie('page_state'));
-            if (loadState === null) {
-                loadState = {};
-            }
+          loadState = JSON.parse($.cookie('page_state'));
+          if (loadState === null) {
+              loadState = {};
+          }
 
-            if (typeof loadState["<%= @user.username %>"] === "undefined") {
-                loadState["<%= @user.username %>"] = {};
-            }
-
+          if (typeof loadState["<%= @user.username %>"] === "undefined") {
+              loadState["<%= @user.username %>"] = {};
+          }
+          
+          if (typeof loadState["<%= @user.username %>"]['sort'] !== "undefined" && loadState["<%= @user.username %>"]['sort'] === 'count') {
+            sortAlpha = false;
+          }
+          
         <% if @current_location.length > 0 %>
             var lat = <%= @current_location[0] %>;
             var lng = <%= @current_location[1] %>;
@@ -1183,6 +1174,21 @@
                 $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
                 $(this).attr("href", $(this).attr("href") + "?lat=" + lat + "&lng=" + lng);
             })
+            
+            $('#tag_filter_link').click(function(e) {
+              e.preventDefault();
+              if (infowindow.getMap()) {
+                infowindow.close();
+                delete loadState["<%= @user.username %>"]['infowindow'];
+              }
+              if ($('#filter_bubble').is(':visible')) {
+                hideFilters();
+              } else {
+                $('#filter_bubble').fadeIn(100);
+                $('#grey_arrow_left').fadeIn(100);
+              }
+              return false;
+            });            
         }
 
         $(document).ready(function () {
@@ -1279,17 +1285,15 @@
     <div id="nearby_users"></div>
   </div>
   <div id="map_holder">
-    <div id="filter_drawer">
-      <div id="toggle_filters">
-        <div id="hide_filters"><a href="/" id="hide_filters_click"><%= image_tag "hide.png", :class => "hide" %></a>
-        </div>
-        <div><%= t('user.explore') %> <a id="show_filters" href="/"><%= t('user.categories') %></a></div>
-      </div>
+    <div id="tag_filter">
+      <a href="#" id="tag_filter_link"><%= image_tag asset_path("tag_icon.png") %></a>
     </div>
-    <div id="filters"></div>
+    <div id="grey_arrow_left" class="arrow"></div>
+    <div id="red_arrow_left" class="arrow"></div>
+    <div id="filter_bubble"></div>
     <div id="location_drawer">
       <div id="toggle_locations">
-        <div id="hide_locations"><a href="/" id="hide_locations_click"><%= image_tag "hide.png", :class => "hide" %></a>
+        <div id="hide_locations"><a href="/" id="hide_locations_click"><%= image_tag asset_path("hide.png"), :class => "hide" %></a>
         </div>
         <div><%= t('user.explore') %> <a id="show_places" href="/"><%= t('user.places') %></a> <%= t('user.and') %>
           <a id="show_photos" href="/"><%= t('user.photos') %></a></div>

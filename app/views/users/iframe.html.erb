@@ -46,14 +46,14 @@
       color: #36757c;
     }
     
-    #tag_filter {
+    #iframe_tag_filter {
       position: absolute;
       left: 8px;
       top: 13px;
       z-index: 1;
     }
     
-    #filter_bubble {
+    #iframe_filter_bubble {
       position: absolute;
       left: 73px;
       top: 7px;
@@ -65,11 +65,11 @@
       color: #BE6958;
     }
     
-    #grey_arrow_left {
+    #iframe_grey_arrow_left {
       background-image: url(<%= asset_path('grey_arrow_left.png') %>);
     }
     
-    #red_arrow_left {
+    #iframe_red_arrow_left {
       background-image: url(<%= asset_path('red_arrow_left.png') %>);
     }
     
@@ -428,9 +428,9 @@
     }
     
     function hideFilters(){
-      $('#filter_bubble').fadeOut(100);
-      $('#red_arrow_left').fadeOut(100);
-      $('#grey_arrow_left').fadeOut(100);
+      $('#iframe_filter_bubble').fadeOut(100);
+      $('#iframe_red_arrow_left').fadeOut(100);
+      $('#iframe_grey_arrow_left').fadeOut(100);
       window.setTimeout(function() {
         filterTag = undefined;
         updateMap();
@@ -506,7 +506,7 @@
           html += "</div>";
         }
         
-        $('#filter_bubble').html(html);
+        $('#iframe_filter_bubble').html(html);
         
         $('.filter_value').each(function () {
             $(this).click(function (e) {
@@ -514,7 +514,7 @@
                 if (infowindow.getMap()) {
                   infowindow.close();
                 }
-                $('#red_arrow_left').show();
+                $('#iframe_red_arrow_left').show();
                 var term = $(this).text();
                 filterTag = term.substr(1, term.length - 1);
                 google.maps.event.trigger(map, 'idle');
@@ -752,16 +752,16 @@
         }
       });
       
-      $('#tag_filter_link').click(function(e) {
+      $('#iframe_tag_filter_link').click(function(e) {
         e.preventDefault();
         if (infowindow.getMap()) {
           infowindow.close();
         }
-        if ($('#filter_bubble').is(':visible')) {
+        if ($('#iframe_filter_bubble').is(':visible')) {
           hideFilters();
         } else {
-          $('#filter_bubble').fadeIn(100);
-          $('#grey_arrow_left').fadeIn(100);
+          $('#iframe_filter_bubble').fadeIn(100);
+          $('#iframe_grey_arrow_left').fadeIn(100);
           updateFilters(sortAlpha);
         }
         return false;
@@ -788,12 +788,12 @@
 
 
 <div id="map_holder">
-  <div id="tag_filter">
-    <a href="#" id="tag_filter_link"><%= image_tag asset_path("tag_icon.png") %></a>
+  <div id="iframe_tag_filter">
+    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("tag_icon.png") %></a>
   </div>
-  <div id='grey_arrow_left' class="arrow"></div>
-  <div id='red_arrow_left' class="arrow"></div>
-  <div id="filter_bubble"></div>
+  <div id='iframe_grey_arrow_left' class="arrow"></div>
+  <div id='iframe_red_arrow_left' class="arrow"></div>
+  <div id="iframe_filter_bubble"></div>
   <div id="main_map" style="width:100%; height:100%"></div>
 </div>
 <div id="action">
