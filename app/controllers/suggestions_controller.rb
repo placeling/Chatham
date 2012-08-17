@@ -47,7 +47,9 @@ class SuggestionsController < ApplicationController
     if params[:suggestion]
       @suggestion = Suggestion.new(params[:suggestion])
     else
-      @suggestion = Suggestion.new({:place_id => params[:place_id], :message => params[:message]})
+      place = Place.find(params['place_id'])
+      @suggestion = Suggestion.new(:message => params['message'])
+      @suggestion.place = place
     end
 
     @suggestion.receiver = user

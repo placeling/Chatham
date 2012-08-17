@@ -8,7 +8,6 @@ class Suggestion
   belongs_to :receiver, :class_name => "User"
   belongs_to :place
 
-  validates_presence_of :message
   validates_presence_of :sender
   validates_presence_of :receiver
   validates_presence_of :place
@@ -21,7 +20,7 @@ class Suggestion
   end
 
 
-  def as_json
+  def as_json(options={})
     attributes.merge(:sender => self.sender).merge(:place => self.place)
   end
 end
