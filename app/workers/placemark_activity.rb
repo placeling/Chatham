@@ -1,7 +1,7 @@
 class PlacemarkActivity
   @queue = :activity_queue
 
-  def self.perform(actor_id, perspective_id, fb_post = false)
+  def self.perform(actor_id, perspective_id, fb_post = false, twitter_post = false)
 
     actor1 = User.find(actor_id)
 

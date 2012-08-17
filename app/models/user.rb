@@ -668,7 +668,10 @@ class User
       self.username = username
     end
 
+  end
 
+  def suggestion_notification?
+    !ios_notification_token.nil? && self.user_settings.suggested_place_notify
   end
 
   def remark_notification?
