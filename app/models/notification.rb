@@ -54,8 +54,11 @@ class Notification
   def as_json(options={})
 
     user = User.find(self.actor1)
+    user = User.find(self.actor1["id"]) if user.nil?
 
-    self.attributes.merge(:id => self[:_id], :actor1 => user, :thumb1 => user.thumb_url)
+    if options[:details]
+      self.attributes.merge(:id => self[:_id], :actor1 => user, :thumb1 => user.thumb_url)
+    end
   end
 
 

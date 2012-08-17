@@ -720,7 +720,7 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:status => "success", :notifications => @notifications.as_json({:current_user => current_user})} }
+      format.json { render :json => {:status => "success", :notifications => @notifications.as_json({:current_user => current_user, :details => true})} }
     end
   end
 
