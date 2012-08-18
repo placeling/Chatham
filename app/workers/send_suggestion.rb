@@ -17,7 +17,7 @@ class SendSuggestion
         apns = true
       end
 
-      notification = Notification.new(:actor1 => suggestion.sender.id, :actor2 => suggestion.receiver.id, :subject => suggestion.place.id, :type => "SUGGESTED_PLACE", :subject_name => suggestion.place.name, :email => email, :apns => apns)
+      notification = Notification.new(:actor1 => suggestion.sender.id, :actor2 => suggestion.receiver.id, :subject => suggestion.id, :type => "SUGGESTED_PLACE", :subject_name => suggestion.place.name, :email => email, :apns => apns)
       notification.remember #redis backed
     end
 
