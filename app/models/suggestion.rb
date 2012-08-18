@@ -21,6 +21,6 @@ class Suggestion
 
 
   def as_json(options={})
-    attributes.merge(:sender => self.sender).merge(:place => self.place)
+    attributes.merge(:sender => self.sender).merge(:place => self.place.as_json({:detail_view => true}))
   end
 end
