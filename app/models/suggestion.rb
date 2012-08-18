@@ -19,8 +19,7 @@ class Suggestion
         limit(count)
   end
 
-
   def as_json(options={})
-    attributes.merge(:sender => self.sender).merge(:place => self.place.as_json({:detail_view => true}))
+    attributes.merge(:sender => self.sender).merge(:place => self.place.as_json({:detail_view => true, :current_user => options[:current_user]}))
   end
 end

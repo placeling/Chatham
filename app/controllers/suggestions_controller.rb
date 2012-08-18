@@ -23,7 +23,7 @@ class SuggestionsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: {suggestion: @suggestion} }
+      format.json { render json: {suggestion: @suggestion.as_json(:current_user => current_user)} }
     end
   end
 
