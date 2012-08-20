@@ -317,6 +317,8 @@
     var DEFAULT_HEIGHT = 81;
     var MAX_PHOTOS = 3;
     
+    var MIN_HEIGHT = 400; // If height of map is less than this, hide photos
+    
     var persps = {};
     var myOptions;
     var placemark;
@@ -392,22 +394,25 @@
           }
 
           if (perspective.photos.length > 0) {
-            var pics = '<div class="info_pics">';
-            
-            for (var i=0; i<perspective.photos.length; i++) {
-              if (i < MAX_PHOTOS) {
-                pics += '<span class="info_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
-              } else {
-                pics += '<span class="hidden_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
-              }
-            }
-            if (perspective.photos.length > MAX_PHOTOS) {
-              pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
-            }
+            var height = <%= @height %> - DEFAULT_HEIGHT;
+            if (height > MIN_HEIGHT) {
+              var pics = '<div class="info_pics">';
 
-            pics += '</div>';
-            
-            infoWindowHTML += pics;
+              for (var i=0; i<perspective.photos.length; i++) {
+                if (i < MAX_PHOTOS) {
+                  pics += '<span class="info_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+                } else {
+                  pics += '<span class="hidden_pic"><img class="info_pic_thumb" src="' + perspective.photos[i].square_url + '"></span>';
+                }
+              }
+              if (perspective.photos.length > MAX_PHOTOS) {
+                pics += '<div class="more_photos">+' + (perspective.photos.length - MAX_PHOTOS) + " more</div>";
+              }
+
+              pics += '</div>';
+
+              infoWindowHTML += pics;
+            }
           }
           
           var modified_at = new Date( perspective.modified_at );
@@ -603,7 +608,7 @@
       var zoom = <%= @zoom %>;
       var lat = <%= @lat %>;
       var lng = <%= @lng %>;
-
+      
       persps = {};
       var topLat;
       var bottomLat;
