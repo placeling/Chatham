@@ -74,6 +74,24 @@
             }
         }
 
+        function updateTags(perspective, currentTag) {
+          var rawHTML = '<ul>';
+          for (var i=0; i<perspective.tags.length; i++) {
+            rawHTML += '<a href="#" id="tag_';
+            rawHTML += perspective.tags[i];
+            rawHTML += '" class="tag_filter_trigger tag_link">';
+            rawHTML += '<li class="tags';
+            if (currentTag === perspective.tags[i]) {
+              rawHTML += " highlighted_tag";
+            }
+            rawHTML += '">#';
+            rawHTML += perspective.tags[i];
+            rawHTML += "</li></a>";
+          }
+          rawHTML += '</ul>';
+          return rawHTML;
+        }
+                
         function createMarker(perspective) {
             var marker = new google.maps.Marker({
                 position:new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
@@ -87,6 +105,11 @@
                     infowindow.close();
                     delete loadState["<%= @user.username %>"]['infowindow'];
                 } else {
+                  var currentTag = "";
+                  if (typeof loadState["<%= @user.username %>"]['filterValue'] !== "undefined") {
+                    currentTag = loadState["<%= @user.username %>"]['filterValue'];
+                  }
+
                     loadState["<%= @user.username %>"]['infowindow'] = perspective['id'];
                     var infoWindowHTML = '<div class="info_window">';
 
@@ -108,23 +131,11 @@
                     }
 
                     infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.id + '">' + perspective.place.name + '</a></div>';
-
-                    if (perspective.place.venue_types.length > 0 || perspective.tags.length > 0) {
-                        infoWindowHTML += '<div class="info_cat_and_tags">';
-                        if (perspective.place.venue_types.length > 0) {
-                            infoWindowHTML += '<span class="tag">';
-                            infoWindowHTML += perspective.place.venue_types.join('</span>, <span class="tag">');
-                            infoWindowHTML += '</span>';
-                            if (perspective.tags.length > 0) {
-                                infoWindowHTML += ' | ';
-                            }
-                        }
-                        if (perspective.tags.length > 0) {
-                            infoWindowHTML += '<span class="tag">#';
-                            infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
-                            infoWindowHTML += '</span>';
-                        }
-                        infoWindowHTML += '</div>';
+                    
+                    if (perspective.tags.length > 0) {
+                      infoWindowHTML += '<div class="info_cat_and_tags">';
+                      infoWindowHTML += updateTags(perspective, currentTag);
+                      infoWindowHTML += '</div>';
                     }
 
                     if (perspective.memo !== null && perspective.memo.length > 0) {
@@ -178,7 +189,27 @@
                     loadState["<%= @user.username %>"]['infowindow'] = perspective["id"];
                     infowindow.setPosition(marker.getPosition());
                     google.maps.event.trigger(map, 'idle');
-
+                    
+                    function armTags() {
+                      $('.tag_link').each(function(e) {
+                        $(this).click(function(e) {
+                          e.preventDefault();
+                          var term = $(this).text();
+                          loadState["<%= @user.username %>"]['filterType'] = 'tag';
+                          loadState["<%= @user.username %>"]['filterValue'] = term.substr(1, term.length - 1);
+                          currentTag = term.substr(1, term.length - 1);
+                          
+                          google.maps.event.trigger(map, 'idle');
+                          
+                          $('.info_cat_and_tags').html(updateTags(perspective, currentTag));
+                          armTags();
+                          return false;
+                        })
+                      });
+                    }
+                    
+                    armTags();
+                                        
                     $('.lightboxGallery').each(function () {
                         $('.lightbox', this).lightBox();
                     });
