@@ -472,78 +472,106 @@
               return false;
             });
         }
-
+        
         function updatePlaces() {
-            var placePerspectives = [];
-            var count = 0;
-            var locationHTML = "";
-            for (var persp in persps) {
-                if (persps[persp]["marker"].getVisible() === true) {
-                    persps[persp]["lower_name"] = persps[persp]["place"]["name"].toLowerCase();
-                    placePerspectives.push(persps[persp]);
-                    count += 1;
-                }
+          var locationHTML = '';
+          
+          var placePerspectives = [];
+          var count = 0;
+          
+          for (var persp in persps) {
+              if (persps[persp]["marker"].getVisible() === true) {
+                  persps[persp]["lower_name"] = persps[persp]["place"]["name"].toLowerCase();
+                  placePerspectives.push(persps[persp]);
+                  count += 1;
+              }
+          }
+          
+          locationHTML += '<div id="place_list_header" class="filter_header"><div class="close_list_filters"><a id="close_place_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
+          if (count == 0) {
+            locationHTML += '<%= t("perspective.no_places") %></div>';
+          } else {
+            locationHTML += '<%= t("perspective.places") %></div><div id="place_list_items" class="filter_list_items">';
+            placePerspectives = placePerspectives.sort(compare);
+            for (var i = 0; i < placePerspectives.length; i++) {
+                var html = '<div class="map_place_holder '
+                html += (i % 2 == 0) ? "even" : "odd";
+                html += '"><a href="/" class="map_place" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
+                html += '</div></a></div>';
+                locationHTML += html;
             }
-
-            if (count == 0) {
-                locationHTML = '<div class="no_places"><%= t("perspective.no_places") %></div>';
-            } else {
-                placePerspectives = placePerspectives.sort(compare);
-                for (var i = 0; i < placePerspectives.length; i++) {
-                    var html = '<div class="map_place_holder"><a href="/" class="map_place even_link" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
-                    if (placePerspectives[i]["street_address"]) {
-                        html += '<div class="map_address">';
-                        html += placePerspectives[i]["street_address"];
-                        html += '</div>'
-                    }
-                    html += '</div></a></div>';
-                    locationHTML += html;
-                }
-            }
-
-            $('#locations').html(locationHTML);
-
-            $('.map_place').each(function (e) {
-                $(this).click(function (e) {
-                    e.preventDefault();
-                    google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-                    return false;
-                })
+            locationHTML += "</div>";
+          }
+          
+          $('#name_filter_values').html(locationHTML);
+          
+          $('#close_place_filters_link').click(function(e) {
+            e.preventDefault();
+            $('#name_filter_bubble').fadeOut(100);
+            delete loadState["<%= @user.username %>"]['location'];
+            return false;
+          });
+          
+          $('.map_place').each(function (e) {
+            $(this).click(function (e) {
+              e.preventDefault();
+              google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+              return false;
             });
+          });
+          
+          $(window).resize();
         }
-
+        
         function updatePhotos() {
-            var count = 0;
-            var locationHTML = "";
-            for (var persp in persps) {
-                if (persps[persp]["marker"].getVisible() === true) {
-                    if (persps[persp].photos.length > 0) {
-                        var pics = '';
+          var count = 0;
+          var locationHTML = "";
+          var tempHTML = "";
+          for (var persp in persps) {
+              if (persps[persp]["marker"].getVisible() === true) {
+                  if (persps[persp].photos.length > 0) {
+                      var pics = '';
 
-                        for (var j = 0; j < persps[persp].photos.length; j++) {
-                            pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].square_url + '"></div>';
-                        }
-                        locationHTML += pics;
-                        count += 1;
-                    }
-                }
-            }
-
-            if (count == 0) {
-                locationHTML = '<div class="no_places"><%= t("perspective.no_photos") %></div>';
-            }
-
-            $('#locations').html(locationHTML);
-
-            $('.map_photo').each(function () {
-                $(this).click(function () {
-                    if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
-                        google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-                    }
-                })
+                      for (var j = 0; j < persps[persp].photos.length; j++) {
+                          pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].square_url + '"></div>';
+                      }
+                      tempHTML += pics;
+                      count += 1;
+                  }
+              }
+          }
+          
+          locationHTML += '<div id="photo_list_header" class="filter_header"><div class="close_list_filters"><a id="close_photo_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
+          if (count == 0) {
+            locationHTML += '<%= t("perspective.no_photos") %></div>';
+          } else {
+            locationHTML += '<%= t("perspective.photos") %></div><div id="photo_list_items" class="filter_list_items">';
+            locationHTML += tempHTML;
+            locationHTML += '</div>';
+          }
+          
+          $('#photo_filter_values').html(locationHTML);
+          
+          $('#close_photo_filters_link').click(function(e) {
+            e.preventDefault();
+            $('#photo_filter_bubble').fadeOut(100);
+            delete loadState["<%= @user.username %>"]['location'];
+            return false;
+          });
+          
+          $('.map_photo').each(function (e) {
+            $(this).click(function (e) {
+              e.preventDefault();
+              if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
+                  google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+              }
+              return false;
             });
+          });
+          
+          $(window).resize();
         }
-
+        
         function initialize() {
           persps = {};
           var topLat;
@@ -1007,93 +1035,73 @@
                                     leftLng = updatedLeftLng;
                                 }
                             }
+                            if (!$('.map_filter_button').is(":visible")) {
+                              $('.map_filter_button').fadeIn(100);
+                              $(window).resize();
+                              
+                              // First run
+                              var startState = JSON.parse($.cookie('page_state'));
+                              if (startState !== null && typeof startState["<%= @user.username %>"] !== "undefined") {
+                                  if (typeof startState["<%= @user.username %>"]["location"] !== "undefined") {
+                                      if (startState["<%= @user.username %>"]["location"] === "places") {
+                                          $(window).delay(100).queue(function () {
+                                              $('#name_filter_link').click();
+                                              $(this).dequeue();
+                                          });
+                                      } else if (startState["<%= @user.username %>"]["location"] === "photos") {
+                                          $(window).delay(100).queue(function () {
+                                              $('#photo_filter_link').click();
+                                              $(this).dequeue();
+                                          });
+                                      }
+                                  }
+                              }
+                              
+                              
+                            }
                         }
                     });
                 } else {
                     updateMap();
                 }
             });
-
-            $('#hide_filters_click').click(function (e) {
-                e.preventDefault();
-                $('#filters').height(0);
-                $('#filters').slideUp('fast');
-                $('#hide_filters').hide();
-                loadState["<%= @user.username %>"]['showFilters'] = false;
-                delete loadState["<%= @user.username %>"]['filterType'];
-                delete loadState["<%= @user.username %>"]['filterValue'];
-                google.maps.event.trigger(map, 'idle');
-                return false;
-            });
-
-            $('#hide_locations_click').click(function (e) {
-                e.preventDefault();
-                $('#locations').height(0);
-                $('#locations').slideUp('fast');
-                $('#hide_locations').hide();
+            
+            $('#name_filter_link').click(function (e) {
+              loadState["<%= @user.username %>"]['location'] = 'places';
+              e.preventDefault();
+              
+              if ($('#name_filter_bubble').is(':visible')) {
+                $('#name_filter_bubble').fadeOut(100);
                 delete loadState["<%= @user.username %>"]['location'];
-                google.maps.event.trigger(map, 'idle');
-                return false;
+              } else {
+                if ($('#photo_filter_bubble').is(':visible')) {
+                  $('#photo_filter_bubble').fadeOut(100);
+                }
+                updatePlaces();
+                $('#name_filter_bubble').fadeIn(100);
+                google.maps.event.trigger(map,'idle');
+              }
+              return false;
             });
-
-            $('#show_filters').click(function (e) {
-                loadState["<%= @user.username %>"]['showFilters'] = true;
-                e.preventDefault();
-
-                if ($('#hide_filters').css('display') == 'none') {
-                    $('#hide_filters').show();
+            
+            $('#photo_filter_link').click(function(e) {
+              loadState["<%= @user.username %>"]['location'] = 'photos';
+              e.preventDefault();
+              
+              if ($('#photo_filter_bubble').is(':visible')) {
+                $('#photo_filter_bubble').fadeOut(100);
+                delete loadState["<%= @user.username %>"]['location'];
+              } else {
+                if ($('#name_filter_bubble').is(':visible')) {
+                  $('#name_filter_bubble').fadeOut(100);
                 }
-
-                if ($('#filters').height() <= 0) {
-                    $('#filters').height($('#main_map').height() - $('#toggle_locations').outerHeight(true));
-                    $('#filters').slideDown('fast');
-                }
-
-                google.maps.event.trigger(map, 'idle');
-
-                return false;
+                updatePhotos();
+                $('#photo_filter_bubble').fadeIn(100);
+                google.maps.event.trigger(map,'idle');
+              }
+              return false;
             });
-
-            $('#show_places').click(function (e) {
-                loadState["<%= @user.username %>"]['location'] = 'places';
-                e.preventDefault();
-
-                if ($('#hide_locations').css('display') == 'none') {
-                    $('#hide_locations').show();
-                }
-
-                if ($('#locations').height() <= 0) {
-                    updatePlaces();
-
-                    $('#locations').height($('#main_map').height() - $('#toggle_locations').outerHeight(true));
-                    $('#locations').slideDown('fast');
-                } else {
-                    updatePlaces();
-                }
-                google.maps.event.trigger(map, 'idle');
-                return false;
-            });
-
-            $('#show_photos').click(function (e) {
-                loadState["<%= @user.username %>"]['location'] = 'photos';
-                e.preventDefault();
-
-                if ($('#hide_locations').css('display') == 'none') {
-                    $('#hide_locations').show();
-                }
-
-                if ($('#locations').height() <= 0) {
-                    updatePhotos();
-
-                    $('#locations').height($('#main_map').height() - $('#toggle_locations').outerHeight(true));
-                    $('#locations').slideDown('fast');
-                } else {
-                    updatePhotos();
-                }
-                google.maps.event.trigger(map, 'idle');
-                return false;
-            });
-
+            
             $('.home').click(function (e) {
                 e.preventDefault();
                 var center = new google.maps.LatLng(user_lat, user_lng);
@@ -1109,7 +1117,7 @@
                 $('#current_location').css({
                     'position':'absolute',
                     'z-index':'10003',
-                    'left':333,
+                    'left':338,
                     'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 32,
                 });
                 // Assign callback
@@ -1183,6 +1191,13 @@
                 infowindow.close();
                 delete loadState["<%= @user.username %>"]['infowindow'];
               }
+              if ($('#photo_filter_bubble').is(':visible')) {
+                $('#photo_filter_bubble').fadeOut(100);
+              }
+              if ($('#name_filter_bubble').is(':visible')) {
+                $('#name_filter_bubble').fadeOut(100);
+              }
+              
               if ($('#filter_bubble').is(':visible')) {
                 hideFilters();
               } else {
@@ -1195,8 +1210,6 @@
 
         $(document).ready(function () {
             initialize();
-
-            $('#filters').css({top:$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#toggle_filters').outerHeight(true)});
 
             $('#map_holder').append('<div id="spinner"><img class="spinner" src="<%= asset_path("spinner.gif"); %>"></div>');
             $('#spinner').width(80);
@@ -1213,19 +1226,7 @@
                 var user_padding = $('#user_details').outerHeight() - $('#user_details').height();
                 $('#user_details').height(height - user_padding);
 
-                $('#location_drawer').css('left', $(window).width() - $('#location_drawer').outerWidth(true));
-                $('#location_drawer').css('top', $('#header').outerHeight(true) + $('#userdetails').outerHeight(true));
-
-                if ($('#locations').height() > 0) {
-                    $('#locations').height($('#main_map').height() - $('#toggle_locations').outerHeight(true));
-                }
-
-                if ($('#filters').height() > 0) {
-                    $('#filters').height($('#main_map').height() - $('#toggle_filters').outerHeight(true));
-                }
-
                 $('#current_location').css({
-                    'left':333,
                     'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 32,
                 });
 
@@ -1233,36 +1234,42 @@
                     'left':333,
                     'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 112
                 });
+                
+                $('#name_filter').css({
+                  'left':$('#photo_filter').offset().left - $('#name_filter').width() - 8,
+                })
+                
+                $('#name_filter_bubble').css({
+                  'left':$('#name_filter').offset().left + $('#name_filter').outerWidth(true) - $('#name_filter_bubble').outerWidth(true),
+                  'top':$('#name_filter').offset().top + $('#name_filter').outerHeight(true)
+                })
+                
+                $('#photo_filter').css({
+                  'left':$(window).width()- $('#photo_filter').width() - 8,
+                })
+                
+                $('#photo_filter_bubble').css({
+                  'left':$('#photo_filter').offset().left + $('#photo_filter').outerWidth(true) - $('#photo_filter_bubble').outerWidth(true),
+                  'top':$('#photo_filter').offset().top + $('#photo_filter').outerHeight(true)
+                })
+                
+                $('.list_filter_values').css({
+                  'max-height': 300,
+                });
+                
+                $('#place_list_items').css({
+                    'max-height': $('#name_filter_values').innerHeight() - $('#place_list_header').innerHeight(),
+                    'padding-top':0,
+                    'padding-left':0,
+                });
+                $('#photo_list_items').css({
+                    'max-height': $('#photo_filter_values').innerHeight() - $('#photo_list_header').innerHeight(),
+                    'padding-left':1,
+                    'padding-top':1
+                });                
             });
 
             $(window).resize();
-            $('#toggle_locations').height(23);
-            $('#toggle_locations').css({padding:3, "border-left":"2px solid #C7C7C7", "border-bottom":"2px solid #C7C7C7"});
-
-            // Check for initial page state via delay
-            var startState = JSON.parse($.cookie('page_state'));
-            if (startState !== null && typeof startState["<%= @user.username %>"] !== "undefined") {
-                if (typeof startState["<%= @user.username %>"]["showFilters"] !== "undefined" && startState["<%= @user.username %>"]["showFilters"] === true) {
-                    $(window).delay(1000).queue(function () {
-                        $('#show_filters').click();
-                        $(this).dequeue();
-                    });
-                }
-                if (typeof startState["<%= @user.username %>"]["location"] !== "undefined") {
-
-                    if (startState["<%= @user.username %>"]["location"] === "places") {
-                        $(window).delay(100).queue(function () {
-                            $('#show_places').click();
-                            $(this).dequeue();
-                        });
-                    } else if (startState["<%= @user.username %>"]["location"] === "photos") {
-                        $(window).delay(100).queue(function () {
-                            $('#show_photos').click();
-                            $(this).dequeue();
-                        });
-                    }
-                }
-            }
         });
 
         $(window).load(function () {
@@ -1287,21 +1294,29 @@
     <div id="nearby_users"></div>
   </div>
   <div id="map_holder">
-    <div id="tag_filter">
+    <div id="tag_filter" class="map_filter_button">
       <a href="#" id="tag_filter_link"><%= image_tag asset_path("tag_icon.png") %></a>
     </div>
     <div id="grey_arrow_left" class="arrow"></div>
     <div id="red_arrow_left" class="arrow"></div>
     <div id="filter_bubble"></div>
-    <div id="location_drawer">
-      <div id="toggle_locations">
-        <div id="hide_locations"><a href="/" id="hide_locations_click"><%= image_tag asset_path("hide.png"), :class => "hide" %></a>
-        </div>
-        <div><%= t('user.explore') %> <a id="show_places" href="/"><%= t('user.places') %></a> <%= t('user.and') %>
-          <a id="show_photos" href="/"><%= t('user.photos') %></a></div>
+    <div id="name_filter" class="map_filter_button">
+      <a href="#" id="name_filter_link"><%= image_tag asset_path("places_list.png")%></a>
+    </div>
+    <div id="name_filter_bubble">
+      <div id="name_filter_arrow">
+        <%= image_tag asset_path("grey_arrow_top.png"), :class => 'list_filter_arrow' %>
       </div>
-      <div id="locations">
+      <div id="name_filter_values" class="list_filter_values"></div>
+    </div>
+    <div id="photo_filter" class="map_filter_button">
+      <a href="#" id="photo_filter_link"><%= image_tag asset_path("pictures.png") %></a>
+    </div>
+    <div id="photo_filter_bubble">
+      <div id="photo_filter_arrow">
+        <%= image_tag asset_path("grey_arrow_top.png"), :class => 'list_filter_arrow' %>
       </div>
+      <div id="photo_filter_values" class="list_filter_values"></div>
     </div>
     <div id="main_map"></div>
   </div>
