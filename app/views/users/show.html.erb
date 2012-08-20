@@ -1108,7 +1108,9 @@
                 $('#current_location').width(30);
                 $('#current_location').css({
                     'position':'absolute',
-                    'z-index':'10003'
+                    'z-index':'10003',
+                    'left':333,
+                    'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - 32,
                 });
                 // Assign callback
                 $('.pan').click(function (e) {
