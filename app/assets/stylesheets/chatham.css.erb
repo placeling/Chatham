@@ -549,11 +549,15 @@
         max-width: 80px;
     }
     
-    #tag_filter {
+    .map_filter_button {
       position: absolute;
-      left: 338px;
       top: 72px;
       z-index: 1;
+      display:none;
+    }
+    
+    #tag_filter {
+      left: 338px;
     }
     
     #filter_bubble {
@@ -562,6 +566,45 @@
       top: 66px;
       z-index: 1;
       display:none;
+    }
+    
+    #name_filter_arrow {
+      height: 11px;
+    }
+    
+    #name_filter_bubble {
+      position: absolute;
+      z-index: 1;
+      width: 242px;
+      display:none;
+    }
+    
+    #photo_filter_arrow {
+      height: 11px;
+    }
+    
+    #photo_filter_bubble {
+      position: absolute;
+      z-index: 1;
+      width: 242px;
+      display: none;
+    }
+    
+    .list_filter_values {
+      border: 2px solid #e9e6e4;
+      border-radius: 3px;
+      color: #6A6147;
+    }
+    
+    .list_filter_arrow {
+      vertical-align: top;
+      float: right;
+      margin-right: 13px;
+    }
+    
+    .filter_list_items {
+      overflow-y: auto;
+      background: #faf8f6;
     }
     
     #grey_arrow_left {
@@ -598,7 +641,6 @@
     #filter_holder {
       max-height: 300px;
       width: 180px;
-      background-image: url(<%= asset_path('background_pattern.png') %>);
       border: 2px solid #e9e6e4;
       border-radius: 3px;
       color: #6A6147;
@@ -619,6 +661,11 @@
     }
     
     #close_filters {
+      float: right;
+      margin-right: 5px;
+    }
+    
+    .close_list_filters {
       float: right;
       margin-right: 5px;
     }
@@ -644,49 +691,10 @@
         color: #36757c;
     }
 
-    #location_drawer {
-        position: absolute;
-        width: 341px;
-        z-index: 1;
-    }
-
-    #hide_locations {
-        float: right;
-        display: none;
-    }
-
-    #toggle_locations {
-        -moz-border-bottom-left-radius: 2px;
-        border-bottom-left-radius: 2px;
-        font-size: 18px;
-        background: #F6F4F2;
-        opacity: 0.9;
-        color: #5B4C23;
-        height: 0px;
-    }
-
-    #locations {
-        padding-left: 15px;
-        width: 316px;
-        height: 0px;
-        opacity: 0.9;
-        margin-left: 10px;
-        overflow-y: auto;
-        background: #fff url(<%= asset_path 'dropdown_316.png' %>) repeat;
-    }
-
     .map_place_holder {
-        padding: 3px;
+        padding: 2px 7px;
     }
-
-    .map_place {
-        font-size: 12px;
-    }
-
-    .map_address {
-        font-size: 10px;
-    }
-
+    
     .no_places {
         margin-left: auto;
         margin-right: auto;
@@ -699,9 +707,9 @@
 
     .photo_view_pic {
         height: 108px;
-        width: 140px;
+        width: 108px;
         float: left;
-        margin: 3px;
+        margin: 3px 3px 0px 0px;
     }
 
     .map_photo {
@@ -812,19 +820,9 @@
 
     .info_cat_and_tags {
         font-size: 14px;
-        margin-top: -3px;
+        margin-bottom: 3px;
         color: #666666;
         padding-left: 3px;
-    }
-
-    .info_cat {
-        color: #567E79; /* was $666666 */
-        font-weight: 500;
-    }
-
-    .info_tag {
-        color: #567E79; /* was #0099FF */
-        font-weight: 500;
     }
 
     .info_memo {
