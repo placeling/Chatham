@@ -39,5 +39,9 @@ class UpdatePlacemarkActivity
       actor1.facebook.put_connections("me", "placeling:set", :placemark => perspective.og_path)
     end
 
+    if twitter_post && actor1.twitter && Rails.env.production?
+      actor1.tweet("Just updated my placemark for #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+    end
+
   end
 end

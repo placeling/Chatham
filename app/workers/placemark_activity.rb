@@ -32,5 +32,14 @@ class PlacemarkActivity
 
       actor1.facebook.put_connections("me", "placeling:set", :placemark => perspective.og_path)
     end
+
+    if twitter_post && actor1.twitter && Rails.env.production?
+      if perspective.memo.length > 1
+        actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+      else
+        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+      end
+    end
+
   end
 end
