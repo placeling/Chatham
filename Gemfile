@@ -23,6 +23,7 @@ gem 'omniauth-twitter'
 gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 
 gem "koala"
+gem "twitter"
 
 gem "httparty"
 gem "hashie"

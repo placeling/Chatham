@@ -723,6 +723,38 @@ class User
     @facebook ||= self.koala_facebook
   end
 
+  def twitter
+    for auth in self.authentications
+      if auth.provider == 'twitter'
+        twitter_auth = auth
+      end
+    end
+
+    return nil unless !twitter_auth.nil?
+
+    @twitter = Twitter::Client.new(
+        :oauth_token => twitter_auth.token,
+        :oauth_token_secret => twitter_auth.secret
+    )
+  end
+
+  def tweet(text)
+
+    for auth in self.authentications
+      if auth.provider == 'twitter'
+        twitter_auth = auth
+      end
+    end
+
+    return nil unless !twitter_auth.nil?
+
+    # Exchange our oauth_token and oauth_token secret for the AccessToken instance.
+    @access_token = prepare_access_token(twitter_auth.token, twitter_auth.secret)
+
+    @response = @access_token.request(:post, "https://api.twitter.com/1/statuses/update.json", :status => text)
+  end
+
+
   def post_facebook?
     #determines whether user has permissions to post to facebook ie. publish_actions
     self.facebook && self.facebook.get_connection("me", "permissions")[0].has_key?("publish_actions")
@@ -812,6 +844,21 @@ class User
       end
     end
     return nil
+  end
+
+  def prepare_access_token(oauth_token, oauth_token_secret)
+    consumer = OAuth::Consumer.new(CHATHAM_CONFIG['twitter_consumer_key'], CHATHAM_CONFIG['twitter_secret_key'],
+                                   {
+                                       :site => "https://api.twitter.com"
+                                   })
+    # now create the access token object from passed values
+    token_hash =
+        {
+            :oauth_token => oauth_token,
+            :oauth_token_secret => oauth_token_secret
+        }
+    access_token = OAuth::AccessToken.from_hash(consumer, token_hash)
+    return access_token
   end
 
 end
