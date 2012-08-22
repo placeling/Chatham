@@ -313,6 +313,7 @@ en:
     recent_instead: "Show recent places instead"
     places_near: "Places Near"
     no_hashtags: "No #hashtags"
+    no_nearby_places: "No nearby places"
     
   oauth:
     registered_successfully: "Registered the information successfully"
