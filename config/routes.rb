@@ -126,6 +126,7 @@ Chatham::Application.routes.draw do
       post :star
       post :unstar
       post :flag
+      get :likers
     end
     collection do
       get :nearby
@@ -231,6 +232,7 @@ Chatham::Application.routes.draw do
         post :star
         post :unstar
         post :flag
+        get :likers
       end
       collection do
         get :nearby

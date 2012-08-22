@@ -209,6 +209,22 @@ class PerspectivesController < ApplicationController
     end
   end
 
+  def likers
+    @perspective = Perspective.find(params[:id])
+
+    @users = []
+
+    @perspective.starring_users.each do |uid|
+      @users << User.find(uid)
+    end
+
+    respond_to do |format|
+      format.js
+      format.json { render :json => {:users => @users} }
+    end
+  end
+
+
   def unstar
     @perspective = Perspective.find(params[:id])
     current_user.unstar(@perspective)
