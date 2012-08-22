@@ -209,6 +209,22 @@ class PerspectivesController < ApplicationController
     end
   end
 
+  def likers
+    @perspective = Perspective.find(params[:id])
+
+    @users = []
+
+    @perspective.starring_users.each do |uid|
+      @users << User.find(uid)
+    end
+
+    respond_to do |format|
+      format.js
+      format.json { render :json => {:users => @users} }
+    end
+  end
+
+
   def unstar
     @perspective = Perspective.find(params[:id])
     current_user.unstar(@perspective)
@@ -332,9 +348,9 @@ class PerspectivesController < ApplicationController
       end
 
       if new_perspective
-        ActivityFeed.add_new_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
+        ActivityFeed.add_new_perspective(@perspective.user, @perspective, !params[:fb_post].nil?, !params[:twitter_post].nil?)
       else
-        ActivityFeed.add_update_perspective(@perspective.user, @perspective, !params[:fb_post].nil?)
+        ActivityFeed.add_update_perspective(@perspective.user, @perspective, !params[:fb_post].nil?, !params[:twitter_post].nil?)
       end
 
       if params[:photo_urls] #has to be done after save in case perspective didn't exist

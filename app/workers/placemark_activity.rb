@@ -20,17 +20,16 @@ class PlacemarkActivity
     activity.push_to_followers(actor1)
 
     if fb_post && actor1.post_facebook? && Rails.env.production?
-      image_url=nil
-      for picture in perspective.pictures
-        if !picture.fb_posted
-          image_url = picture.main_url(nil)
-          picture.fb_posted = true
-          picture.save
-          break
-        end
-      end
-
-      actor1.facebook.put_connections("me", "placeling:set", :placemark => perspective.og_path)
+      Resque.enqueue(FacebookPost, actor1.id, "placeling:set", {:placemark => perspective.og_path})
     end
+
+    if twitter_post && actor1.twitter && Rails.env.production?
+      if perspective.memo.length > 1
+        actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+      else
+        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+      end
+    end
+
   end
 end

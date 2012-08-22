@@ -238,6 +238,11 @@ class Perspective
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.perspective_path(self) }"
   end
 
+  def twitter_text(padding = 35)
+    size = 140 - padding - self.place.name.length
+    return self.memo[0..size] + "..."
+  end
+
   def as_json(options={})
 
     attributes = {
