@@ -366,6 +366,8 @@ class User
     place = perspective.place
     user_perspective = self.perspective_for_place(place)
 
+    return unless !user_perspective.nil? #if deleted, its kind of a pointless endeavor
+
     user_perspective.favourite_perspective_ids.delete(perspective.id)
     user_perspective.save
 
