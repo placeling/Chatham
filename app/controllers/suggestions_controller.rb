@@ -58,6 +58,7 @@ class SuggestionsController < ApplicationController
     respond_to do |format|
       if @suggestion.save
         ActivityFeed.send_suggestion(@suggestion)
+        track! :suggest
         format.html { redirect_to @suggestion, notice: 'Suggestion was successfully created.' }
         format.json { render json: {suggestion: @suggestion}, status: :created, location: @suggestion }
       else
