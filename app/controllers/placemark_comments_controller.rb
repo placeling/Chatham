@@ -19,7 +19,7 @@ class PlacemarkCommentsController < ApplicationController
     end
     @placemark_comment.user = current_user
 
-    #ActivityFeed.answer_question(current_user, @question)
+    ActivityFeed.comment_placemark(current_user, @placemark_comment)
 
     respond_to do |format|
       if @perspective.save
