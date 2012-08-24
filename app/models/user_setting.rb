@@ -18,6 +18,8 @@ class UserSetting
   field :question_updates_email, :type => Boolean, :default => true
 
   field :suggested_place_notify, :type => Boolean, :default => true
+  field :comment_notify, :type => Boolean, :default => true
+
 
   field :facebook_friend_check, :type => Boolean, :default => false
 

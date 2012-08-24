@@ -680,6 +680,10 @@ class User
     !ios_notification_token.nil? && self.user_settings.remark_notify
   end
 
+  def comment_notification?
+    !ios_notification_token.nil? && self.user_settings.comment_notify
+  end
+
   def follow_notification?
     !ios_notification_token.nil? && self.user_settings.new_follower_notify
   end

@@ -157,6 +157,7 @@ en:
     new_pic: "Change Your Profile Picture"
     pic_choose: "Select a .png, .jpeg or .gif file"
     change_pic: "Change your profile picture"
+    placemark_comment: "Someone comments on one of your placemarks"
     authentications: "authentications"
     fb_connected: "Your account is connected to Facebook"
     update: "Update"
