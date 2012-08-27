@@ -12,7 +12,7 @@ class ActivityFeed
 
   def self.comment_placemark(actor1, placemark_comment)
     if placemark_comment.perspective.user.comment_notification?
-      Resque.enqueue(SendNotifications, placemark_comment.placemark.user.id, "#{actor1.username} commented on your placemark for #{placemark_comment.perspective.place.name}!", "placeling://perspectives/#{placemark_comment.perspective.id}")
+      Resque.enqueue(SendNotifications, placemark_comment.perspective.user.id, "#{actor1.username} commented on your placemark for #{placemark_comment.perspective.place.name}!", "placeling://perspectives/#{placemark_comment.perspective.id}")
     end
   end
 
