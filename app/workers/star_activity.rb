@@ -28,7 +28,8 @@ class StarActivity
     activity.push_to_followers(actor1)
 
     if actor1.post_facebook? && Rails.env.production?
-      actor1.facebook.put_connections("me", "og.likes", :object => perspective.og_path)
+      Resque.enqueue(FacebookPost, actor1.id, "og.likes", {:object => perspective.og_path})
+      #actor1.facebook.put_connections("me", "og.likes", :object => perspective.og_path)
     end
 
     unless Notification.veto(activity)
