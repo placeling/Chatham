@@ -4,8 +4,6 @@
       <meta name="description" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %> :: <%= t('perspective.call_to_action', {:user => @perspective.user.username, :place => @perspective.place.name}) %>">
       <meta property="og:title" content="placemark at <%= @perspective.place.name %>"/>
       <meta property="og:url" content="<%= @perspective.og_path %>"/>
-      <meta property="og:article" content="a"/>
-      <meta property="placeling:user" content="<%= @perspective.user.og_path %>"/>
 
       <meta property="og:type" content="placeling:placemark">
 
@@ -79,7 +77,10 @@
   </div>
   <div class="thoughts">
     <p>
-      <a href="<%= user_path(@perspective.user) %>" class="thoughts_url"><%= @perspective.user.username %><% if @perspective.user.username[@perspective.user.username.length-1] == "s" %><%= t('perspective.possessive_s') %><% else %><%= t('perspective.possessive') %><% end %></a>
+      <a href="<%= user_path(@perspective.user) %>" class="thoughts_url"><%= @perspective.user.username %>
+        <% if @perspective.user.username[@perspective.user.username.length-1] == "s" %><%= t('perspective.possessive_s') %>
+        <% else %><%= t('perspective.possessive') %>
+        <% end %></a>
       <%= t('perspective.thoughts') %>
       <a href="<%= place_path(@perspective.place) %>" class="thoughts_url"><%= @perspective.place.name %></a>
     </p>
@@ -239,7 +240,7 @@
           <% if @perspective.place.street_address || @perspective.place.city_data %>
               <p class="address_mini"><%= @perspective.place.street_address %>
                 <% if @perspective.place.city_data && @perspective.place.street_address %>,
-                    <% end %>
+                <% end %>
                 <% if @perspective.place.city_data %><%= @perspective.place.city_data %>
                 <% end %></p>
           <% end %>
