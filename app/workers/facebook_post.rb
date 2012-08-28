@@ -8,7 +8,7 @@ class FacebookPost
     begin
       actor1.facebook.put_connections("me", action_name, args_dict)
     rescue Koala::Facebook::APIError => exc
-      if exception.fb_error_type == 190
+      if exc.fb_error_type == 190
         fb_auth = actor1.authentications.where(:p => "facebook").first
         fb_auth.expiry = 1.day.ago #no longer valid, so cancel out
         fb_auth.save
