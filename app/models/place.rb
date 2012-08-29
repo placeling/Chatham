@@ -30,6 +30,8 @@ class Place
   field :ptg, :as => :place_tags, :type => Array
   field :place_tags_last_update, :type => DateTime
 
+  field :html_attributions, :type => Array, :default => ["Listings by \u003ca href=\"http://www.yellowpages.ca/\"\u003eYellowPages.ca\u003c/a\u003e"]
+
   slug :name, :index => true, :permanent => true
 
   has_many :perspectives, :foreign_key => 'plid'
@@ -408,7 +410,8 @@ class Place
         :highlight_url => self.highlight_url,
         :map_url => self.map_url,
         :venue_types => self.venue_types,
-        :slug => self.slug
+        :slug => self.slug,
+        :html_attributions => self.html_attributions
     }
 
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
