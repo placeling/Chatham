@@ -245,6 +245,17 @@ class Perspective
 
   def as_json(options={})
 
+    if self.liking_users.nil?
+      for user_id in self.starring_users
+        user = User.find(user_id)
+        if self.liking_users
+          self.liking_users << user.username
+        else
+          self.liking_users = [user.username]
+        end
+      end
+    end
+
     attributes = {
         :id => self['_id'],
         :place_id => self['plid'],
