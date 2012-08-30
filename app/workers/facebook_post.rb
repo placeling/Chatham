@@ -13,6 +13,8 @@ class FacebookPost
         fb_auth.expiry = 1.day.ago #no longer valid, so cancel out
         fb_auth.save
         raise "Facebook Error 190 for #{actor1.username}, reset expiry of token"
+      elsif exc.fb_error_type == 200
+        RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} doesn't authorize publish actions for facebook"
       else
         raise exc
       end
