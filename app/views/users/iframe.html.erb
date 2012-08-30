@@ -176,7 +176,7 @@
     
     .info_cat_and_tags {
       font-size: 14px;
-      margin-top: -3px;
+      margin: 2px 0px;
       color: #666666;
       padding-left: 3px;
     }
@@ -205,6 +205,25 @@
       font-family: Georgia,"Times New Roman",Serif;
       color: #6A6147;
       padding-top: 5px;
+    }
+    
+    .tags {
+        display: inline;
+        background: #36757C;
+        color: white;
+        font-size: 12px;
+        padding: 3px 5px;
+        border-radius: 3px;
+        box-shadow: 1px 1px 5px #888888;
+        margin-right: 5px;
+    }
+
+    a.tag_link {
+        text-decoration: none;
+    }
+
+    .highlighted_tag {
+        background: #CA3342;
     }
     
     .info_pics {
@@ -304,13 +323,11 @@
 <% end %>
 
 <% content_for :javascript_includes do %>
-  <script type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&amp;sensor=false">
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
   </script>
 
 <% end %>
 <% content_for :javascript do %>
-
   <script type="text/javascript">
     document.domain = "placeling.com";
 
@@ -354,7 +371,25 @@
     {
       window.open(url, '_blank');
     }
-
+    
+    function updateTags(perspective, currentTag) {
+      var rawHTML = '<ul>';
+      for (var i=0; i<perspective.tags.length; i++) {
+        rawHTML += '<a href="#" id="tag_';
+        rawHTML += perspective.tags[i];
+        rawHTML += '" class="tag_filter_trigger tag_link">';
+        rawHTML += '<li class="tags';
+        if (currentTag === perspective.tags[i]) {
+          rawHTML += " highlighted_tag";
+        }
+        rawHTML += '">#';
+        rawHTML += perspective.tags[i];
+        rawHTML += "</li></a>";
+      }
+      rawHTML += '</ul>';
+      return rawHTML;
+    }
+    
     function createMarker(perspective) {
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
@@ -376,12 +411,10 @@
             infoWindowHTML += '<a href="/places/' + perspective.place.id + '" onclick="javascript:openWindow(this.href);return false;">' + perspective.place.name + '</a>';
           }
           infoWindowHTML += '</div>';
-
+          
           if (perspective.tags.length > 0) {
             infoWindowHTML += '<div class="info_cat_and_tags">';
-            infoWindowHTML += '<span class="tag">#';
-            infoWindowHTML += perspective.tags.join('</span>, <span class="tag">#');
-            infoWindowHTML += '</span>';
+            infoWindowHTML += updateTags(perspective, filterTag);
             infoWindowHTML += '</div>';
           }
           
@@ -424,6 +457,25 @@
 
           infowindow.open(map, marker);
           infowindow.setContent(infoWindowHTML);
+          
+          function armTags() {
+            $('.tag_link').each(function(e) {
+              $(this).click(function(e) {
+                e.preventDefault();
+                var term = $(this).text();
+                filterTag = term.substr(1, term.length - 1);
+                
+                google.maps.event.trigger(map, 'idle');
+                
+                $('.info_cat_and_tags').html(updateTags(perspective, filterTag));
+                armTags();
+                return false;
+              })
+            });
+          }
+          
+          armTags();
+          
           infowindow.setPosition(marker.getPosition());
           google.maps.event.trigger(map, 'idle');
         }
@@ -433,6 +485,9 @@
     }
     
     function hideFilters(){
+      if (infowindow.getMap()) {
+        infowindow.close();
+      }
       $('#iframe_filter_bubble').fadeOut(100);
       $('#iframe_red_arrow_left').fadeOut(100);
       $('#iframe_grey_arrow_left').fadeOut(100);
@@ -512,6 +567,13 @@
         }
         
         $('#iframe_filter_bubble').html(html);
+        
+        if (typeof filterTag !== "undefined") {
+          if (!$('#iframe_filter_bubble').is(":visible")) {
+            $('#iframe_filter_bubble').fadeIn(100);
+            $('#iframe_red_arrow_left').fadeIn(100);
+          }
+        }
         
         $('.filter_value').each(function () {
             $(this).click(function (e) {

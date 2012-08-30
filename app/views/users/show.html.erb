@@ -74,11 +74,6 @@
           var d = R * c;
           
           return Math.round(d * 1000);
-          /*if (d < 1) {
-            return Math.round(d * 1000) + " m";
-          } else {
-            return Math.round(d * 10)/10 + " km";
-          }*/
         }
         
         
@@ -479,6 +474,9 @@
         }
         
         function hideFilters(){
+          if (infowindow.getMap()) {
+            infowindow.close();
+          }
           delete loadState["<%= @user.username %>"]['filterType'];
           delete loadState["<%= @user.username %>"]['filterValue'];
           delete loadState["<%= @user.username %>"]['sort'];
