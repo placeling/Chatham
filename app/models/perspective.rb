@@ -263,7 +263,8 @@ class Perspective
         :memo => self.memo,
         :url => self.url,
         :modified_at => self['modified_at'],
-        :liking_users => self.liking_users
+        :liking_users => self.liking_users,
+        :comment_count => self.placemark_comments.count
     }
     if options[:bounds]
       attributes = attributes.merge(:photos => self.pictures.where(:deleted => false).as_json({:bounds => true}))
