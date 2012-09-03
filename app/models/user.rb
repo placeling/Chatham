@@ -347,6 +347,11 @@ class User
     place = perspective.place
     user_perspective = self.perspective_for_place(place)
 
+    if self.id == perspective.user.id
+      #shouldn't be able to like own perspective
+      return user_perspective
+    end
+
     #starring a perspective triggers a bookmark of it
     if user_perspective.nil?
       user_perspective= place.perspectives.build()
