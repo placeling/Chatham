@@ -9,7 +9,7 @@ class SendSuggestion
 
     notifications = suggestion.receiver.notifications
 
-    if (notifications.count < 4 || notifications[4].created_at < 1.day.ago)
+    if (notifications.count < 5 || notifications[4].created_at < 1.day.ago)
       apns = false
       email = false
       if suggestion.receiver.suggestion_notification?
