@@ -719,6 +719,9 @@ class UsersController < ApplicationController
       @notifications = current_user.notifications(0, 20)
     end
 
+    current_user.notification_count=0 #clear out notifications, as they've been read
+    current_user.save
+
     respond_to do |format|
       format.json { render :json => {:status => "success", :notifications => @notifications.as_json({:current_user => current_user, :details => true})} }
     end

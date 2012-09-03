@@ -44,6 +44,9 @@ class Notification
   # push status to a specific feed
   def remember(location="notifications")
     self.created_at = Time.now
+    user = User.find(self.actor2)
+    user.notification_count+=1
+    user.save
     $redis.zadd key(location, self.actor2), timestamp, encoded
   end
 

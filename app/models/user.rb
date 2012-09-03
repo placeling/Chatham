@@ -22,6 +22,8 @@ class User
   field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
 
+  field :notification_count, :type => Integer, :default => 0
+
   ## Database authenticatable
   field :email, :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
@@ -632,6 +634,7 @@ class User
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
       if self.id == current_user.id
         attributes = attributes.merge(:auths => self.authentications)
+        attributes = attributes.merge(:notification_count => self.notification_count)
         attributes = attributes.merge(:highlighted_count => self.highlighted_places.count)
       end
     else
