@@ -28,7 +28,8 @@ class Perspective
   belongs_to :client_application
 
   embeds_many :pictures
-  embeds_many :placemark_comments
+  embeds_many :placemark_comments, :cascade_callbacks => true
+  accepts_nested_attributes_for :placemark_comments
   embeds_one :place_stub
 
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => lambda { |a| a[:content].blank? }
