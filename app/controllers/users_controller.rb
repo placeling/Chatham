@@ -719,8 +719,6 @@ class UsersController < ApplicationController
       @notifications = current_user.notifications(0, 20)
     end
 
-    @notifications.delete_if { |notification| notification.type =="ANSWER_COMMENT" } #don't have a client version of these
-
     current_user.notification_count=0 #clear out notifications, as they've been read
     current_user.save
 
