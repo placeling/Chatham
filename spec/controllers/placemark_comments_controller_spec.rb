@@ -44,6 +44,9 @@ describe PlacemarkCommentsController do
       perspective.reload
 
       perspective.placemark_comments.count.should == 1
+      perspective.placemark_comments[0].created_at.should_not be_nil
+      perspective.user.notifications.count.should ==1
+      perspective.user.notifications[0].type.should == "COMMENT_PERSPECTIVE"
     end
   end
 
