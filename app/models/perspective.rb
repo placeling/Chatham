@@ -246,6 +246,16 @@ class Perspective
 
   def as_json(options={})
 
+    #special check-empty perspective that is liking, return those values
+    if self.empty_perspective? && self.favourite_perspectives.count >0
+      perspective = self.favourite_perspectives[0]
+      perspective.starring_users.delete(self.user.id)
+      perspective.starring_users.insert(0, self.user.id) #move to front so will always show
+      attributes = perspective.as_json(options)
+      attributes['mine'] = false #prevent a highlight option
+      return attributes
+    end
+
     if self.liking_users.nil?
       for user_id in self.starring_users
         user = User.find(user_id)
