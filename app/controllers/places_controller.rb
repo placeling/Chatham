@@ -305,13 +305,6 @@ class PlacesController < ApplicationController
       end
     end
 
-    @places.each do |place|
-      #add distance to in meters
-      place.distance = (1000 * Geocoder::Calculations.distance_between([lat, lng], [place.location[0], place.location[1]], :units => :km)).floor
-    end
-
-    @places = @places.sort_by { |place| place.distance }
-
     if @places.count < 5
       gp = GooglePlaces.new
       #covers "barrie problem" of no content
@@ -342,6 +335,15 @@ class PlacesController < ApplicationController
       @places = @places + @processed_google_places
     end
 
+    @places.each do |place|
+      #add distance to in meters
+      place.distance = (1000 * Geocoder::Calculations.distance_between([lat, lng], [place.location[0], place.location[1]], :units => :km)).floor
+    end
+
+    @places = @places.sort_by { |place| place.perspective_count }
+    @places = @places[0..20]
+
+    @places = @places.sort_by { |place| place.distance }
 
     respond_to do |format|
       format.json { render :json => {:suggested_places => @places.as_json({:current_user => current_user})} } #, :ad => Advertisement.new( "Admob" ) } }
@@ -421,43 +423,17 @@ class PlacesController < ApplicationController
       end
     end
 
+    if query_type == "popular"
+      @places = @places.sort_by { |place| place.perspective_count }
+      @places = @places[0..20]
+    end
+
     @places.each do |place|
       #add distance to in meters
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat, lng], [place.location[0], place.location[1]], :units => :km)).floor
     end
 
     @places = @places.sort_by { |place| place.distance }
-
-    if query_type == "popular" and @places.count < 5
-      gp = GooglePlaces.new
-      #covers "barrie problem" of no content
-      if category != nil and category.strip != ""
-        categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
-        @google_places = gp.find_nearby(lat, lng, radius, query, true, categories_array)
-      else
-        @google_places = gp.find_nearby(lat, lng, radius, query)
-      end
-
-      for gplace in @google_places
-        for place in @places
-          if place.id == gplace.id
-            @google_places.delete(gplace)
-            break
-          end
-        end
-      end
-
-      @processed_google_places = []
-      #this doesn't really work
-      for gplace in @google_places
-        #add distance to in meters
-        place = Place.new_from_google_place(gplace)
-        @processed_google_places << place
-      end
-
-      @places = @places + @processed_google_places
-
-    end
 
     logger.info "action: #{(Time.now - t) *1000}ms"
     respond_to do |format|
