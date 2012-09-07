@@ -12,6 +12,13 @@
       <meta name="twitter:title" content="<%= @perspective.place.name %>"/>
       <meta name="twitter:description" content="<%= @perspective.memo %>"/>
       <meta name="twitter:image" content="<%= @perspective.og_picture %>"/>
+
+      <meta name="twitter:site" content="@placeling">
+      <meta name="twitter:site:id" content="248750993">
+
+      <% if auth = @perspective.user.authentications.where(:p => "twitter").first %>
+          <meta name="twitter:creator:id" content="<%= auth.uid %>"/>
+      <% end %>
 <% end %>
 
 <% content_for :javascript_includes do %>

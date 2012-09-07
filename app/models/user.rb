@@ -240,6 +240,15 @@ class User
     end
   end
 
+  def self.ian
+    self.where(:du => "imack").first
+  end
+
+
+  def self.lindsay
+    self.where(:du => "lindsayrgwatt").first
+  end
+
   def self.top_users(top_n)
     self.desc(:pc).limit(top_n)
   end

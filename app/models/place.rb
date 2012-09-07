@@ -386,6 +386,10 @@ class Place
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path(self) }"
   end
 
+  def og_image
+    return self.thumb_url
+  end
+
   def alpha_perspective
     perspectives = self.perspectives
     perspectives.sort_by do |perspective|

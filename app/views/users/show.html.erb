@@ -7,6 +7,19 @@
     <meta property="og:image" content="<%= @user.main_url %>"/>
     <meta property="og:description" content="<%= @user.description %>"/>
     <meta name="viewport" content="initial-scale=0.8">
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:url" content="<%= @user.og_path %>"/>
+    <meta name="twitter:title" content="<%= @user.place.name %>"/>
+    <meta name="twitter:description" content="<%= @user.description %>"/>
+    <meta name="twitter:image" content="<%= @user.thumb_url %>"/>
+
+    <meta name="twitter:site" content="@placeling">
+    <meta name="twitter:site:id" content="248750993">
+
+    <% if auth = @user.authentications.where(:p => "twitter").first %>
+        <meta name="twitter:creator:id" content="<%= auth.uid %>"/>
+    <% end %>
 <% end %>
 
 <% content_for :javascript_includes do %>
@@ -16,21 +29,21 @@
 <% end %>
 
 <% content_for :css do %>
-  @media only screen and (max-width: 960px) {
+    @media only screen and (max-width: 960px) {
     #header, #footerbottom, #download_container, #user_and_map  {
-      display: none;
+    display: none;
     }
-    
+
     #user_and_list {
-      display: inline;
+    display: inline;
     }
-    
+
     html, body {
-        min-width: 100%;
-        width: 100%
-        overflow: auto;
+    min-width: 100%;
+    width: 100%
+    overflow: auto;
     }
-  }
+    }
 <% end %>
 
 <% content_for :javascript do %>
@@ -50,9 +63,9 @@
         var loadState;
         var sortAlpha = false;
         var initialOffset = 0.2;
-        
+
         var iPadWidth = 960;
-        
+
         var filters = {
             'tags':[]
         }
@@ -61,25 +74,27 @@
         var user_lat = <%= @user.location[0] %>;
         var user_lng = <%= @user.location[1] %>;
         <% end %>
-        
-        Number.prototype.toRad = function () { return this * Math.PI / 180; }
+
+        Number.prototype.toRad = function () {
+            return this * Math.PI / 180;
+        }
 
         function distance(lat1, lon1, lat2, lon2) {
-          var R = 6371; // km
-          var dLat = (lat2-lat1).toRad();
-          var dLon = (lon2-lon1).toRad();
-          var lat1 = lat1.toRad();
-          var lat2 = lat2.toRad();
+            var R = 6371; // km
+            var dLat = (lat2 - lat1).toRad();
+            var dLon = (lon2 - lon1).toRad();
+            var lat1 = lat1.toRad();
+            var lat2 = lat2.toRad();
 
-          var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-          var d = R * c;
-          
-          return Math.round(d * 1000);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+
+            return Math.round(d * 1000);
         }
-        
-        
+
+
         function openWindow(url) {
             window.open(url, '_blank');
         }
@@ -91,15 +106,15 @@
                 return 1;
             return 0;
         }
-        
+
         function distanceSort(a, b) {
-          if (a.delta < b.delta)
-            return -1;
-          if (a.delta > b.delta)
-            return 1;
-          return 0;
+            if (a.delta < b.delta)
+                return -1;
+            if (a.delta > b.delta)
+                return 1;
+            return 0;
         }
-        
+
         function filter_term(a, b) {
             if (a.term < b.term)
                 return -1;
@@ -123,23 +138,23 @@
         }
 
         function updateTags(perspective, currentTag) {
-          var rawHTML = '<ul>';
-          for (var i=0; i<perspective.tags.length; i++) {
-            rawHTML += '<a href="#" id="tag_';
-            rawHTML += perspective.tags[i];
-            rawHTML += '" class="tag_filter_trigger tag_link">';
-            rawHTML += '<li class="tags';
-            if (currentTag === perspective.tags[i]) {
-              rawHTML += " highlighted_tag";
+            var rawHTML = '<ul>';
+            for (var i = 0; i < perspective.tags.length; i++) {
+                rawHTML += '<a href="#" id="tag_';
+                rawHTML += perspective.tags[i];
+                rawHTML += '" class="tag_filter_trigger tag_link">';
+                rawHTML += '<li class="tags';
+                if (currentTag === perspective.tags[i]) {
+                    rawHTML += " highlighted_tag";
+                }
+                rawHTML += '">#';
+                rawHTML += perspective.tags[i];
+                rawHTML += "</li></a>";
             }
-            rawHTML += '">#';
-            rawHTML += perspective.tags[i];
-            rawHTML += "</li></a>";
-          }
-          rawHTML += '</ul>';
-          return rawHTML;
+            rawHTML += '</ul>';
+            return rawHTML;
         }
-                
+
         function createMarker(perspective) {
             var marker = new google.maps.Marker({
                 position:new google.maps.LatLng(perspective.ploc[0], perspective.ploc[1]),
@@ -153,10 +168,10 @@
                     infowindow.close();
                     delete loadState["<%= @user.username %>"]['infowindow'];
                 } else {
-                  var currentTag = "";
-                  if (typeof loadState["<%= @user.username %>"]['filterValue'] !== "undefined") {
-                    currentTag = loadState["<%= @user.username %>"]['filterValue'];
-                  }
+                    var currentTag = "";
+                    if (typeof loadState["<%= @user.username %>"]['filterValue'] !== "undefined") {
+                        currentTag = loadState["<%= @user.username %>"]['filterValue'];
+                    }
 
                     loadState["<%= @user.username %>"]['infowindow'] = perspective['id'];
                     var infoWindowHTML = '<div class="info_window">';
@@ -179,11 +194,11 @@
                     }
 
                     infoWindowHTML += '<div class="info_name"><a href="/places/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
-                    
+
                     if (perspective.tags.length > 0) {
-                      infoWindowHTML += '<div class="info_cat_and_tags">';
-                      infoWindowHTML += updateTags(perspective, currentTag);
-                      infoWindowHTML += '</div>';
+                        infoWindowHTML += '<div class="info_cat_and_tags">';
+                        infoWindowHTML += updateTags(perspective, currentTag);
+                        infoWindowHTML += '</div>';
                     }
 
                     if (perspective.memo !== null && perspective.memo.length > 0) {
@@ -237,27 +252,27 @@
                     loadState["<%= @user.username %>"]['infowindow'] = perspective["id"];
                     infowindow.setPosition(marker.getPosition());
                     google.maps.event.trigger(map, 'idle');
-                    
+
                     function armTags() {
-                      $('.tag_link').each(function(e) {
-                        $(this).click(function(e) {
-                          e.preventDefault();
-                          var term = $(this).text();
-                          loadState["<%= @user.username %>"]['filterType'] = 'tag';
-                          loadState["<%= @user.username %>"]['filterValue'] = term.substr(1, term.length - 1);
-                          currentTag = term.substr(1, term.length - 1);
-                          
-                          google.maps.event.trigger(map, 'idle');
-                          
-                          $('.info_cat_and_tags').html(updateTags(perspective, currentTag));
-                          armTags();
-                          return false;
-                        })
-                      });
+                        $('.tag_link').each(function (e) {
+                            $(this).click(function (e) {
+                                e.preventDefault();
+                                var term = $(this).text();
+                                loadState["<%= @user.username %>"]['filterType'] = 'tag';
+                                loadState["<%= @user.username %>"]['filterValue'] = term.substr(1, term.length - 1);
+                                currentTag = term.substr(1, term.length - 1);
+
+                                google.maps.event.trigger(map, 'idle');
+
+                                $('.info_cat_and_tags').html(updateTags(perspective, currentTag));
+                                armTags();
+                                return false;
+                            })
+                        });
                     }
-                    
+
                     armTags();
-                                        
+
                     $('.lightboxGallery').each(function () {
                         $('.lightbox', this).lightBox();
                     });
@@ -336,67 +351,67 @@
             }
             updateMap();
         }
-        
+
         function updateList(perspectiveList, lat, lng) {
-          var html = ''
-          if (perspectiveList.length == 0) {
-            html = '<div id="no_places"><%= t('user.no_nearby_places') %></div>'
-          } else {
-            html = '<ul id="place_list_holder">';
+            var html = ''
+            if (perspectiveList.length == 0) {
+                html = '<div id="no_places"><%= t('user.no_nearby_places') %></div>'
+            } else {
+                html = '<ul id="place_list_holder">';
 
-            for (var i = 0; i < perspectiveList.length; i++) {
-              var delta = distance(lat, lng, perspectiveList[i].ploc[0], perspectiveList[i].ploc[1]);
-              perspectiveList[i].delta = delta;
-            }
-
-            // Sort by distance
-            perspectiveList.sort(distanceSort)
-
-            for (var i = 0; i < perspectiveList.length; i++) {
-              var perspective = perspectiveList[i];
-              var tempHTML = '<li class="list_place ';
-              tempHTML += (i % 2 == 0) ? "even" : "odd";
-              tempHTML += '">';
-
-              tempHTML += '<div class="list_name"><a href="/places/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
-
-              if (perspective.tags.length > 0) {
-                tempHTML += '<div class="list_tags"><ul>';
-                for (var j=0; j<perspective.tags.length; j++) {
-                  tempHTML += '<li class="tags">#';
-                  tempHTML += perspective.tags[j];
-                  tempHTML += '</li>'
+                for (var i = 0; i < perspectiveList.length; i++) {
+                    var delta = distance(lat, lng, perspectiveList[i].ploc[0], perspectiveList[i].ploc[1]);
+                    perspectiveList[i].delta = delta;
                 }
-                tempHTML += "</ul></div>";
-              }
 
-              if (perspective.memo !== null && perspective.memo.length > 0) {
-                  tempHTML += '<div class="list_memo">' + perspective.memo + '</div>';
-              }
+                // Sort by distance
+                perspectiveList.sort(distanceSort)
 
-              if (perspective.photos.length > 0) {
-                  var pics = '<div class="info_pics lightboxGallery">';
-                  for (var j = 0; j < perspective.photos.length; j++) {
-                      pics += '<span class="info_pic"><a href="' + perspective.photos[j].square_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[j].square_url + '"></a></span>';
-                  }
-                  pics += '</div>';
-                  tempHTML += pics;
-              }
-              tempHTML += '<div class="distance">' + perspective.delta + 'm</div>';
+                for (var i = 0; i < perspectiveList.length; i++) {
+                    var perspective = perspectiveList[i];
+                    var tempHTML = '<li class="list_place ';
+                    tempHTML += (i % 2 == 0) ? "even" : "odd";
+                    tempHTML += '">';
 
-              tempHTML += "</li>";
-              html += tempHTML;
+                    tempHTML += '<div class="list_name"><a href="/places/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
+
+                    if (perspective.tags.length > 0) {
+                        tempHTML += '<div class="list_tags"><ul>';
+                        for (var j = 0; j < perspective.tags.length; j++) {
+                            tempHTML += '<li class="tags">#';
+                            tempHTML += perspective.tags[j];
+                            tempHTML += '</li>'
+                        }
+                        tempHTML += "</ul></div>";
+                    }
+
+                    if (perspective.memo !== null && perspective.memo.length > 0) {
+                        tempHTML += '<div class="list_memo">' + perspective.memo + '</div>';
+                    }
+
+                    if (perspective.photos.length > 0) {
+                        var pics = '<div class="info_pics lightboxGallery">';
+                        for (var j = 0; j < perspective.photos.length; j++) {
+                            pics += '<span class="info_pic"><a href="' + perspective.photos[j].square_url + '" class="lightbox"><img class="info_pic_thumb" src="' + perspective.photos[j].square_url + '"></a></span>';
+                        }
+                        pics += '</div>';
+                        tempHTML += pics;
+                    }
+                    tempHTML += '<div class="distance">' + perspective.delta + 'm</div>';
+
+                    tempHTML += "</li>";
+                    html += tempHTML;
+                }
+                html += "</ul>";
             }
-            html += "</ul>";
-          }
 
-          $("#list").html(html);
-          
-          $('.lightboxGallery').each(function () {
-              $('.lightbox', this).lightBox();
-          });
+            $("#list").html(html);
+
+            $('.lightboxGallery').each(function () {
+                $('.lightbox', this).lightBox();
+            });
         }
-        
+
         function updateMap() {
             var currentBounds = map.getBounds();
 
@@ -472,24 +487,24 @@
             } else if (loadState["<%= @user.username %>"]['location'] === 'photos') {
                 updatePhotos();
             }
-            
+
             updateFilters(sortAlpha);
         }
-        
-        function hideFilters(){
-          if (infowindow.getMap()) {
-            infowindow.close();
-          }
-          delete loadState["<%= @user.username %>"]['filterType'];
-          delete loadState["<%= @user.username %>"]['filterValue'];
-          delete loadState["<%= @user.username %>"]['sort'];
-          $('#filter_bubble').fadeOut(100);
-          $('#red_arrow_left').fadeOut(100);
-          $('#grey_arrow_left').fadeOut(100);
-          window.setTimeout(function() {
-            filterTag = undefined;
-            updateMap();
-          }, 100);
+
+        function hideFilters() {
+            if (infowindow.getMap()) {
+                infowindow.close();
+            }
+            delete loadState["<%= @user.username %>"]['filterType'];
+            delete loadState["<%= @user.username %>"]['filterValue'];
+            delete loadState["<%= @user.username %>"]['sort'];
+            $('#filter_bubble').fadeOut(100);
+            $('#red_arrow_left').fadeOut(100);
+            $('#grey_arrow_left').fadeOut(100);
+            window.setTimeout(function () {
+                filterTag = undefined;
+                updateMap();
+            }, 100);
         }
 
         function updateFilters(sortDown) {
@@ -509,73 +524,73 @@
                     }
                 }
             }
-            
+
             var cleanFilters = [];
-            
+
             for (var tag in filters['tags']) {
                 cleanFilters.push({'term':tag, 'type':'tag', 'count':filters['tags'][tag]});
             }
-            
+
             var html = "";
             if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
-              html += "<div class='red_arrow_holder'>#";
-              html += loadState["<%= @user.username %>"]['filterValue'];
-              html += " (";
-              var count = 0;
-              for (var i=0; i<cleanFilters.length; i++) {
-                if (cleanFilters[i]['term'] === loadState["<%= @user.username %>"]['filterValue']) {
-                  count = cleanFilters[i]['count'];
-                  break;
-                }
-              }
-              html += count;
-              html += ")</div>";
-            } else {
-              html += '<div id="filter_holder">'
-              if (cleanFilters.length == 0) {
-                html += '<div class="filter_header" id="no_filters"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div><%= t('user.no_hashtags') %></div>';
-              } else {
-                html += '<div class="filter_header"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div>';
-                if (sortDown === false) {
-                  html += '<div id="sort_type"><a href="/" id="sort_alpha">abc</a> 321</div>';
-                  cleanFilters.sort(filter_count);
-                } else {
-                  html += '<div id="sort_type">abc <a href="/" id="sort_count">321</a></div>';
-                  cleanFilters.sort(filter_term);
-                }
-                
-                html += '</div><div id="available_filters">';
-
+                html += "<div class='red_arrow_holder'>#";
+                html += loadState["<%= @user.username %>"]['filterValue'];
+                html += " (";
+                var count = 0;
                 for (var i = 0; i < cleanFilters.length; i++) {
-                    html += '<div class="filter_tag ';
-                    html += (i % 2 == 0) ? "even" : "odd";
-                    html += '"><a href="/" class="filter_value">#';
-                    html += cleanFilters[i]["term"];
-                    html += '</a> <span class="filter_count">(';
-                    html += cleanFilters[i]["count"];
-                    html += ')</span>';
+                    if (cleanFilters[i]['term'] === loadState["<%= @user.username %>"]['filterValue']) {
+                        count = cleanFilters[i]['count'];
+                        break;
+                    }
+                }
+                html += count;
+                html += ")</div>";
+            } else {
+                html += '<div id="filter_holder">'
+                if (cleanFilters.length == 0) {
+                    html += '<div class="filter_header" id="no_filters"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div><%= t('user.no_hashtags') %></div>';
+                } else {
+                    html += '<div class="filter_header"><div id="close_filters"><a href="#" id="close_filters_link"><%= image_tag asset_path("close.png"), :class=>"close_filters" %></a></div>';
+                    if (sortDown === false) {
+                        html += '<div id="sort_type"><a href="/" id="sort_alpha">abc</a> 321</div>';
+                        cleanFilters.sort(filter_count);
+                    } else {
+                        html += '<div id="sort_type">abc <a href="/" id="sort_count">321</a></div>';
+                        cleanFilters.sort(filter_term);
+                    }
+
+                    html += '</div><div id="available_filters">';
+
+                    for (var i = 0; i < cleanFilters.length; i++) {
+                        html += '<div class="filter_tag ';
+                        html += (i % 2 == 0) ? "even" : "odd";
+                        html += '"><a href="/" class="filter_value">#';
+                        html += cleanFilters[i]["term"];
+                        html += '</a> <span class="filter_count">(';
+                        html += cleanFilters[i]["count"];
+                        html += ')</span>';
+                        html += "</div>";
+                    }
                     html += "</div>";
                 }
                 html += "</div>";
-              }
-              html += "</div>";
             }
-            
+
             $('#filter_bubble').html(html);
-            
+
             if (typeof loadState["<%= @user.username %>"]['filterType'] !== "undefined") {
-              if (!$('#filter_bubble').is(":visible")) {
-                $('#filter_bubble').fadeIn(100);
-                $('#red_arrow_left').fadeIn(100);
-              }
+                if (!$('#filter_bubble').is(":visible")) {
+                    $('#filter_bubble').fadeIn(100);
+                    $('#red_arrow_left').fadeIn(100);
+                }
             }
-                        
+
             $('.filter_value').each(function () {
                 $(this).click(function (e) {
                     e.preventDefault();
                     if (infowindow.getMap()) {
-                      infowindow.close();
-                      delete loadState["<%= @user.username %>"]['infowindow'];
+                        infowindow.close();
+                        delete loadState["<%= @user.username %>"]['infowindow'];
                     }
                     $('#red_arrow_left').show();
                     var term = $(this).text();
@@ -602,145 +617,145 @@
                 return false;
             })
 
-            $('.red_arrow_holder').click(function(e) {
-              e.preventDefault();
-              hideFilters();
-              return false;
+            $('.red_arrow_holder').click(function (e) {
+                e.preventDefault();
+                hideFilters();
+                return false;
             });
 
-            $('#close_filters_link').click(function(e) {
-              e.preventDefault();
-              hideFilters();
-              return false;
+            $('#close_filters_link').click(function (e) {
+                e.preventDefault();
+                hideFilters();
+                return false;
             });
         }
-        
+
         function updatePlaces() {
-          var locationHTML = '';
-          
-          var placePerspectives = [];
-          var count = 0;
-          
-          for (var persp in persps) {
-              if (persps[persp]["marker"].getVisible() === true) {
-                  persps[persp]["lower_name"] = persps[persp]["place"]["name"].toLowerCase();
-                  placePerspectives.push(persps[persp]);
-                  count += 1;
-              }
-          }
-          
-          locationHTML += '<div id="place_list_header" class="filter_header"><div class="close_list_filters"><a id="close_place_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
-          if (count == 0) {
-            locationHTML += '<%= t("perspective.no_places") %></div>';
-          } else {
-            locationHTML += '<%= t("perspective.places") %></div><div id="place_list_items" class="filter_list_items">';
-            placePerspectives = placePerspectives.sort(compare);
-            for (var i = 0; i < placePerspectives.length; i++) {
-                var html = '<div class="map_place_holder '
-                html += (i % 2 == 0) ? "even" : "odd";
-                html += '"><a href="/" class="map_place" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
-                html += '</div></a></div>';
-                locationHTML += html;
+            var locationHTML = '';
+
+            var placePerspectives = [];
+            var count = 0;
+
+            for (var persp in persps) {
+                if (persps[persp]["marker"].getVisible() === true) {
+                    persps[persp]["lower_name"] = persps[persp]["place"]["name"].toLowerCase();
+                    placePerspectives.push(persps[persp]);
+                    count += 1;
+                }
             }
-            locationHTML += "</div>";
-          }
-          
-          $('#name_filter_values').html(locationHTML);
-          
-          $('#close_place_filters_link').click(function(e) {
-            e.preventDefault();
-            $('#name_filter_bubble').fadeOut(100);
-            delete loadState["<%= @user.username %>"]['location'];
-            return false;
-          });
-          
-          $('.map_place').each(function (e) {
-            $(this).click(function (e) {
-              e.preventDefault();
-              google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-              return false;
+
+            locationHTML += '<div id="place_list_header" class="filter_header"><div class="close_list_filters"><a id="close_place_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
+            if (count == 0) {
+                locationHTML += '<%= t("perspective.no_places") %></div>';
+            } else {
+                locationHTML += '<%= t("perspective.places") %></div><div id="place_list_items" class="filter_list_items">';
+                placePerspectives = placePerspectives.sort(compare);
+                for (var i = 0; i < placePerspectives.length; i++) {
+                    var html = '<div class="map_place_holder '
+                    html += (i % 2 == 0) ? "even" : "odd";
+                    html += '"><a href="/" class="map_place" id="' + placePerspectives[i]["id"] + '"><div>' + placePerspectives[i]["place"]["name"];
+                    html += '</div></a></div>';
+                    locationHTML += html;
+                }
+                locationHTML += "</div>";
+            }
+
+            $('#name_filter_values').html(locationHTML);
+
+            $('#close_place_filters_link').click(function (e) {
+                e.preventDefault();
+                $('#name_filter_bubble').fadeOut(100);
+                delete loadState["<%= @user.username %>"]['location'];
+                return false;
             });
-          });
-          
-          $(window).resize();
+
+            $('.map_place').each(function (e) {
+                $(this).click(function (e) {
+                    e.preventDefault();
+                    google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+                    return false;
+                });
+            });
+
+            $(window).resize();
         }
-        
+
         function updatePhotos() {
-          var count = 0;
-          var locationHTML = "";
-          var tempHTML = "";
-          for (var persp in persps) {
-              if (persps[persp]["marker"].getVisible() === true) {
-                  if (persps[persp].photos.length > 0) {
-                      var pics = '';
+            var count = 0;
+            var locationHTML = "";
+            var tempHTML = "";
+            for (var persp in persps) {
+                if (persps[persp]["marker"].getVisible() === true) {
+                    if (persps[persp].photos.length > 0) {
+                        var pics = '';
 
-                      for (var j = 0; j < persps[persp].photos.length; j++) {
-                          pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].square_url + '"></div>';
-                      }
-                      tempHTML += pics;
-                      count += 1;
-                  }
-              }
-          }
-          
-          locationHTML += '<div id="photo_list_header" class="filter_header"><div class="close_list_filters"><a id="close_photo_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
-          if (count == 0) {
-            locationHTML += '<%= t("perspective.no_photos") %></div>';
-          } else {
-            locationHTML += '<%= t("perspective.photos") %></div><div id="photo_list_items" class="filter_list_items">';
-            locationHTML += tempHTML;
-            locationHTML += '</div>';
-          }
-          
-          $('#photo_filter_values').html(locationHTML);
-          
-          $('#close_photo_filters_link').click(function(e) {
-            e.preventDefault();
-            $('#photo_filter_bubble').fadeOut(100);
-            delete loadState["<%= @user.username %>"]['location'];
-            return false;
-          });
-          
-          $('.map_photo').each(function (e) {
-            $(this).click(function (e) {
-              e.preventDefault();
-              if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
-                  google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
-              }
-              return false;
+                        for (var j = 0; j < persps[persp].photos.length; j++) {
+                            pics += '<div class="photo_view_pic"><img class="map_photo_thumb map_photo" id="' + persp + '" src="' + persps[persp].photos[j].square_url + '"></div>';
+                        }
+                        tempHTML += pics;
+                        count += 1;
+                    }
+                }
+            }
+
+            locationHTML += '<div id="photo_list_header" class="filter_header"><div class="close_list_filters"><a id="close_photo_filters_link"><%= image_tag asset_path("close.png"), :class => "close_filters" %></a></div>';
+            if (count == 0) {
+                locationHTML += '<%= t("perspective.no_photos") %></div>';
+            } else {
+                locationHTML += '<%= t("perspective.photos") %></div><div id="photo_list_items" class="filter_list_items">';
+                locationHTML += tempHTML;
+                locationHTML += '</div>';
+            }
+
+            $('#photo_filter_values').html(locationHTML);
+
+            $('#close_photo_filters_link').click(function (e) {
+                e.preventDefault();
+                $('#photo_filter_bubble').fadeOut(100);
+                delete loadState["<%= @user.username %>"]['location'];
+                return false;
             });
-          });
-          
-          $(window).resize();
+
+            $('.map_photo').each(function (e) {
+                $(this).click(function (e) {
+                    e.preventDefault();
+                    if (typeof loadState["<%= @user.username %>"]['infowindow'] === "undefined" || loadState["<%= @user.username %>"]['infowindow'] !== $(this).attr('id')) {
+                        google.maps.event.trigger(persps[$(this).attr('id')]["marker"], 'click');
+                    }
+                    return false;
+                });
+            });
+
+            $(window).resize();
         }
-        
+
         function initialize() {
-          persps = {};
-          var topLat;
-          var bottomLat;
-          var rightLng;
-          var leftLng;
-          var requests = 0;
-          var runCount = 0;
+            persps = {};
+            var topLat;
+            var bottomLat;
+            var rightLng;
+            var leftLng;
+            var requests = 0;
+            var runCount = 0;
 
-          var current_top;
-          var current_right;
-          var current_bottom;
-          var current_left;
+            var current_top;
+            var current_right;
+            var current_bottom;
+            var current_left;
 
-          loadState = JSON.parse($.cookie('page_state'));
-          if (loadState === null) {
-              loadState = {};
-          }
+            loadState = JSON.parse($.cookie('page_state'));
+            if (loadState === null) {
+                loadState = {};
+            }
 
-          if (typeof loadState["<%= @user.username %>"] === "undefined") {
-              loadState["<%= @user.username %>"] = {};
-          }
-          
-          if (typeof loadState["<%= @user.username %>"]['sort'] !== "undefined" && loadState["<%= @user.username %>"]['sort'] === 'count') {
-            sortAlpha = false;
-          }
-          
+            if (typeof loadState["<%= @user.username %>"] === "undefined") {
+                loadState["<%= @user.username %>"] = {};
+            }
+
+            if (typeof loadState["<%= @user.username %>"]['sort'] !== "undefined" && loadState["<%= @user.username %>"]['sort'] === 'count') {
+                sortAlpha = false;
+            }
+
         <% if @current_location.length > 0 %>
             var lat = <%= @current_location[0] %>;
             var lng = <%= @current_location[1] %>;
@@ -937,17 +952,17 @@
                     current_right = temp_right;
                     current_left = temp_left;
                     current_bottom = temp_bottom;
-                    
+
                     // Account for loading in list view
                     if (current_top === current_bottom) {
-                      current_top += initialOffset;
-                      current_bottom -= initialOffset;
+                        current_top += initialOffset;
+                        current_bottom -= initialOffset;
                     }
                     if (current_left === current_right) {
-                      current_left -= initialOffset;
-                      current_right += initialOffset;
+                        current_left -= initialOffset;
+                        current_right += initialOffset;
                     }
-                    
+
                     $.ajax({
                         url:'<%= nearby_user_path(@user) %>',
                         data:{
@@ -981,61 +996,61 @@
                             } else {
                                 var placemark_count = data["popular"].length;
                                 var question_count = 0;
-                                
+
                                 if ("following" in data) {
-                                  placemark_count += data["following"].length;
+                                    placemark_count += data["following"].length;
                                 }
-                                
+
                                 if ("questions" in data) {
-                                  question_count += data["questions"]["count"];
+                                    question_count += data["questions"]["count"];
                                 }
-                                
+
                                 if (question_count == 0 && placemark_count == 0 && data['owner'] == false) {
-                                  html += '<div id="no_data"><%= t('user.nothing_yet') %></div>';
+                                    html += '<div id="no_data"><%= t('user.nothing_yet') %></div>';
                                 } else {
-                                  if (placemark_count == 0 && data['owner'] == true) {
-                                    html += '<div id="no_data"><%= t('user.just') %></div>';
-                                  } else if (placemark_count > 0) {
-                                    html += '<div id="following">';
+                                    if (placemark_count == 0 && data['owner'] == true) {
+                                        html += '<div id="no_data"><%= t('user.just') %></div>';
+                                    } else if (placemark_count > 0) {
+                                        html += '<div id="following">';
 
-                                    if ("following" in data) {
-                                        if (data["following"].length == 0) {
-                                            html += "";
-                                        } else if (data["following"].length == 1) {
-                                            html += '<a href="#" id="nearby_following"><%= t('user.one_person') %></a>';
+                                        if ("following" in data) {
+                                            if (data["following"].length == 0) {
+                                                html += "";
+                                            } else if (data["following"].length == 1) {
+                                                html += '<a href="#" id="nearby_following"><%= t('user.one_person') %></a>';
+                                            } else {
+                                                html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' <%= t('user.plural_follow') %></a>';
+                                            }
+                                            html += "</div>";
                                         } else {
-                                            html = html + '<a href="#" id="nearby_following">' + data["following"].length + ' <%= t('user.plural_follow') %></a>';
+                                            html += '<a href="<%= new_user_session_path %>"><%= t('user.nearby_sign_in') %></a> <%= t('user.see_follow') %></div>';
                                         }
-                                        html += "</div>";
-                                    } else {
-                                        html += '<a href="<%= new_user_session_path %>"><%= t('user.nearby_sign_in') %></a> <%= t('user.see_follow') %></div>';
-                                    }
 
-                                    html += '<div id="popular">'
-                                    if (data["popular"].length == 0) {
-                                        html += "";
-                                    } else if (data["popular"].length == 1) {
-                                        html += '<a href="#" id="nearby_popular"><%= t('user.one_local') %></a>';
-                                    } else {
-                                        html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " <%= t('user.locals') %></a>";
+                                        html += '<div id="popular">'
+                                        if (data["popular"].length == 0) {
+                                            html += "";
+                                        } else if (data["popular"].length == 1) {
+                                            html += '<a href="#" id="nearby_popular"><%= t('user.one_local') %></a>';
+                                        } else {
+                                            html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " <%= t('user.locals') %></a>";
+                                        }
                                     }
-                                  }
-                                  if (question_count > 0) {
-                                    html += '<div id="nearby_questions"'
-                                    if (placemark_count > 0) {
-                                      html += 'class="question_spacer"'
+                                    if (question_count > 0) {
+                                        html += '<div id="nearby_questions"'
+                                        if (placemark_count > 0) {
+                                            html += 'class="question_spacer"'
+                                        }
+                                        html += '><a href="<%= questions_path %>' + "?lat=" + data["questions"]["lat"] + "&lng=" + data["questions"]["lng"] + '">';
+                                        if (question_count == 1) {
+                                            var string = "1 <%= t('user.question') %>";
+                                        } else {
+                                            var string = question_count + " <%= t('user.questions') %>";
+                                        }
+                                        html += string;
+                                        html += '</a></div>'
                                     }
-                                    html += '><a href="<%= questions_path %>' + "?lat=" + data["questions"]["lat"] + "&lng=" + data["questions"]["lng"] + '">';
-                                    if (question_count == 1) {
-                                      var string = "1 <%= t('user.question') %>";
-                                    } else {
-                                      var string = question_count + " <%= t('user.questions') %>";
-                                    }
-                                    html += string;
-                                    html += '</a></div>'
-                                  }
                                 }
-                                
+
                                 if ($("#nearby_users").is(":visible") == false) {
                                     $('#nearby_users').fadeOut("fast")
                                 }
@@ -1147,17 +1162,17 @@
                         var updatedRightLng = bounds.getNorthEast().lng();
                         var updatedLeftLng = bounds.getSouthWest().lng();
                     }
-                    
+
                     // Account for loading in list view
                     if (updatedTopLat === updatedBottomLat) {
-                      updatedTopLat += initialOffset;
-                      updatedBottomLat -= initialOffset;
+                        updatedTopLat += initialOffset;
+                        updatedBottomLat -= initialOffset;
                     }
                     if (updatedLeftLng === updatedRightLng) {
-                      updatedLeftLng -= initialOffset;
-                      updatedRightLng += initialOffset;
+                        updatedLeftLng -= initialOffset;
+                        updatedRightLng += initialOffset;
                     }
-                    
+
                     $.ajax({
                         url:'<%= bounds_user_path(@user) %>',
                         data:{
@@ -1173,7 +1188,7 @@
                         },
                         success:function (data) {
                             updatePerspectives(data.perspectives);
-                            updateList(data.perspectives, (bounds.getNorthEast().lat() + bounds.getSouthWest().lat())/2, (bounds.getNorthEast().lng() + bounds.getSouthWest().lng())/2);
+                            updateList(data.perspectives, (bounds.getNorthEast().lat() + bounds.getSouthWest().lat()) / 2, (bounds.getNorthEast().lng() + bounds.getSouthWest().lng()) / 2);
                             requests -= 1;
                             if (requests <= 0) {
                                 $('#spinner').hide();
@@ -1198,78 +1213,78 @@
                                 }
                             }
                             if (!$('.map_filter_button').is(":visible")) {
-                              $(window).resize();
-                              
-                              $('.map_filter_button').fadeIn(100);
-                              
-                              // First run
-                              var startState = JSON.parse($.cookie('page_state'));
-                              if (startState !== null && typeof startState["<%= @user.username %>"] !== "undefined") {
-                                  if (typeof startState["<%= @user.username %>"]["location"] !== "undefined") {
-                                      if (startState["<%= @user.username %>"]["location"] === "places") {
-                                          $(window).delay(100).queue(function () {
-                                              $('#name_filter_link').click();
-                                              $(this).dequeue();
-                                          });
-                                      } else if (startState["<%= @user.username %>"]["location"] === "photos") {
-                                          $(window).delay(100).queue(function () {
-                                              $('#photo_filter_link').click();
-                                              $(this).dequeue();
-                                          });
-                                      }
-                                  }
-                              }
+                                $(window).resize();
+
+                                $('.map_filter_button').fadeIn(100);
+
+                                // First run
+                                var startState = JSON.parse($.cookie('page_state'));
+                                if (startState !== null && typeof startState["<%= @user.username %>"] !== "undefined") {
+                                    if (typeof startState["<%= @user.username %>"]["location"] !== "undefined") {
+                                        if (startState["<%= @user.username %>"]["location"] === "places") {
+                                            $(window).delay(100).queue(function () {
+                                                $('#name_filter_link').click();
+                                                $(this).dequeue();
+                                            });
+                                        } else if (startState["<%= @user.username %>"]["location"] === "photos") {
+                                            $(window).delay(100).queue(function () {
+                                                $('#photo_filter_link').click();
+                                                $(this).dequeue();
+                                            });
+                                        }
+                                    }
+                                }
                             }
                         }
                     });
                 } else {
-                  var bounds = map.getBounds();
-                  var data = [];
-                  for (var persp in persps) {
-                    data.push(persps[persp])
-                  }
-                  
-                  updateList(data, (bounds.getNorthEast().lat() + bounds.getSouthWest().lat())/2, (bounds.getNorthEast().lng() + bounds.getSouthWest().lng())/2);
-                  updateMap();
+                    var bounds = map.getBounds();
+                    var data = [];
+                    for (var persp in persps) {
+                        data.push(persps[persp])
+                    }
+
+                    updateList(data, (bounds.getNorthEast().lat() + bounds.getSouthWest().lat()) / 2, (bounds.getNorthEast().lng() + bounds.getSouthWest().lng()) / 2);
+                    updateMap();
                 }
             });
-            
+
             $('#name_filter_link').click(function (e) {
-              loadState["<%= @user.username %>"]['location'] = 'places';
-              e.preventDefault();
-              
-              if ($('#name_filter_bubble').is(':visible')) {
-                $('#name_filter_bubble').fadeOut(100);
-                delete loadState["<%= @user.username %>"]['location'];
-              } else {
-                if ($('#photo_filter_bubble').is(':visible')) {
-                  $('#photo_filter_bubble').fadeOut(100);
-                }
-                updatePlaces();
-                $('#name_filter_bubble').fadeIn(100);
-                google.maps.event.trigger(map,'idle');
-              }
-              return false;
-            });
-            
-            $('#photo_filter_link').click(function(e) {
-              loadState["<%= @user.username %>"]['location'] = 'photos';
-              e.preventDefault();
-              
-              if ($('#photo_filter_bubble').is(':visible')) {
-                $('#photo_filter_bubble').fadeOut(100);
-                delete loadState["<%= @user.username %>"]['location'];
-              } else {
+                loadState["<%= @user.username %>"]['location'] = 'places';
+                e.preventDefault();
+
                 if ($('#name_filter_bubble').is(':visible')) {
-                  $('#name_filter_bubble').fadeOut(100);
+                    $('#name_filter_bubble').fadeOut(100);
+                    delete loadState["<%= @user.username %>"]['location'];
+                } else {
+                    if ($('#photo_filter_bubble').is(':visible')) {
+                        $('#photo_filter_bubble').fadeOut(100);
+                    }
+                    updatePlaces();
+                    $('#name_filter_bubble').fadeIn(100);
+                    google.maps.event.trigger(map, 'idle');
                 }
-                updatePhotos();
-                $('#photo_filter_bubble').fadeIn(100);
-                google.maps.event.trigger(map,'idle');
-              }
-              return false;
+                return false;
             });
-            
+
+            $('#photo_filter_link').click(function (e) {
+                loadState["<%= @user.username %>"]['location'] = 'photos';
+                e.preventDefault();
+
+                if ($('#photo_filter_bubble').is(':visible')) {
+                    $('#photo_filter_bubble').fadeOut(100);
+                    delete loadState["<%= @user.username %>"]['location'];
+                } else {
+                    if ($('#name_filter_bubble').is(':visible')) {
+                        $('#name_filter_bubble').fadeOut(100);
+                    }
+                    updatePhotos();
+                    $('#photo_filter_bubble').fadeIn(100);
+                    google.maps.event.trigger(map, 'idle');
+                }
+                return false;
+            });
+
             $('.home').click(function (e) {
                 e.preventDefault();
                 var center = new google.maps.LatLng(user_lat, user_lng);
@@ -1288,7 +1303,7 @@
                     'left':338,
                     'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').height() - CURRENT_LOCATION_OFFSET,
                 });
-                
+
                 $('#name_and_description').prepend('<div id="mini_current_location"><a href="/" class="pan"><img class="pan_img" src="<%= asset_path("pan.png"); %>"></a></div>');
                 $('#mini_current_location').width(30);
                 $('#mini_current_location').css({
@@ -1297,9 +1312,9 @@
                     'margin-top':10
                 });
                 $('#name_and_description').css({
-                  'margin-right':45
+                    'margin-right':45
                 })
-                
+
                 // Assign callback
                 $('.pan').click(function (e) {
                     $('#list').html('<div id="mini_spinner"><img class="spinner" src="<%= asset_path("spinner.gif"); %>"></div>')
@@ -1365,28 +1380,28 @@
                 $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
                 $(this).attr("href", $(this).attr("href") + "?lat=" + lat + "&lng=" + lng);
             })
-            
-            $('#tag_filter_link').click(function(e) {
-              e.preventDefault();
-              if (infowindow.getMap()) {
-                infowindow.close();
-                delete loadState["<%= @user.username %>"]['infowindow'];
-              }
-              if ($('#photo_filter_bubble').is(':visible')) {
-                $('#photo_filter_bubble').fadeOut(100);
-              }
-              if ($('#name_filter_bubble').is(':visible')) {
-                $('#name_filter_bubble').fadeOut(100);
-              }
-              
-              if ($('#filter_bubble').is(':visible')) {
-                hideFilters();
-              } else {
-                $('#filter_bubble').fadeIn(100);
-                $('#grey_arrow_left').fadeIn(100);
-              }
-              return false;
-            });            
+
+            $('#tag_filter_link').click(function (e) {
+                e.preventDefault();
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                    delete loadState["<%= @user.username %>"]['infowindow'];
+                }
+                if ($('#photo_filter_bubble').is(':visible')) {
+                    $('#photo_filter_bubble').fadeOut(100);
+                }
+                if ($('#name_filter_bubble').is(':visible')) {
+                    $('#name_filter_bubble').fadeOut(100);
+                }
+
+                if ($('#filter_bubble').is(':visible')) {
+                    hideFilters();
+                } else {
+                    $('#filter_bubble').fadeIn(100);
+                    $('#grey_arrow_left').fadeIn(100);
+                }
+                return false;
+            });
         }
 
         $(document).ready(function () {
@@ -1402,11 +1417,11 @@
 
             $(window).resize(function () {
                 if ($(window).width() > iPadWidth) {
-                  $("body").css("overflow", "hidden");
+                    $("body").css("overflow", "hidden");
                 } else {
-                  $("body").css("overflow", "auto");
+                    $("body").css("overflow", "auto");
                 }
-                
+
                 $('#main_map').width($('#map_holder'))
                 $('#main_map').height($(window).height() - $('#header').outerHeight(true) - $('#footerbottom').height());
                 var height = $(window).height() - $('#header').outerHeight(true) - $('#footerbottom').outerHeight();
@@ -1416,54 +1431,54 @@
                 $('#current_location').css({
                     'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').outerHeight(true) - CURRENT_LOCATION_OFFSET,
                 });
-                
+
                 if ($(window).width() > iPadWidth) {
-                  $('#spinner').css({
-                      'left':333,
-                      'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').height() - SPINNER_OFFSET
-                  });
+                    $('#spinner').css({
+                        'left':333,
+                        'top':$('#header').outerHeight(true) + $('#userdetails').outerHeight(true) + $('#main_map').outerHeight(true) - $('#current_location').height() - SPINNER_OFFSET
+                    });
                 }
-                
+
                 $('#photo_filter').css({
-                  'left':$(window).width()- $('#photo_filter').width() - RIGHT_GAP,
+                    'left':$(window).width() - $('#photo_filter').width() - RIGHT_GAP,
                 })
-                
+
                 $('#photo_filter_bubble').css({
-                  'left':$('#photo_filter').offset().left + $('#photo_filter').outerWidth(true) - $('#photo_filter_bubble').outerWidth(true),
-                  'top':$('#photo_filter').offset().top + $('#photo_filter').outerHeight(true)
+                    'left':$('#photo_filter').offset().left + $('#photo_filter').outerWidth(true) - $('#photo_filter_bubble').outerWidth(true),
+                    'top':$('#photo_filter').offset().top + $('#photo_filter').outerHeight(true)
                 })
-                
+
                 $('#name_filter').css({
-                  'left':parseInt($('#photo_filter').css('left')) - $('#name_filter').width() - RIGHT_GAP,
+                    'left':parseInt($('#photo_filter').css('left')) - $('#name_filter').width() - RIGHT_GAP,
                 })
-                
+
                 $('#name_filter_bubble').css({
-                  'left':$('#name_filter').offset().left + $('#name_filter').outerWidth(true) - $('#name_filter_bubble').outerWidth(true),
-                  'top':$('#name_filter').offset().top + $('#name_filter').outerHeight(true)
+                    'left':$('#name_filter').offset().left + $('#name_filter').outerWidth(true) - $('#name_filter_bubble').outerWidth(true),
+                    'top':$('#name_filter').offset().top + $('#name_filter').outerHeight(true)
                 })
-                
+
                 $('.list_filter_values').css({
-                  'max-height': 300,
+                    'max-height':300,
                 });
-                
+
                 $('#place_list_items').css({
-                    'max-height': $('#name_filter_values').innerHeight() - $('#place_list_header').innerHeight(),
+                    'max-height':$('#name_filter_values').innerHeight() - $('#place_list_header').innerHeight(),
                     'padding-top':0,
                     'padding-left':0,
                 });
                 $('#photo_list_items').css({
-                    'max-height': $('#photo_filter_values').innerHeight() - $('#photo_list_header').innerHeight(),
+                    'max-height':$('#photo_filter_values').innerHeight() - $('#photo_list_header').innerHeight(),
                     'padding-left':1,
                     'padding-top':1
-                });                
+                });
             });
-            
+
             $(window).resize();
         });
 
         $(window).load(function () {
             if ($(window).width() > iPadWidth) {
-              callToDownload(5000);
+                callToDownload(5000);
             }
         });
     </script>
@@ -1472,7 +1487,7 @@
 <div id="user_and_list">
   <div id="mini_user_details">
     <div id="list_profile_pic">
-      <%= image_tag @user.thumb_url, :alt=>"Pic", :class =>"profile_pic" %>
+      <%= image_tag @user.thumb_url, :alt => "Pic", :class => "profile_pic" %>
     </div>
     <div id="name_and_description">
       <div id="username_list"><%= @user.username %></div>
@@ -1506,7 +1521,7 @@
     <div id="red_arrow_left" class="arrow"></div>
     <div id="filter_bubble"></div>
     <div id="name_filter" class="map_filter_button">
-      <a href="#" id="name_filter_link"><%= image_tag asset_path("places_list.png")%></a>
+      <a href="#" id="name_filter_link"><%= image_tag asset_path("places_list.png") %></a>
     </div>
     <div id="name_filter_bubble">
       <div id="name_filter_arrow">
