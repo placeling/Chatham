@@ -164,6 +164,8 @@ class Place
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyPick.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
+    elsif CATEGORIES["Gas Station"].keys().include?(category) or CATEGORIES["Gas Station"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GasstationPick.png")}"
     else
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
     end
@@ -193,6 +195,8 @@ class Place
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyBanner.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodBanner.png")}"
+    elsif CATEGORIES["Gas Station"].keys().include?(category) or CATEGORIES["Gas Station"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GasstationBanner.png")}"
     else
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingBanner.png")}"
     end
