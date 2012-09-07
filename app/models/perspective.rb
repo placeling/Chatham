@@ -239,6 +239,17 @@ class Perspective
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.perspective_path(self) }"
   end
 
+  def og_picture
+
+    self.pictures.each do |picture|
+      if !picture.deleted
+        return picture.thumb_url
+      end
+    end
+
+    return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("Moustache.png")}"
+  end
+
   def twitter_text(padding = 35)
     size = 140 - padding - self.place.name.length
     return self.memo[0..size] + "..."

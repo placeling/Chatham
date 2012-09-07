@@ -4,15 +4,14 @@
       <meta name="description" content="<%= t('perspective.perspective_head', {:user => @perspective.user.username, :place => @perspective.place.name}) %> :: <%= t('perspective.call_to_action', {:user => @perspective.user.username, :place => @perspective.place.name}) %>">
       <meta property="og:title" content="placemark at <%= @perspective.place.name %>"/>
       <meta property="og:url" content="<%= @perspective.og_path %>"/>
+      <meta property="og:image" content="<%= @perspective.og_picture %>">
+      <meta property="og:type" content="placeling:placemark"/>
 
-      <meta property="og:type" content="placeling:placemark">
-
-      <% @perspective.pictures.each do |picture| %>
-          <% if !picture.deleted %>
-              <meta property="og:image" content="<%= picture.main_url %>">
-              <% break %>
-          <% end %>
-      <% end %>
+      <meta name="twitter:card" content="summary"/>
+      <meta name="twitter:url" content="<%= @perspective.og_path %>"/>
+      <meta name="twitter:title" content="<%= @perspective.place.name %>"/>
+      <meta name="twitter:description" content="<%= @perspective.memo %>"/>
+      <meta name="twitter:image" content="<%= @perspective.og_picture %>"/>
 <% end %>
 
 <% content_for :javascript_includes do %>
@@ -79,7 +78,7 @@
     <p>
       <a href="<%= user_path(@perspective.user) %>" class="thoughts_url"><%= @perspective.user.username %>
         <% if @perspective.user.username[@perspective.user.username.length-1] == "s" %><%= t('perspective.possessive_s') %>
-        <% else %><%= t('perspective.possessive') %>
+            <% else %><%= t('perspective.possessive') %>
         <% end %></a>
       <%= t('perspective.thoughts') %>
       <a href="<%= place_path(@perspective.place) %>" class="thoughts_url"><%= @perspective.place.name %></a>
