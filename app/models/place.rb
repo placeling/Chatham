@@ -32,6 +32,7 @@ class Place
 
   field :html_attributions, :type => Array, :default => ["Listings by \u003ca href=\"http://www.yellowpages.ca/\"\u003eYellowPages.ca\u003c/a\u003e"]
 
+  field :update_flag, :type => Boolean, :default => false
   slug :name, :index => true, :permanent => true
 
   has_many :perspectives, :foreign_key => 'plid'
