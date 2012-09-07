@@ -329,6 +329,7 @@ class PlacesController < ApplicationController
       for gplace in @google_places
         #add distance to in meters
         place = Place.new_from_google_place(gplace)
+        place.street_address = gplace.vicinity
         @processed_google_places << place
       end
 
