@@ -386,7 +386,7 @@ class Place
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path(self) }"
   end
 
-  def og_image
+  def og_picture
     return self.thumb_url
   end
 
