@@ -13,7 +13,7 @@ weekly_emails:
   description: "Send the weekly recommendation emails"
 
 google_places_update:
-  cron: "0 13 * * *"
+  cron: "0 10 * * *"
   class: GooglePlaceUpdate
   queue: high
   args:
