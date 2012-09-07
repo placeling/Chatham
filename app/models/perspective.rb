@@ -60,7 +60,7 @@ class Perspective
 
   def self.find_recent_for_user(user, start, count)
     user.perspectives.
-        order_by([:created_at, :desc]).
+        order_by([:modified_at, :desc]).
         skip(start).
         limit(count)
   end
