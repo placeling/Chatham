@@ -3,7 +3,12 @@ class GooglePlaceUpdate
 
   def self.perform()
 
-    places = Place.where(:updated_at.lt => 1.month.ago).limit(100)
+    if Rails.env.production?
+      places = Place.where(:updated_at.lt => 1.month.ago).limit(100)
+    else
+      places = Place.where(:updated_at.lt => 1.month.ago).limit(10)
+    end
+
     gp = GooglePlaces.new
 
     places.each do |place|
