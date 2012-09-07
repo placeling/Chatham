@@ -211,7 +211,7 @@ class Perspective
   def get_place_data
     self.place_location = self.place.location
     self.place_stub = PlaceStub.new
-    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id', 'slug', 'html_attributions')
+    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id', 'slug', 'html_attributions', "update_flag")
     self.place_stub.attributes = place_attributes
   end
 
