@@ -4,7 +4,7 @@ class GooglePlaceUpdate
   def self.perform()
 
     if Rails.env.production?
-      places = Place.where(:updated_at.lt => 1.month.ago).limit(300)
+      places = Place.where(:updated_at.lt => 1.month.ago).limit(1000)
     else
       places = Place.where(:updated_at.lt => 1.month.ago).limit(10)
     end
