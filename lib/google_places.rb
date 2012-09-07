@@ -41,13 +41,14 @@ class GooglePlaces
         :sensor => sensor
     }
 
-    response = mashup(self.class.get("/details/json", :query => options.merge(self.default_options)))
+    raw_response = self.class.get("/details/json", :query => options.merge(self.default_options))
+    response = mashup(raw_response)
     if response && response.status = "OK"
       mashup = response.result
       mashup.html_attributions = response.html_attributions
       return mashup
     else
-      pp response
+      pp raw_response
       return nil
     end
 
