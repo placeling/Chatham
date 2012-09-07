@@ -48,7 +48,7 @@ class GooglePlaces
       mashup.html_attributions = response.html_attributions
       return mashup
     else
-      pp raw_response
+      #pp raw_response
       return nil
     end
 
