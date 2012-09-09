@@ -5,6 +5,7 @@
   <script src="/whitelabel/jquery-1.7.2.min.js" type="text/javascript"></script>
   <script src="/whitelabel/bootstrap/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/whitelabel/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/whitelabel/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body style="padding-top: 50px;">
@@ -17,37 +18,11 @@
         GridTO
       </a>
 
-      <ul class="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/secure/place">Secret</a></li>
-      </ul>
-
-      <ul class="nav pull-right">
-        <li class="dropdown">
-          <a href="#"
-             class="dropdown-toggle"
-             data-toggle="dropdown">
-            GridTO
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="/login/form">Login</a></li>
-            <li><a href="/logout">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-
-
     </div>
   </div>
 </div>
 
+<%= yield %>
 
-<div class="container">
-  <% if @error then %>
-      <div class="alert alert-error"><%= @error %></div>
-  <% end %>
-  <%= yield %>
-</div>
 </body>
 </html>
