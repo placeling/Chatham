@@ -5,7 +5,7 @@ rescue
   secret_keys = YAML.load_file("#{::Rails.root.to_s}/config/secret_keys.yml")[::Rails.env]
 end
 
-CHATHAM_CONFIG = secret_keys.merge( YAML.load_file("#{::Rails.root.to_s}/config/chatham_config.yml")[::Rails.env] )
+CHATHAM_CONFIG = secret_keys.merge(YAML.load_file("#{::Rails.root.to_s}/config/chatham_config.yml")[::Rails.env])
 
 file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
 content = file.read()
@@ -22,3 +22,5 @@ RESERVED_USERNAMES = JSON(content)
 file = File.open(Rails.root.join("config/shitty_passwords.json"), 'r')
 content = file.read()
 SHITTY_PASSWORDS = JSON(content)
+
+require 'gridto/white_app'

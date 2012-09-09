@@ -394,6 +394,7 @@ DEPENDENCIES
   rspec-rails (~> 2.8.1)
   rvm-capistrano
   sass-rails (~> 3.2.3)
+  sinatra
   sitemap_generator
   twitter
   twitter-text!
