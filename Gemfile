@@ -71,6 +71,7 @@ gem "mixpanel"
 gem 'vanity'
 
 gem "sinatra"
+gem "sinatra-reloader"
 
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler', "2.0.0h", :require => 'resque_scheduler'
