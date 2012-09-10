@@ -335,6 +335,10 @@ class Place
       end
     end
 
+    if clean_venues.length ==0
+      clean_venues = ["other"] #best example of this are bridges, must have one
+    end
+
     self.venue_types = clean_venues
 
     self.place_type = "GOOGLE_PLACE"
