@@ -272,7 +272,7 @@ Chatham::Application.routes.draw do
 
   mount Resque::Server, :at => "resque"
 
-  mount WhiteApp, :at => "/whitelabel"
+  mount WhiteApp => "/whitelabel"
 
   match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile

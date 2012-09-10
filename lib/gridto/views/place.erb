@@ -1,0 +1,42 @@
+<div class="jumbotron subhead row" id="overview">
+  <div class="span8">
+    <h1><%= @perspective.place.name %></h1>
+
+    <p class="lead"><%= @perspective.place.street_address %></p>
+  </div>
+  <div class="span4">
+    <img src="<%= @perspective.place.map_url %>">
+  </div>
+</div>
+
+
+<div class="row-fluid">
+  <div class="span12">
+    <%= @perspective.memo %>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    %
+    <%= @perspective.memo %>
+  </div>
+</div>
+
+
+
+<% if @perspective.place.google_url %>
+    <a href="<%= @perspective.place.google_url %>" target="#" class="btn btn-primary">Hours &amp; Directions</a>&nbsp;
+<% end %>
+<% if @perspective.place.phone_number %>
+    <a href="tel:<%= @perspective.place.phone_number %>" class="btn">Call</a>&nbsp;
+<% end %>
+<a href="" class="btn">Share</a>
+
+<% @perspective.active_photos.each do |photo| %>
+    <a href="<%= photo["main"] %>" class="lightbox">
+      <div class="image_holder <%= photo["style"] %>">
+        <img src="<%= photo["mini"] %>" class="img-polaroid">
+      </div>
+    </a>
+<% end %>

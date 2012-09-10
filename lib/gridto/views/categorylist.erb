@@ -1,0 +1,26 @@
+<div class="btn-group">
+  <button class="btn">Listings</button>
+  <button class="btn">Map</button>
+</div>
+
+<table class="table table-striped">
+
+  <% @perspectives.each do |perspective| %>
+      <tr id="<%= perspective.place.slug %>">
+        <td>
+          <%= perspective.place.name %>
+          <br>
+          <%= perspective.place.street_address %>
+        </td>
+      </tr>
+  <% end %>
+
+</table>
+
+
+<script type="text/javascript">
+
+    $('.table > tbody > tr').click(function () {
+        window.location.href = "/whitelabel/place/" + $(this).attr("id");
+    });
+</script>
