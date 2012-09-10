@@ -14,6 +14,8 @@ class FacebookPost
         fb_auth.save
       elsif exc.fb_error_code == 200
         RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} doesn't authorize publish actions for facebook"
+      elsif exc.fb_error_code == 3501
+        RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} already associated object-object"
       else
         raise exc
       end
