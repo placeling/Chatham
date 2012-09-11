@@ -386,6 +386,10 @@ class Place
     return place
   end
 
+  def distance_to(lat, lng)
+    (1000 * Geocoder::Calculations.distance_between([lat, lng], [self.location[0], self.location[1]], :units => :km)).floor
+  end
+
   def og_path
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path(self) }"
   end

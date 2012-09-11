@@ -1,8 +1,3 @@
-<div class="btn-group">
-  <button class="btn">Listings</button>
-  <button class="btn">Map</button>
-</div>
-
 <table class="table table-striped">
 
   <% @perspectives.each do |perspective| %>
@@ -11,6 +6,16 @@
           <%= perspective.place.name %>
           <br>
           <%= perspective.place.street_address %>
+          <br>
+
+          <div style="display: block;width:100%">
+            <div style="float:left; color:#ff4500;">
+              <%= perspective.tags.join(" - ") %>
+            </div>
+          </div>
+          <% if @lat && @lng %>
+              <div style="color:red;float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
+          <% end %>
         </td>
       </tr>
   <% end %>

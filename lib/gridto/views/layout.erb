@@ -7,9 +7,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript"></script>
   <script src="/whitelabel/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/whitelabel/jquery.ui.map.min.js"></script>
+  <script type="text/javascript" src="/whitelabel/jquery.cookie.js"></script>
 
   <link rel="stylesheet" href="/whitelabel/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/whitelabel/style.css">
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <script type="text/javascript">
@@ -18,20 +20,31 @@
           if (navigator.geolocation) {
               var timeoutVal = 10 * 1000 * 1000;
               navigator.geolocation.getCurrentPosition(
-                      displayPosition,
-                      displayError,
+                      success_handler,
+                      error_handler,
                       { enableHighAccuracy:true, timeout:timeoutVal, maximumAge:0 }
+              );
+              var watch_id = navigator.geolocation.watchPosition(
+                      success_handler,
+                      error_handler
               );
           } else {
               alert("you have a shitty browser that doesn't support location");
           }
       });
 
-      function displayPosition(position) {
-          //alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+      function success_handler(position) {
+          /* Get the location data */
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          accuracy = position.coords.accuracy;
+
+          $.cookie("lat", latitude);
+          $.cookie("lng", longitude);
+          $.cookie("accuracy", accuracy);
       }
 
-      function displayError(error) {
+      function error_handler(error) {
           var errors = {
               1:'Permission denied',
               2:'Position unavailable',

@@ -12,6 +12,21 @@ class WhiteApp < Sinatra::Base
     def bar(name)
       "#{name}bar"
     end
+
+    def get_perspectives(user)
+      if @lat && @lng
+        perspectives = Perspective.find_nearby_for_user(user, [@lat, @lng], 180, 0, 20)
+      else
+        perspectives = Perspective.find_recent_for_user(user, 0, 20)
+      end
+      return perspectives
+    end
+  end
+
+  before do
+    @lat = request.cookies["lat"]
+    @lng = request.cookies["lng"]
+
   end
 
   get "/" do
@@ -26,7 +41,7 @@ class WhiteApp < Sinatra::Base
 
     user = User.find_by_username("gridto")
 
-    @perspectives = Perspective.find_recent_for_user(user, 0, 20)
+    @perspectives = get_perspectives(user)
 
     erb :categorylist
   end
@@ -35,7 +50,7 @@ class WhiteApp < Sinatra::Base
   get "/category/:category/map" do
     user = User.find_by_username("gridto")
 
-    @perspectives = Perspective.find_recent_for_user(user, 0, 20)
+    @perspectives = get_perspectives(user)
 
     erb :categorymap
   end
