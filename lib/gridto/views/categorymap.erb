@@ -1,22 +1,41 @@
-<div class="btn-group">
-  <button class="btn">Listings</button>
-  <button class="btn">Map</button>
-</div>
-
-
-<div class="item rounded dark">
-  <div id="map_canvas" class="map rounded"></div>
-</div>
-
-
-
-
+<div id="map_canvas" style="height:300px;width:100%;"></div>
 
 <script type="text/javascript">
 
-    $('#map_canvas').gmap().bind('init', function (ev, map) {
-        $('#map_canvas').gmap('addMarker', {'position':'57.7973333,12.0502107', 'bounds':true}).click(function () {
-            $('#map_canvas').gmap('openInfoWindow', {'content':'Hello World!'}, this);
+
+    $(document).ready(function () {
+        $('#map_canvas').gmap({
+            'center':'<%= @user.loc[0] %>,<%= @user.loc[1] %>',
+            'zoom':15
+        });
+
+        function htmlForPerspective(perspective) {
+            var infoWindowHTML = '<div class="info_window">';
+            infoWindowHTML += '<div class="info_name"><a href="/whitelabel/place/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
+            if (perspective.tags.length > 0) {
+                infoWindowHTML += '<div class="info_cat_and_tags">';
+                infoWindowHTML += perspective.tags.join("-")
+                infoWindowHTML += '</div>';
+            }
+            return infoWindowHTML += '</div>';
+        }
+
+        var placemark = new google.maps.MarkerImage(
+                '/images/placemarker.png',
+                new google.maps.Size(30, 32),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(9, 32)
+        );
+
+        $('#map_canvas').gmap().bind('init', function (evt, map) {
+            $.getJSON('/users/gridto/bounds.json?top_lat=43.93349981056994&bottom_lat=43.386450345878536&right_lng=-79.1420351409912&left_lng=-79.63796485900878', function (data) {
+                $.each(data.perspectives, function (i, m) {
+                    $('#map_canvas').gmap('addMarker', { 'position':new google.maps.LatLng(m.ploc[0], m.ploc[1]), icon:placemark }).click(function () {
+                        $('#map_canvas').gmap('openInfoWindow', {'content':htmlForPerspective(m)}, this);
+                    });
+                });
+            });
         });
     });
+
 </script>

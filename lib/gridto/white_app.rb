@@ -38,20 +38,15 @@ class WhiteApp < Sinatra::Base
   end
 
   get "/category/:category/list" do
-
-    user = User.find_by_username("gridto")
-
-    @perspectives = get_perspectives(user)
-
+    @user = User.find_by_username("gridto")
+    @perspectives = get_perspectives(@user)
     erb :categorylist
   end
 
 
   get "/category/:category/map" do
-    user = User.find_by_username("gridto")
-
-    @perspectives = get_perspectives(user)
-
+    @user = User.find_by_username("gridto")
+    @perspectives = get_perspectives(@user)
     erb :categorymap
   end
 
