@@ -20,11 +20,13 @@
 
               <div style="display: block;width:100%">
                 <div class="place_tags" style="float:left;">
-                  <%= perspective.tags.join(" - ") %>
+                  <%= perspective.tags.join(", ") %>
                 </div>
               </div>
               <% if @lat && @lng %>
-                  <div class="place_tags" style="float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
+                  <div class="place_tags hidden-desktop" style="float:right"><%= "%0.2f" % perspective.place.distance_to(@lat, @lng) %>
+                    km
+                  </div>
               <% end %>
             </td>
           </tr>

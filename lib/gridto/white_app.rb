@@ -73,7 +73,7 @@ class WhiteApp < Sinatra::Base
     if @lat && @lng
       @perspectives.each do |perspective|
         #add distance to in meters
-        perspective.distance = (1000 * Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)).floor
+        perspective.distance = Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)
       end
       @perspectives = @perspectives.sort_by { |perspective| perspective.distance }
     end
