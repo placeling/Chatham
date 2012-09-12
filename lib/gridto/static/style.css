@@ -1,7 +1,6 @@
 .category {
-    text-align: center;
-    border-style: solid;
-
+    width: 49%;
+    float: left;
 }
 
 .category img {
