@@ -3,3 +3,11 @@
     border-style: solid;
 
 }
+
+.category img {
+    width: 100%;
+}
+
+.navbar .nav > li > a {
+    padding: 19px 15px 10px 15px;
+}
