@@ -406,6 +406,7 @@ DEPENDENCIES
   rvm-capistrano
   sass-rails (~> 3.2.3)
   sinatra
+  sinatra-contrib
   sinatra-reloader
   sitemap_generator
   twitter

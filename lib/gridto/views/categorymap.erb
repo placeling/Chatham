@@ -1,3 +1,10 @@
+<% content_for :navbar_menu do %>
+    <ul class="nav pull-right" role="menu">
+      <li><a href="map">Map</a></li>
+      <li><a href="list">Listings</a></li>
+    </ul>
+<% end %>
+
 <div id="map_canvas" style="height:300px;width:100%;"></div>
 
 <script type="text/javascript">
@@ -14,7 +21,7 @@
             infoWindowHTML += '<div class="info_name"><a href="/whitelabel/place/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
             if (perspective.tags.length > 0) {
                 infoWindowHTML += '<div class="info_cat_and_tags">';
-                infoWindowHTML += perspective.tags.join("-")
+                infoWindowHTML += perspective.tags.join(" - ")
                 infoWindowHTML += '</div>';
             }
             return infoWindowHTML += '</div>';

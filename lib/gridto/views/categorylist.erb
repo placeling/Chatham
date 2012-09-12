@@ -1,27 +1,42 @@
-<table class="table table-striped">
+<% content_for :navbar_menu do %>
+    <ul class="nav pull-right" role="menu">
+      <li><a href="map">Map</a></li>
+      <li><a href="list">Listings</a></li>
+    </ul>
+<% end %>
 
-  <% @perspectives.each do |perspective| %>
-      <tr id="<%= perspective.place.slug %>">
-        <td>
-          <%= perspective.place.name %>
-          <br>
-          <%= perspective.place.street_address %>
-          <br>
+<div class="row" style="text-align: center;">
+  <div class="span4" style="height: 0;">
+  </div>
+  <div class="span4">
+    <table class="table table-striped">
 
-          <div style="display: block;width:100%">
-            <div style="float:left; color:#ff4500;">
-              <%= perspective.tags.join(" - ") %>
-            </div>
-          </div>
-          <% if @lat && @lng %>
-              <div style="color:red;float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
-          <% end %>
-        </td>
-      </tr>
-  <% end %>
+      <% @perspectives.each do |perspective| %>
+          <tr id="<%= perspective.place.slug %>">
+            <td>
+              <%= perspective.place.name %>
+              <br>
+              <%= perspective.place.street_address %>
+              <br>
 
-</table>
+              <div style="display: block;width:100%">
+                <div style="float:left; color:#ff4500;">
+                  <%= perspective.tags.join(" - ") %>
+                </div>
+              </div>
+              <% if @lat && @lng %>
+                  <div style="color:red;float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
 
+    </table>
+  </div>
+  <div class="span4 hidden-phone">
+    <img src="/whitelabel/images/BigBox8_300x600.png"/>
+  </div>
+</div>
 
 <script type="text/javascript">
 

@@ -1,6 +1,8 @@
 require 'sinatra/reloader' if Rails.env.development?
+require "sinatra/content_for"
 
 class WhiteApp < Sinatra::Base
+  helpers Sinatra::ContentFor
   # To change this template use File | Settings | File Templates.
 
   configure do
