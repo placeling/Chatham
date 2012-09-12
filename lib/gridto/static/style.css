@@ -17,12 +17,12 @@
 }
 
 .info_name a {
-    font-size: 24px;
+    font-size: 18px;
     color: black;
 }
 
 .info_address {
-    font-size: 14px;
+    font-size: 12px;
     color: #FF0000;
     text-transform: uppercase;
 }
