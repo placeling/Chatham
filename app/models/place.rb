@@ -438,7 +438,7 @@ class Place
     if options[:bounds]
       attributes.delete(:lat)
       attributes.delete(:lng)
-      attributes.delete(:street_address)
+      #attributes.delete(:street_address)
       attributes.delete(:google_id)
       attributes.delete(:google_ref)
       attributes.delete(:google_url)

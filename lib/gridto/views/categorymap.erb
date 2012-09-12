@@ -5,7 +5,7 @@
     </ul>
 <% end %>
 
-<div id="map_canvas" style="height:300px;width:100%;"></div>
+<div id="map_canvas" style="height:300px;width:100%;margin-top:-20px;"></div>
 
 <script type="text/javascript">
 
@@ -17,11 +17,12 @@
         });
 
         function htmlForPerspective(perspective) {
-            var infoWindowHTML = '<div class="info_window">';
+            var infoWindowHTML = '<div class="info_window"><div class="infowindow_liner">';
             infoWindowHTML += '<div class="info_name"><a href="/whitelabel/place/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
+            infoWindowHTML += '<div class="info_address">' + perspective.place.street_address + '</div>';
             if (perspective.tags.length > 0) {
-                infoWindowHTML += '<div class="info_cat_and_tags">';
-                infoWindowHTML += perspective.tags.join(" - ")
+                infoWindowHTML += '<div class="info_tags">';
+                infoWindowHTML += perspective.tags.join(", ");
                 infoWindowHTML += '</div>';
             }
             return infoWindowHTML += '</div>';

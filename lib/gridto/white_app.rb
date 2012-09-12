@@ -15,11 +15,31 @@ class WhiteApp < Sinatra::Base
       "#{name}bar"
     end
 
-    def get_perspectives(user)
-      if @lat && @lng
-        perspectives = Perspective.find_nearby_for_user(user, [@lat, @lng], 180, 0, 20)
+    def category_to_tags(category)
+      if category =="eating"
+        return ["brunch", "pizza", "poutine", "cheap", "kidfriendly", "latenight",
+                "grilledcheese", "under10bucks", "worththewait", "barbecue", "cookies",
+                "sushi", "veganbrunch", "dimsum", "taketheparents"]
+      elsif category =="drinking"
+        return ["sportsbar", "caesar", "brownliquor", "cocktails"]
+      elsif category == "coffee"
+        return ["coffee"]
+      elsif category =="pizza"
+        return ["pizza"]
+      elsif category == "poutine"
+        return ["poutine"]
       else
-        perspectives = Perspective.find_recent_for_user(user, 0, 20)
+        return []
+      end
+    end
+
+    def get_perspectives(user, category)
+      tags = category_to_tags(category).join(" ")
+
+      if @lat && @lng
+        perspectives = Perspective.query_near_for_user(user, [@lat, @lng], 180, tags)
+      else
+        perspectives = Perspective.query_near_for_user(user, [user.loc[0], user.loc[1]], 180, tags)
       end
       return perspectives
     end
@@ -41,14 +61,14 @@ class WhiteApp < Sinatra::Base
 
   get "/category/:category/list" do
     @user = User.find_by_username("gridto")
-    @perspectives = get_perspectives(@user)
+    @perspectives = get_perspectives(@user, params[:category])
     erb :categorylist
   end
 
 
   get "/category/:category/map" do
     @user = User.find_by_username("gridto")
-    @perspectives = get_perspectives(@user)
+    @perspectives = get_perspectives(@user, params[:category])
     erb :categorymap
   end
 
