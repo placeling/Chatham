@@ -77,12 +77,8 @@ class Perspective
   end
 
   def self.query_near_for_user(user, loc, span, query)
-    geonear = BSON::OrderedHash.new()
-    geonear["$near"] = loc
-    geonear["$maxDistance"] = span
-
-    selector = Perspective.where(:uid => user.id).
-        and(:ploc => geonear)
+    selector = Perspective.where(:ploc => {"$near" => loc}).
+        and(:uid => user.id)
 
     if query != nil and query.strip != ""
       tags = Perspective.extract_tag_array(query.downcase.strip)

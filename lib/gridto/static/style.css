@@ -43,3 +43,19 @@
     padding: 5px;
     background-color: white;
 }
+
+.place_name {
+    font-size: 24px;
+}
+
+.place_address {
+    font-size: 14px;
+    color: #FF0000;
+    text-transform: uppercase;
+}
+
+.place_tags {
+    font-size: 12px;
+    font-family: inherit;
+    color: #00AAEF;
+}

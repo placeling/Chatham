@@ -13,18 +13,18 @@
       <% @perspectives.each do |perspective| %>
           <tr id="<%= perspective.place.slug %>">
             <td>
-              <%= perspective.place.name %>
+              <span class="place_name"><%= perspective.place.name %></span>
               <br>
-              <%= perspective.place.street_address %>
+              <span class="place_address"><%= perspective.place.street_address %></span>
               <br>
 
               <div style="display: block;width:100%">
-                <div style="float:left; color:#ff4500;">
+                <div class="place_tags" style="float:left;">
                   <%= perspective.tags.join(" - ") %>
                 </div>
               </div>
               <% if @lat && @lng %>
-                  <div style="color:red;float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
+                  <div class="place_tags" style="float:right"><%= perspective.place.distance_to(@lat, @lng) %>m</div>
               <% end %>
             </td>
           </tr>

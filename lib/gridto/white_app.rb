@@ -4,19 +4,18 @@ require "sinatra/content_for"
 class WhiteApp < Sinatra::Base
   helpers Sinatra::ContentFor
   # To change this template use File | Settings | File Templates.
+  dir = File.dirname(File.expand_path(__FILE__))
+  set :views, "#{dir}views"
+
+  if respond_to? :public_folder
+    set :public_folder, "#{dir}/static"
+  else
+    set :public, "#{dir}/static"
+  end
 
   configure do
     set :views, File.dirname(__FILE__) + '/views'
     set :public_folder, Proc.new { File.join(root, "static") }
-  end
-
-  configure :staging do
-    set :host, 'staging.placeling.com'
-    set :force_ssl, true
-  end
-  configure :production do
-    set :host, 'www.placeling.com'
-    set :force_ssl, true
   end
 
   helpers do
@@ -46,11 +45,10 @@ class WhiteApp < Sinatra::Base
       tags = category_to_tags(category).join(" ")
 
       if @lat && @lng
-        perspectives = Perspective.query_near_for_user(user, [@lat, @lng], 180, tags)
+        return Perspective.query_near_for_user(user, [@lat, @lng], 180, tags)
       else
-        perspectives = Perspective.query_near_for_user(user, [user.loc[0], user.loc[1]], 180, tags)
+        return Perspective.query_near_for_user(user, [user.loc[0], user.loc[1]], 180, tags)
       end
-      return perspectives
     end
   end
 
@@ -70,14 +68,22 @@ class WhiteApp < Sinatra::Base
 
   get "/category/:category/list" do
     @user = User.find_by_username("gridto")
-    @perspectives = get_perspectives(@user, params[:category])
+    @perspectives = get_perspectives(@user, params[:category]).limit(20).entries
+
+    if @lat && @lng
+      @perspectives.each do |perspective|
+        #add distance to in meters
+        perspective.distance = (1000 * Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)).floor
+      end
+      @perspectives = @perspectives.sort_by { |perspective| perspective.distance }
+    end
+
     erb :categorylist
   end
 
 
   get "/category/:category/map" do
     @user = User.find_by_username("gridto")
-    @perspectives = get_perspectives(@user, params[:category])
     erb :categorymap
   end
 
