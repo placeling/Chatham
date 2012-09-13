@@ -1,5 +1,6 @@
 require 'sinatra/reloader' if Rails.env.development?
 require "sinatra/content_for"
+require 'rack-ssl-enforcer'
 
 class WhiteApp < Sinatra::Base
   helpers Sinatra::ContentFor
@@ -16,6 +17,15 @@ class WhiteApp < Sinatra::Base
   configure do
     set :views, File.dirname(__FILE__) + '/views'
     set :public_folder, Proc.new { File.join(root, "static") }
+  end
+
+  configure :staging do
+    set :force_ssl, true
+    use Rack::SslEnforcer
+  end
+  configure :production do
+    set :force_ssl, true
+    use Rack::SslEnforcer
   end
 
   helpers do

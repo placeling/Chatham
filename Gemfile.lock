@@ -241,6 +241,7 @@ GEM
     rack-rewrite (1.2.1)
     rack-ssl (1.3.2)
       rack
+    rack-ssl-enforcer (0.2.4)
     rack-test (0.6.1)
       rack (>= 1.0)
     rails (3.2.2)
@@ -395,6 +396,7 @@ DEPENDENCIES
   premailer-rails3
   rack-p3p
   rack-rewrite (~> 1.2.1)
+  rack-ssl-enforcer
   rails (= 3.2.2)
   recaptcha
   redis (~> 2.2)
