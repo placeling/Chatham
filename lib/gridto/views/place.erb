@@ -1,0 +1,58 @@
+<div class="row-fluid">
+  <div class='span1 hidden-phone'></div>
+
+  <div class="span7">
+    <div class="row">
+      <div class="span6">
+        <div class="place_name" style="font-size: 36px;line-height: 36px;padding-bottom: 10px;">
+          <%= @perspective.place.name %>
+        </div>
+
+        <div class="place_address" style="font-size: 18px;">
+          <%= @perspective.place.street_address %>
+        </div>
+        <div class="place_tags" style="font-size: 14px;">
+          <%= @perspective.tags.join(", ") %>
+        </div>
+      </div>
+
+      <div class="span6">
+        <img style="border:2px solid #000000;" src="<%= @perspective.place.map_url.gsub("size=100x100", "size=320x150&maptype=terrain") %>">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span6">
+        <div>
+          <%= @perspective.memo %>
+        </div>
+
+        <div style="padding:5px 0">
+          <% if @perspective.place.google_url %>
+              <a href="<%= @perspective.place.google_url %>" target="#" class="btn btn-primary">Hours &amp;
+                Directions</a>&nbsp;
+          <% end %>
+          <% if @perspective.place.phone_number %>
+              <a href="tel:<%= @perspective.place.phone_number %>" class="btn">Call</a>&nbsp;
+          <% end %>
+        </div>
+      </div>
+      <div class="span6">
+        <% @perspective.active_photos.each do |photo| %>
+            <a href="<%= photo.main_url %>" class="lightbox">
+              <div class="image_holder">
+                <img src="<%= photo.mosaic_3_1_url %>" class="img-polaroid">
+              </div>
+            </a>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="span4 hidden-phone">
+    <img src="/whitelabel/images/BigBox8_300x600.png"/>
+  </div>
+</div>
+
+

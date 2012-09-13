@@ -68,12 +68,12 @@ class Notifier < ActionMailer::Base
           subject = "#{@user.username}, it's almost the weekend"
         end
 
-        mail(:to => @user.email, :subject => subject, :from => "\"Placeling Weekender\" <contact@placeling.com>") do |format|
+        mail(:to => @user.email, :subject => subject) do |format|
           format.text
           format.html
         end
       else
-        mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend", :from => "\"Placeling Weekender\" <contact@placeling.com>") do |format|
+        mail(:to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
           format.text
           format.html
         end

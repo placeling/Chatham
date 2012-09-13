@@ -8,13 +8,14 @@ class FacebookPost
     begin
       actor1.facebook.put_connections("me", action_name, args_dict)
     rescue Koala::Facebook::APIError => exc
-      if exc.fb_error_type == 190
+      if exc.fb_error_code == 190
         fb_auth = actor1.authentications.where(:p => "facebook").first
         fb_auth.expiry = 1.day.ago #no longer valid, so cancel out
         fb_auth.save
-        raise "Facebook Error 190 for #{actor1.username}, reset expiry of token"
-      elsif exc.fb_error_type == 200
+      elsif exc.fb_error_code == 200
         RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} doesn't authorize publish actions for facebook"
+      elsif exc.fb_error_code == 3501
+        RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} already associated object-object"
       else
         raise exc
       end

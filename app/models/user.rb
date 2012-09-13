@@ -22,6 +22,8 @@ class User
   field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
 
+  field :notification_count, :type => Integer, :default => 0
+
   ## Database authenticatable
   field :email, :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
@@ -256,6 +258,15 @@ class User
     end
   end
 
+  def self.ian
+    self.where(:du => "imack").first
+  end
+
+
+  def self.lindsay
+    self.where(:du => "lindsayrgwatt").first
+  end
+
   def self.top_users(top_n)
     self.desc(:pc).limit(top_n)
   end
@@ -362,6 +373,11 @@ class User
 
     place = perspective.place
     user_perspective = self.perspective_for_place(place)
+
+    if self.id == perspective.user.id
+      #shouldn't be able to like own perspective
+      return user_perspective
+    end
 
     #starring a perspective triggers a bookmark of it
     if user_perspective.nil?
@@ -650,6 +666,7 @@ class User
       attributes = attributes.merge(:following => following, :follows_you => follows_you)
       if self.id == current_user.id
         attributes = attributes.merge(:auths => self.authentications)
+        attributes = attributes.merge(:notification_count => self.notification_count)
         attributes = attributes.merge(:highlighted_count => self.highlighted_places.count)
       end
     else

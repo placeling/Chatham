@@ -8,7 +8,7 @@ class PlacemarkActivity
     perspective = Perspective.find(perspective_id)
 
     if perspective.nil?
-      if perspective.deleted.find(perspective_id)
+      if Perspective.deleted.find(perspective_id)
         #was deleted before this went, so all good
         return
       end

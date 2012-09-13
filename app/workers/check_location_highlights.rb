@@ -8,11 +8,14 @@ class CheckLocationHighlights
       return
     end
 
-    user = User.find( user_id )
-    perspectives = Perspective.find_nearby_for_user( user, [lat,lng], 0.004, 0, 20 )
+    user = User.find(user_id)
+    perspectives = Perspective.find_nearby_for_user(user, [lat, lng], 0.004, 0, 20)
+
+    highlights = user.highlighted_places
+    highlights.shuffle!
 
     perspectives.each do |perspective|
-      if user.highlighted_places.include? perspective.place.id
+      if highlights.include? perspective.place.id
         if user.ios_notification_token
           Resque.enqueue(SendNotifications, user.id, "#{perspective.place.name} is near you!", "placeling://places/#{perspective.place.id}")
         end

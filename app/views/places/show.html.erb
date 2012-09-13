@@ -4,7 +4,17 @@
     <meta property="og:title" content="<%= @place.name %>"/>
     <meta property="og:url" content="<%= @place.og_path %>"/>
     <meta property="og:type" content="placeling:location">
-    <meta property="og:image" content="https://www.placeling.com/images/logo.png"/>
+    <meta property="og:image" content="<%= @place.og_picture %>"/>
+
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:url" content="<%= @place.og_path %>"/>
+    <meta name="twitter:title" content="<%= @place.name %>"/>
+    <meta name="twitter:description" content="<%= t('place.description', {:name => @place.name}) %>"/>
+    <meta name="twitter:image" content="<%= @place.og_picture %>"/>
+
+    <meta name="twitter:site" content="@placeling">
+    <meta name="twitter:site:id" content="248750993">
 
     <META NAME="geo.placename" content="<%= @place.name %>"/>
     <META NAME="geo.position" content="<%= @place.location[0] %>;<%= @place.location[1] %>"/>

@@ -28,7 +28,8 @@ class Perspective
   belongs_to :client_application
   
   embeds_many :pictures
-  embeds_many :placemark_comments
+  embeds_many :placemark_comments, :cascade_callbacks => true
+  accepts_nested_attributes_for :placemark_comments
   embeds_one :place_stub
 
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => lambda { |a| a[:content].blank? }
@@ -59,7 +60,7 @@ class Perspective
 
   def self.find_recent_for_user(user, start, count)
     user.perspectives.
-        order_by([:created_at, :desc]).
+        order_by([:modified_at, :desc]).
         skip(start).
         limit(count)
   end
@@ -74,6 +75,19 @@ class Perspective
         skip(start).
         limit(count)
   end
+
+  def self.query_near_for_user(user, loc, span, query)
+    selector = Perspective.where(:ploc => {"$near" => loc}).
+        and(:uid => user.id)
+
+    if query != nil and query.strip != ""
+      tags = Perspective.extract_tag_array(query.downcase.strip)
+      selector = selector.any_in(:tags => tags)
+    end
+
+    return selector
+  end
+
 
   def self.query_near(loc, span, query, category)
     geonear = BSON::OrderedHash.new()
@@ -218,7 +232,7 @@ class Perspective
   def get_place_data
     self.place_location = self.place.location
     self.place_stub = PlaceStub.new
-    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id', 'slug', 'html_attributions')
+    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id', 'slug', 'html_attributions', "update_flag")
     self.place_stub.attributes = place_attributes
   end
 
@@ -246,12 +260,33 @@ class Perspective
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.perspective_path(self) }"
   end
 
+  def og_picture
+
+    self.pictures.each do |picture|
+      if !picture.deleted
+        return picture.thumb_url
+      end
+    end
+
+    return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("Moustache.png")}"
+  end
+
   def twitter_text(padding = 35)
     size = 140 - padding - self.place.name.length
     return self.memo[0..size] + "..."
   end
 
   def as_json(options={})
+
+    #special check-empty perspective that is liking, return those values
+    if false # self.empty_perspective? && self.favourite_perspectives.count >0
+      perspective = self.favourite_perspectives[0]
+      perspective.starring_users.delete(self.user.id)
+      perspective.starring_users.insert(0, self.user.id) #move to front so will always show
+      attributes = perspective.as_json(options)
+      attributes['mine'] = false #prevent a highlight option
+      return attributes
+    end
 
     if self.liking_users.nil?
       for user_id in self.starring_users
@@ -271,7 +306,8 @@ class Perspective
         :memo => self.memo,
         :url => self.url,
         :modified_at => self['modified_at'],
-        :liking_users => self.liking_users
+        :liking_users => self.liking_users,
+        :comment_count => self.placemark_comments.count
     }
     if options[:bounds]
       attributes = attributes.merge(:photos => self.pictures.where(:deleted => false).as_json({:bounds => true}))

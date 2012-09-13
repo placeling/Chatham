@@ -32,6 +32,7 @@ class Place
 
   field :html_attributions, :type => Array, :default => ["Listings by \u003ca href=\"http://www.yellowpages.ca/\"\u003eYellowPages.ca\u003c/a\u003e"]
 
+  field :update_flag, :type => Boolean, :default => false
   slug :name, :index => true, :permanent => true
 
   has_many :perspectives, :foreign_key => 'plid'
@@ -164,6 +165,8 @@ class Place
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyPick.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodPick.png")}"
+    elsif CATEGORIES["Gas Station"].keys().include?(category) or CATEGORIES["Gas Station"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GasstationPick.png")}"
     else
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingPick.png")}"
     end
@@ -193,6 +196,8 @@ class Place
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/TouristyBanner.png")}"
     elsif CATEGORIES["Restaurants & Food"].keys().include?(category) or CATEGORIES["Restaurants & Food"].values().include?(category)
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/FoodBanner.png")}"
+    elsif CATEGORIES["Gas Station"].keys().include?(category) or CATEGORIES["Gas Station"].values().include?(category)
+      return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/GasstationBanner.png")}"
     else
       return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("quickpicks/EverythingBanner.png")}"
     end
@@ -298,6 +303,7 @@ class Place
     self.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
     self.google_ref = raw_place.reference
     self.venue_url = raw_place.url unless raw_place.url.nil?
+    self.html_attributions = raw_place.html_attributions
 
     # TODO This is hacky and ignores i18n
     @categories = CATEGORIES
@@ -329,6 +335,10 @@ class Place
       end
     end
 
+    if clean_venues.length ==0
+      clean_venues = ["other"] #best example of this are bridges, must have one
+    end
+
     self.venue_types = clean_venues
 
     self.place_type = "GOOGLE_PLACE"
@@ -338,7 +348,7 @@ class Place
 
 
   def map_url
-    "http://maps.google.com/maps/api/staticmap?center=#{loc[0]+0.0003},#{loc[1]}&zoom=15&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%7Ccolor:red%7C#{loc[0]},#{loc[1]}&sensor=false"
+    "https://maps.google.com/maps/api/staticmap?center=#{loc[0]+0.0003},#{loc[1]}&zoom=15&size=100x100&&markers=icon:http://www.placeling.com/images/marker.png%7Ccolor:red%7C#{loc[0]},#{loc[1]}&sensor=false"
   end
 
   def wide_map_url
@@ -376,8 +386,16 @@ class Place
     return place
   end
 
+  def distance_to(lat, lng)
+    (1000 * Geocoder::Calculations.distance_between([lat, lng], [self.location[0], self.location[1]], :units => :km)).floor
+  end
+
   def og_path
     "#{ApplicationHelper.get_hostname}#{ Rails.application.routes.url_helpers.place_path(self) }"
+  end
+
+  def og_picture
+    return self.thumb_url
   end
 
   def alpha_perspective
@@ -420,7 +438,7 @@ class Place
     if options[:bounds]
       attributes.delete(:lat)
       attributes.delete(:lng)
-      attributes.delete(:street_address)
+      #attributes.delete(:street_address)
       attributes.delete(:google_id)
       attributes.delete(:google_ref)
       attributes.delete(:google_url)

@@ -194,6 +194,10 @@ class PerspectivesController < ApplicationController
   def star
     @perspective = Perspective.find(params[:id])
 
+    if current_user.id == @perspective.user.id
+
+    end
+
     @user_perspective = current_user.star(@perspective)
 
     ActivityFeed.add_star_perspective(current_user, @perspective.user, @perspective)
@@ -405,6 +409,8 @@ class PerspectivesController < ApplicationController
           perp.save
         end
       end
+
+      current_user.highlighted_places.delete(@place.id)
 
       @perspective.destroy
       @place.save

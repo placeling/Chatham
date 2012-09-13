@@ -12,4 +12,11 @@ weekly_emails:
   args:
   description: "Send the weekly recommendation emails"
 
+google_places_update:
+  cron: "0 10 * * *"
+  class: GooglePlaceUpdate
+  queue: high
+  args:
+  description: "Update n google places that haven't been updated in a month"
+
 

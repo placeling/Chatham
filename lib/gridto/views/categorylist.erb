@@ -1,0 +1,47 @@
+<% content_for :navbar_menu do %>
+    <ul class="nav pull-right" role="menu">
+      <li><a href="map">Map</a></li>
+      <li><a href="list">Listings</a></li>
+    </ul>
+<% end %>
+
+<div class="row-fluid">
+  <div class='span3 hidden-phone'></div>
+  <div class="span5">
+    <table class="table table-striped">
+
+      <% @perspectives.each do |perspective| %>
+          <tr id="<%= perspective.place.slug %>">
+            <td style="border-top:1px solid black;">
+              <span class="place_name"><%= perspective.place.name %></span>
+              <br>
+              <span class="place_address"><%= perspective.place.street_address %></span>
+              <br>
+
+              <div style="display: block;width:100%">
+                <div class="place_tags" style="float:left;">
+                  <%= perspective.tags.join(", ") %>
+                </div>
+              </div>
+              <% if @lat && @lng %>
+                  <div class="place_tags hidden-desktop" style="float:right"><%= "%0.2f" % perspective.distance %>
+                    km
+                  </div>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+
+    </table>
+  </div>
+  <div class="span4 hidden-phone">
+    <img src="/whitelabel/images/BigBox8_300x600.png"/>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    $('.table > tbody > tr').click(function () {
+        window.location.href = "/whitelabel/place/" + $(this).attr("id");
+    });
+</script>

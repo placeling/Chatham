@@ -3,16 +3,16 @@ require 'json'
 class GooglePlaces
   include HTTParty
   #debug_output $stdout
-  
+
   # api docs: http://code.google.com/apis/maps/documentation/places/
   base_uri "https://maps.googleapis.com/maps/api/place"
-  
+
   def initialize()
     @api_key = CHATHAM_CONFIG['google_api']
   end
 
 
-  def self.getAddressDict( raw_address )
+  def self.getAddressDict(raw_address)
 
     address_dict = {}
     for element in raw_address
@@ -37,15 +37,18 @@ class GooglePlaces
     #radis is in meters
 
     options = {
-      :reference => reference,
-      :sensor => sensor
+        :reference => reference,
+        :sensor => sensor
     }
 
-    response = mashup( self.class.get("/details/json", :query => options.merge(self.default_options)) )
+    raw_response = self.class.get("/details/json", :query => options.merge(self.default_options))
+    response = mashup(raw_response)
     if response && response.status = "OK"
-      response.result
+      mashup = response.result
+      mashup.html_attributions = response.html_attributions
+      return mashup
     else
-      pp response
+      #pp raw_response
       return nil
     end
 
@@ -53,14 +56,14 @@ class GooglePlaces
 
   def check_in(google_id, sensor = false)
     place = Place.find_by_google_id(google_id)
-    
+
     if place.nil?
       return "Invalid location"
     end
-    
+
     if !place.google_ref.nil?
       options = {
-        :sensor => sensor
+          :sensor => sensor
       }
 
       ref = {:reference => place.google_ref}
@@ -68,7 +71,7 @@ class GooglePlaces
       result = mashup(self.class.post("/check-in/json",
                                       :query => options.merge(self.default_options),
                                       :body => ref.to_json))
-                                      
+
       return result["status"]
     else
       return "No google reference"
@@ -79,12 +82,12 @@ class GooglePlaces
   def find_nearby(x, y, radius, query = nil, sensor = true, type_array =[], language ="en")
     #radius is in meters
 
-    location = [x.round(4),y.round(4)].join(',')
+    location = [x.round(4), y.round(4)].join(',')
 
     options = {
-      :location => location,
-      :sensor => sensor,
-      :types => type_array.join("|")
+        :location => location,
+        :sensor => sensor,
+        :types => type_array.join("|")
     }
 
     if !query.nil?
@@ -93,15 +96,15 @@ class GooglePlaces
       options[:radius] = 4000
     else
       #TEST: cap radius at 100m
-      radius = [50,[200, radius].min].max
+      radius = [50, [200, radius].min].max
       options[:radius] = radius
     end
 
-    results = mashup( self.class.get("/search/json", :query => options.merge(self.default_options)) ).results
+    results = mashup(self.class.get("/search/json", :query => options.merge(self.default_options))).results
 
     for place in results
-      if place.types.include?( "political" ) or place.types.include?( "route" )
-        results.delete( place )
+      if place.types.include?("political") or place.types.include?("route")
+        results.delete(place)
       end
     end
 
@@ -112,49 +115,49 @@ class GooglePlaces
     # Known issue: if try a category of "other", will fail
     # Logged bug #3622 w/ Google
     # http://code.google.com/p/gmaps-api-issues/issues/detail?id=3622&sort=-id&colspec=ID%20Type%20Status%20Introduced%20Fixed%20Summary%20Stars%20ApiType%20Internal
-    
+
     options = {
-      :sensor => sensor
+        :sensor => sensor
     }
-    
+
     body = {
-      :location => {
-        :lat => x.to_f,
-        :lng => y.to_f
-      },
-      :accuracy => radius,
-      :name => name,
-      :types => [category],
-      :language => language
+        :location => {
+            :lat => x.to_f,
+            :lng => y.to_f
+        },
+        :accuracy => radius,
+        :name => name,
+        :types => [category],
+        :language => language
     }
-    
+
     # hardcode all "other" to "establishment" as workaround for issue #3622
     if category == "other"
       body[:types] = ["establishment"]
     end
-    
+
     results = mashup(self.class.post("/add/json",
-                                    :query => options.merge(self.default_options),
-                                    :body => body.to_json))
-    
+                                     :query => options.merge(self.default_options),
+                                     :body => body.to_json))
+
     return results
   end
-  
+
   def delete(reference, sensor = false)
-    
+
     options = {
-      :sensor => sensor
+        :sensor => sensor
     }
-    
+
     ref = {:reference => reference}
-    
+
     results = mashup(self.class.post("/delete/json",
-                                    :query => options.merge(self.default_options),
-                                    :body => ref.to_json))
-    
+                                     :query => options.merge(self.default_options),
+                                     :body => ref.to_json))
+
     return results
   end
-  
+
   #for testing
   def api_key
     return @api_key
@@ -166,35 +169,35 @@ class GooglePlaces
 
   protected
 
-    def default_options
-      { :key => @api_key }
-    end
+  def default_options
+    {:key => @api_key}
+  end
 
-    def mashup(response)
-      if response.code == 200
-        if response.is_a?(Hash)
-          hash = Hashie::Mash.new(response)
-        else
-          if response.first.is_a?(Hash)
-            hash = response.map{|item| Hashie::Mash.new(item)}
-          else
-            response
-          end
-        end
-
-        if hash.status == "OK" or hash.status == "ZERO_RESULTS"
-          return hash
-        elsif hash.status == "REQUEST_DENIED"
-          raise "Bad Google Places Request - request denied"
-        elsif hash.status == "OVER_QUERY_LIMIT"
-          raise "Bad Google Places Request - OVER QUERY LIMIT"
-        elsif hash.status == "INVALID_REQUEST"
-          raise "Bad Google Places Request - INVALID REQUEST"
-        end
+  def mashup(response)
+    if response.code == 200
+      if response.is_a?(Hash)
+        hash = Hashie::Mash.new(response)
       else
-        raise "Google Places API returned non-200 result"
+        if response.first.is_a?(Hash)
+          hash = response.map { |item| Hashie::Mash.new(item) }
+        else
+          response
+        end
       end
+
+      if hash.status == "OK" or hash.status == "ZERO_RESULTS"
+        return hash
+      elsif hash.status == "REQUEST_DENIED"
+        raise "Bad Google Places Request - request denied"
+      elsif hash.status == "OVER_QUERY_LIMIT"
+        raise "Bad Google Places Request - OVER QUERY LIMIT"
+      elsif hash.status == "INVALID_REQUEST"
+        raise "Bad Google Places Request - INVALID REQUEST"
+      end
+    else
+      raise "Google Places API returned non-200 result"
     end
-    
+  end
+
 end
 
