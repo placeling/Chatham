@@ -22,17 +22,11 @@
       $(document).ready(function () {
           if (navigator.geolocation) {
               var timeoutVal = 10 * 1000 * 1000;
-              navigator.geolocation.getCurrentPosition(
-                      success_handler,
-                      error_handler,
-                      { enableHighAccuracy:true, timeout:timeoutVal, maximumAge:0 }
-              );
               var watch_id = navigator.geolocation.watchPosition(
                       success_handler,
-                      error_handler
+                      error_handler,
+                      { enableHighAccuracy:true, timeout:timeoutVal, maximumAge:10 }
               );
-          } else {
-              alert("you have a shitty browser that doesn't support location");
           }
       });
 
@@ -48,7 +42,6 @@
       }
 
       function error_handler(error) {
-
       }
 
   </script>
