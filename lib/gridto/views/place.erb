@@ -1,47 +1,48 @@
 <div class="row-fluid">
-  <div class="span8">
-    <h1><%= @perspective.place.name %></h1>
+  <div class='span1 hidden-phone'></div>
 
-    <p class="lead"><%= @perspective.place.street_address %></p>
-  </div>
-  <div class="span4">
-    <img src="<%= @perspective.place.map_url.gsub("size=100x100", "size=320x150") %>">
-  </div>
-</div>
+  <div class="span7">
+    <div class="row">
+      <div class="span6">
+        <div class="place_name" style="font-size: 36px;line-height: 36px;">
+          <%= @perspective.place.name %>
+        </div>
+        <br>
 
-<div class="row">
-  <div class="span12">
-    <span style="color:orange"><%= @perspective.tags.join(" - ") %></span>
-  </div>
-</div>
-
-
-<div class="row-fluid">
-  <div class="span12">
-    <%= @perspective.memo %>
-  </div>
-</div>
-
-<div class="row-fluid">
-  <div class="span12">
-    <%= @perspective.memo %>
-  </div>
-</div>
-
-
-
-<% if @perspective.place.google_url %>
-    <a href="<%= @perspective.place.google_url %>" target="#" class="btn btn-primary">Hours &amp; Directions</a>&nbsp;
-<% end %>
-<% if @perspective.place.phone_number %>
-    <a href="tel:<%= @perspective.place.phone_number %>" class="btn">Call</a>&nbsp;
-<% end %>
-<a href="" class="btn">Share</a>
-
-<% @perspective.active_photos.each do |photo| %>
-    <a href="<%= photo["main"] %>" class="lightbox">
-      <div class="image_holder <%= photo["style"] %>">
-        <img src="<%= photo["mini"] %>" class="img-polaroid">
+        <div class="place_address" style="font-size: 18px;">
+          <%= @perspective.place.street_address %>
+        </div>
+        <div class="place_tags" style="font-size: 14px;">
+          <%= @perspective.tags.join(", ") %>
+        </div>
       </div>
-    </a>
-<% end %>
+
+      <div class="span6"><img src="<%= @perspective.place.map_url.gsub("size=100x100", "size=320x150") %>"></div>
+    </div>
+
+    <div class="row">
+      <div class="span6">
+        <div>
+          <%= @perspective.memo %>
+        </div>
+
+      </div>
+      <div class="span6">
+        <% @perspective.active_photos.each do |photo| %>
+            <a href="<%= photo["main"] %>" class="lightbox">
+              <div class="image_holder <%= photo["style"] %>">
+                <img src="<%= photo["mini"] %>" class="img-polaroid">
+              </div>
+            </a>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="span4 hidden-phone">
+    <img src="/whitelabel/images/BigBox8_300x600.png"/>
+  </div>
+</div>
+
+

@@ -24,7 +24,7 @@
                 </div>
               </div>
               <% if @lat && @lng %>
-                  <div class="place_tags hidden-desktop" style="float:right"><%= "%0.2f" % perspective.place.distance_to(@lat, @lng) %>
+                  <div class="place_tags hidden-desktop" style="float:right"><%= "%0.2f" % perspective.distance %>
                     km
                   </div>
               <% end %>
