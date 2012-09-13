@@ -12,7 +12,7 @@
 
       <% @perspectives.each do |perspective| %>
           <tr id="<%= perspective.place.slug %>">
-            <td>
+            <td style="border-top:1px solid black;">
               <span class="place_name"><%= perspective.place.name %></span>
               <br>
               <span class="place_address"><%= perspective.place.street_address %></span>
