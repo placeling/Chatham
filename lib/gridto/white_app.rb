@@ -1,5 +1,6 @@
 require 'sinatra/reloader' if Rails.env.development?
 require "sinatra/content_for"
+require 'rack-ssl-enforcer'
 
 class WhiteApp < Sinatra::Base
   helpers Sinatra::ContentFor
@@ -20,9 +21,11 @@ class WhiteApp < Sinatra::Base
 
   configure :staging do
     set :force_ssl, true
+    use Rack::SslEnforcer
   end
   configure :production do
     set :force_ssl, true
+    use Rack::SslEnforcer
   end
 
   helpers do
