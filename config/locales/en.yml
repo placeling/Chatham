@@ -241,7 +241,39 @@ en:
     notes: "Notes"
     url: "URL (don't forget the http:// prefix)"
     wrong_place: "Wrong place?"
-
+  
+  tour:
+    new: "Create a new tour"
+    edit: "Edit your tour"
+    name: "Name your tour"
+    describe: "Describe it"
+    bounds: "Pick the area that contains your tour"
+    square: "Must be square"
+    create: "Create"
+    update: "Update"
+    add_places: 'Add places to '
+    add_places_title: "Add places to your tour"
+    drag: 'Drag them to the middle column and feel free to rearrange the order'
+    warn_count: 'Your tours has more than 9 places in it'
+    warn_mini: 'Only the first nine will be numbered'
+    preview: 'Preview'
+    edit_bounds: 'Change Bounds'
+    preview_title: 'Preview your Tour'
+    preview: 'Preview your tour'
+    preview_instructions: 'Publish it and you can share it with friends'
+    download_iphone: "Get this tour on your iPhone:"
+    update_map: "Change map"
+    update_pins: "Change pins"
+    publish: "Publish your tour"
+    liked: "Done. Have fun exploring"
+    like_all: "Add this tour to your map"
+    creating: "We're creating your tour."
+    waiting: "This can take over a minute if our servers are busy."
+    trivia: "In the meantime, enjoy some trivia."
+    yours: "Here's your tour:"
+    high_res: "Printable version"
+    share: "Share your tour"
+    
   user:
     you: "Map"
     your_account: "Account"

@@ -1,0 +1,49 @@
+<% content_for :head do %>
+    <title><%= t('tour.preview_title') %></title>
+<% end %>
+
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.lightboxGallery').each(function () {
+          $('.lightbox', this).lightBox();
+      });
+    });
+    
+    $(window).load(function(){
+      var $container = $('#tour_perspectives');
+      $container.imagesLoaded(function(){
+        $container.masonry({
+          itemSelector: '.preview_perspective_holder',
+          columnWidth: 494,
+        });
+      });
+    });
+    
+    $(window).scroll(function() {
+      if ($('#tour_and_options').offset().top + 15 - $(window).scrollTop() > 35) {
+        $('#tour_publish').css({'top':$('#tour_and_options').offset().top + 15 - $(window).scrollTop()});
+      } else {
+        $('#tour_publish').css({'top':35});
+      }
+    })
+  </script>
+<% end %>
+
+<div id="places_instructions">
+  <h1><%= t('tour.preview') %></h1>
+  <%= t('tour.preview_instructions') %>
+</div>
+<div id="tour_and_options">
+  <%= render :partial => "render_tour", :locals => {:tour => @tour} %>
+</div>
+
+<div id="tour_publish">
+  <%= form_for @tour, :url => {:action => "publish"} do |f| %>
+    <div>
+      <div><%= f.submit t('tour.publish'), :class=>"submit" %></div>
+      <div class="tour_edit_link_holder"><%= link_to t('tour.update_pins'), places_user_tour_path(@tour.user, @tour), :class=>"tour_edit_link" %></div>
+    </div>
+  <% end %>
+  
+</div>

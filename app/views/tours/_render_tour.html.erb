@@ -1,0 +1,21 @@
+<div id="tour_preview">
+  <div id="tour_top_edge"></div>
+  <div id="tour_header" class="power"><%= tour.name.upcase %></div>
+  <div id="tour_preview_description" class="preview_margin"><%= simple_format(tour.description) %></div>
+  <div id="tour_preview_map">
+    <img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= tour.center[0] %>,<%= tour.center[1] %>&zoom=<%= tour.zoom %><% tour.active_perspectives.each_with_index do |perp, i| %>&markers=label:<%= i+1 %>%7Ccolor:0xBF5D3F%7C<%= perp.place.loc[0] %>,<%= perp.place.loc[1] %><% end %>&size=475x475&maptype=roadmap&sensor=false&scale=2" class="target_map">
+  </div>
+  <div id="tour_perspectives">
+    <% tour.active_perspectives.each_with_index do |perspective, i| %>
+      <%= render :partial => "preview_perspective", :locals => {:perspective => perspective, :i => i, :tour => tour} %>
+    <% end %>
+  </div>
+  <div id="tour_footer">
+    <div class="tour_action">
+      <%= t('tour.download_iphone').upcase %> <span class="url_highlight">PLACELING.COM<%= tour_list_path(tour.user).upcase %><span>
+    </div>
+  </div>
+  <div id="city_footer">
+    <%= image_tag asset_path('tours/city_footer.png') %>
+  </div>
+</div>

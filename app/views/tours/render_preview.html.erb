@@ -1,0 +1,15 @@
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    $(window).load(function(){
+      var $container = $('#tour_perspectives');
+      $container.imagesLoaded(function(){
+        $container.masonry({
+          itemSelector: '.preview_perspective_holder',
+          columnWidth: 494,
+        });
+      });
+    });
+  </script>
+<% end %>
+
+<%= render :partial => "render_tour", :locals => {:tour => @tour} %>

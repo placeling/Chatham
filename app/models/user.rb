@@ -199,7 +199,25 @@ class User
       self.location[1] = number_with_precision(self.location[1], :precision => 2)
     end
   end
-
+  
+  # Fix for users with 0.0, 0.0 as lat/lng
+  # TO ADD: better treatment for users with no locations near where they signed up
+  def home_location
+    location = []
+    if self.loc == [0.0, 0.0]
+      most_recent = Perspective.where(:uid => self.id).order_by([:created_at, :desc]).first
+      if most_recent
+        location = most_recent.ploc
+      else
+        location = self.loc
+      end
+    else
+      location = self.loc
+    end
+    
+    return location
+  end
+  
   def cache_urls
     if !self.creation_environment
       self.creation_environment = Rails.env

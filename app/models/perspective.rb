@@ -26,7 +26,7 @@ class Perspective
   belongs_to :place, :foreign_key => 'plid', :index => true
   belongs_to :user, :foreign_key => 'uid', :index => true
   belongs_to :client_application
-
+  
   embeds_many :pictures
   embeds_many :placemark_comments
   embeds_one :place_stub
@@ -173,6 +173,14 @@ class Perspective
     end
 
     return photos
+  end
+  
+  def real_memo
+    if self.memo && /\w/.match(self.memo)
+      return true
+    else
+      return false
+    end
   end
 
   def parse_tags
