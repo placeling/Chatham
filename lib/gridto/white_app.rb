@@ -18,6 +18,13 @@ class WhiteApp < Sinatra::Base
     set :public_folder, Proc.new { File.join(root, "static") }
   end
 
+  configure :staging do
+    set :force_ssl, true
+  end
+  configure :production do
+    set :force_ssl, true
+  end
+
   helpers do
     def bar(name)
       "#{name}bar"
