@@ -84,6 +84,15 @@ class WhiteApp < Sinatra::Base
 
   get "/category/:category/map" do
     @user = User.find_by_username("gridto")
+
+    if @lat && @lng
+      @display_lat = @lat
+      @display_lng = @lng
+    else
+      @display_lat = @user.loc[0]
+      @display_lng = @user.loc[1]
+    end
+
     erb :categorymap
   end
 

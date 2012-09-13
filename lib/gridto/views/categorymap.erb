@@ -10,7 +10,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#map_canvas').gmap({
-            'center':'<%= @user.loc[0] %>,<%= @user.loc[1] %>',
+            'center':'<%= @display_lat %>,<%= @display_lng %>',
             'zoom':15
         });
 
