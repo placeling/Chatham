@@ -26,7 +26,7 @@ class Perspective
   belongs_to :place, :foreign_key => 'plid', :index => true
   belongs_to :user, :foreign_key => 'uid', :index => true
   belongs_to :client_application
-  
+
   embeds_many :pictures
   embeds_many :placemark_comments, :cascade_callbacks => true
   accepts_nested_attributes_for :placemark_comments
@@ -45,6 +45,7 @@ class Perspective
   validates_associated :user
 
   validates_format_of :url, :with => URI::regexp, :message => "Invalid URL", :allow_nil => true
+  validates_uniqueness_of :uid, :scope => :plid, :on => [:create]
 
   before_validation :fix_location
   before_create :notify_modified
@@ -188,7 +189,7 @@ class Perspective
 
     return photos
   end
-  
+
   def real_memo
     if self.memo && /\w/.match(self.memo)
       return true
