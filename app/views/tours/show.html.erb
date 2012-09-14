@@ -59,7 +59,7 @@
       <h1><%= t('tour.share')%></h1>
       <h2>
         <span class="tour_spacer">
-          <a href='javascript:void((function()%7Bvar%20e=document.createElement(&apos;script&apos;);e.setAttribute(&apos;type&apos;,&apos;text/javascript&apos;);e.setAttribute(&apos;charset&apos;,&apos;UTF-8&apos;);e.setAttribute(&apos;src&apos;,&apos;http://assets.pinterest.com/js/pinmarklet.js?r=&apos;+Math.random()*99999999);document.body.appendChild(e)%7D)());'><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share middle" %></a>
+          <a href='javascript:void((function()%7Bvar%20e=document.createElement(&apos;script&apos;);e.setAttribute(&apos;type&apos;,&apos;text/javascript&apos;);e.setAttribute(&apos;charset&apos;,&apos;UTF-8&apos;);e.setAttribute(&apos;src&apos;,&apos;http://assets.pinterest.com/js/pinmarklet.js?r=&apos;+Math.random()*99999999);document.body.appendChild(e)%7D)());'><%= image_tag asset_path("pinterest/pinterest_static.png"), :alt=>"pin", :class=>"share middle" %></a>
         </span>
         <span class="tour_spacer">
           <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>&text=<%= u @tour.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share middle" %></a>
