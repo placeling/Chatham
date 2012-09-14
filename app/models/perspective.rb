@@ -45,7 +45,7 @@ class Perspective
   validates_associated :user
 
   validates_format_of :url, :with => URI::regexp, :message => "Invalid URL", :allow_nil => true
-  validates_uniqueness_of :uid, :scope => :plid, :on => [:create]
+  validates_uniqueness_of :uid, :scope => :plid, :on => :create
 
   before_validation :fix_location
   before_create :notify_modified
