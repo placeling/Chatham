@@ -1,0 +1,63 @@
+<% content_for :javascript do %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var baseDelay = 2500;
+    var fadeDelay = 500;
+    self.setInterval(function() {poll()},10000);
+    function poll() {
+      $.ajax({
+        url: '<%= poll_user_tour_path(@tour.user, @tour) %>',
+        type: 'GET',
+        dataType: 'script',
+        success: function(data) {
+          eval(data);
+        }
+      });
+    }
+    $('#waiting_instructions').delay(baseDelay).fadeOut(fadeDelay);
+    $('#further_instructions').delay(baseDelay + fadeDelay).fadeIn(fadeDelay).delay(baseDelay).fadeOut(fadeDelay);
+    $('#enjoy_trivia').delay(2*baseDelay + 3*fadeDelay).fadeIn(fadeDelay).delay(baseDelay).fadeOut(fadeDelay);
+    <% @trivia.each_with_index do |fact, i| %>
+    $('#trivia_<%= i %>').delay((<%= i + 3 %>)*baseDelay + (<%= (3+i)*2 %>)*fadeDelay).fadeIn(fadeDelay).delay(baseDelay).fadeOut(fadeDelay);
+    <% end %>
+  })
+</script>
+<% end %>
+
+<% content_for :css do %>
+  #waiting_game {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    text-align: center;
+  }
+  
+  .wait_spinner {
+    width: 75px;
+    height: 75px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .waiting_text {
+    font-family: Museo, Helvetica, Verdana, sans-serif;
+    font-size: 24px;
+  }
+  
+  .wait_hidden {
+    display: none;
+  }
+<% end %>
+
+<div id="waiting_game">
+  <div id="waiting_spinner">
+    <%= image_tag asset_path('spinner.gif'), :class=> 'wait_spinner' %>
+  </div>
+  <div id="waiting_instructions" class="waiting_text"><%= t('tour.creating') %></div>
+  <div id="further_instructions" class="wait_hidden waiting_text"><%= t('tour.waiting') %></div>
+  <div id="enjoy_trivia" class="wait_hidden waiting_text"><%= t('tour.trivia') %></div>
+  <% @trivia.each_with_index do |fact, i| %>
+    <div id="trivia_<%= i %>" class="wait_hidden waiting_text"><%= fact %></div>
+  <% end %>
+</div>

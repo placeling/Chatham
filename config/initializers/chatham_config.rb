@@ -23,4 +23,8 @@ file = File.open(Rails.root.join("config/shitty_passwords.json"), 'r')
 content = file.read()
 SHITTY_PASSWORDS = JSON(content)
 
+file = File.open(Rails.root.join("config/trivia.json"), 'r')
+content = file.read()
+TRIVIA = JSON(content)
+
 require 'gridto/white_app'

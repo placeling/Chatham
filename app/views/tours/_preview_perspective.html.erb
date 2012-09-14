@@ -1,0 +1,322 @@
+<div class="preview_perspective_holder">
+  <% if i < 9 %>
+    <div class="tour_counter">
+      <% if i % 2 == 1 %>
+        <%= image_tag asset_path('tours/odd_banner.png') %>
+      <% else %>
+      <%= image_tag asset_path('tours/even_banner.png') %>
+      <% end %>
+      <div class="tour_counter_value"><%= i+1 %></div>
+    </div>
+  <% end %>
+  <div class="preview_perspective">
+    <div class="place_name_and_address">
+      <% if request.path == user_tour_path(tour.user, tour) %><a href="<%= place_path(perspective.place) %>"><% end %>
+      <div class="tour_preview_place_name <% if i % 2 == 1 %>tour_dark<% else %>tour_light<% end %>"><% if request.path == user_tour_path(tour.user, tour) %><a href="<%= place_path(perspective.place) %>"><% end %><%= perspective.place.name.upcase %><% if request.path == user_tour_path(tour.user, tour) %></a><% end %></div>
+      <div class="tour_preview_place_address <% if i % 2 == 0 %>tour_dark<% else %>tour_light<% end %>"><%= perspective.place.street_address.upcase %></div>
+    </div>
+    <div class="preview_notes_and_photos">
+      <% if perspective.real_memo %>
+        <div class="tour_preview_memo_holder"><%= simple_format_with_tags(perspective.memo, :class=>"tour_preview_memo") %></div>
+      <% end %>
+      <% if perspective.active_photos.length > 0 %>
+      <div class="preview_tour_pics lightboxGallery">
+        <% perspective.active_photos.each_with_index do |picture, counter| %>
+          <% if counter < 10 %>
+            <a class="lightbox" href="<%= picture.main_url %>">
+              <!-- hard coded setups for different images count -->
+              <% if perspective.active_photos.length == 1 %>
+                <div class="image_holder three_wide">
+                  <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                </div>
+              <% end %>
+              <% if perspective.active_photos.length == 2 %>
+                <div class="image_holder three_wide">
+                  <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                </div>
+              <% end %>
+              <% if perspective.active_photos.length == 3 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 4 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 5 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 6 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 5 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 7 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 5 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 6 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 8 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder three_wide">
+                    <%= image_tag picture.mosaic_3_3_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 5 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 6 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 7 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length == 9 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 5 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 6 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 7 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>            
+                <% if counter == 8 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <% if perspective.active_photos.length > 9 %>
+                <% if counter == 0 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 1 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 2 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 3 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 4 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 5 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 6 %>
+                  <div class="image_holder two_wide">
+                    <%= image_tag picture.mosaic_3_2_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 7 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 8 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+                <% if counter == 9 %>
+                  <div class="image_holder one_wide">
+                    <%= image_tag picture.mosaic_3_1_url, :class => "photo_image" %>
+                  </div>
+                <% end %>
+              <% end %>
+            </a>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="tour_pics_clear"></div>
+      <% end %>
+    </div>
+  </div>
+</div>

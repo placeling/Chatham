@@ -1,15 +1,14 @@
 # encoding: utf-8
 #info about this at https://github.com/jnicklas/carrierwave, or the railscast http://railscasts.com/episodes/253-carrierwave-file-uploads
 
-class AvatarUploader < CarrierWave::Uploader::Base
+class TourUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   if Rails.env.test?
-    storage :file
+      storage :file
   else
-    storage :fog
+      storage :fog
   end
-
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
@@ -17,32 +16,22 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   # Create different versions of your uploaded files:
-   version :thumb do
-     process :manualcrop
-     process :resize_to_fill => [160, 160]
-   end
-
-   version :main do
-     process :manualcrop
-     process :resize_to_fill => [960, 960]
-   end
-   
-   process :resize_to_fit => [960, 960]
-   
-   def manualcrop
-     return unless model.cropping?
-     manipulate! do |img|
-       # This bizarre code is courtesy of Minimagick: https://github.com/jnicklas/carrierwave/issues/436
-       img.crop("#{model.w}x#{model.h}+#{model.x}+#{model.y}")
-       img = yield(img) if block_given?
-       img
-     end
-   end
-   
-   # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
-   def extension_white_list
-     %w(jpg jpeg gif png bmp)
-   end
+  version :print do
+    process :resize_to_fit => [1080, nil]
+  end
+  
+  version :screen do
+    process :resize_to_fit => [600, nil]
+  end
+  
+  version :open_graph do
+    process :resize_to_fill => [600, 1200, 'North']
+  end
+  
+  # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
+  def extension_white_list
+    %w(jpg jpeg gif png bmp)
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
@@ -58,5 +47,4 @@ class AvatarUploader < CarrierWave::Uploader::Base
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, UUIDTools::UUID.random_create().to_s())
   end
-
 end

@@ -1,0 +1,26 @@
+$('#like_all').fadeOut(100);
+$('#like_all').html('<div class="like_added"><%= t('tour.liked') %></div>');
+$('#like_all').fadeIn(100);
+
+<% @tour.active_perspectives.each do |perspective| %>
+$('#interact_<%= perspective.id %>').fadeOut(100);
+$("#interact_<%= perspective.id %>").html('<a rel="nofollow" data-remote="true" data-method="post" href="<%= unstar_perspective_path(perspective) %>" class="star_link"><%= image_tag "starred.png", :alt=>"Unstar", :class=>"middle" %></a>');
+$('#interact_<%= perspective.id %>').fadeIn(100);
+<% end %>
+
+$('.star_link').unbind('hover');
+$('.star_link').hover(
+  function() {
+    var source = $('img', this).attr('src');
+    if (source.indexOf('unstarred.png') >= 0) {
+      $('img', this).attr('src', '<%= asset_path('starred.png') %>');
+      $('img', this).css({'opacity':'0.4'});
+    }
+  }, 
+  function() {
+    if ($('img', this).css('opacity') == '0.4') {
+      $('img', this).attr('src', '<%= asset_path('unstarred.png') %>');
+      $('img', this).css({'opacity':'1.0'});
+    }
+  }
+);
