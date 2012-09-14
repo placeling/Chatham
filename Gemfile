@@ -76,7 +76,7 @@ gem "sinatra-contrib"
 gem 'rack-ssl-enforcer'
 
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', "2.0.0h", :require => 'resque_scheduler'
+gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 gem 'resque_mailer'
 
 gem 'sitemap_generator'

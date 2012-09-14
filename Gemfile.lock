@@ -402,7 +402,7 @@ DEPENDENCIES
   redis (~> 2.2)
   redis-namespace
   resque
-  resque-scheduler (= 2.0.0h)
+  resque-scheduler (= 2.0.0.h)
   resque_mailer
   rspec-rails (~> 2.8.1)
   rvm-capistrano

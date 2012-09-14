@@ -7,7 +7,7 @@ class WeeklyEmail
       User.all.each do |user|
         if user.weekly_email? && !user.loc.nil? && user.loc != [0.0, 0.0]
           mail = Notifier.weekly(user.id)
-          mail.deliver unless mail.to == nil
+          mail.deliver unless mail.to == nil || mail.from == nil
         end
       end
     else

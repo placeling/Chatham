@@ -35,7 +35,7 @@ class RegistrationsController < Devise::RegistrationsController
   def check_timestamp
     timestamp = params['page_timestamp'].to_i
     diff = timestamp - Time.now.to_i
-    if diff.abs < 4
+    if diff.abs < 4 || params['page_timestamp'].nil?
       flash[:notice] = "You filled out that form pretty fast, so we think you might be a bot, try again"
       redirect_to new_user_registration_path
       return false
