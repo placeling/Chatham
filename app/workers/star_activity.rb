@@ -36,7 +36,7 @@ class StarActivity
       apns = false
       email = false
       if actor2.remark_notification?
-        Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} liked your placemark on #{ perspective.place.name }!", "placeling://users/#{actor1.id}")
+        Resque.enqueue(SendNotifications, actor2.id, "#{actor1.username} liked your placemark on #{ perspective.place.name }!", "placeling://users/#{actor1.username}")
         apns = true
       end
       if actor2.remark_email?
