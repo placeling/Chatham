@@ -146,7 +146,7 @@
 <div id="places_instructions">
   <h1><%= t('tour.add_places') %><span class="tour_name"><%= @tour.name %></span></h1>
   <%= t('tour.drag') %>
-  <div id="places_filters">Show: <input type="checkbox" id="show_tags_check" checked="yes" /><a href="#" id="show_tags">tags</a> <input type="checkbox" id="show_photos_check" checked="yes" /><a href="#" id="show_photos">photos</a> <input type="checkbox" id="show_notes_check" checked="yes" /><a href="#" id="show_notes">notes</a></div>
+  <div id="places_filters"><%= t('tours.show') %>: <input type="checkbox" id="show_tags_check" checked="yes" /><a href="#" id="show_tags"><%= t('tour.tags') %></a> <input type="checkbox" id="show_photos_check" checked="yes" /><a href="#" id="show_photos"><%= t('tour.photos') %></a> <input type="checkbox" id="show_notes_check" checked="yes" /><a href="#" id="show_notes"><%= t('tour.notes') %></a></div>
 </div>
 <div id="available_places">
   <ul id="available_list" class="connectedSortable">

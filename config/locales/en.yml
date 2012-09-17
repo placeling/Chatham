@@ -273,6 +273,10 @@ en:
     yours: "Here's your tour:"
     high_res: "Printable version"
     share: "Share your tour"
+    show: "Show"
+    tags: "tags"
+    photos: "photos"
+    notes: "notes"
     
   user:
     you: "Map"
