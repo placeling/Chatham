@@ -218,10 +218,16 @@ class Perspective
   end
 
   def reset_user_and_place_perspective_count
-    self.place.perspective_count = self.place.perspectives.count
-    self.user.perspective_count = self.user.perspectives.count
-    self.place.save!
-    self.user.save!
+    unless self.place.nil?
+      self.place.perspective_count = self.place.perspectives.count
+      self.place.save!
+    end
+
+    unless self.user.nil?
+      self.user.perspective_count = self.user.perspectives.count #deleted user case
+      self.user.save!
+    end
+
   end
 
   def picture_details=(picture_details)

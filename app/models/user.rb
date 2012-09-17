@@ -73,7 +73,7 @@ class User
   field :w, :type => Float
   field :h, :type => Float
 
-  has_many :perspectives, :foreign_key => 'uid'
+  has_many :perspectives, :foreign_key => 'uid', :dependent => :destroy
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
   has_many :questions
@@ -84,7 +84,7 @@ class User
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   has_many :client_applications, :foreign_key => 'uid'
-  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :foreign_key => 'uid'
+  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :foreign_key => 'uid', :dependent => :delete
 
   embeds_one :activity_feed
   embeds_one :user_setting
@@ -112,6 +112,7 @@ class User
 
   before_save :cache_urls
   before_save :get_city
+  before_destroy :clear_user
 
   #before_validation :fix_location
   after_validation :set_downcase_username
@@ -192,6 +193,20 @@ class User
     end
   end
 
+  def clear_user
+    replacement_user = User.find_by_username("tyler")
+
+    Perspective.any_of({'placemark_comments.user_id' => self.id}).each do |perspective|
+      perspective.placemark_comments.destroy_all(:user_id => self.id)
+    end
+
+    self.questions.each do |question|
+      question.user = replacement_user
+      question.save!
+    end
+
+  end
+
   def fix_location
     #this is broken until we upgrade to rails 3.1
     if self.location[0]
@@ -201,7 +216,7 @@ class User
       self.location[1] = number_with_precision(self.location[1], :precision => 2)
     end
   end
-  
+
   # Fix for users with 0.0, 0.0 as lat/lng
   # TO ADD: better treatment for users with no locations near where they signed up
   def home_location
@@ -216,10 +231,10 @@ class User
     else
       location = self.loc
     end
-    
+
     return location
   end
-  
+
   def cache_urls
     if !self.creation_environment
       self.creation_environment = Rails.env

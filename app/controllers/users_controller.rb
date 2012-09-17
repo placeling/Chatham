@@ -926,6 +926,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def confirm_destroy
+
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def destroy
+    @user = User.find_by_username(params[:id])
+    return unless @user.id == current_user.id
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def follow
     @user = User.find_by_username(params[:id])
 
