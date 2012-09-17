@@ -15,18 +15,15 @@
       
       $('#tour_map').html(html);
       
-      // Get all the relevant places and iterate over them with an index
       $('#selected_list .tour_perspective').each(function(index) {
         if (index < 9) {
           $('.tour_place_count', this).html('<%= image_tag asset_path('tours/odd_banner.png'), :class=> "tour_place_count_background" %><div class="tour_place_counter">' + (index + 1) + "</div>");
+          $('.tour_place_count', this).css('height','36');
         } else {
           $('.tour_place_count', this).html('');
+          $('.tour_place_count', this).css('height','0');
         }
       });
-      
-      // If counter < 9, prepend a div that floats left
-      
-      
       
       if ($("#selected_list .tour_perspective").length > 9) {
         $('#tour_warning').fadeIn(100);
@@ -48,13 +45,19 @@
         }
       }).disableSelection();
       
-      $('#places_map').css({'top':$('#available_places').offset().top + parseInt($('#places_map').css('border-width'))});//  - $(window).scrollTop()});
+      $('#places_map').css('top', $('#available_list').offset().top);
       
+      var minGap = 29;
       $(window).scroll(function() {
-        if ($('#available_places').offset().top + 9 - $(window).scrollTop() > 29) {
-          $('#places_map').css({'top':$('#available_places').offset().top + 9 - $(window).scrollTop()});
+        var initialOffset = $('#available_list').offset().top;
+        if ($(window).scrollTop() - initialOffset > minGap) {
+          $('#places_map').css({'top': minGap});
         } else {
-          $('#places_map').css({'top':29});
+          if (initialOffset - $(window).scrollTop() < minGap) {
+            $('#places_map').css({'top': minGap})
+          } else {
+            $('#places_map').css({'top': initialOffset - $(window).scrollTop()});
+          }
         }
       })
       
