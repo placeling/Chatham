@@ -134,6 +134,9 @@
         </div>
       </div>
   <% end %>
+  <div class="account_holder">
+    <%= link_to t('account.deactivate_account'), confirm_destroy_user_path(@user) %>
+  </div>
 </div>
 
 <div id="embed_and_update">

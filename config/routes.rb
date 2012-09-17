@@ -49,7 +49,7 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new', :to => 'potential_perspectives#new', :via => :get
   match '/bulkupload/new', :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process', :to => 'potential_perspectives#potential_to_real', :via => :post
-  match '/:user_id/tours', :to=>"tours#index", :as => :tour_list
+  match '/:user_id/tours', :to => "tours#index", :as => :tour_list
 
   post 'oauth/revoke', :to => 'oauth#revoke', :as => :oauth
 
@@ -84,6 +84,7 @@ Chatham::Application.routes.draw do
       get :wimdu
       get :embed
       get :account
+      get :confirm_destroy
       post :block
       post :unblock
       get :pic, :as => :pic
