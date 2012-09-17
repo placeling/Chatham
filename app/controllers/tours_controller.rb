@@ -61,7 +61,7 @@ class ToursController < ApplicationController
     @tour.user = @user
     
     if @tour.valid?
-      @tour.save()
+      @tour.save
       return redirect_to(places_user_tour_path(@user, @tour))
     end
     
@@ -113,7 +113,7 @@ class ToursController < ApplicationController
     end
     
     if @tour.valid?
-      @tour.save()
+      @tour.save
       return redirect_to(places_user_tour_path(@tour.user, @tour))
     end
     
