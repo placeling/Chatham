@@ -105,6 +105,7 @@ describe User do
     perspective3 = Factory.create(:perspective, :user => user2, :place => place, :memo => "SHIZZLE") #for commenting on
 
     user.star(perspective3)
+    user2.star(perspective1)
     perspective3.save!
 
     user2.follow(user)
