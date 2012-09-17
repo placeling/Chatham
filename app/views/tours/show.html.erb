@@ -53,7 +53,11 @@
     <p class="tour_offer"><%= t('tour.yours')%></p>
     <h2><a href="<%= @tour.infographic_url(:print) %>"><%= t('tour.high_res')%></a></h2>
     <div id="tour_image">
-      <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a></div>
+      <% if @tour.infographic && @tour.infographic.screen.file && @tour.infographic.screen.file.exists? %>
+        <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a></div>
+      <% else %>
+        <div><div id="not_rendered"><%= t('tour.not_rendered')%>. <%= link_to t('tour.preview_then_publish'), preview_user_tour_path(@tour.user, @tour) %></div></div>
+      <% end %>
     </div>
     <div id="tour_share_me">
       <h1><%= t('tour.share')%></h1>

@@ -61,7 +61,7 @@ class ToursController < ApplicationController
     @tour.user = @user
     
     if @tour.valid?
-      @tour.save()
+      @tour.save
       return redirect_to(places_user_tour_path(@user, @tour))
     end
     
@@ -113,7 +113,7 @@ class ToursController < ApplicationController
     end
     
     if @tour.valid?
-      @tour.save()
+      @tour.save
       return redirect_to(places_user_tour_path(@tour.user, @tour))
     end
     
@@ -232,11 +232,14 @@ class ToursController < ApplicationController
     
     perspectives = @tour.active_perspectives
     perspectives.each do |perspective|
-      puts perspective.place.name
-      puts perspective.starring_users
       if !perspective.starring_users.include?(current_user.id)
         current_user.star(perspective)
       end
+    end
+    
+    if !current_user.user_tour.subscribed_tour_ids.include?(@tour.id)
+      current_user.user_tour.subscribed_tour_ids << @tour.id
+      current_user.save
     end
     
     respond_to do |format|

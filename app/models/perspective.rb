@@ -1,6 +1,8 @@
 require 'google_places'
 
 class Perspective
+  MAX_LENGTH = 130
+  
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Paranoia
@@ -89,7 +91,18 @@ class Perspective
     return selector
   end
 
-
+  def short_memo
+    if self.memo
+      if self.memo.length < MAX_LENGTH
+        return self.memo
+      else
+        return self.memo[0..MAX_LENGTH-1] + "..."
+      end
+    else
+      return nil
+    end
+  end
+  
   def self.query_near(loc, span, query, category)
     geonear = BSON::OrderedHash.new()
     geonear["$near"] = loc

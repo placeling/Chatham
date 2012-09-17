@@ -1,9 +1,19 @@
 <li class="tour_perspective" id="p_<%= perspective.id %>">
+  <div class="tour_place_count"></div>
   <div class="tour_lat"><%= perspective.place.loc[0] %></div>
   <div class="tour_lng"><%= perspective.place.loc[1] %></div>
   <div class="tour_place_name"><%= perspective.place.name %></div>
+  <% if !perspective.tags.nil? && perspective.tags.length > 0 %>
+  <ul class="tour_tags_holder">
+    <% perspective.tags.each do |tag| %>
+    <li class="tour_tags">
+        #<%= tag %>
+    </li>
+    <% end %>
+  </ul>
+  <% end %>
   <% if perspective.memo %>
-    <div><%= simple_format_with_tags(perspective.memo, :class=>"tour_memo") %></div>
+    <div class="clear_both"><%= simple_format_with_tags(perspective.short_memo, :class=>"tour_memo") %></div>
   <% end %>
   <% if perspective.active_photos.length > 0 %>
   <div class="tour_pics">

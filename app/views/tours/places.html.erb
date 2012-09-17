@@ -15,6 +15,19 @@
       
       $('#tour_map').html(html);
       
+      // Get all the relevant places and iterate over them with an index
+      $('#selected_list .tour_perspective').each(function(index) {
+        if (index < 9) {
+          $('.tour_place_count', this).html('<%= image_tag asset_path('tours/odd_banner.png'), :class=> "tour_place_count_background" %><div class="tour_place_counter">' + (index + 1) + "</div>");
+        } else {
+          $('.tour_place_count', this).html('');
+        }
+      });
+      
+      // If counter < 9, prepend a div that floats left
+      
+      
+      
       if ($("#selected_list .tour_perspective").length > 9) {
         $('#tour_warning').fadeIn(100);
       } else {
@@ -64,6 +77,66 @@
         $('#tour_perspective_holder').html(html);
       });
       
+      $('#show_tags').click(function(e) {
+        e.preventDefault();
+        if ($('#show_tags_check').is(':checked')) {
+          $('#show_tags_check').attr('checked', false);
+          $('.tour_tags_holder').fadeOut(100);
+        } else {
+          $('#show_tags_check').attr('checked', true);
+          $('.tour_tags_holder').fadeIn(100);
+        }
+        return false;
+      })
+      
+      $('#show_tags_check').change(function() {
+        if ($(this).is(':checked',false)) {
+          $('.tour_tags_holder').fadeIn(100);
+        } else {
+          $('.tour_tags_holder').fadeOut(100);
+        }
+      });
+      
+      $('#show_photos').click(function(e) {
+        e.preventDefault();
+        if ($('#show_photos_check').is(':checked')) {
+          $('#show_photos_check').attr('checked', false);
+          $('.tour_pics').fadeOut(100);
+        } else {
+          $('#show_photos_check').attr('checked', true);
+          $('.tour_pics').fadeIn(100);
+        }
+        return false;
+      })
+      
+      $('#show_photos_check').change(function() {
+        if ($(this).is(':checked',false)) {
+          $('.tour_pics').fadeIn(100);
+        } else {
+          $('.tour_pics').fadeOut(100);
+        }
+      });
+      
+      $('#show_notes').click(function(e) {
+        e.preventDefault();
+        if ($('#show_notes_check').is(':checked')) {
+          $('#show_notes_check').attr('checked', false);
+          $('.tour_memo').fadeOut(100);
+        } else {
+          $('#show_notes_check').attr('checked', true);
+          $('.tour_memo').fadeIn(100);
+        }
+        return false;
+      })
+      
+      $('#show_notes_check').change(function() {
+        if ($(this).is(':checked',false)) {
+          $('.tour_memo').fadeIn(100);
+        } else {
+          $('.tour_memo').fadeOut(100);
+        }
+      });
+      
       updateMap();
     });
     
@@ -73,6 +146,7 @@
 <div id="places_instructions">
   <h1><%= t('tour.add_places') %><span class="tour_name"><%= @tour.name %></span></h1>
   <%= t('tour.drag') %>
+  <div id="places_filters"><%= t('tours.show') %>: <input type="checkbox" id="show_tags_check" checked="yes" /><a href="#" id="show_tags"><%= t('tour.tags') %></a> <input type="checkbox" id="show_photos_check" checked="yes" /><a href="#" id="show_photos"><%= t('tour.photos') %></a> <input type="checkbox" id="show_notes_check" checked="yes" /><a href="#" id="show_notes"><%= t('tour.notes') %></a></div>
 </div>
 <div id="available_places">
   <ul id="available_list" class="connectedSortable">

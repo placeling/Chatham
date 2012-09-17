@@ -25,6 +25,7 @@ class Tour
   
   validates_presence_of :name, :center, :zoom, :northeast, :southwest
   validates_inclusion_of :zoom, :in => 0..21, :message => "Zoom must be between 0 and 21" 
+  validates :name, :length => { :maximum => 30, :too_long => "Tour names can be up to %{count} characters long" }
   
   def self.forgiving_find(tour_id)
     if BSON::ObjectId.legal?(tour_id)
