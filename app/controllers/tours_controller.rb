@@ -8,6 +8,8 @@ class ToursController < ApplicationController
     @user = User.find_by_username(params[:user_id])
     raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
     
+    @tours = Tour.where(:uid=>@user._id.to_s)
+    
     respond_to do |format|
       format.html
     end
@@ -118,6 +120,21 @@ class ToursController < ApplicationController
     end
     
     render :edit    
+  end
+  
+  def destroy
+    @tour = Tour.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@tour.nil?
+    
+    if @tour.user != current_user
+      raise ActionController::RoutingError.new('Not Found')
+    end
+
+    @tour.destroy
+    
+    respond_to do |format|
+      format.html { redirect_to user_tours_path(current_user) }
+    end
   end
   
   def places

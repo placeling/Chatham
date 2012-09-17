@@ -284,6 +284,14 @@ en:
     notes: "notes"
     not_rendered: "Not yet published"
     preview_then_publish: "Preview and publish your tour."
+    tours: "Tours"
+    no_tours: "No tours here yet"
+    edit_label: "Edit"
+    delete: "Delete"
+    delete_confirm: "Are you sure?"
+    index_description: "Check out each one of these tours and download them to your iPhone"
+    og_name: "%{user}'s Tours on Placeling"
+    just_a_sec: "Just a sec..."
     
   user:
     you: "Map"
