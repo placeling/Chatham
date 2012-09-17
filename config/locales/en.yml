@@ -277,6 +277,8 @@ en:
     tags: "tags"
     photos: "photos"
     notes: "notes"
+    not_rendered: "Not yet published"
+    preview_then_publish: "Preview and publish your tour."
     
   user:
     you: "Map"
