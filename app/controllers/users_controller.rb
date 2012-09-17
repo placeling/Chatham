@@ -927,8 +927,8 @@ class UsersController < ApplicationController
   end
 
   def confirm_destroy
-
     @user = User.find_by_username(params[:id])
+    return unless @user.id == current_user.id
 
     respond_to do |format|
       format.html
@@ -939,10 +939,11 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     return unless @user.id == current_user.id
 
+    sign_out(current_user)
     Resque.enqueue(DestroyUser, @user.id)
 
     respond_to do |format|
-      format.html {}
+      format.html { redirect_to "/" }
     end
   end
 
