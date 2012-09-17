@@ -13,6 +13,7 @@ class PhotosController < ApplicationController
       @perspective.client_application = current_client_application unless current_client_application.nil?
       @perspective.user = current_user
     end
+    @perspective.save!
 
     @picture = @perspective.pictures.build()
     @picture.image = params[:image]

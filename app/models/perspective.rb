@@ -28,7 +28,7 @@ class Perspective
   belongs_to :place, :foreign_key => 'plid', :index => true
   belongs_to :user, :foreign_key => 'uid', :index => true
   belongs_to :client_application
-  
+
   embeds_many :pictures
   embeds_many :placemark_comments, :cascade_callbacks => true
   accepts_nested_attributes_for :placemark_comments
@@ -47,6 +47,7 @@ class Perspective
   validates_associated :user
 
   validates_format_of :url, :with => URI::regexp, :message => "Invalid URL", :allow_nil => true
+  validates_uniqueness_of :uid, :scope => :plid, :on => :create
 
   before_validation :fix_location
   before_create :notify_modified
@@ -135,10 +136,9 @@ class Perspective
   end
 
   def scrub_stars
-    user = self.user
     for perspective_id in self.favourite_perspective_ids
       perspective = Perspective.find(perspective_id)
-      perspective.starring_users.delete(user.id)
+      perspective.starring_users.delete(self['uid'])
     end
 
     for other_user_id in self.starring_users
@@ -201,7 +201,7 @@ class Perspective
 
     return photos
   end
-  
+
   def real_memo
     if self.memo && /\w/.match(self.memo)
       return true
@@ -230,10 +230,16 @@ class Perspective
   end
 
   def reset_user_and_place_perspective_count
-    self.place.perspective_count = self.place.perspectives.count
-    self.user.perspective_count = self.user.perspectives.count
-    self.place.save!
-    self.user.save!
+    unless self.place.nil?
+      self.place.perspective_count = self.place.perspectives.count
+      self.place.save!
+    end
+
+    unless self.user.nil?
+      self.user.perspective_count = self.user.perspectives.count #deleted user case
+      self.user.save!
+    end
+
   end
 
   def picture_details=(picture_details)

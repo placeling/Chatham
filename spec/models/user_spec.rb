@@ -85,6 +85,62 @@ describe User do
     user.user_settings.should_not be(nil)
   end
 
+  it "can be have account deleted with all associated stuff" do
+    ruser = Factory.create(:user, :username => "tyler")
+
+    place = Factory.create(:place) #have to create so properly persisted
+    user = Factory.create(:user)
+    user2 = Factory.create(:user)
+    ca = Factory.create(:client_application, :name => "Agree2")
+    question = Factory.create(:question, :user => user)
+
+    request_token = ca.create_request_token
+    request_token.authorize!(user)
+    request_token.provided_oauth_verifier = request_token.verifier
+    access_token = request_token.exchange!
+
+    OauthToken.count.should == 2
+
+    perspective1 = Factory.create(:perspective, :user => user, :place => place)
+    perspective3 = Factory.create(:perspective, :user => user2, :place => place, :memo => "SHIZZLE") #for commenting on
+
+    user.star(perspective3)
+    perspective3.save!
+
+    user2.follow(user)
+    user.save!
+    user2.save!
+
+    user.reload
+    user2.reload
+
+    user.follow(user2)
+    user2.save
+    user.save
+
+    user.followers.count.should == 1
+    user2.followers.count.should == 1
+    Question.count.should == 1
+
+    @placemark_comment = perspective3.placemark_comments.build({:comment => "blah blah blah"})
+    @placemark_comment.user = user
+    @placemark_comment.save!
+
+    perspective3.reload
+    perspective3.placemark_comments.count.should == 1
+
+    user.destroy
+    perspective3.reload
+
+    Perspective.count.should == 1
+    User.count.should == 2
+    Question.count.should == 1
+    Question.first.user.username.should == ruser.username
+    user2.followers.count.should == 0
+    perspective3.placemark_comments.count.should == 0
+
+  end
+
 
   it "can't be created with duplicate username or email'" do
     user = Factory.create(:user, :username => "test", :email => "test@placeling.com")
