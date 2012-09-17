@@ -11,12 +11,26 @@
 
 <% content_for :javascript do %>
   <script type="text/javascript">
+    var minGap = 29;
     $(window).scroll(function() {
-      if ($(window).scrollTop() > $("#map_and_perspectives").offset().top - 20) {
+      var initialOffset = $('#tour_places').offset().top;
+      if ($(window).scrollTop() - initialOffset > minGap) {
+        console.log("condition a")
+        $('#tour_public_map_holder').css({'top': minGap});
+      } else {
+        if (initialOffset - $(window).scrollTop() < minGap) {
+          $('#tour_public_map_holder').css({'top': minGap})
+          console.log("condition b")
+        } else {
+          $('#tour_public_map_holder').css({'top': initialOffset - $(window).scrollTop()});
+          console.log("condition c")
+        }
+      }
+      /*if ($(window).scrollTop() > $("#map_and_perspectives").offset().top - 20) {
         $('#tour_public_map_holder').css({'margin-top':$(window).scrollTop() - $('#map_and_perspectives').offset().top + 20})
       } else {
         $('#tour_public_map_holder').css({'margin-top':0});
-      }
+      }*/
     })
     
     $(document).ready(function() {
