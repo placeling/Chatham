@@ -1090,6 +1090,26 @@ class UsersController < ApplicationController
 
   end
 
+  def unsubscribe
+    @user = User.find_by_crypto_key(params[:ck])
+
+    @user.user_settings.weekly_email = false
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def resubscribe
+    @user = User.find_by_crypto_key(params[:ck])
+
+    @user.user_settings.weekly_email = true
+
+    respond_to do |format|
+      format.html { redirect_to "/" }
+    end
+  end
+
   def resend
     @user = User.find_for_database_authentication({:login => params['username']})
 
