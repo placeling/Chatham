@@ -21,6 +21,7 @@ class User
   alias :login :username
   field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
+  field :ck, :type => String
 
   field :notification_count, :type => Integer, :default => 0
 
@@ -89,7 +90,6 @@ class User
   embeds_one :activity_feed
   embeds_one :user_setting
   embeds_one :user_recommendation
-  embeds_one :user_tour
   embeds_one :first_run
   accepts_nested_attributes_for :user_setting
 
@@ -110,6 +110,7 @@ class User
   index [[:loc, Mongo::GEO2D]], :min => -180, :max => 180
   index :fp, :background => true
   index :du
+  index :ck
 
   before_save :cache_urls
   before_save :get_city
@@ -364,6 +365,10 @@ class User
     self.where(:du => /^#{username.downcase}/i).limit(20)
   end
 
+  def self.find_by_crypto_key(key)
+    self.where(:ck => key).first
+  end
+
   def remove_tokens_for(client_application)
     self.tokens.where(:cid => client_application.id).delete_all
   end
@@ -462,6 +467,16 @@ class User
     else
       self.user_setting = UserSetting.new
       return self.user_setting
+    end
+  end
+
+  def crypto_key
+    if self.ck.nil?
+      self.ck = SecureRandom.hex(30)
+      self.save!
+      return self.ck
+    else
+      return self.ck
     end
   end
 

@@ -100,6 +100,8 @@ Chatham::Application.routes.draw do
       get :search
       get :me
       get :notifications
+      get :unsubscribe
+      get :resubscribe
     end
   end
 

@@ -594,6 +594,7 @@ class UsersController < ApplicationController
 
   def magazine
     @user = User.find_by_username(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
     if !cookies[:page_state].nil?
       page_state = JSON.parse(cookies[:page_state])
@@ -1088,6 +1089,26 @@ class UsersController < ApplicationController
       format.json { render :json => {:user_feed => @activities.as_json()} }
     end
 
+  end
+
+  def unsubscribe
+    @user = User.find_by_crypto_key(params[:ck])
+
+    @user.user_settings.weekly_email = false
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def resubscribe
+    @user = User.find_by_crypto_key(params[:ck])
+
+    @user.user_settings.weekly_email = true
+
+    respond_to do |format|
+      format.html { redirect_to "/" }
+    end
   end
 
   def resend

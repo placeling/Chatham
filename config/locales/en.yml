@@ -366,6 +366,9 @@ en:
     places_near: "Places Near"
     no_hashtags: "No #hashtags"
     no_nearby_places: "No nearby places"
+    unsubscribe: "Unsubscribe"
+    unsubscribed: "You have unsubscribed %{email} from our weekly email"
+    resubscribe: "Resubscribe"
     
   oauth:
     registered_successfully: "Registered the information successfully"

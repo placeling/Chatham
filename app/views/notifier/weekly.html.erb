@@ -115,8 +115,9 @@
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
             <p class="email_content" style="margin-top:20px;"><%= t('notify.sent') %> <%= @user.email %></p>
 
-            <p class="email_content"><%= t('notify.no_more') %> <%= t('notify.change') %>
-              <a href="<%= account_user_url(@user) %>" style="color: #E08574;"><%= t('notify.settings') %></a></p>
+            <p class="email_content"><%= t('notify.no_more') %>
+              <a href="<%= unsubscribe_users_url(:ck => @user.crypto_key) %>" style="color: #E08574;"><%= t('user.unsubscribe') %></a>
+            </p>
 
             <p class="email_content"><%= t('notify.address') %></p>
           </td>
