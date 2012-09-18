@@ -594,6 +594,7 @@ class UsersController < ApplicationController
 
   def magazine
     @user = User.find_by_username(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
 
     if !cookies[:page_state].nil?
       page_state = JSON.parse(cookies[:page_state])
