@@ -1026,6 +1026,9 @@ class UsersController < ApplicationController
 
   def followers
     @user = User.find_by_username(params[:id])
+    #this is the final step in routes, if this doesn't work its a 404 -iMack
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
+
     start_pos = params[:start].to_i
     count = 20
 
@@ -1041,6 +1044,9 @@ class UsersController < ApplicationController
 
   def following
     @user = User.find_by_username(params[:id])
+    #this is the final step in routes, if this doesn't work its a 404 -iMack
+    raise ActionController::RoutingError.new('Not Found') unless !@user.nil?
+
     start_pos = params[:start].to_i
     count = 20
 
