@@ -13,7 +13,9 @@
     <div class="place_name_and_address">
       <% if request.path == user_tour_path(tour.user, tour) %><a href="<%= place_path(perspective.place) %>"><% end %>
       <div class="tour_preview_place_name <% if i % 2 == 1 %>tour_dark<% else %>tour_light<% end %>"><% if request.path == user_tour_path(tour.user, tour) %><a href="<%= place_path(perspective.place) %>"><% end %><%= perspective.place.name.upcase %><% if request.path == user_tour_path(tour.user, tour) %></a><% end %></div>
+      <% if perspective.place.street_address %>
       <div class="tour_preview_place_address <% if i % 2 == 0 %>tour_dark<% else %>tour_light<% end %>"><%= perspective.place.street_address.upcase %></div>
+      <% end %>
     </div>
     <div class="preview_notes_and_photos">
       <% if perspective.real_memo %>

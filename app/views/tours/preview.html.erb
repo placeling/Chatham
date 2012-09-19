@@ -2,6 +2,12 @@
     <title><%= t('tour.preview_title') %></title>
 <% end %>
 
+<% content_for :css do %>
+  body {
+    min-width: 1360px;
+  }
+<% end %>
+
 <% content_for :javascript do %>
   <script type="text/javascript">
     $(document).ready(function(){
