@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
       gp = GooglePlaces.new
       place = Place.new_from_google_place(gp.get_place(params['google_ref_place']))
       place.user = current_user
-      place.save
+      place.save!
     end
 
     found = false
