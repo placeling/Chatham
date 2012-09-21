@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AnswersController do
   render_views
 
-  it "should can be submitted for question" do
+  it "can be submitted for question" do
     place = Factory.create(:place)
 
     question = Factory.create(:question)
@@ -17,6 +17,22 @@ describe AnswersController do
     response.should be_success
 
     Question.first.answers.count.should == 1
+    Question.first.score.should == 1
+  end
+
+  it "can be submitted for question if not in system" do
+
+    question = Factory.create(:question, :location => [43.6481, -79.4042])
+
+    post :create, {
+        :question_id => question.id,
+        :google_id_place => "c66f0806f7d5db9fd21232afa0457e64e3f6651f",
+        :google_ref_place => "CmRdAAAAJj27uANREN19pMYBNr4HjedJKxSrzhMTmsoGsBnPwdCgT2XLaiRid-v6ZHLhgPqRd-EOZKP7kNe0iinn8YrHblyxCeOMR4-85y5Bebhakx4N70I-nb55VMImpWN0hXEAEhBcUGMMANpKC1ALIHYCoM6SGhRV79MCudi6ZMakcXZyQQcmRean8Q"
+
+    }
+
+    Question.first.answers.count.should == 1
+    Question.first.answers.first.place.name.should == "Bellevue"
     Question.first.score.should == 1
   end
 
