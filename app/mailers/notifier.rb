@@ -61,9 +61,6 @@ class Notifier < ActionMailer::Base
       @places_filler = Array.new(size=(3-@recos['places'].length))
       @guides_filler = Array.new(size=(3-@recos['guides'].length))
 
-      @place = Place.forgiving_find("acme-cafe")
-      @recos['places'] = [@place]
-
       if @recos['questions'].length > 0
         if ab_test(:question_as_subject)
           subject = @recos['questions'].first.title
