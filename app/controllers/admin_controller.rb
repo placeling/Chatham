@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter :admin_required, :only => [:dashboard, :blog_stats, :firehose]
+  before_filter :admin_required, :only => [:dashboard, :blog_stats, :firehose, :flagged_place, :update_place]
 
   def app
 
@@ -77,6 +77,73 @@ class AdminController < ApplicationController
     @users = User.descending(:created_at).limit(200)
     @past_day_bookmarks = Perspective.where(:created_at.gt => 1.day.ago)
 
+  end
+
+  def flagged_place
+    gp = GooglePlaces.new
+
+    @place = Place.where(:update_flag => true).first
+    @updatedPlace = gp.get_place(@place.google_ref, false)
+    @merge_place = Place.find_by_google_id(@updatedPlace.id) unless @updatedPlace.nil?
+
+    if @merge_place.nil? || @merge_place.id == @place.id
+      @merge_place = nil
+    end
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def update_place
+    gp = GooglePlaces.new
+    @place = Place.find(params[:pid])
+
+    if params[:opt] == "update"
+      @updatedPlace = gp.get_place(@place.google_ref, false)
+      @place = @place.update_from_google_place(@updatedPlace)
+      @place.update_flag = false
+      @place.save!
+    elsif params[:opt] == "skip"
+      @place.update_flag = false
+      @place.save!
+    elsif params[:opt] == "merge"
+      @updatedPlace = gp.get_place(@place.google_ref, false)
+      @place = @place.update_from_google_place(@updatedPlace)
+      @merge_place = Place.find_by_google_id(@updatedPlace.id)
+
+      @merge_place.perspectives.each do |perspective|
+        perspective.place = @place
+        @place.perspective_count += 1
+
+        questions = Question.any_of({'answers.place_id' => @merge_place.id})
+
+        questions.each do |question|
+          question.answers.each do |answer|
+            if answer.place.id == @merge_place.id
+              answer.place = @place
+              answer.save
+            end
+          end
+        end
+
+
+        if perspective.user.highlighted_places.include? @merge_place.id
+          perspective.user.highlighted_places << @place.id
+          perspective.user.save!
+        end
+        perspective.save!
+
+      end
+      @merge_place.destroy
+
+      @place.update_flag = false
+      @place.save!
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :action => "flagged_place" }
+    end
   end
 
   def blog_stats

@@ -20,6 +20,7 @@ Chatham::Application.routes.draw do
   get "/share", :to => 'admin#share', :as => :share
   get "/guide", :to => 'admin#guide', :as => :guide
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
+  get "/admin/investors", :to => 'admin#investors', :as => :investors
   # get "/nearby", :to => "home#nearby", :as => :home_nearby
 
   get "/admin/status", :to => 'admin#heartbeat', :as => :status
@@ -27,7 +28,8 @@ Chatham::Application.routes.draw do
   get "/admin/blog_stats", :to => 'admin#blog_stats', :as => :blog_stats
   get "/admin/firehose", :to => 'admin#firehose', :as => :firehose
   get "/admin/categories", :to => 'admin#categories', :as => :categories
-  get "/admin/investors", :to => 'admin#investors', :as => :investors
+  get "/admin/flagged_place", :to => 'admin#flagged_place', :as => :flagged_place
+  post "/admin/flagged_place", :to => 'admin#update_place', :as => :flagged_place
 
   get "/search", :to => 'search#search', :as => :search
 
