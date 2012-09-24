@@ -116,6 +116,10 @@ class AdminController < ApplicationController
       @place = @place.update_from_google_place(@updatedPlace)
       @merge_place = Place.find_by_google_id(@updatedPlace.id)
 
+      if @updatedPlace.geometry.nil?
+        @updatedPlace = nil
+      end
+
       @merge_place.perspectives.each do |perspective|
         perspective.place = @place
         @place.perspective_count += 1
