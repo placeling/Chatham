@@ -9,110 +9,119 @@
 <% end %>
 
 <% content_for :javascript do %>
-  <script type="text/javascript">
-    var minGap = 29;
-    $(window).scroll(function() {
-      var initialOffset = $('#tour_places').offset().top;
-      if ($(window).scrollTop() - initialOffset > minGap) {
-        $('#tour_public_map_holder').css({'top': minGap});
-      } else {
-        if (initialOffset - $(window).scrollTop() < minGap) {
-          $('#tour_public_map_holder').css({'top': minGap})
-        } else {
-          $('#tour_public_map_holder').css({'top': initialOffset - $(window).scrollTop()});
-        }
-      }
-    })
-    
-    $(document).ready(function() {
-      $('.lightboxGallery').each(function () {
-          $('.lightbox', this).lightBox();
-      });
+    <script type="text/javascript">
+        var minGap = 29;
+        $(window).scroll(function () {
+            var initialOffset = $('#tour_places').offset().top;
+            if ($(window).scrollTop() - initialOffset > minGap) {
+                $('#tour_public_map_holder').css({'top':minGap});
+            } else {
+                if (initialOffset - $(window).scrollTop() < minGap) {
+                    $('#tour_public_map_holder').css({'top':minGap})
+                } else {
+                    $('#tour_public_map_holder').css({'top':initialOffset - $(window).scrollTop()});
+                }
+            }
+        })
 
-      $('.email').each(function () {
-          $(this).qtip({
-              content:'<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="' + $(this).attr("href") + '" class="link_text"></span>',
-              position:{
-                  my:'bottom center',
-                  at:'top center'
-              },
-              show:{
-                  event:'click',
-                  solo:true
-              },
-              hide:{
-                  event:'click'
-              },
-              style:{
-                  classes:'ui-tooltip-rounded ui-tooltip-shadow',
-              }
-          });
-      });
-    })
-  </script>
+        $(document).ready(function () {
+            $('.lightboxGallery').each(function () {
+                $('.lightbox', this).lightBox();
+            });
+
+            $('.email').each(function () {
+                $(this).qtip({
+                    content:'<span class="link_holder"><span class="link_header">Link:</span><input type="text" value="' + $(this).attr("href") + '" class="link_text"></span>',
+                    position:{
+                        my:'bottom center',
+                        at:'top center'
+                    },
+                    show:{
+                        event:'click',
+                        solo:true
+                    },
+                    hide:{
+                        event:'click'
+                    },
+                    style:{
+                        classes:'ui-tooltip-rounded ui-tooltip-shadow',
+                    }
+                });
+            });
+        })
+    </script>
 <% end %>
 
 <% if current_user == @tour.user %>
-  <div id="tour_holder">
-    <div id="tour_preview_name"><%= @tour.name %></div>
-    <p class="tour_offer"><%= t('tour.yours')%></p>
-    <h2><a href="<%= @tour.infographic_url(:print) %>"><%= t('tour.high_res')%></a></h2>
-    <div id="tour_image">
-      <% if @tour.infographic && @tour.infographic.screen.file && @tour.infographic.screen.file.exists? %>
-        <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a></div>
-      <% else %>
-        <div><div id="not_rendered"><%= t('tour.not_rendered')%>. <%= link_to t('tour.preview_then_publish'), preview_user_tour_path(@tour.user, @tour) %></div></div>
-      <% end %>
-    </div>
-    <div id="tour_share_me">
-      <h1><%= t('tour.share')%></h1>
-      <h2>
+    <div id="tour_holder">
+      <div id="tour_preview_name"><%= @tour.name %></div>
+      <p class="tour_offer"><%= t('tour.yours') %></p>
+
+      <h2><a href="<%= @tour.infographic_url(:print) %>"><%= t('tour.high_res') %></a></h2>
+
+      <div id="tour_image">
+        <% if @tour.infographic && @tour.infographic.screen.file && @tour.infographic.screen.file.exists? %>
+            <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a>
+            </div>
+        <% else %>
+            <div>
+              <div id="not_rendered"><%= t('tour.not_rendered') %>
+                . <%= link_to t('tour.preview_then_publish'), preview_user_tour_path(@tour.user, @tour) %></div>
+            </div>
+        <% end %>
+      </div>
+      <div id="tour_share_me">
+        <h1><%= t('tour.share') %></h1>
+
+        <h2>
         <span class="tour_spacer">
-          <a href='javascript:void((function()%7Bvar%20e=document.createElement(&apos;script&apos;);e.setAttribute(&apos;type&apos;,&apos;text/javascript&apos;);e.setAttribute(&apos;charset&apos;,&apos;UTF-8&apos;);e.setAttribute(&apos;src&apos;,&apos;http://assets.pinterest.com/js/pinmarklet.js?r=&apos;+Math.random()*99999999);document.body.appendChild(e)%7D)());'><%= image_tag asset_path("pinterest/pinterest_static.png"), :alt=>"pin", :class=>"share middle" %></a>
+          <a href='javascript:void((function()%7Bvar%20e=document.createElement(&apos;script&apos;);e.setAttribute(&apos;type&apos;,&apos;text/javascript&apos;);e.setAttribute(&apos;charset&apos;,&apos;UTF-8&apos;);e.setAttribute(&apos;src&apos;,&apos;http://assets.pinterest.com/js/pinmarklet.js?r=&apos;+Math.random()*99999999);document.body.appendChild(e)%7D)());'><%= image_tag asset_path("pinterest/pinterest_static.png"), :alt => "pin", :class => "share middle" %></a>
         </span>
         <span class="tour_spacer">
-          <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>&text=<%= u @tour.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share middle" %></a>
+          <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>&text=<%= u @tour.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt => "tweet", :class => "share middle" %></a>
         </span>
         <span class="tour_spacer">
-          <a href="#" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>')+'&t='+e('<%= u @tour.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share middle" %></a>
+          <a href="#" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>')+'&t='+e('<%= u @tour.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt => "share on facebook", :class => "share middle" %></a>
         </span>
         <span class="tour_spacer">
-          <a href="https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share middle" %></a>
+          <a href="https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt => "email", :class => "share middle" %></a>
         </span>
       </div>
-    </h2>
-  </div>
+      </h2>
+    </div>
 <% else %>
-  <div id="tour_header" class="no_power"><%= @tour.name.upcase %></div>
-  <div id="tour_preview_description" class="show_margin"><%= simple_format(@tour.description) %></div>
-  <div id="tour_holder">
-    <div id="map_and_perspectives">
-      <div id="tour_public_map_holder">
-        <div id="tour_public_map">
-          <img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @tour.center[0] %>,<%= @tour.center[1] %>&zoom=<%= @tour.zoom %><% @tour.perspectives.each_with_index do |perp, i| %>&markers=label:<%= i+1 %>%7Ccolor:0xdd5e50%7C<%= perp.place.loc[0] %>,<%= perp.place.loc[1] %><% end %>&size=475x475&maptype=roadmap&sensor=false" class="target_map">
-        </div>
-        <div id="like_all">
-          <a rel="nofollow" data-remote="true" data-method="post" href="<%= like_all_user_tour_path(@tour.user, @tour) %>" class="submit"><%= t('tour.like_all') %></a>
-        </div>
-        <div id="tour_share">
+    <div id="tour_header" class="no_power"><%= @tour.name.upcase %></div>
+    <div id="tour_preview_description" class="show_margin"><%= simple_format(@tour.description) %></div>
+    <div id="tour_holder">
+      <div id="map_and_perspectives">
+        <div id="tour_public_map_holder">
+          <div id="tour_public_map">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @tour.center[0] %>,<%= @tour.center[1] %>&zoom=<%= @tour.zoom %>
+              <% @tour.perspectives.each_with_index do |perp, i| %>&markers=label:<%= i+1 %>%7Ccolor:0xdd5e50%7C<%= perp.place.loc[0] %>,<%= perp.place.loc[1] %>
+              <% end %>&size=475x475&maptype=roadmap&sensor=false" class="target_map">
+          </div>
+          <div id="like_all">
+            <a rel="nofollow" data-remote="true" data-method="post" href="<%= like_all_user_tour_path(@tour.user, @tour) %>" class="submit"><%= t('tour.like_all') %></a>
+          </div>
+          <div id="tour_share">
           <span class="tour_spacer">
-            <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>&text=<%= u @tour.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt=>"tweet", :class=>"share middle" %></a>
+            <a href="https://twitter.com/share?url=https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>&text=<%= u @tour.name %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag "twitter.png", :alt => "tweet", :class => "share middle" %></a>
           </span>
           <span class="tour_spacer">
-            <a href="#" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>')+'&t='+e('<%= u @tour.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt=>"share on facebook", :class=>"share middle" %></a>
+            <a href="#" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('http://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>')+'&t='+e('<%= u @tour.name %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag "facebook.png", :alt => "share on facebook", :class => "share middle" %></a>
           </span>
           <span class="tour_spacer">
-            <a href="https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt=>"email", :class=>"share middle" %></a>
+            <a href="https://www.placeling.com<%= user_tour_path(@tour.user, @tour) %>" onclick="javascript:return false;" class="email"><%= image_tag "email.png", :alt => "email", :class => "share middle" %></a>
           </span>
+          </div>
         </div>
-      </div>
-      <div id="tour_places">
-        <ul>
-          <% @tour.perspectives.each_with_index do |perspective, i| %>
-            <%= render :partial => "preview_perspective", :locals => {:perspective => perspective, :i => i, :tour => @tour} %>
-          <% end %>
-        </ul>
+        <div id="tour_places">
+          <ul>
+            <% @tour.perspectives.each_with_index do |perspective, i| %>
+                <%= render :partial => "preview_perspective", :locals => {:perspective => perspective, :i => i, :tour => @tour} %>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 <% end %>
