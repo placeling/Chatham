@@ -86,6 +86,10 @@ class AdminController < ApplicationController
     @updatedPlace = gp.get_place(@place.google_ref, false)
     @merge_place = Place.find_by_google_id(@updatedPlace.id) unless @updatedPlace.nil?
 
+    if @updatedPlace.geometry.nil?
+      @updatedPlace = nil
+    end
+
     if @merge_place.nil? || @merge_place.id == @place.id
       @merge_place = nil
     end
