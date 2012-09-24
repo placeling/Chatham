@@ -26,9 +26,8 @@ class FollowActivity
     activity.push_to_followers(actor1)
 
     if actor1.post_facebook? && Rails.env.production?
-      Resque.enqueue(FacebookPost, actor1.id, "placeling:follow", {:user => actor2.og_path})
+      Resque.enqueue(FacebookPost, actor1.id, "og:follows", {:profile => actor2.og_path})
       #actor1.facebook.put_connections("me", "placeling:follow", :user => actor2.og_path)
-      #actor1.facebook.put_connection("me", "og:follows", :profile => actor2.og_path)
     end
 
     unless Notification.veto(activity)

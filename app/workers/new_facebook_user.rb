@@ -31,5 +31,9 @@ class NewFacebookUser
       end
     end
 
+    result = user.facebook.get_object("me", :fields => "third_party_id")
+    user.third_party_id = result['third_party_id']
+    user.save!
+
   end
 end
