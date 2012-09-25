@@ -33,33 +33,31 @@
 </div>
 
 
+<div class="row-fluid">
+  <div class='span1 hidden-phone'></div>
 
-<% unless @updatedPlace.nil? %>
-    <div class="row-fluid">
-      <div class='span1 hidden-phone'></div>
+  <div class="span7">
+    <div class="row">
+      <div class="span6">
+        <div class="place_name" style="font-size: 36px;line-height: 36px;padding-bottom: 10px;">
+          <%= link_to @updatedPlace.name, @updatedPlace.url %>
+        </div>
 
-      <div class="span7">
-        <div class="row">
-          <div class="span6">
-            <div class="place_name" style="font-size: 36px;line-height: 36px;padding-bottom: 10px;">
-              <%= link_to @updatedPlace.name, @updatedPlace.url %>
-            </div>
-
-            <div class="place_address" style="font-size: 18px;">
-              <%= @updatedPlace.formatted_address %>
-            </div>
-            <div class="place_tags" style="font-size: 14px;">
-              <%= @updatedPlace.types.join(", ") %>
-            </div>
-          </div>
-
-          <div class="span6">
-            <img style="border:2px solid #000000;" src="<%= "https://maps.google.com/maps/api/staticmap?center=#{@updatedPlace.geometry.location.lat},#{@updatedPlace.geometry.location.lng}&zoom=14&size=486x150&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{@updatedPlace.geometry.location.lat},#{@updatedPlace.geometry.location.lng}&sensor=false" %>">
-          </div>
+        <div class="place_address" style="font-size: 18px;">
+          <%= @updatedPlace.formatted_address %>
+        </div>
+        <div class="place_tags" style="font-size: 14px;">
+          <%= @updatedPlace.types.join(", ") %>
         </div>
       </div>
+
+      <div class="span6">
+        <img style="border:2px solid #000000;" src="<%= "https://maps.google.com/maps/api/staticmap?center=#{@updatedPlace.geometry.location.lat},#{@updatedPlace.geometry.location.lng}&zoom=14&size=486x150&&markers=icon:http://www.placeling.com/images/marker.png%%7Ccolor:red%%7C#{@updatedPlace.geometry.location.lat},#{@updatedPlace.geometry.location.lng}&sensor=false" %>">
+      </div>
     </div>
-<% end %>
+  </div>
+</div>
+
 
 <% if @merge_place %>
     <div class="row-fluid">
