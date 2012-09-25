@@ -92,7 +92,7 @@ class AuthenticationsController < ApplicationController
       end
     elsif current_user
       # Only occurs if already logged in and try to add your Facebook account
-      current_user.authentications.create!(:expiry => omniauth['provider'], :provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token']) do |a|
+      current_user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token']) do |a|
         if omniauth['credentials']['expires'] && omniauth['credentials']['expires_at']
           expiry_timestamp = omniauth['credentials']['expires_at']
           a.expiry = Time.at(expiry_timestamp).to_s
