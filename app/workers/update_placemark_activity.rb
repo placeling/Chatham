@@ -31,7 +31,7 @@ class UpdatePlacemarkActivity
     end
 
     if twitter_post && actor1.twitter && Rails.env.production?
-      actor1.tweet("Just updated my placemark for #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+      actor1.tweet("Just updated my placemark for #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path.gsub("www.placeling.com", "placeling.com")}")
     end
 
   end

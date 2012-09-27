@@ -34,7 +34,7 @@ class PlacemarkActivity
       if perspective.memo.length > 1
         actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
       else
-        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path}")
+        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.place.og_path.gsub("www.placeling.com", "placeling.com")}")
       end
     end
 
