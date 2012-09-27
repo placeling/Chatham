@@ -6,7 +6,6 @@
     <meta property="og:type" content="profile"/>
     <meta property="og:image" content="<%= @user.main_url %>"/>
     <meta property="og:description" content="<%= @user.description %>"/>
-    <meta property="profile:username" content="<%= @user.username %>"/>
 
     <% if auth = @user.authentications.where(:p => "facebook").first %>
         <meta property="fb:profile_id" content="<%= @user.facebook_profile_id %>"/>
