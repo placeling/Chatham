@@ -9,7 +9,7 @@
     <meta property="profile:username" content="<%= @user.username %>"/>
 
     <% if auth = @user.authentications.where(:p => "facebook").first %>
-        <meta name="fb:profile_id" content="<%= @user.facebook_profile_id %>"/>
+        <meta property="fb:profile_id" content="<%= @user.facebook_profile_id %>"/>
     <% end %>
 
     <meta name="viewport" content="initial-scale=0.8">
