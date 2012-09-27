@@ -719,9 +719,9 @@ class User
 
     if username.blank?
       if omniauth['provider'] == "facebook" && omniauth['info']['nickname']
-        username = omniauth['info']['nickname'].gsub(/\W+/, "")
+        username = omniauth['info']['nickname'].gsub(/\W+/, "")[0..18]
       else
-        username = omniauth['info']['name'].gsub(/\W+/, "")
+        username = omniauth['info']['name'].gsub(/\W+/, "")[0..18]
       end
 
       user = User.find_by_username(username)
