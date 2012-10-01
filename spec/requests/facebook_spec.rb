@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Facebook", :broken => true do
+describe "Facebook" do
 
 
   before(:all) do
