@@ -51,6 +51,7 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
+  field :third_party_id, :type => String
 
   field :loc, :as => :location, :type => Array #meant to be home location, used at signup?
   field :city, :type => String, :default => ""
@@ -718,9 +719,9 @@ class User
 
     if username.blank?
       if omniauth['provider'] == "facebook" && omniauth['info']['nickname']
-        username = omniauth['info']['nickname'].gsub(/\W+/, "")
+        username = omniauth['info']['nickname'].gsub(/\W+/, "")[0..18]
       else
-        username = omniauth['info']['name'].gsub(/\W+/, "")
+        username = omniauth['info']['name'].gsub(/\W+/, "")[0..18]
       end
 
       user = User.find_by_username(username)
@@ -901,6 +902,26 @@ class User
   def og_path
     "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_path(self)}"
   end
+
+  def facebook_profile_id
+    if self.third_party_id.nil?
+      if self.facebook
+        begin
+          result = self.facebook.get_object("me", :fields => "third_party_id")
+          self.third_party_id = result['third_party_id']
+          self.save
+          return self.third_party_id
+        rescue
+          return nil
+        end
+      else
+        return nil
+      end
+    else
+      return third_party_id
+    end
+  end
+
 
   protected
 
