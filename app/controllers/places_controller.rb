@@ -341,7 +341,7 @@ class PlacesController < ApplicationController
       place.distance = (1000 * Geocoder::Calculations.distance_between([lat, lng], [place.location[0], place.location[1]], :units => :km)).floor
     end
 
-    @places = @places.sort_by { |place| place.perspective_count }
+    @places = @places.sort { |a, b| b[:pc] <=> a[:pc] }
     @places = @places[0..20]
 
     @places = @places.sort_by { |place| place.distance }
@@ -425,7 +425,7 @@ class PlacesController < ApplicationController
     end
 
     if query_type == "popular"
-      @places = @places.sort_by { |place| place.perspective_count }
+      @places = @places.sort { |a, b| b[:pc] <=> a[:pc] }
       @places = @places[0..20]
     end
 
