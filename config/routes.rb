@@ -71,6 +71,8 @@ Chatham::Application.routes.draw do
         get :poll
         get :render_preview
         post :like_all
+        get :print
+        post :purchase
       end
     end
     member do

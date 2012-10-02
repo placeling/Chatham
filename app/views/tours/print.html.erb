@@ -1,0 +1,10 @@
+<div id="tour_holder">
+  <div id="tour_preview_name"><%= @tour.name %></div>
+  <p class="tour_print"><%= t('tour.download') %> <a href="<%= @tour.infographic_url(:print) %>" class="tour_print"><%= t('tour.high_res')%></a>.</p>
+  <div id="tour_image">
+    <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a></div>
+  </div>
+  <div id="tour_share_me">
+    <%= link_to t('tour.order'), purchase_user_tour_path(@tour.user, @tour), :remote=>true, :method=>:post, :class=>"submit", :id=>"tour_order" %>
+  </div>
+</div>
