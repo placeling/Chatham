@@ -4,7 +4,7 @@ development:
   database: placeling_vanity
 staging:
   adapter: mongodb
-  host: ec2-184-72-38-73.us-west-1.compute.amazonaws.com
+  host: localhost
   database: placeling_vanity
 production:
   adapter: mongodb
