@@ -32,9 +32,9 @@ class PlacemarkActivity
 
     if twitter_post && actor1.twitter && Rails.env.production?
       if perspective.memo.length > 1
-        actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}")
+        actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}", perspective.place.location[0], perspective.place.location[1])
       else
-        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}")
+        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}", perspective.place.location[0], perspective.place.location[1])
       end
     end
 

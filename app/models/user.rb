@@ -210,6 +210,11 @@ class User
       question.save!
     end
 
+    Question.any_of({'answers.answer_comments.user_id' => self.id}).each do |question|
+      question.answers.any_of({'answer_comments.user_id' => self.id}).each do |answer|
+        answer.answer_comments.destroy_all(:user_id => self.id)
+      end
+    end
   end
 
   def fix_location
@@ -813,7 +818,7 @@ class User
     )
   end
 
-  def tweet(text)
+  def tweet(text, lat=nil, lng=nil)
 
     for auth in self.authentications
       if auth.provider == 'twitter'
@@ -826,7 +831,11 @@ class User
     # Exchange our oauth_token and oauth_token secret for the AccessToken instance.
     @access_token = prepare_access_token(twitter_auth.token, twitter_auth.secret)
 
-    @response = @access_token.request(:post, "https://api.twitter.com/1/statuses/update.json", :status => text)
+    if lat && lng
+      @response = @access_token.request(:post, "https://api.twitter.com/1/statuses/update.json", :status => text, :lat => lat.to_s, :long => lng.to_s)
+    else
+      @response = @access_token.request(:post, "https://api.twitter.com/1/statuses/update.json", :status => text)
+    end
   end
 
 
