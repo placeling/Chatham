@@ -22,6 +22,7 @@ Chatham::Application.routes.draw do
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
   get "/admin/investors", :to => 'admin#investors', :as => :investors
   # get "/nearby", :to => "home#nearby", :as => :home_nearby
+  get "/explore", :to => 'aggregation#index', :as => :aggregation
 
   get "/admin/status", :to => 'admin#heartbeat', :as => :status
   get "/admin/dashboard", :to => 'admin#dashboard', :as => :dashboard
