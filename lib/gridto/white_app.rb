@@ -8,6 +8,13 @@ class WhiteApp < Sinatra::Base
   dir = File.dirname(File.expand_path(__FILE__))
   set :views, "#{dir}views"
 
+
+  def initialize(site)
+    super()
+    @base_user = site
+  end
+
+
   if respond_to? :public_folder
     set :public_folder, "#{dir}/static"
   else
@@ -77,7 +84,7 @@ class WhiteApp < Sinatra::Base
   end
 
   get "/category/:category/list" do
-    @user = User.find_by_username("gridto")
+    @user = User.find_by_username(@base_user)
     @perspectives = get_perspectives(@user, params[:category]).limit(20).entries
 
     if @lat && @lng
@@ -93,7 +100,7 @@ class WhiteApp < Sinatra::Base
 
 
   get "/category/:category/map" do
-    @user = User.find_by_username("gridto")
+    @user = User.find_by_username(@base_user)
 
     if @lat && @lng
       @display_lat = @lat
@@ -107,7 +114,7 @@ class WhiteApp < Sinatra::Base
   end
 
   get "/place/:id" do
-    user = User.find_by_username("gridto")
+    user = User.find_by_username(@base_user)
     place = Place.forgiving_find(params[:id])
     @perspective = user.perspective_for_place(place)
 
