@@ -259,8 +259,6 @@ en:
     add_places: 'Add places to '
     add_places_title: "Add places to your tour"
     drag: 'Drag them to the middle column and feel free to rearrange the order'
-    warn_count: 'Your tours has more than 9 places in it'
-    warn_mini: 'Only the first nine will be numbered'
     preview: 'Preview'
     edit_bounds: 'Change Bounds'
     preview_title: 'Preview your Tour'

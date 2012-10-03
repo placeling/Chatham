@@ -65,7 +65,18 @@ module ApplicationHelper
     text.insert 0, start_tag
     text.html_safe.safe_concat("</p>")
   end
-
+  
+  def label_value(index)
+    if index < 9
+      return index + 1
+    elsif index < 36
+      indices = "000000000ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      return indices[index]
+    else
+      return false
+    end
+  end
+  
   # haversine formula to compute the great circle distance between two points given their latitude and longitudes
   #
   # Copyright (C) 2008, 360VL, Inc

@@ -10,10 +10,21 @@
 
 <% content_for :javascript do %>
   <script type="text/javascript">
+    function getLabel(index) {
+      if (index < 9) {
+        return index + 1;
+      } else if (index < 36) {
+        indices = "000000000ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return indices.charAt(index);
+      } else {
+        return false;
+      }
+    }
+    
     function updateMap() {
       var html = '<img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @tour.center[0] %>,<%= @tour.center[1] %>&zoom=<% if @tour.zoom != 1 %><%= @tour.zoom - 1 %><% else %><% @tour.zoom %><% end %>';
       $("#selected_list .tour_perspective").each(function(index, value) {
-        var counter = index + 1;
+        var counter = getLabel(index);
         html += '&markers=label:' + counter + '%7Ccolor:0xdd5e50%7C' + $(this).find(".tour_lat").first().text() + ',' + $(this).find(".tour_lng").first().text()
       });
       
@@ -22,20 +33,14 @@
       $('#tour_map').html(html);
       
       $('#selected_list .tour_perspective').each(function(index) {
-        if (index < 9) {
-          $('.tour_place_count', this).html('<%= image_tag asset_path('tours/odd_banner.png'), :class=> "tour_place_count_background" %><div class="tour_place_counter">' + (index + 1) + "</div>");
+        if (index < 36) {
+          $('.tour_place_count', this).html('<%= image_tag asset_path('tours/odd_banner.png'), :class=> "tour_place_count_background" %><div class="tour_place_counter">' + getLabel(index) + "</div>");
           $('.tour_place_count', this).css('height','36');
         } else {
           $('.tour_place_count', this).html('');
           $('.tour_place_count', this).css('height','0');
         }
       });
-      
-      if ($("#selected_list .tour_perspective").length > 9) {
-        $('#tour_warning').fadeIn(100);
-      } else {
-        $('#tour_warning').fadeOut(100);
-      }
     }
     
     $(window).imagesLoaded(function() {
@@ -177,11 +182,6 @@
   <div id="tour_map">
     <img src="http://maps.googleapis.com/maps/api/staticmap?center=<%= @tour.center[0] %>,<%= @tour.center[1] %>&zoom=<% if @tour.zoom != 1 %><%= @tour.zoom - 1 %><% else %><% @tour.zoom %><% end %>&size=382x382&maptype=roadmap&sensor=false" class="target_map">
   </div>
-  <div id="tour_warning">
-    <p><%= t('tour.warn_count') %></p>
-    <p id="mini_warning"><%= t('tour.warn_mini') %></p>
-  </div>
-  
   <%= form_for @tour, :url => {:action => "update_places"} do |f| %>
     <div id="tour_perspective_holder"></div>
     <div class="tour_submit_holder tour_places_submit_holder">
@@ -189,7 +189,5 @@
       <div class="tour_edit_link_holder"><%= link_to t('tour.update_map'), edit_user_tour_path(@tour.user, @tour), :class=>"tour_edit_link" %></div>
     </div>
   <% end %>
-  
-  
 </div>
 
