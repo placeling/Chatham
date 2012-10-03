@@ -17,8 +17,6 @@ class Authentication
   index :uid
   index :user_id
 
-  validates_uniqueness_of :uid
-
   after_create :social_graph_jobs
 
   def self.find_by_provider_and_uid(provider, id)

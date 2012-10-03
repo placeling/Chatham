@@ -223,12 +223,11 @@ class AuthenticationsController < ApplicationController
       #update tokens
       auth.token = token
       auth.expiry = expiry
-      auth.save
+      auth.save!
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     elsif current_user
       #some update
       auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token => token, :expiry => expiry)
-      auth.save
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     else
       render :json => {:status => "FAIL"}
@@ -238,18 +237,15 @@ class AuthenticationsController < ApplicationController
   def process_twitter(uid, token, secret, provider = "twitter")
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
-    if current_user && auth && current_user.id != auth.user.id
-      render :json => "Twitter id already in use", :status => 400
-    elsif current_user && auth && auth.uid == uid
+    if current_user && auth && auth.uid == uid
       #update tokens
       auth.token = token
       auth.secret = secret
-      auth.save
+      auth.save!
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     elsif current_user
       #some update
       auth = current_user.authentications.create!(:provider => provider, :uid => uid, :token => token, :expiry => "", :secret => secret)
-      auth.save
       render :json => {:user => current_user.as_json({:current_user => current_user})}
     else
       render :json => {:status => "FAIL"}
