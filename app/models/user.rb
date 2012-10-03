@@ -90,9 +90,11 @@ class User
 
   embeds_one :activity_feed
   embeds_one :user_setting
+  embeds_one :user_tour
   embeds_one :user_recommendation
   embeds_one :first_run
   accepts_nested_attributes_for :user_setting
+  accepts_nested_attributes_for :user_tour
 
   validate :acceptable_name, :on => :create
   validate :acceptable_password

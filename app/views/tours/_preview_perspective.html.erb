@@ -1,12 +1,12 @@
 <div class="preview_perspective_holder">
-  <% if i < 9 %>
+  <% if i < 36 %>
     <div class="tour_counter">
       <% if i % 2 == 1 %>
         <%= image_tag asset_path('tours/odd_banner.png') %>
       <% else %>
       <%= image_tag asset_path('tours/even_banner.png') %>
       <% end %>
-      <div class="tour_counter_value"><%= i+1 %></div>
+      <div class="tour_counter_value"><%= label_value(i) %></div>
     </div>
   <% end %>
   <div class="preview_perspective">

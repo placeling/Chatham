@@ -259,8 +259,6 @@ en:
     add_places: 'Add places to '
     add_places_title: "Add places to your tour"
     drag: 'Drag them to the middle column and feel free to rearrange the order'
-    warn_count: 'Your tours has more than 9 places in it'
-    warn_mini: 'Only the first nine will be numbered'
     preview: 'Preview'
     edit_bounds: 'Change Bounds'
     preview_title: 'Preview your Tour'
@@ -270,13 +268,13 @@ en:
     update_map: "Change map"
     update_pins: "Change pins"
     publish: "Publish your tour"
-    liked: "Done. Have fun exploring"
-    like_all: "Add this tour to your map"
+    liked: "Done. These places are now on your map"
+    like_all: "Take this tour"
     creating: "We're creating your tour."
     waiting: "This can take over a minute if our servers are busy."
     trivia: "In the meantime, enjoy some trivia."
-    yours: "Here's your tour:"
-    high_res: "Printable version"
+    high_res: "Higher resolution version"
+    printable: "Printable version"
     share: "Share your tour"
     show: "Show"
     tags: "tags"
@@ -292,6 +290,8 @@ en:
     index_description: "Check out each one of these tours and download them to your iPhone"
     og_name: "%{user}'s Tours on Placeling"
     just_a_sec: "Just a sec..."
+    order: "Order a Poster Version"
+    download: "Option-click (Mac) or right-click (PC) to download the image below."
     
   user:
     you: "Map"

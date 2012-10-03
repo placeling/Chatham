@@ -18,7 +18,7 @@
       <% @tours.each do |tour| %>
         <div class="index_tour">
           <div class="index_tour_name"><%= link_to(tour.name, user_tour_path(tour.user, tour), :class=>"index_tour_name")%></div>
-          <div class="index_tour_description"><%= tour.description %></div>
+          <div class="index_tour_description"><%= simple_format(tour.description) %></div>
           <div class="index_tour_place_count">
           <%= tour.active_perspectives.length %> place<% if tour.active_perspectives.length != 1%>s<% end %>
           <% if @user == current_user %>

@@ -2,7 +2,7 @@ require 'httparty'
 
 class ToursController < ApplicationController
   
-  before_filter :login_required, :except => [:index, :render_preview, :show]
+  before_filter :login_required, :except => [:index, :render_preview, :show, :print, :purchase]
   
   def index
     @user = User.find_by_username(params[:user_id])
@@ -220,6 +220,26 @@ class ToursController < ApplicationController
     @tour.perspectives = @tour.active_perspectives
     
     render :layout => 'minimal'
+  end
+  
+  def print
+    @tour = Tour.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@tour.nil?
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def purchase
+    @tour = Tour.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@tour.nil?
+    
+    track! :purchase_poster
+    
+    respond_to do |format|
+      format.js
+    end
   end
   
   def poll

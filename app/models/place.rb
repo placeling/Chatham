@@ -301,7 +301,7 @@ class Place
     self.address_components = raw_place.address_components unless raw_place.address_components.nil?
     self.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
     self.google_ref = raw_place.reference
-    self.venue_url = raw_place.url unless raw_place.url.nil?
+    self.venue_url = raw_place.website unless raw_place.website.nil?
     self.html_attributions = raw_place.html_attributions
 
     # TODO This is hacky and ignores i18n
