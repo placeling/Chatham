@@ -7,17 +7,18 @@
 
 <div id="content_holder">
   <div class="promo"><a href="#faq">Skip to FAQ</a></div>
-  <div class="blog_content big_script">Turn Your Blog Into an iPhone-Enabled City Guide</div>
+  <div class="blog_content big_script">Add A Map To Your Blog</div>
   <div class="blog_content">
     <div class="promo">
-      <p>Do you write about places?</p>
-      <p>Food? Fashion? Family-friendly? Travel? Heck, anything.</p>
-      <p>At least once you're probably wished that you could just give your blog to someone as a map and let them see nearby places you've written about.</p>
-      <p>Now you can, with <a href="http://wordpress.org/extend/plugins/placeling/">Placeling's Wordpress plugin</a>.</p>
-      <p>Your blog posts appear in Placeling's iPhone app and can be embedded in a map on your blog.</p>
-      <p>
-        <%= image_tag "admin/bloggers/blog_tool_overview.png", :alt=>"Blog tool overview", :class=>"blog_image blog_1" %>
-      </p>
+      <p>Placeling's <a href="http://wordpress.org/extend/plugins/placeling/">Wordpress plugin</a> tags each blog post with a location. This opens up new ways for readers to experience your blog.</p>
+      <p class="blog_embiggen">Use Your Placeling Map To Explore Posts</p>
+      <p>Embed your Placeling map in your blog and each pin will open up the corresponding blog post.</p>
+      <p>Play with an example <a href="http://fidoloves.com/dog-friendly-map/">here</a> and <a href="http://leaveyourdailyhell.com/map-of-the-world/">here</a>.</p>
+      <p><%= image_tag "admin/bloggers/embedded_map.jpg", :alt=>"iPhone example", :class=>"blog_image" %></p>
+      <p class="blog_embiggen">Use Your iPhone To See Nearby Posts</p>
+      <p>Our <a href="https://www.placeling.com/app">iPhone app</a> lets readers see nearby places you've blogged about - and read those posts.</p>
+      <p><%= image_tag "admin/bloggers/blog_iphone_demo.jpg", :alt=>"iPhone example", :class=>"blog_image" %></p>
+      <p>Sound good? Let's get started.</p>
       <p class="heading"><a name="faq">FAQ</a></p>
       <p><a href="#requirements">What do I need to use the plugin?</a></p>
       <p><a href="#install">How do I install the plugin?</a></p>
@@ -30,7 +31,7 @@
       <p class="heading"><a name="requirements">What do I need to use the plugin?</a></p>
       <p>You'll need:
         <ul class="specific">
-          <li>A <a href="http://wordpress.com/">Wordpress</a>-based blog that you can install plugins on</li>
+          <li>A <a href="http://wordpress.org/">Wordpress</a>-based blog that you can install plugins on</li>
           <li>A <%= link_to "Placeling account", new_user_registration_path %></li>
         </ul>
       </p>
@@ -118,12 +119,17 @@
       <p>
         <%= image_tag "admin/bloggers/footer.png", :alt=>"Untagged post", :class=>"blog_image blog_11" %>
       </p>
+      <p>The footer only appears in actual posts: it won't appear on the front page of your blog.</p>
       <p>If you ever uninstall the Placeling plugin, the footer will be removed from all posts.</p>
       <p><a name="embed">How do I embed my map in my blog?</a></p>
+      <p>We strongly recommend creating a new page on your blog to hold your map (e.g., myblog.com/my_map).</p>
+      <p>Some bloggers have tried putting a map in a sidebar on every page, but this is a really bad user experience. It's too small to be useful and leads to readers abandoning your site.</p>
+      <p>Now, the instructions:</p>
       <p>
         <ul class="specific">
           <li>Go to Placeling.com and log in</li>
           <li>Click the "Account" link in the upper right corner of the screen</li>
+          <p><%= image_tag "admin/bloggers/my_account_link.jpg", :alt=>"iPhone example", :class=>"blog_image" %></p>
           <li>Click on the link "Embed a copy of your map on your website or blog"</li>
         </ul>
         <p>This brings you to a page where you can configure how you want your embedded map to look:</p>
