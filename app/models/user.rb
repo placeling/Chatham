@@ -210,6 +210,11 @@ class User
       question.save!
     end
 
+    Question.any_of({'answers.answer_comments.user_id' => self.id}).each do |question|
+      question.answers.any_of({'answer_comments.user_id' => self.id}).each do |answer|
+        answer.answer_comments.destroy_all(:user_id => self.id)
+      end
+    end
   end
 
   def fix_location
