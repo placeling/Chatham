@@ -36,6 +36,10 @@ class Tour
     return tour
   end
   
+  def og_path
+    "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_tour_path(self.user, self)}"
+  end
+  
   # Need to create custom ordering of @tour.perspectives because order lost between Mongo & Rails
   def active_perspectives
     self.perspectives = []
