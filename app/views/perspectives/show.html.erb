@@ -19,6 +19,11 @@
       <% if auth = @perspective.user.authentications.where(:p => "twitter").first %>
           <meta name="twitter:creator:id" content="<%= auth.uid %>"/>
       <% end %>
+
+      <META NAME="geo.placename" content="<%= @perspective.place.name %>"/>
+      <META NAME="geo.position" content="<%= @perspective.place.location[0] %>;<%= @perspective.place.location[1] %>"/>
+      <meta name=”ICBM” content=”<%= @perspective.place.location[0] %>,<%= @perspective.place.location[1] %>″>
+
 <% end %>
 
 <% content_for :javascript_includes do %>
