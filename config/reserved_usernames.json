@@ -1,5 +1,7 @@
 [
     "placling",
+    "placeling",
+    "aggregation",
     "about",
     "contact",
     "terms",
@@ -61,7 +63,10 @@
     "v3",
     "v4",
     "me",
-    "whitelabel"
+    "whitelabel",
+    "tours",
+    "tour",
+    "placemark"
 
 ]
 
