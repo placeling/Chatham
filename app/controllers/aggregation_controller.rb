@@ -4,7 +4,7 @@ class AggregationController < ApplicationController
 
 
     respond_to do |format|
-      format.html
+      format.html { render :layout => 'bootstrap' }
     end
 
   end

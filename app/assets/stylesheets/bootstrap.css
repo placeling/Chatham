@@ -2,6 +2,6 @@
 *= require_self
 *= require chatham
 *= require vendor
-*= require application_trans
+*= require bootstrap_and_overrides
+*= require bootstrap_trans
 */
-

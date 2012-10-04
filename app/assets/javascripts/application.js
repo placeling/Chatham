@@ -1,1 +1,4 @@
-//= require_directory .
+/* ...
+ *= require_self
+ *= require chatham
+ */
