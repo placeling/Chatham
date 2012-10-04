@@ -4,4 +4,6 @@
 *= require vendor
 *= require bootstrap_and_overrides
 *= require bootstrap_trans
+*= require infographics
+*= require question
 */
