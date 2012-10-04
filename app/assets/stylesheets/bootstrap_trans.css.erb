@@ -1,22 +1,21 @@
 #main {
-    min-height: 100%;
-    background-image: url(<%= asset_path 'background_pattern.png' %>);
+    height: 100%;
     width: 100%;
 }
 
-#wrapper {
-    height: 100%;
-    overflow: auto;
-    padding-bottom: 30px;
+body {
+    background-image: url(<%= asset_path 'background_pattern.png' %>);
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1170px;
 }
 
 .navbar-inner {
     height: 62px;
     width: 100%;
-    background: #fff url(<%= asset_path 'header_bg.png' %>) repeat-x;
-}
-
-#search {
-    float: left;
-    height: 62px;
+    background: url(<%= asset_path 'header_bg.png' %>) repeat-x;
+    background-size: 100% 100%;
 }

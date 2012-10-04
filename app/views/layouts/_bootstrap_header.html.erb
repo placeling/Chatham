@@ -1,0 +1,51 @@
+<% content_for :javascript do %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var copy = "<%= t('header.call_to_action') %>"
+            $("#term").val(copy);
+            $("#term").css({'color':'grey'});
+
+            $("#term").focus(function () {
+                this.value = "";
+                $(this).css({'color':'black'});
+            })
+
+            $("#term").blur(function () {
+                if (this.value == '') {
+                    this.value = copy;
+                    $(this).css({'color':'grey'});
+                }
+            })
+        });
+        $(window).load(function () {
+            firstRun();
+        });
+    </script>
+<% end %>
+
+
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <a class="brand" href="/" id="logo"><%= image_tag "logo.png" %></a>
+
+    <form accept-charset="UTF-8" class="navbar-form pull-left">
+      <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+      <input id="term" type="text" class="span 2search_box">
+      <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
+    </form>
+    <ul class="nav pull-right">
+      <% if current_user %>
+          <li>
+            <a href="<%= (account_user_path :id => current_user) %>"><%= image_tag current_user.thumb_url, :class => "you", :alt => t("user.your_account") %></a>
+          </li>
+          <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></li>
+          <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></li>
+          <li class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></li>
+      <% else %>
+          <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></li>
+          <li class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></li>
+          <li class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></li>
+      <% end %>
+    </ul>
+  </div>
+</header>
