@@ -16,7 +16,7 @@
 
         function htmlForPerspective(perspective) {
             var infoWindowHTML = '<div class="info_window"><div class="infowindow_liner">';
-            infoWindowHTML += '<div class="info_name"><a href="/whitelabel/place/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
+            infoWindowHTML += '<div class="info_name"><a href="/place/' + perspective.place.slug + '">' + perspective.place.name + '</a></div>';
             infoWindowHTML += '<div class="info_address">' + perspective.place.street_address + '</div>';
             if (perspective.tags.length > 0) {
                 infoWindowHTML += '<div class="info_tags">';

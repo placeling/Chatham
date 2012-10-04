@@ -2,7 +2,7 @@ require 'resque/failure/multiple'
 require 'resque/failure/airbrake'
 require 'resque/failure/redis'
 
-REDIS_CONFIG = YAML.load( File.open( Rails.root.join("config/redis.yml") ) )
+REDIS_CONFIG = YAML.load(File.open(Rails.root.join("config/redis.yml")))
 
 redis_base = Redis.new(REDIS_CONFIG[::Rails.env].symbolize_keys!)
 
@@ -27,3 +27,7 @@ Resque.schedule = YAML.load_file(File.join(Rails.root, 'config/resque_schedule.y
 $redis = Redis::Namespace.new(REDIS_CONFIG[::Rails.env][:namespace], :redis => redis_base)
 $redis.flushdb if Rails.env.test?
 
+
+Resque::Server.use Rack::Auth::Basic do |username, password|
+  password == "queueitup"
+end

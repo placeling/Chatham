@@ -4,16 +4,11 @@ require 'rack-ssl-enforcer'
 
 class WhiteApp < Sinatra::Base
   helpers Sinatra::ContentFor
+  register Sinatra::Subdomain
+
   # To change this template use File | Settings | File Templates.
   dir = File.dirname(File.expand_path(__FILE__))
   set :views, "#{dir}views"
-
-
-  def initialize(site)
-    super()
-    @base_user = site
-  end
-
 
   if respond_to? :public_folder
     set :public_folder, "#{dir}/static"
@@ -69,57 +64,61 @@ class WhiteApp < Sinatra::Base
     end
   end
 
-  before do
-    @lat = request.cookies["lat"]
-    @lng = request.cookies["lng"]
 
-  end
+  subdomain do
 
-  get "/" do
-    erb :index
-  end
+    before do
+      @base_user = subdomain
+      @user = User.find_by_username(subdomain)
 
-  get "/category/:category" do
-    redirect "/whitelabel/category/#{params[:category]}/list"
-  end
+      @lat = request.cookies["lat"]
+      @lng = request.cookies["lng"]
+    end
 
-  get "/category/:category/list" do
-    @user = User.find_by_username(@base_user)
-    @perspectives = get_perspectives(@user, params[:category]).limit(20).entries
+    get "/" do
+      erb :index
+    end
 
-    if @lat && @lng
-      @perspectives.each do |perspective|
-        #add distance to in meters
-        perspective.distance = Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)
+    get "/category/:category" do
+      redirect "/category/#{params[:category]}/list"
+    end
+
+    get "/category/:category/list" do
+      @user = User.find_by_username(@base_user)
+      @perspectives = get_perspectives(@user, params[:category]).limit(20).entries
+
+      if @lat && @lng
+        @perspectives.each do |perspective|
+          #add distance to in meters
+          perspective.distance = Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)
+        end
+        @perspectives = @perspectives.sort_by { |perspective| perspective.distance }
       end
-      @perspectives = @perspectives.sort_by { |perspective| perspective.distance }
+
+      erb :categorylist
     end
 
-    erb :categorylist
-  end
 
+    get "/category/:category/map" do
+      @user = User.find_by_username(@base_user)
 
-  get "/category/:category/map" do
-    @user = User.find_by_username(@base_user)
+      if @lat && @lng
+        @display_lat = @lat
+        @display_lng = @lng
+      else
+        @display_lat = @user.loc[0]
+        @display_lng = @user.loc[1]
+      end
 
-    if @lat && @lng
-      @display_lat = @lat
-      @display_lng = @lng
-    else
-      @display_lat = @user.loc[0]
-      @display_lng = @user.loc[1]
+      erb :categorymap
     end
 
-    erb :categorymap
+    get "/place/:id" do
+      user = User.find_by_username(@base_user)
+      place = Place.forgiving_find(params[:id])
+      @perspective = user.perspective_for_place(place)
+
+      erb :place
+    end
   end
-
-  get "/place/:id" do
-    user = User.find_by_username(@base_user)
-    place = Place.forgiving_find(params[:id])
-    @perspective = user.perspective_for_place(place)
-
-    erb :place
-  end
-
-
 end

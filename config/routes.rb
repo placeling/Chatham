@@ -1,13 +1,8 @@
+require 'resque/server'
+require 'gridto/white_app'
+require 'subdomain'
+
 Chatham::Application.routes.draw do
-
-  get "aggregation/index"
-
-  get "answer_comments/create"
-
-  get "answer_comments/delete"
-
-  get "authentications/index"
-  get "authentications/create"
 
   get "/feeds/home_timeline", :to => "home#home_timeline", :as => :home_feed
   get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
@@ -35,8 +30,6 @@ Chatham::Application.routes.draw do
   post "/admin/flagged_place", :to => 'admin#update_place', :as => :flagged_place
 
   get "/search", :to => 'search#search', :as => :search
-
-  root :to => "home#index"
 
   devise_for :users, :controllers => {:sessions => 'sessions', :registrations => :registrations, :confirmations => :confirmations}
 
@@ -292,12 +285,17 @@ Chatham::Application.routes.draw do
     mount Notifier::Preview => 'mail_view'
   end
 
-  mount Resque::Server, :at => "resque"
+  mount Resque::Server, :at => "/resque"
+  match "/whitelabel", :to => redirect("http://gridto.placeling.com")
 
-  mount WhiteApp => "/whitelabel"
+  constraints(Subdomain) do
+    mount WhiteApp, :at => "/"
+  end
 
   match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile
+
+  root :to => "home#index"
 
   # Sample resource route within a namespace:
   #   namespace :admin do
