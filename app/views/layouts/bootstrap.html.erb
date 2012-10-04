@@ -67,17 +67,12 @@
 
 <div id="main" class="container" role="main">
   <div class="content">
-    <div class="row">
-      <div class="span12">
-        <%= yield %>
-      </div>
-    </div>
-    <footer>
-    </footer>
+    <%= yield %>
   </div>
 </div>
-
-<%= render :partial => 'layouts/footer' %>
+<footer>
+  <%= render :partial => 'layouts/footer' %>
+</footer>
 
 <script type="text/javascript">
 
