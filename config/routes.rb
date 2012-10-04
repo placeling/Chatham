@@ -1,5 +1,7 @@
 Chatham::Application.routes.draw do
 
+  get "aggregation/index"
+
   get "answer_comments/create"
 
   get "answer_comments/delete"
