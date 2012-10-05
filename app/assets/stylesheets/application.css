@@ -3,5 +3,7 @@
 *= require chatham
 *= require vendor
 *= require application_trans
+*= require infographics
+*= require question
 */
 
