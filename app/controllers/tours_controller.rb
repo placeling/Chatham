@@ -279,6 +279,8 @@ class ToursController < ApplicationController
       current_user.save
     end
     
+    track! :tour_taken
+    
     respond_to do |format|
       format.js
     end
