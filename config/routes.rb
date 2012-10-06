@@ -13,12 +13,10 @@ Chatham::Application.routes.draw do
   match '/vanity(/:action(/:id(.:format)))', :controller => :vanity
 
   # Marketing
-  get "/map", :to => 'admin#map', :as => :map
-  get "/share", :to => 'admin#share', :as => :share
-  get "/guide", :to => 'admin#guide', :as => :guide
+  get "/locals", :to => 'admin#local', :as => :local
+  get "/tour", :to => 'admin#tour', :as => :tour
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
   get "/admin/investors", :to => 'admin#investors', :as => :investors
-  # get "/nearby", :to => "home#nearby", :as => :home_nearby
   get "/explore", :to => 'aggregation#index', :as => :aggregation
 
   get "/admin/status", :to => 'admin#heartbeat', :as => :status

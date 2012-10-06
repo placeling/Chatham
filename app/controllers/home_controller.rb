@@ -2,6 +2,47 @@ class HomeController < ApplicationController
   before_filter :login_required, :only => [:home_timeline]
 
   def index
+    candidates = [
+      "caryblack",
+      "ConstanceLiu",
+      "lisamcgran",
+      "willowlangille",
+      "meg",
+      "quynhnguyendang",
+      "krisbraun",
+      "DanaStasyk",
+      "alaaai",
+      "aliciafashionista",
+      "lapintutu",
+      "Perolion",
+      "ktstc",
+      "ibanesve",
+      "hannahrsyang",
+      "FlandersLaw",
+      "fbiza365",
+      "jesseanger",
+      "anderkonzen",
+      "amjoconn",
+      "CarrieBrown",
+      "pilgrim",
+      "honeysuckle",
+      "Nostradamion",
+      "beans90",
+      "itsaulgood",
+      "evetteshe",
+      "Heartlight"
+      ]
+    
+    @users = []
+    candidates.each do |candidate|
+      user = User.find_by_username(candidate)
+      if !user.nil?
+        @users << user
+      end
+    end
+    
+    @users.shuffle!
+    
     respond_to do |format|
       format.html
     end

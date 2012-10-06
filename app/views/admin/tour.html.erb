@@ -1,0 +1,20 @@
+<% content_for :head do %>
+  <title>Placeling :: Create a Tour</title>
+  <meta name="description" content="Turn the pins on your map into a shareable, printable tour." />
+  <meta property="og:title" content="Placeling :: Create a Tour" />
+  <meta property="og:description" content="Turn the pins on your map into a shareable, printable tour.">
+<% end %>
+
+<div id="main_well">
+  <div id="copy">
+    <p class="mini_headline_copy">Be The Guide <%= image_tag(asset_path("home/compass.png"), :class=>"compass") %></p>
+    <p>You can take the pins on your map and turn them into a tour.</p>
+    <p>Your tour will be a personalized infographic like the one at left (but bigger).</p>
+    <p>You can email it to others, put it in your blog, post it to Pinterest, share it on Facebook, tweet it - whatever you want.</p>
+    <p>Your tour also lives at Placeling so others can download it to their phone. <a href="https://www.placeling.com/users/lindsayrgwatt/tours/gastown-coffee-tour" class="copy_link">Here's an example</a>.</p>
+    <p class="copy_action_holder"><%= link_to "Create Your Own Tour", new_user_path(), :class => "submit", :id => "submit_button" %></p>
+  </div>
+  <div id="sample" class="home_tour">
+    <%= image_tag(asset_path("home/tour.png"))%>
+  </div>
+</div>

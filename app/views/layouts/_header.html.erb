@@ -37,15 +37,19 @@
     <ul>
       <% if current_user %>
           <li>
-            <a href="<%= (account_user_path :id => current_user) %>"><%= image_tag current_user.thumb_url, :class => "you", :alt => t("user.your_account") %></a>
+            <a href="<%= (account_user_path :id => current_user) %>" title="<%= t('header.my_account') %>"><%= image_tag current_user.thumb_url, :class => "you", :alt => t("header.my_account") %></a>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("header.my_map"), :class => "header_icon", :title=>t('header.my_map')), user_path(current_user) %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/tour_compass.png"), :alt => t("header.my_tours"), :class => "header_icon", :title=>t('header.my_tours')), user_tours_path(current_user) %></p>
+          </li>
+          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
+          <li>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("header.my_questions"), :class => "header_icon", :title=>t('header.my_questions')), questions_path %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
@@ -53,7 +57,7 @@
           </li>
       <% else %>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("header.questions"), :class => "header_icon", :title=>t('header.questions')), questions_path %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li><p class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
