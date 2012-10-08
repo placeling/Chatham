@@ -363,10 +363,19 @@ class PerspectivesController < ApplicationController
       end
 
       @perspective.place.save
-      respond_to do |format|
-        format.html { redirect_to session[:referring_url] }
-        format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
+
+      if params[:newpost]
+        respond_to do |format|
+          format.html { redirect_to session[:referring_url] }
+          format.json { render :json => {:perspective => @perspective.as_json({:current_user => current_user, :detail_view => true})} }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to session[:referring_url] }
+          format.json { render :json => @perspective.as_json({:current_user => current_user, :detail_view => true}) }
+        end
       end
+
     else
       respond_to do |format|
         format.html { render :edit }
