@@ -31,6 +31,11 @@ en:
   
   header:
     call_to_action: "Find places to explore and people to guide you"
+    my_account: "My Account"
+    my_map: "My Map"
+    my_tours: "My Tours"
+    my_questions: "My Questions"
+    questions: "Questions"
 
   aggregation:
     meet_guide: "Meet The Guides"

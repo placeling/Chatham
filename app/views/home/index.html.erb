@@ -7,200 +7,148 @@
     <meta property="og:image" content="https://www.placeling.com<%= asset_path("screenshot.png") %>"/>
 <% end %>
 
-<% content_for :css do %>
-    #container {
-    min-height: 0px;
-    }
-
-    #wrapper {
-    padding-bottom: 0px;
-    overflow-x: hidden;
-    }
-
-    #footerbottom {
-    margin-top:0px;
-    clear: none;
-    }
-<% end %>
-
 <% content_for :javascript do %>
-
     <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
         <script type="text/javascript">
             $(document).ready(function () {
-
-                mpmetrics.track_links('.guide_link', 'guide_link');
-                mpmetrics.track_links('.map_link', 'map_link');
-                mpmetrics.track_links('.share_link', 'share_link');
-                mpmetrics.track_links('#sign_up', 'signup_link');
-                mpmetrics.track_links('.image_map_link', 'image_map_link');
-                mpmetrics.track('index_view');
+              mpmetrics.track_links('.tour_link', 'tour_link');
+              mpmetrics.track_links('.question_link', 'question_link');
+              mpmetrics.track_links('.city_guide_link', 'city_guide_link');
+              mpmetrics.track_links('.blog_tools_link', 'blog_tools_link');
+              mpmetrics.track_links('.sign_up', 'signup_link');
+              mpmetrics.track('index_view');
             });
         </script>
     <% end %>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var minWidth = parseInt($("#clear_bg").css("width"));
-
-            $(window).resize(function () {
-                if ($(window).width() < minWidth) {
-                    $("#clear_bg").css("margin-left", -1 * (minWidth - $(window).width()) / 2 + "px");
-                } else {
-                    $("#clear_bg").css("margin-left", "auto");
-                }
-
-                $("#footerbottom").height($(window).height() - $('#container').outerHeight(true));
-            });
-            $(window).resize();
+          $("#facebook").hover(
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/facebook_hover.png") %>');
+                  },
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/facebook.png") %>');
+                  }
+          );
+          $("#twitter").hover(
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/twitter_hover.png") %>');
+                  },
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/twitter.png") %>');
+                  }
+          );
+          $("#blog").hover(
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/tumblr_hover.png") %>');
+                  },
+                  function () {
+                      $(this).attr("src", '<%= path_to_image("home/tumblr.png") %>');
+                  }
+          );
         });
         $(window).load(function () {
-            $("#binoculars").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/binoculars_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/binoculars.png") %>');
-                    }
-            );
-            $("#iphone").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/iphone_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/iphone.png") %>');
-                    }
-            );
-            $("#paper_plane").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/paper_plane_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/paper_plane.png") %>');
-                    }
-            );
-            $("#facebook").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/facebook_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/facebook.png") %>');
-                    }
-            );
-            $("#twitter").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/twitter_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/twitter.png") %>');
-                    }
-            );
-            $("#blog").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/tumblr_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/tumblr.png") %>');
-                    }
-            );
-            $("#sign_up").hover(
-                    function () {
-                        $(this).css({opacity:0.5});
-                    },
-                    function () {
-                        $(this).css({opacity:1.0});
-                    }
-            );
+          var $slide = $("#slideshow");
+          var $photos = [];
+          $photos[0] = "<%= asset_path("home/screens/my_map.jpg") %>";
+          $photos[1] = "<%= asset_path("home/screens/my_map_named.jpg") %>";
+          $photos[2] = "<%= asset_path("home/screens/la_taqueria.jpg") %>";
+          $photos[3] = "<%= asset_path("home/screens/lindsay.jpg") %>";
+          $photos[4] = "<%= asset_path("home/screens/clear.png") %>";
+          $photos[5] = "<%= asset_path("home/screens/home_view.jpg") %>";
+          
+          $photos.count = $photos.length - 1;
+          var $fade_time = 250;
+          var $timeout = '';
+          
+          function slideshow(slideNumber) {
+            slideNumber = (slideNumber > $photos.count ? 0 : slideNumber);
+            $photos.css_url = "url('" + $photos[slideNumber] + "')";
+            
+            $slide.fadeOut($fade_time, function(){
+              $slide.css("background-image", $photos.css_url);
+              $slide.fadeIn($fade_time);
+              var timeoutCount = 2500
+              if ((slideNumber == $photos.count - 1)) {
+                timeoutCount = 1000
+              }
+              $timeout = setTimeout(function(){slideshow(slideNumber+1);}, timeoutCount );
+            });
+          }
+          
+          setTimeout(function() {slideshow(0)}, 5000);
         });
     </script>
 <% end %>
 
-<div id="cityscape">
-  <div id="street_scene">
-    <div id="clear_bg">
-      <%= image_tag "home/clear_bg.png", :usemap => "#action" %>
-      <map name="action">
-        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="26,175,231,441" href="<%= map_path %>">
-        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="251,366,308,495" href="https://placeling.com/places/4efe738057b4e30c7e00007f">
-        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="268,215,409,314" href="https://placeling.com/meg">
-        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="426,70,774,263" href="<%= guide_path %>">
-        <area onfocus="blur();" class="image_map_link" shape="rectangle" coords="565,379,640,445" href="https://placeling.com/places/4ec5ef6d6dd9562b7300001b">
-        <area onfocus="blur();" class="image_map_link" shape="polygon" coords="738,349,745,503,906,507,891,401,796,392,780,350,780,350,773,350,773,350,770,350,749,348" href="https://placeling.com/vancouverbabies">
-        <area onfocus="blur();" class="image_map_link" shape="polygon" coords="785,249,784,301,806,377,974,377,1001,300,1001,247,931,216,836,216" href="<%= new_user_registration_path %>">
-      </map>
+<div id="main_well">
+  <div id="main_copy">
+    <div id="headline">Your Places</div>
+    <p class="copy">Where you've been.</p>
+    <p class="copy">Where you want to go.</p>
+    <p class="copy">With friends.</p>
+    <div id="homepage_action">
+      <div class="register"><span class="social_proof">Join thousands of local explorers</span> <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_path(), :class => "submit sign_up" %></span></div>
+    </div>
+    <div id="homepage_people">
+      <% @users.each do |user| %>
+        <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class=>"homepage_photo")%></div>
+      <% end %>
     </div>
   </div>
-</div>
-
-<div id="splash_footer">
-  <div class="info_well">
-    <ul class="info_well">
-      <li>
-        <div class="info_holder">
-          <div class="info_image image_iphone">
-            <a class="map_link" href="<%= map_path %>"><%= image_tag "home/iphone.png", :alt => "iPhone", :id => "iphone" %></a>
-          </div>
-          <div class="info_text info_iphone">
-            <p class="first_para"><%= t('home.create') %></p>
-
-            <p><a href="<%= map_path %>" class="splash_link map_link"><%= t('home.more') %></a></p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="info_holder paper_plane_holder">
-          <div class="info_image image_paper_plane">
-            <a class="share_link" href="<%= share_path %>"><%= image_tag "home/paper_plane.png", :alt => "Paper Plane", :id => "paper_plane" %></a>
-          </div>
-          <div class="info_text info_paper_plane">
-            <p class="first_para"><%= t('home.share') %></p>
-
-            <p><a href="<%= share_path %>" class="splash_link share_link"><%= t('home.more') %></a></p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="info_holder binoculars_holder">
-          <div class="info_image image_binoculars">
-            <a class="guide_link" href="<%= guide_path %>"><%= image_tag "home/binoculars.png", :alt => "Binoculars", :id => "binoculars" %></a>
-          </div>
-          <div class="info_text info_binoculars">
-            <p class="first_para"><%= t('home.guide') %></p>
-
-            <p><a href="<%= guide_path %>" class="splash_link guide_link"><%= t('home.more') %></a></p>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="info_holder sign_up">
-          <ul class="stay_in_touch">
-            <li>
-              <div class="stay_in_touch_wrapper stay_in_touch_spacer">
-                <a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt => "FB", :id => "facebook" %></a>
-              </div>
-            </li>
-            <li>
-              <div class="stay_in_touch_wrapper">
-                <a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt => "Twitter", :id => "twitter" %></a>
-              </div>
-            </li>
-            <li>
-              <div class="stay_in_touch_wrapper">
-                <a href="http://blog.placeling.com"><%= image_tag "home/tumblr.png", :alt => "Blog", :id => "blog" %></a>
-              </div>
-            </li>
-          </ul>
-          <div id="ribbon_sign_up">
-            <a href="<%= new_user_registration_path %>"><%= image_tag "home/sign_up_banner.png", :alt => "Sign Up", :id => "sign_up" %></a>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <div id="iphone">
+    <div id="slideshow"></div>
+  </div>
+  <div id="homepage_more">
+    <div class="mini_headline">What Else Can You Do With Placeling?</div>
+    <div class="feature_unit">
+      <div class="feature_image">
+        <%= image_tag(asset_path("home/features/tour.jpg"))%>
+      </div>
+      <div class="feature_description">
+        <p class="feature_headline">Be The Guide <%= image_tag(asset_path("header/tour_compass.png"), :class=>"watermark")%></p>
+        <p class="feature_details">Turn the places on your map into shareable, printable tours.</p>
+        <p class="learn_link"><%= link_to("Beautiful Tours", tour_path, :class=>"tour_link") %></p>
+      </div>
+    </div>
+    <div class="feature_unit">
+      <div class="feature_image">
+        <%= image_tag(asset_path("home/features/questions.jpg"))%>
+      </div>
+      <div class="feature_description">
+        <p class="feature_headline">Find The Perfect Place <%= image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :class=>"watermark")%></p>
+        <p class="feature_details">Ask your friends for their favorite places - and add them to your map.</p>
+        <p class="learn_link"><%= link_to("Ask A Question", questions_path, :class=>"question_link") %></p>
+      </div>
+    </div>
+    <div class="feature_unit">
+      <div class="feature_image">
+        <%= image_tag(asset_path("home/features/infographic.jpg"))%>
+      </div>
+      <div class="feature_description">
+        <p class="feature_headline">Get The Local's Perspective</p>
+        <p class="feature_details">We ask local experts for the best of their city - and you get it automatically.</p>
+        <p class="learn_link"><%= link_to("City Guides", local_path, :class=>"city_guide_link") %></p>
+      </div>
+    </div>
+    <div class="feature_unit">
+      <div class="feature_image">
+        <%= image_tag(asset_path("home/features/wordpress.png"))%>
+      </div>
+      <div class="feature_description">
+        <p class="feature_headline">Your Map In Your Blog</p>
+        <p class="feature_details">Embed your map in your blog and use our plugin to add pins to it.</p>
+        <p class="learn_link"><%= link_to("Blogging Tools", bloggers_path, :class=>"blog_tools_link") %></p>
+      </div>
+    </div>
+  </div>
+  <div id="last_call">
+    Enough already - <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_path(), :class => "submit sign_up" %></span>
   </div>
 </div>
-
-<% content_for :sub_footer do %>
-    <div style="width:100%;text-align: right;">
-      <a style="margin-right:10px" href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics"/></a>
-    </div>
-<% end %>
+<div id="homepage_finish">
+  <div id="finish_options">
+    Need more info? <%= mail_to "contact@placeling.com", "Email us", :encode => "javascript"%><span id="stay_in_touch">Stay in touch:</span> <span class="social_connect"><a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt => "FB", :id => "facebook" %></a></span> <span class="social_connect"><a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt => "Twitter", :id => "twitter" %></span> <span class="social_connect"><a href="http://blog.placeling.com"><%= image_tag "home/tumblr.png", :alt => "Blog", :id => "blog" %></a></span>
+  </div>
+</div>

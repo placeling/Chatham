@@ -21,5 +21,6 @@ class RenderTour
       #actor1.facebook.put_connections("me", "placeling:follow", :user => actor2.og_path)
     end
     
+    track! :tour_created
   end
 end

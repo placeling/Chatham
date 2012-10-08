@@ -46,24 +46,18 @@ class AdminController < ApplicationController
     end
   end
 
-  def map
+  def local
     respond_to do |format|
       format.html
     end
   end
-
-  def share
+  
+  def tour
     respond_to do |format|
       format.html
     end
   end
-
-  def guide
-    respond_to do |format|
-      format.html
-    end
-  end
-
+  
   def investors
 
   end
