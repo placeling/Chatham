@@ -2,9 +2,9 @@ require 'google_places'
 
 class Perspective
   MAX_LENGTH = 130
-  include Mongoid::Paranoia
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
   include Twitter::Extractor
 
   field :memo, :type => String, :default => ""
