@@ -5,8 +5,8 @@ class FacebookSuggestReminder
   def self.perform(user_id)
     user = User.find(user_id)
 
-    if user.post_facebook? && user.ios_notification_token #&& !user.user_settings.facebook_friend_check
-                                                          #only send if we have facebook, an ios_notification token, and hasn't done the friend check
+    if user && user.post_facebook? && user.ios_notification_token #&& !user.user_settings.facebook_friend_check
+                                                                  #only send if we have facebook, an ios_notification token, and hasn't done the friend check
 
       friends_json = $redis.smembers("facebook_friends_#{user.id}")
       tally = friends_json.count
