@@ -50,55 +50,64 @@
         });
         $(window).load(function () {
           var $slide = $("#slideshow");
-          var $photos = [];
-          $photos[0] = "<%= asset_path("home/screens/my_map.jpg") %>";
-          $photos[1] = "<%= asset_path("home/screens/my_map_named.jpg") %>";
-          $photos[2] = "<%= asset_path("home/screens/la_taqueria.jpg") %>";
-          $photos[3] = "<%= asset_path("home/screens/lindsay.jpg") %>";
-          $photos[4] = "<%= asset_path("home/screens/clear.png") %>";
-          $photos[5] = "<%= asset_path("home/screens/home_view.jpg") %>";
           
-          $photos.count = $photos.length - 1;
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/home_view.jpg") %>" id="photo0" class="slideshow" />');
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/my_map.jpg") %>" id="photo1" class="slideshow" />');
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/my_map_named.jpg") %>" id="photo2" class="slideshow" />');
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/la_taqueria.jpg") %>" id="photo3" class="slideshow" />');
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/lindsay.jpg") %>" id="photo4" class="slideshow" />');
+          $('#slide_anchor').append('<img src="<%= asset_path("home/screens/clear.png") %>" id="photo5" class="slideshow" />');
+          
+          $('#photo1').css('display','none');
+          $('#photo2').css('display','none');
+          $('#photo3').css('display','none');
+          $('#photo4').css('display','none');
+          $('#photo5').css('display','none');
+          
+          var photoCount = 5;
           var $fade_time = 250;
           var $timeout = '';
           
           function slideshow(slideNumber) {
-            slideNumber = (slideNumber > $photos.count ? 0 : slideNumber);
-            $photos.css_url = "url('" + $photos[slideNumber] + "')";
+            slideNumber = (slideNumber > photoCount ? 0 : slideNumber);
+            nextSlide = (slideNumber == photoCount ? 0 : slideNumber + 1);
             
-            $slide.fadeOut($fade_time, function(){
-              $slide.css("background-image", $photos.css_url);
-              $slide.fadeIn($fade_time);
-              var timeoutCount = 2500
-              if ((slideNumber == $photos.count - 1)) {
-                timeoutCount = 1000
+            $('#photo'+slideNumber).fadeOut($fade_time, function() {
+              $('#photo'+nextSlide).fadeIn($fade_time);
+              var timeoutCount = 6500;
+              if (slideNumber == photoCount - 1) {
+                timeoutCount = 2000;
               }
               $timeout = setTimeout(function(){slideshow(slideNumber+1);}, timeoutCount );
             });
           }
           
-          setTimeout(function() {slideshow(0)}, 5000);
+          $('#slide_anchor').css('background-image','url(<%= asset_path("home/screens/clear.png") %>)')
+          
+          setTimeout(function() {slideshow(0)}, 6500);
         });
     </script>
 <% end %>
 
 <div id="main_well">
-  <div id="main_copy">
-    <div id="headline">Your Places</div>
-    <p class="copy">Where you've been.</p>
-    <p class="copy">Where you want to go.</p>
-    <p class="copy">With friends.</p>
-    <div id="homepage_action">
-      <div class="register"><span class="social_proof">Join thousands of local explorers</span> <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_path(), :class => "submit sign_up" %></span></div>
+  <div id="marketing_main">
+    <div id="iphone">
+      <div id="slide_anchor"></div>
     </div>
-    <div id="homepage_people">
-      <% @users.each do |user| %>
-        <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class=>"homepage_photo")%></div>
-      <% end %>
+    <div id="main_copy">
+      <div id="headline">Your Places</div>
+      <p class="copy">Where you've been.</p>
+      <p class="copy">Where you want to go.</p>
+      <p class="copy">With friends.</p>
+      <div id="homepage_action">
+        <div class="register"><span class="social_proof">Join thousands of locals</span> <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_registration_path(), :class => "submit sign_up" %></span></div>
+      </div>
+      <div id="homepage_people">
+        <% @users.each do |user| %>
+          <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class=>"homepage_photo")%></div>
+        <% end %>
+      </div>
     </div>
-  </div>
-  <div id="iphone">
-    <div id="slideshow"></div>
   </div>
   <div id="homepage_more">
     <div class="mini_headline">What Else Can You Do With Placeling?</div>
@@ -109,7 +118,7 @@
       <div class="feature_description">
         <p class="feature_headline">Be The Guide <%= image_tag(asset_path("header/tour_compass.png"), :class=>"watermark")%></p>
         <p class="feature_details">Turn the places on your map into shareable, printable tours.</p>
-        <p class="learn_link"><%= link_to("Beautiful Tours", tour_path, :class=>"tour_link") %></p>
+        <p class="learn_link"><%= link_to("Shareable Tours", tour_path, :class=>"tour_link") %></p>
       </div>
     </div>
     <div class="feature_unit">
@@ -127,7 +136,7 @@
         <%= image_tag(asset_path("home/features/infographic.jpg"))%>
       </div>
       <div class="feature_description">
-        <p class="feature_headline">Get The Local's Perspective</p>
+        <p class="feature_headline">Get The Locals' Perspective</p>
         <p class="feature_details">We ask local experts for the best of their city - and you get it automatically.</p>
         <p class="learn_link"><%= link_to("City Guides", local_path, :class=>"city_guide_link") %></p>
       </div>
@@ -144,7 +153,7 @@
     </div>
   </div>
   <div id="last_call">
-    Enough already - <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_path(), :class => "submit sign_up" %></span>
+    Enough already - <%= link_to "Create Your Own Map", new_user_registration_path(), :class => "submit sign_up" %>
   </div>
 </div>
 <div id="homepage_finish">

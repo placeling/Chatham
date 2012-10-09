@@ -3205,32 +3205,50 @@
       margin-right: auto;
       margin-top: 20px;
     }
-
+    
+    #marketing_main {
+      height: 745px;
+    }
+    
     #iphone {
       height: 745px;
       width: 380px;
       background-image: url(<%= asset_path("home/iphone.png") %>);
+      float:left;
     }
-
-    #slideshow {
+    
+    #slide_anchor {
+      height: 480px;
+      width: 320px;
       background-image: url(<%= asset_path("home/screens/home_view.jpg") %>);
       position: relative;
-      height: 480px;
+      float:left;
       left: 32px;
       top: 131px;
+    }
+    
+    .slideshow {
+      position: relative;
+      float:left;
+      height: 480px;
+      left: 0px;
+      top: 0px;
+      /*left: 32px;
+      top: 131px;*/
       width: 320px;
     }
 
     #main_copy {
-      float:right;
+      float:left;
       width:560px;
-      margin-left: 400px;
+      margin-left: 20px;
       margin-top: 120px;
     }
 
     #headline {
       font-size: 72px;
       font-family: Museo, Helvetica, Verdana, sans-serif;
+      color: #E08574;
     }
 
     .copy {
@@ -3249,7 +3267,7 @@
     }
 
     #homepage_register {
-      margin-left: 10px;
+      margin-left: 70px;
     }
 
     .register a {
@@ -3288,11 +3306,13 @@
       font-family: Museo, Helvetica, Verdana, sans-serif;
       font-size: 36px;
       margin-bottom: 20px;
+      color: #E08574;
     }
 
     .mini_headline_copy {
       font-family: Museo, Helvetica, Verdana, sans-serif;
       font-size: 36px;
+      color: #7B7972;
     }
 
     .feature_unit {
@@ -3319,6 +3339,7 @@
     .feature_headline {
       font-family: Museo, Helvetica, Verdana, sans-serif;
       font-size: 24px;
+      color: #7B7972;
     }
 
     .feature_details {
