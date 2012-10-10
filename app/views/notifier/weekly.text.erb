@@ -17,7 +17,7 @@
 <%= t('weekly.explore_why') %>
 
 <% @recos['places'].each do |place| %>
-<%= place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
+<%= place.place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
 <% end %>
 <% end %>
 
