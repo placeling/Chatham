@@ -95,7 +95,7 @@
         <div id="tour_public_map_holder">
           <div id="tour_public_map">
             <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @tour.center[0] %>,<%= @tour.center[1] %>&zoom=<%= @tour.zoom %>
-              <% @tour.perspectives.each_with_index do |perp, i| %>&markers=label:<%= i+1 %>%7Ccolor:0xdd5e50%7C<%= perp.place.loc[0] %>,<%= perp.place.loc[1] %>
+              <% @tour.perspectives.each_with_index do |perp, i| %>&markers=label:<%= label_value(i) %>%7Ccolor:0xdd5e50%7C<%= perp.place.loc[0] %>,<%= perp.place.loc[1] %>
               <% end %>&size=475x475&maptype=roadmap&sensor=false" class="target_map">
           </div>
           <div id="printable">
