@@ -17,7 +17,7 @@ class UpdatePlacemarkActivity
 
     #check if a "recent" activity, most recent 20
     actor1.activity_feed.activities.each do |act|
-      if act.activity_type == "UPDATE_PERSPECTIVE" || act.activity_type == "NEW_PERSPECTIVE" && activity.subject == act.subject
+      if (act.activity_type == "UPDATE_PERSPECTIVE" || act.activity_type == "NEW_PERSPECTIVE") && activity.subject == act.subject
         return
       end
     end
