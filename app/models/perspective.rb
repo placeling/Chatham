@@ -2,7 +2,6 @@ require 'google_places'
 
 class Perspective
   MAX_LENGTH = 130
-
   include Mongoid::Document
   include Mongoid::Timestamps
   include Twitter::Extractor

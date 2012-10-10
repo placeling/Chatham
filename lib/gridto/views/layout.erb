@@ -52,9 +52,14 @@
   <div class="navbar">
     <div class="navbar-inner">
 
-      <a class="brand" href="" style="padding: 5px 20px 5px 20px;">
+      <a class="brand" href="/" style="padding: 5px 20px 5px 20px;">
         <img width="44" src="<%= @user.thumb_url %>">
       </a>
+
+      <div class="brand" href="/" style="padding: 18px 20px 5px 20px;">
+        <%= @user.username %>
+      </div>
+
 
       <%= yield_content :navbar_menu %>
     </div>
