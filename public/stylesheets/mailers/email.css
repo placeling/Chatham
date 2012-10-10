@@ -267,3 +267,7 @@
   font-family:Georgia,'Times New Roman',serif;
   font-style:italic;
 }
+
+.email_question_spacer {
+  margin-bottom: 15px;
+}

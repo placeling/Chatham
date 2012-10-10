@@ -58,6 +58,37 @@
             <%= render :partial => "single_place_suggest", :locals => {:place => @recos['places'].first} %>
         <% end %>
 
+        <!-- Tours -->
+        <% if @recos['tours'].length > 0 %>
+          <tr class="email_tr">
+            <td width="100%" colspan="3" class="table_style">
+              <p class="email_emphasize email_spacer"><%= t('weekly.tours') %></p>
+            </td>
+          </tr>
+          <tr class="email_tr">
+            <% @recos['tours'].each do |tour| %>
+              <td valign="top" width="220" colspan="1" class="table_style">
+                <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_tour, :controller => "tours", :action => "show", :user_id => tour.user.username, :id => tour.slug, :host => ActionMailer::Base.default_url_options[:host]) %>">
+                  <div class="venue_pic_holder email_mini_spacer">
+                    <img src="<%= tour.random_photo[0].mosaic_3_3_url %>" class="email_place_pic">
+                  </div>
+                </a>
+              </td>
+              <td valign="top" width="440" colspan="1" class="table_style">
+                <div class="email_place_and_testimonial">
+                  <div>
+                    <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_tour, :controller => "tours", :action => "show", :user_id => tour.user.username, :id => tour.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link email_embiggen_more"><%= tour.name %></a>
+                  </div>
+                  <div >
+                    <p class="email_memo"><%= simple_format(tour.description, :class=>"email_memo")%></p>
+                    <p class="email_mini_spacer">- <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => tour.user.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><%= tour.user.username %></a></p>
+                  </div>
+                </div>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+        
         <!-- Questions -->
         <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
@@ -68,7 +99,7 @@
           <td width="100%" colspan="3" class="table_style">
             <% if @recos['questions'].length > 0 %>
                 <% @recos['questions'].each do |question| %>
-                    <p class="question_content">
+                    <p class="question_content email_question_spacer">
                       <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => question.user.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><%= question.user.username %></a> <%= t('weekly.wants_to_know') %> <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
                     </p>
                 <% end %>

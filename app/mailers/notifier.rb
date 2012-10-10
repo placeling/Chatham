@@ -68,14 +68,14 @@ class Notifier < ActionMailer::Base
       if @recos['places'] && @recos['places'].length > 0
         score += 1
       end
+      
+      if @recos['tours'] && @recos['tours'].length > 0
+        score += 1
+      end
     end
     
-    #if @recos
     if score >= 2
       track! :email_sent
-
-      #@places_filler = Array.new(size=(3-@recos['places'].length))
-      #@guides_filler = Array.new(size=(3-@recos['guides'].length))
 
       if @recos['questions'].length > 0
         if ab_test(:question_as_subject)

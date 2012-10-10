@@ -102,7 +102,7 @@ class Perspective
   end
   
   def high_value?
-    if self.memo && self.memo.length > 10 && self.pictures.length > 0
+    if self.memo && self.memo.length > 10 && self.active_photos.length > 0
       return true
     else
       return false

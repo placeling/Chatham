@@ -171,8 +171,6 @@ class ToursController < ApplicationController
     if params[:perspectives]
       params[:perspectives].each do |pid|
         persp = Perspective.find(pid)
-        puts pid
-        puts persp.place.name
         @tour.position << pid
       end
     end
