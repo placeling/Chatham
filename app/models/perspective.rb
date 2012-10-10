@@ -101,7 +101,15 @@ class Perspective
       return nil
     end
   end
-
+  
+  def high_value?
+    if self.memo && self.memo.length > 10 && self.pictures.length > 0
+      return true
+    else
+      return false
+    end
+  end
+  
   def self.query_near(loc, span, query, category)
     geonear = BSON::OrderedHash.new()
     geonear["$near"] = loc

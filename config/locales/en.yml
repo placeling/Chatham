@@ -580,6 +580,7 @@ en:
     support: "support@placeling.com"
     ask: "Ask your own question"
     get_answer: "to get advice on where to go."
+    wants_to_know: "wants to know"
     reco_info: "You're getting recommendations for"
     change_city: "Change city"
     reco_wrong: "Getting recommendations for the wrong places?"

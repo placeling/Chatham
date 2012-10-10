@@ -53,13 +53,29 @@ class Notifier < ActionMailer::Base
     @user = User.find(user_id)
     use_vanity_mailer nil
 
-    @recos = @user.get_recommendations(1)
-
+    @recos = @user.get_recommendations
+    
+    score = 0
     if @recos
+      if @recos['guides'] && @recos['guides'].length > 0
+        score += 1
+      end
+
+      if @recos['questions'] && @recos['questions'].length > 0
+        score += 1
+      end
+
+      if @recos['places'] && @recos['places'].length > 0
+        score += 1
+      end
+    end
+    
+    #if @recos
+    if score >= 2
       track! :email_sent
 
-      @places_filler = Array.new(size=(3-@recos['places'].length))
-      @guides_filler = Array.new(size=(3-@recos['guides'].length))
+      #@places_filler = Array.new(size=(3-@recos['places'].length))
+      #@guides_filler = Array.new(size=(3-@recos['guides'].length))
 
       if @recos['questions'].length > 0
         if ab_test(:question_as_subject)

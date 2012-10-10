@@ -4,52 +4,50 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
   <%= stylesheet_link_tag '/stylesheets/mailers/email' %>
+
 </head>
-<body style="background-color: #FAF9F7;font-size: 14px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;">
+<body class="email_body">
 <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
-  <tr style="padding: 0px;">
+  <tr class="email_tr">
     <td align="center" valign="top" class="table_style">
-      <table width="660" id="main" border="0" cellpadding="0" cellspacing="0" style="margin-left:5px;">
-        <tr style="padding: 0px;">
+      <table width="660" id="main" border="0" cellpadding="0" cellspacing="0" class="email_table">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
-            <p class="right" style="margin: 5px;padding: 0px;float: right;">
+            <p class="email_right">
               <img src="https://www.placeling.com/assets/logo.png"><a href="<%= root_url() %>"></a>
               <%= vanity_tracking_image(Vanity.context.vanity_identity, :open_email, :host => ActionMailer::Base.default_url_options[:host]) %>
             </p>
           </td>
         </tr>
         <!-- Intro -->
-        <tr style="padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
             <p class="email_emphasize"><%= t('weekly.intro') %></p>
-
-            <p class="question_content" style="font-style:italic;"><%= t('weekly.weekend') %></p>
+            <p class="question_content email_italics"><%= t('weekly.weekend') %></p>
           </td>
         </tr>
 
         <!-- Guides -->
         <% if @recos['guides'].length > 0 %>
-            <tr style="margin: 5px;padding: 0px;">
+            <tr class="email_tr">
               <td width="100%" colspan="3" class="table_style">
-                <p class="email_emphasize" style="margin-top:20px;"><%= t('weekly.guides') %></p>
+                <p class="email_emphasize email_spacer"><%= t('weekly.guides') %></p>
               </td>
             </tr>
-            <tr style="margin: 5px;padding: 0px;">
+            <tr class="email_tr">
               <% @recos['guides'].each do |guide| %>
-                  <td valign="top" width="220" colspan="1" class="table_style">
+                  <td valign="top" width="660" colspan="3" class="table_style">
                     <div class="email_guide_holder">
-                      <div>
-                        <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><img src="<%= guide.thumb_url %>" class="email_profile_pic_large"><span class="email_profile_name"><%= guide.username %></span></a>
+                      <div class="email_profile_pic">
+                        <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><img src="<%= guide.thumb_url %>" class="email_profile_pic_large"></a>                        
                       </div>
-                      <% if guide.description && guide.description.length > 0 %>
-                          <div class="email_description email_mini_spacer"><%= guide.description %></div>
-                      <% end %>
+                      <div class="email_username_and_description">
+                        <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><div class="email_profile_name"><%= guide.username %></div></a>
+                        <% if guide.description && guide.description.length > 0 %>
+                            <div class="email_description email_mini_spacer"><%= guide.description %></div>
+                        <% end %>
+                      </div>
                     </div>
-                  </td>
-              <% end %>
-              <% @guides_filler.each do |guide| %>
-                  <td colspan="1" class="table_style" width="220px">
-                    <div class="email_empty_guide_holder">&nbsp;</div>
                   </td>
               <% end %>
             </tr>
@@ -61,18 +59,17 @@
         <% end %>
 
         <!-- Questions -->
-        <tr style="margin: 5px;padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
-            <p class="email_emphasize" style="margin-top:20px;"><%= t('weekly.answers') %></p>
+            <p class="email_emphasize email_spacer"><%= t('weekly.answers') %></p>
           </td>
         </tr>
-        <tr style="margin: 5px;padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
             <% if @recos['questions'].length > 0 %>
-                <p class="question_content"><%= t('weekly.answers_why') %></p>
                 <% @recos['questions'].each do |question| %>
                     <p class="question_content">
-                      <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
+                      <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_user, :controller => "users", :action => "show", :id => question.user.username, :host => ActionMailer::Base.default_url_options[:host]) %>" class="email_link"><%= question.user.username %></a> <%= t('weekly.wants_to_know') %> <a href="<%= vanity_track_url_for(Vanity.context.vanity_identity, :click_question, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>" style="color: #E08574;"><%= question.title %></a>
                     </p>
                 <% end %>
                 <p class="question_content">
@@ -87,7 +84,7 @@
         </tr>
 
         <!-- Wrap up -->
-        <tr style="padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
             <p class="question_content" style="margin-top:25px;font-style:italic;"><%= t('weekly.all') %></p>
 
@@ -96,7 +93,7 @@
         </tr>
 
         <!-- Change location -->
-        <tr style="padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" class="table_style">
             <p class="change_city question_content">
               <% if @user.city && @user.city.length > 0 %>
@@ -111,14 +108,12 @@
         </tr>
 
         <!-- Legal stuff -->
-        <tr style="margin: 5px;padding: 0px;">
+        <tr class="email_tr">
           <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 10px;font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif; color:#666">
             <p class="email_content" style="margin-top:20px;"><%= t('notify.sent') %> <%= @user.email %></p>
-
             <p class="email_content"><%= t('notify.no_more') %>
               <a href="<%= unsubscribe_users_url(:ck => @user.crypto_key) %>" style="color: #E08574;"><%= t('user.unsubscribe') %></a>
             </p>
-
             <p class="email_content"><%= t('notify.address') %></p>
           </td>
         </tr>

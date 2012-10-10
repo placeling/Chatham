@@ -295,8 +295,10 @@ class User
   def self.top_users(top_n)
     self.desc(:pc).limit(top_n)
   end
-
-  def self.top_nearby(lat, lng, top_n)
+  
+  def self.top_nearby(lat, lng, top_n, strict=false)
+    # Strict requires that user has either a profile picture or a description and non-empty perspectives
+    
     # Find users with most non-empty perspectives nearby
     nearby_counts = Perspective.collection.group(
         :cond => {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}, :empty => false},
@@ -315,11 +317,17 @@ class User
 
     nearby_counts.each do |person|
       member = User.find(person["uid"])
-      nearby << member
+      if strict == true
+        if member.described?
+          nearby << member
+        end
+      else
+        nearby << member
+      end      
     end
 
     # If too short, see if there are nearby users with empty perspectives
-    if nearby.length < top_n
+    if strict == false && nearby.length < top_n
       nearby_counts = Perspective.collection.group(
           :cond => {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}},
           :key => 'uid',
@@ -349,9 +357,9 @@ class User
     end
 
     # If still too short, see if there are users based nearby
-    if nearby.length < top_n
+    if strict == false && nearby.length < top_n
       candidates = User.where(:loc.within => {"$center" => [[lat, lng], 0.3]}).desc(:pc).limit(2*top_n).entries
-
+    
       candidates.each do |candidate|
         if !nearby.include?(candidate)
           nearby << candidate
@@ -582,12 +590,34 @@ class User
 
     return scored, guides, activity, q
   end
-
-  def get_recommendations(num_places = 3)
-    if self.loc && !self.loc.nil? && self.loc.length == 2
+  
+  def described?
+    if self.description && self.description != ""
+      return true
+    elsif self.thumb_cache_url
+      return true
+    else
+      return false
+    end
+  end
+  
+  def has_location?
+    if !self.loc || self.loc.nil? || self.loc.length != 2
+      return false
+    else
+      if self.loc == [0.0, 0.0]
+        return false
+      else
+        return true
+      end
+    end
+  end
+  
+  def get_recommendations
+    if self.has_location?
       previous = self.user_recommendation.recommended_ids
-
-      # Questions
+      
+      # Question
       questions = Question.nearby_questions(self.loc[0], self.loc[1]).shuffle # Want randomly organized
 
       clean_questions = []
@@ -598,14 +628,14 @@ class User
         end
       end
 
-      questions = clean_questions[0, 3]
+      questions = clean_questions[0, 1]
 
       questions.each do |question|
         self.user_recommendation.recommended_ids << question.id
       end
-
-      # Guides
-      candidates = User.top_nearby(self.loc[0], self.loc[1], 100)
+      
+      # Guide
+      candidates = User.top_nearby(self.loc[0], self.loc[1], 100, true)
 
       clean_candidates = []
 
@@ -629,13 +659,14 @@ class User
         clean_candidates.delete(tyler)
       end
 
-      candidates = clean_candidates[0, 3]
+      candidates = clean_candidates[0, 1]
 
       candidates.each do |candidate|
         self.user_recommendation.recommended_ids << candidate.id
       end
-
-      # Places
+      
+      # Place
+      # Technically return a perspective because we want to show a testimonial
       candidate_places = Place.top_nearby_places(self.loc[0], self.loc[1], 0.3, 100).entries
 
       my_places = []
@@ -655,11 +686,23 @@ class User
       if clean_places.include?(growlab)
         clean_places.delete(growlab)
       end
-
-      places = clean_places[0, num_places]
+      
+      # Convert places to high quality perspectives
+      candidate_place_to_perspectives = []
+      clean_places.each do |place|
+        place.perspectives.each do |perp|
+          if perp.high_value?
+            candidate_place_to_perspectives << perp
+          end
+        end
+      end
+      
+      candidate_place_to_perspectives.shuffle! # Randomize so don't always get 1st perspective on a place
+      
+      places = candidate_place_to_perspectives[0, 1]
 
       places.each do |place|
-        self.user_recommendation.recommended_ids << place.id
+        self.user_recommendation.recommended_ids << place.place.id
       end
 
       self.save
@@ -673,7 +716,6 @@ class User
       return nil
     end
   end
-
 
   def as_json(options={})
     #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
@@ -964,5 +1006,4 @@ class User
     access_token = OAuth::AccessToken.from_hash(consumer, token_hash)
     return access_token
   end
-
 end
