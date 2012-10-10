@@ -318,7 +318,7 @@ class User
     nearby_counts.each do |person|
       member = User.find(person["uid"])
       if strict == true
-        if member.described?
+        if member.described? && member.pc > 5 # Arbitrary cut-off of 5 perspectives
           nearby << member
         end
       else
