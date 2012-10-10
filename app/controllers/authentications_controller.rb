@@ -237,7 +237,7 @@ class AuthenticationsController < ApplicationController
   def process_twitter(uid, token, secret, provider = "twitter")
     auth = Authentication.find_by_provider_and_uid(provider, uid)
 
-    if current_user && auth && auth.uid == uid
+    if current_user && auth && auth.uid == uid && current_user.id == auth.user.id
       #update tokens
       auth.token = token
       auth.secret = secret
