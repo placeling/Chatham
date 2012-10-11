@@ -27,6 +27,10 @@ class Tour
   validates_inclusion_of :zoom, :in => 0..21, :message => "Zoom must be between 0 and 21" 
   validates :name, :length => { :maximum => 30, :too_long => "Tour names can be up to %{count} characters long" }
   
+  index [[:center, Mongo::GEO2D]], :min => -180, :max => 180
+  index [[:ne, Mongo::GEO2D]], :min => -180, :max => 180
+  index [[:sw, Mongo::GEO2D]], :min => -180, :max => 180
+  
   def self.forgiving_find(tour_id)
     if BSON::ObjectId.legal?(tour_id)
       tour = Tour.find(tour_id)
@@ -38,6 +42,57 @@ class Tour
   
   def og_path
     "https://#{ActionMailer::Base.default_url_options[:host]}#{Rails.application.routes.url_helpers.user_tour_path(self.user, self)}"
+  end
+  
+  def self.top_nearby(lat, lng, span=0.3, top_n=10)
+    clean_tours = []
+    raw_tours = Tour.where(:center.within => {"$center" => [[lat, lng], span]}).where(:rendered => true).entries
+    
+    # Make sure each is editorial quality
+    raw_tours.each do |tour|
+      if tour.recommendable?
+        clean_tours << tour
+      end
+    end
+    
+    return clean_tours
+  end
+  
+  def recommendable?
+    # Requirements in order to recommend:
+    # 1. Rendered
+    # 2. At least 5 places
+    # 3. At least one perspective contains an image
+    if self.rendered == false
+      return false
+    end
+    
+    if self.position.length < 5
+      return false
+    end
+    
+    perps = self.active_perspectives
+    perps.each do |perp|
+      if perp.active_photos.length > 0
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  def random_photo
+    photos = []
+    perps = self.active_perspectives
+    perps.each do |perp|
+      perp.active_photos.each do |photo|
+        photos << photo
+      end
+    end
+    
+    photos.shuffle!
+    
+    return photos
   end
   
   # Need to create custom ordering of @tour.perspectives because order lost between Mongo & Rails

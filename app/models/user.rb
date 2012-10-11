@@ -160,6 +160,10 @@ class User
     if !self.user_recommendation
       self.create_user_recommendation
     end
+    
+    if !self.user_tour
+      self.create_user_tour
+    end
 
     track! :signup
 
@@ -318,7 +322,7 @@ class User
     nearby_counts.each do |person|
       member = User.find(person["uid"])
       if strict == true
-        if member.described?
+        if member.described? && member.pc > 5 # Arbitrary cut-off of 5 perspectives
           nearby << member
         end
       else
@@ -704,11 +708,29 @@ class User
       places.each do |place|
         self.user_recommendation.recommended_ids << place.place.id
       end
-
+      
+      # Tours
+      tours = []
+      candidate_tours = Tour.top_nearby(self.loc[0], self.loc[1], 0.3).entries
+      
+      clean_tours = []
+      
+      candidate_tours.each do |tour|
+        if !self.user_tour.subscribed_tour_ids.include?(tour.id) && !previous.include?(tour.id) && tour.user != self
+          clean_tours << tour
+        end
+      end
+      
+      tours = candidate_tours[0,1]
+      
+      tours.each do |tour|
+        self.user_recommendation.recommended_ids << tour.id
+      end
+      
       self.save
 
-      if candidates.length > 0 || questions.length > 0 || places.length >0
-        return {"guides" => candidates, "questions" => questions, "places" => places}
+      if candidates.length > 0 || questions.length > 0 || places.length >0 || tours.length > 0
+        return {"guides" => candidates, "questions" => questions, "places" => places, "tours" => tours}
       else
         return nil
       end
