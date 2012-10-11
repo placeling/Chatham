@@ -160,6 +160,10 @@ class User
     if !self.user_recommendation
       self.create_user_recommendation
     end
+    
+    if !self.user_tour
+      self.create_user_tour
+    end
 
     track! :signup
 
