@@ -1,11 +1,11 @@
 <div id="maincontent">
 
-     <h1><%= t('oauth.register_new_app') %></h1>
+  <h1><%= t('oauth.register_new_app') %></h1>
 
-     <div>
-         <% form_for :client_application, :url => { :action => :create } do |f| %>
-           <%= render :partial => "form", :locals => { :f => f } %>
-           <%= submit_tag t('basic.register') %>
-        <% end %>
-     </div>
- </div>
+  <div>
+    <%= form_for :client_application, :url => {:action => :create} do |f| %>
+        <%= render :partial => "form", :locals => {:f => f} %>
+        <%= submit_tag t('basic.register') %>
+    <% end %>
+  </div>
+</div>
