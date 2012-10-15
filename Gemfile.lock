@@ -154,7 +154,7 @@ GEM
     highline (1.6.13)
     hike (1.2.1)
     htmlentities (4.3.1)
-    httparty (0.8.3)
+    httparty (0.9.0)
       multi_json (~> 1.0)
       multi_xml
     httpauth (0.1)
@@ -396,7 +396,7 @@ DEPENDENCIES
   geoip
   hashie
   high_voltage
-  httparty
+  httparty (~> 0.9.0)
   jquery-rails
   koala
   mail_view!

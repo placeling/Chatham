@@ -25,7 +25,7 @@ gem "aws-ses", "~> 0.4.4", :require => 'aws/ses'
 gem "koala"
 gem "twitter"
 
-gem "httparty"
+gem "httparty", "~> 0.9.0"
 gem "hashie"
 gem 'uuidtools'
 
