@@ -1,5 +1,6 @@
 <div id="tour_holder">
-  <div id="tour_preview_name"><%= @tour.name %></div>
+  <div id="tour_preview_name"><%= link_to @tour.name, user_tour_path(@tour.user, @tour) %>
+</div>
   <p class="tour_print"><%= t('tour.download') %> <a href="<%= @tour.infographic_url(:print) %>" class="tour_print"><%= t('tour.high_res')%></a>.</p>
   <div id="tour_image">
     <div><a href="<%= @tour.infographic_url(:print) %>"><%= image_tag @tour.infographic_url(:screen) %></a></div>
