@@ -58,7 +58,7 @@ $(document).ready(function () {
 
     $("#search_submit").click(function () {
         if ($("#term").val() != "") {
-            var url = "/search/?lat=" + user_lat + "&lng=" + user_lng + "&input=" + escape($("#term").val());
+            var url = "/search/?lat=" + user_lat + "&lng=" + user_lng + "&input=" + encodeURIComponent($("#term").val());
             window.location = url;
             return false;
         }
