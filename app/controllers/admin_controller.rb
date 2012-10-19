@@ -42,7 +42,7 @@ class AdminController < ApplicationController
 
   def categories
     respond_to do |format|
-      format.json { render :file => "#{Rails.root}/config/google_place_mapping.json" }
+      format.json { render "#{Rails.root}/config/google_place_mapping", :formats => [:json], :status => 200, :layout => false }
     end
   end
 
@@ -51,13 +51,13 @@ class AdminController < ApplicationController
       format.html
     end
   end
-  
+
   def tour
     respond_to do |format|
       format.html
     end
   end
-  
+
   def investors
 
   end
