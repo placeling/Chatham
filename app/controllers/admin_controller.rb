@@ -77,19 +77,26 @@ class AdminController < ApplicationController
     gp = GooglePlaces.new
 
     @place = Place.where(:update_flag => true).first
-    @updatedPlace = gp.get_place(@place.google_ref, false)
-    @merge_place = Place.find_by_google_id(@updatedPlace.id) unless @updatedPlace.nil?
 
-    if @updatedPlace.geometry.nil?
-      @updatedPlace = nil
-    end
+    if @place.nil?
+      respond_to do |format|
+        format.html { redirect_to "/" }
+      end
+    else
+      @updatedPlace = gp.get_place(@place.google_ref, false)
+      @merge_place = Place.find_by_google_id(@updatedPlace.id) unless @updatedPlace.nil?
 
-    if @merge_place.nil? || @merge_place.id == @place.id
-      @merge_place = nil
-    end
+      if @updatedPlace.geometry.nil?
+        @updatedPlace = nil
+      end
 
-    respond_to do |format|
-      format.html
+      if @merge_place.nil? || @merge_place.id == @place.id
+        @merge_place = nil
+      end
+
+      respond_to do |format|
+        format.html
+      end
     end
   end
 
