@@ -160,7 +160,7 @@ class User
     if !self.user_recommendation
       self.create_user_recommendation
     end
-    
+
     if !self.user_tour
       self.create_user_tour
     end
@@ -235,7 +235,7 @@ class User
   # TO ADD: better treatment for users with no locations near where they signed up
   def home_location
     location = [49.28, -123.12] # Default value; downtown Vancouver
-    
+
     # Use case 1: (0.0, 0.0) as lat/lng
     # Use case 2: nil as lat/lng    
     if self.loc == [0.0, 0.0] || self.loc.nil?
@@ -246,12 +246,12 @@ class User
     else
       location = self.loc
     end
-    
+
     return location
   end
 
   def cache_urls
-    if !self.creation_environment
+    if !self.creation_environment || Rails.env != self.creation_environment
       self.creation_environment = Rails.env
       self.thumb_cache_url = self.avatar_url(:thumb)
       self.main_cache_url = self.avatar_url(:main)
@@ -300,10 +300,10 @@ class User
   def self.top_users(top_n)
     self.desc(:pc).limit(top_n)
   end
-  
+
   def self.top_nearby(lat, lng, top_n, strict=false)
     # Strict requires that user has either a profile picture or a description and non-empty perspectives
-    
+
     # Find users with most non-empty perspectives nearby
     nearby_counts = Perspective.collection.group(
         :cond => {:ploc => {'$within' => {'$center' => [[lat, lng], 0.3]}}, :deleted_at => {'$exists' => false}, :empty => false},
@@ -328,7 +328,7 @@ class User
         end
       else
         nearby << member
-      end      
+      end
     end
 
     # If too short, see if there are nearby users with empty perspectives
@@ -364,7 +364,7 @@ class User
     # If still too short, see if there are users based nearby
     if strict == false && nearby.length < top_n
       candidates = User.where(:loc.within => {"$center" => [[lat, lng], 0.3]}).desc(:pc).limit(2*top_n).entries
-    
+
       candidates.each do |candidate|
         if !nearby.include?(candidate)
           nearby << candidate
@@ -595,7 +595,7 @@ class User
 
     return scored, guides, activity, q
   end
-  
+
   def described?
     if self.description && self.description != ""
       return true
@@ -605,7 +605,7 @@ class User
       return false
     end
   end
-  
+
   def has_location?
     if !self.loc || self.loc.nil? || self.loc.length != 2
       return false
@@ -617,11 +617,11 @@ class User
       end
     end
   end
-  
+
   def get_recommendations
     if self.has_location?
       previous = self.user_recommendation.recommended_ids
-      
+
       # Question
       questions = Question.nearby_questions(self.loc[0], self.loc[1]).shuffle # Want randomly organized
 
@@ -638,7 +638,7 @@ class User
       questions.each do |question|
         self.user_recommendation.recommended_ids << question.id
       end
-      
+
       # Guide
       candidates = User.top_nearby(self.loc[0], self.loc[1], 100, true)
 
@@ -669,7 +669,7 @@ class User
       candidates.each do |candidate|
         self.user_recommendation.recommended_ids << candidate.id
       end
-      
+
       # Place
       # Technically return a perspective because we want to show a testimonial
       candidate_places = Place.top_nearby_places(self.loc[0], self.loc[1], 0.3, 100).entries
@@ -691,7 +691,7 @@ class User
       if clean_places.include?(growlab)
         clean_places.delete(growlab)
       end
-      
+
       # Convert places to high quality perspectives
       candidate_place_to_perspectives = []
       clean_places.each do |place|
@@ -701,33 +701,33 @@ class User
           end
         end
       end
-      
+
       candidate_place_to_perspectives.shuffle! # Randomize so don't always get 1st perspective on a place
-      
+
       places = candidate_place_to_perspectives[0, 1]
 
       places.each do |place|
         self.user_recommendation.recommended_ids << place.place.id
       end
-      
+
       # Tours
       tours = []
       candidate_tours = Tour.top_nearby(self.loc[0], self.loc[1], 0.3).entries
-      
+
       clean_tours = []
-      
+
       candidate_tours.each do |tour|
         if !self.user_tour.subscribed_tour_ids.include?(tour.id) && !previous.include?(tour.id) && tour.user != self
           clean_tours << tour
         end
       end
-      
-      tours = candidate_tours[0,1]
-      
+
+      tours = candidate_tours[0, 1]
+
       tours.each do |tour|
         self.user_recommendation.recommended_ids << tour.id
       end
-      
+
       self.save
 
       if candidates.length > 0 || questions.length > 0 || places.length >0 || tours.length > 0
@@ -929,10 +929,9 @@ class User
     end
   end
 
-  def old_feed
-    user = self
+  def old_feed(start_pos = 0, count=20)
     @activities = []
-    for user in current_user.following
+    for user in self.following
       if user.activity_feed
         head = user.activity_feed.head_chunk
         @activities = @activities + head.activities
@@ -942,8 +941,8 @@ class User
       end
     end
 
-    if current_user.activity_feed
-      @activities = @activities + current_user.activity_feed.activities
+    if self.activity_feed
+      @activities = @activities + self.activity_feed.activities
     end
 
     @activities.sort! { |a, b| a.created_at <=> b.created_at }

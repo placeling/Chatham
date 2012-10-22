@@ -1,0 +1,22 @@
+<% if activity.activity_type == "FOLLOW" %>
+    <% activity_story = "#{link_to activity.username1, User.find(activity.actor1)} followed #{link_to activity.username2, User.find(activity.actor2)}" %>
+    <% expand_text = User.find(activity.actor2).description %>
+<% elsif activity.activity_type == "STAR_PERSPECTIVE" %>
+    <% activity_story = "#{link_to activity.username1, User.find(activity.actor1)} liked #{link_to activity.username2, User.find(activity.actor2)}'s placemark on #{link_to activity.subject_title, Perspective.find(activity.subject)}" %>
+    <% expand_text = Perspective.find(activity.subject).memo %>
+<% elsif activity.activity_type == "NEW_PERSPECTIVE" %>
+    <% activity_story = "#{link_to activity.username1, User.find(activity.actor1)} placemarked #{link_to activity.subject_title, Perspective.find(activity.subject)}" %>
+    <% expand_text = Perspective.find(activity.subject).memo %>
+<% elsif activity.activity_type == "UPDATE_PERSPECTIVE" %>
+    <% activity_story = "#{link_to activity.username1, User.find(activity.actor1)} has an updated placemark on #{link_to activity.subject_title, Perspective.find(activity.subject)}" %>
+    <% expand_text = Perspective.find(activity.subject).memo %>
+<% end %>
+
+<div class="activity">
+  <%= image_tag activity.thumb1, :size => "64x64", :class => "activity_avatar" %>
+  <div class="activity_body">
+    <div class="activity_story_header"><%= raw activity_story %></div>
+    <div class="activity_story_body"><%= expand_text %></div>
+    <%= time_ago_in_words(activity.created_at) %> ago
+  </div>
+</div>

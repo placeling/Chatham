@@ -1,0 +1,31 @@
+<div class="row" style="margin: 10px 0 10px 0;">
+
+  <div class="span12">
+
+    <div class="row">
+      <div class="span12 offset0" style="background-color: #ffffff;">
+
+        <div class="row">
+          <div class="span12">
+
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="span8">
+            <div class="activities">
+              <% @activities.each do |activity| %>
+                  <%= render :partial => "activity", :locals => {:activity => activity} %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="span4" style="background-color: red;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

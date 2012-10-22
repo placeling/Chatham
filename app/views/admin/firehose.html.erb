@@ -2,39 +2,7 @@
 
 <ul>
   <% @activities.each do |activity| %>
-
-      <% if activity.activity_type == "FOLLOW" %>
-
-          <div class="activity follow">
-            <%= image_tag activity.thumb1, :size => "64x64" %> <%= link_to activity.username1, User.find(activity.actor1) %>
-            followed <%= link_to activity.username2, User.find(activity.actor2) %>
-            : <%= time_ago_in_words(activity.created_at) %>
-          </div>
-      <% elsif activity.activity_type == "STAR_PERSPECTIVE" %>
-          <div class="activity star_perspective">
-            <%= image_tag activity.thumb1, :size => "64x64" %> <%= link_to activity.username1, User.find(activity.actor1) %>
-            liked <%= link_to activity.username2, User.find(activity.actor2) %>'s placemark
-            on <%= link_to activity.subject_title, Perspective.find(activity.subject) %>
-            : <%= time_ago_in_words(activity.created_at) %>
-          </div>
-
-      <% elsif activity.activity_type == "NEW_PERSPECTIVE" %>
-          <div class="activity new_perspective">
-            <%= image_tag activity.thumb1, :size => "64x64" %> <%= link_to activity.username1, User.find(activity.actor1) %>
-            placemarked <%= link_to activity.subject_title, Perspective.find(activity.subject) %>
-            : <%= time_ago_in_words(activity.created_at) %>
-          </div>
-
-      <% elsif activity.activity_type == "UPDATE_PERSPECTIVE" %>
-          <div class="activity update_perspective">
-            <%= image_tag activity.thumb1, :size => "64x64" %> <%= link_to activity.username1, User.find(activity.actor1) %>
-            updated placemark <%= link_to activity.subject_title, Perspective.find(activity.subject) %>
-            : <%= time_ago_in_words(activity.created_at) %>
-          </div>
-      <% end %>
-
-
+      <%= render :partial => "home/activity", :locals => {:activity => activity} %>
   <% end %>
-
-
 </ul>
+
