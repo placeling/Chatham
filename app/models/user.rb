@@ -231,21 +231,22 @@ class User
     end
   end
 
-  # Fix for users with 0.0, 0.0 as lat/lng
+  # Fix for users with 0.0, 0.0 or nil as lat/lng
   # TO ADD: better treatment for users with no locations near where they signed up
   def home_location
-    location = []
-    if self.loc == [0.0, 0.0]
+    location = [49.28, -123.12] # Default value; downtown Vancouver
+    
+    # Use case 1: (0.0, 0.0) as lat/lng
+    # Use case 2: nil as lat/lng    
+    if self.loc == [0.0, 0.0] || self.loc.nil?
       most_recent = Perspective.where(:uid => self.id).order_by([:created_at, :desc]).first
       if most_recent
         location = most_recent.ploc
-      else
-        location = self.loc
       end
     else
       location = self.loc
     end
-
+    
     return location
   end
 
