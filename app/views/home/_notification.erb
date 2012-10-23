@@ -12,6 +12,6 @@
 <% end %>
 
 <div class="notification">
-  <%= image_tag notification.thumb1, :size => "32x32", :class => "notification_avatar" %>
+  <%= image_tag User.find(notification.actor1).thumb_url, :size => "32x32", :class => "notification_avatar" %>
   <div class="notification_title"><%= raw notification_story %></div>
 </div>
