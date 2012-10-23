@@ -1,4 +1,4 @@
-<div class="row" style="margin: 10px 0 10px 0;">
+<div class="row" style="margin: 10px 0 15px 0;">
 
   <div class="span12">
 
@@ -16,13 +16,21 @@
           <div class="span8">
             <div class="activities">
               <% @activities.each do |activity| %>
-                  <%= render :partial => "activity", :locals => {:activity => activity} %>
+                  <% begin %>
+                      <%= render :partial => "activity", :locals => {:activity => activity} %>
+                  <% rescue
+                     end
+                  %>
               <% end %>
             </div>
           </div>
 
-          <div class="span4" style="background-color: red;">
-
+          <div class="span4">
+            <div class="notifications">
+              <% @notifications.each do |notification| %>
+                  <%= render :partial => "notification", :locals => {:notification => notification} %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

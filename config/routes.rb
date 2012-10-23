@@ -5,6 +5,7 @@ require 'subdomain'
 Chatham::Application.routes.draw do
 
   get "/feeds/home_timeline", :to => "home#home_timeline", :as => :home_feed
+  get '/feed', :to => "home#logged_in_home"
   get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
   get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
   get "/about", :to => 'admin#about_us', :as => :about_us

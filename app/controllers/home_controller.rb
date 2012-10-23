@@ -8,9 +8,10 @@ class HomeController < ApplicationController
     count = 20
 
     @activities = current_user.feed(start_pos, count)
+    @notifications = current_user.notifications(0, 20)
 
     #hack for gettign data in development mode
-    if @activities.nil? || @activities.count == 0
+    if Rails.env.development?
       @activities = current_user.old_feed
     end
 
