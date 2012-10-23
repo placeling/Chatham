@@ -1,8 +1,12 @@
 <h1>Firehose</h1>
 
-<ul>
+<div class="activities">
   <% @activities.each do |activity| %>
-      <%= render :partial => "home/activity", :locals => {:activity => activity} %>
+      <% begin %>
+          <%= render :partial => "home/activity", :locals => {:activity => activity} %>
+      <% rescue
+
+         end %>
   <% end %>
-</ul>
+</div>
 
