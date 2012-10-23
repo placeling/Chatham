@@ -16,7 +16,7 @@
   <%= image_tag activity.thumb1, :size => "64x64", :class => "activity_avatar" %>
   <div class="activity_body">
     <div class="activity_story_header"><%= raw activity_story %></div>
-    <div class="activity_story_body"><%= expand_text %></div>
+    <div class="activity_story_body"><%= simple_format expand_text %></div>
     <%= time_ago_in_words(activity.created_at) %> ago
   </div>
 </div>
