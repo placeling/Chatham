@@ -4,7 +4,7 @@
 
 <h1>Firehose</h1>
 
-<div class="activities">
+<div class="activities" style="background-color: white;width:800px;margin-left:20px;">
   <% @activities.each do |activity| %>
       <% begin %>
           <%= render :partial => "home/activity", :locals => {:activity => activity} %>
