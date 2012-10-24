@@ -31,12 +31,12 @@ class PlacemarkActivity
     end
 
     if twitter_post && actor1.twitter && Rails.env.production?
-      if perspective.memo.length > 1
-        actor1.tweet("#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}", perspective.place.location[0], perspective.place.location[1])
+      if  perspective.memo.length > 1
+        tweet_status = "#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}"
       else
-        actor1.tweet("Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}", perspective.place.location[0], perspective.place.location[1])
+        tweet_status = "Placemarked #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}"
       end
+      Resque.enqueue(TwitterPost, actor1.id, tweet_status, perspective.place.location[0], perspective.place.location[1])
     end
-
   end
 end
