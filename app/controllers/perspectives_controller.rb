@@ -422,7 +422,7 @@ class PerspectivesController < ApplicationController
       current_user.highlighted_places.delete(@place.id)
 
 
-      #@perspective.destroy
+      @perspective.destroy
       @place.save
     end
 
