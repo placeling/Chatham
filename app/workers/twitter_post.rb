@@ -6,7 +6,10 @@ class TwitterPost
     actor1 = User.find(actor_id)
 
 
-    actor1.tweet(tweet_status, lat, lng)
+    resp = actor1.tweet(tweet_status, lat, lng)
 
+    if resp.code != 200
+      raise "#{actor1.username} can't post twitter, #{r.code}, #{r.message}"
+    end
   end
 end
