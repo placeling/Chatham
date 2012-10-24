@@ -100,7 +100,7 @@ class Perspective
       return nil
     end
   end
-  
+
   def high_value?
     if self.memo && self.memo.length > 10 && self.active_photos.length > 0
       return true
@@ -108,7 +108,7 @@ class Perspective
       return false
     end
   end
-  
+
   def self.query_near(loc, span, query, category)
     geonear = BSON::OrderedHash.new()
     geonear["$near"] = loc
@@ -390,8 +390,8 @@ class Perspective
           attributes.merge(:place => self.place.as_json())
         end
       end
-      #else
-      #  attributes
+    else
+      attributes
     end
   end
 

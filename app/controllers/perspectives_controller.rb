@@ -421,13 +421,14 @@ class PerspectivesController < ApplicationController
 
       current_user.highlighted_places.delete(@place.id)
 
-      @perspective.destroy
+
+      #@perspective.destroy
       @place.save
     end
 
     respond_to do |format|
       format.html { redirect_to redirect_path }
-      format.json { render :json => {:status => 'deleted'} }
+      format.json { render :json => {:perspective => @perspective, :status => 'deleted'} }
     end
   end
 
