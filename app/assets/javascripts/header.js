@@ -17,6 +17,8 @@ $(document).ready(function () {
         }
     }
 
+    $("#lat").val(user_lat);
+    $("#lng").val(user_lng);
 
     $("#term").autocomplete({
         minLength:3,
