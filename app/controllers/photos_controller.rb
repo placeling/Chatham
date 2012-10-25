@@ -52,7 +52,7 @@ class PhotosController < ApplicationController
 
     if @picture.save
       respond_to do |format|
-        format.json { render :json => {:status => 'done'} }
+        format.json { render :json => {:status => 'done', :photo => @perspective.as_json()} }
       end
     else
       respond_to do |format|
