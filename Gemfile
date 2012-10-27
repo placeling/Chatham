@@ -99,8 +99,6 @@ gem 'dynamic_form'
 
 gem 'high_voltage'
 
-gem 'rack-access-control-headers'
-
 # Deploy with Capistrano
 gem 'capistrano'
 gem "capistrano-ext"
