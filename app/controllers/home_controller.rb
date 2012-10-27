@@ -21,7 +21,7 @@ class HomeController < ApplicationController
   end
 
   def logged_out_home
-    candidates = [
+    @candidates = [
         "caryblack",
         "ConstanceLiu",
         "lisamcgran",
@@ -52,15 +52,7 @@ class HomeController < ApplicationController
         "Heartlight"
     ]
 
-    @users = []
-    candidates.each do |candidate|
-      user = User.find_by_username(candidate)
-      if !user.nil?
-        @users << user
-      end
-    end
-
-    @users.shuffle!
+    @candidates.shuffle!
 
     respond_to do |format|
       format.html

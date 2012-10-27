@@ -112,8 +112,13 @@
         </div>
       </div>
       <div id="homepage_people">
-        <% @users.each do |user| %>
-            <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class => "homepage_photo") %></div>
+        <% cache do %>
+            <% @candidates.each do |candidate|
+              user = User.find_by_username(candidate)
+              if !user.nil? %>
+                    <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class => "homepage_photo") %></div>
+                <% end
+                   end %>
         <% end %>
       </div>
     </div>
