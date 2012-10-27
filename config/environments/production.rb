@@ -33,7 +33,7 @@ Chatham::Application.configure do
 
   config.assets.compress = true
   config.assets.digest = true
-  config.action_controller.asset_host = "https://d19v2hl3110mg7.cloudfront.net"
+  config.action_controller.asset_host = "https://d3oagsf5t1vo3e.cloudfront.net"
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "dmznjo0da80tm.cloudfront.net"
