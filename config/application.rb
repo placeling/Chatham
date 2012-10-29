@@ -36,6 +36,7 @@ module Chatham
     config.plugins = [:dynamic_form]
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/images" << "#{Rails.root}/vendor/assets" << "#{Rails.root}/vendor/assets/images"
+    config.assets.precompile += ['bootstrap.css', 'externals.js']
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
