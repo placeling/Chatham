@@ -298,7 +298,7 @@ class Perspective
 
   def twitter_text
     tweet = "#{self.place.name}: "
-    available = 114 - tweet.length
+    available = 112 - tweet.length
 
     if self.pictures.count > 0
       available -= 9
