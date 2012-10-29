@@ -296,9 +296,21 @@ class Perspective
     return "#{ApplicationHelper.get_hostname}#{ActionController::Base.helpers.asset_path("Moustache.png")}"
   end
 
-  def twitter_text(padding = 35)
-    size = 140 - padding - self.place.name.length
-    return self.memo[0..size] + "..."
+  def twitter_text
+    tweet = "#{self.place.name}: "
+    available = 114 - tweet.length
+
+    if self.pictures.count > 0
+      available -= 9
+
+      tweet += " #{self.memo[0..available].strip}... #{" (w/ pic)"} "
+    else
+      tweet += " #{self.memo[0..available].strip}... "
+    end
+
+    tweet += self.og_path
+
+    return tweet
   end
 
   def as_json(options={})

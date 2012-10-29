@@ -64,6 +64,22 @@ describe Perspective do
 
   end
 
+  it "should generate a twitter status" do
+    place = Factory.create(:place, :name => "Trilussa Pizza & Pane")
+    perspective = Factory.create(:perspective, :place => place, :memo => "The place to go for #cheap #pizza al taglio (square pizza by the inch). Apparently the blah blah blah blah")
+
+    pic = perspective.pictures.build()
+    pic.image = File.new(Rails.root + 'spec/fixtures/IMG_0288.JPG')
+    pic.save!
+    perspective.reload
+
+    tweet = perspective.twitter_text
+
+    tweet.length.should <= (120 + perspective.og_path.length)
+
+  end
+
+
   it "should accept a funky url" do
     perspective = Factory.create(:perspective, :url => "http://localhost:3000/~imack/?p=238")
     perspective.should be_valid

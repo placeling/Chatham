@@ -32,7 +32,7 @@ class UpdatePlacemarkActivity
 
     if twitter_post && actor1.twitter && Rails.env.production?
       if  perspective.memo.length > 1
-        tweet_status = "#{perspective.place.name}: #{perspective.twitter_text}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}"
+        tweet_status = perspective.twitter_text
       else
         tweet_status = "Just updated my placemark for #{perspective.place.name}#{" (w/ pic)" unless perspective.pictures.count==0} #{perspective.og_path}"
       end
