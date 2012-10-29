@@ -14,7 +14,7 @@ Chatham::Application.configure do
   config.force_ssl = true
 
   # For nginx:
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
@@ -31,6 +31,7 @@ Chatham::Application.configure do
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
 
+  config.assets.initialize_on_precompile = false
   config.assets.compress = true
   config.assets.digest = true
   config.action_controller.asset_host = "https://d1hd52ihigvh5q.cloudfront.net"
