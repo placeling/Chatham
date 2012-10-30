@@ -41,9 +41,7 @@ class AnswersController < ApplicationController
     @question.score = score +1
     @mixpanel.track_event("answer_submit", {:qid => @question.id})
 
-    if current_user
-      ActivityFeed.answer_question(current_user, @question)
-    end
+    ActivityFeed.answer_question(current_user, @question, @answer)
 
     respond_to do |format|
       if @answer.save && @question.save

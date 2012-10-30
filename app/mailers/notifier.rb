@@ -54,7 +54,7 @@ class Notifier < ActionMailer::Base
     use_vanity_mailer nil
 
     @recos = @user.get_recommendations
-    
+
     score = 0
     if @recos
       if @recos['guides'] && @recos['guides'].length > 0
@@ -68,12 +68,12 @@ class Notifier < ActionMailer::Base
       if @recos['places'] && @recos['places'].length > 0
         score += 1
       end
-      
+
       if @recos['tours'] && @recos['tours'].length > 0
         score += 1
       end
     end
-    
+
     if score >= 2
       track! :email_sent
 
@@ -213,6 +213,19 @@ class Notifier < ActionMailer::Base
     end
   end
 
+  def question_answered(user1_id, question_id, answer_id, user2_id)
+    @target = User.find(user1_id)
+
+    @question = Question.find(question_id)
+    @answer = @question.answers.where(:_id => answer_id).first
+    @user
+
+    mail(:to => @target.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@answer.place.name} was suggested for #{@question.title}") do |format|
+      format.text
+      format.html
+    end
+  end
+
   def answer_commented(user1_id, question_id, answer_id, answer_comment_id)
     @target = User.find(user1_id)
 
@@ -261,6 +274,15 @@ class Notifier < ActionMailer::Base
       @answer_comment = @answer.answer_comments.where(:_id => "5009cead67e6e22360000520").first
 
       Notifier.answer_commented(user1.id, @question.id, @answer.id, @answer_comment.id)
+    end
+
+    def question_answered
+      user1 = User.find_by_username("imack")
+
+      @question = Question.find_by_slug("wheres-the-best-brunch")
+      @answer = @question.answers.where(:_id => '4ff7725a0f677376a3000004').first
+
+      Notifier.question_answered(user1.id, @question.id, @answer.id, nil)
     end
 
 

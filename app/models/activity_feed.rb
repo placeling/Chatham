@@ -34,8 +34,8 @@ class ActivityFeed
     Resque.enqueue(StarActivity, actor1.id, actor2.id, perspective.id)
   end
 
-  def self.answer_question(actor1, question)
-    Resque.enqueue(AnswerQuestion, actor1.id, question.id)
+  def self.answer_question(actor1, question, answer)
+    Resque.enqueue(AnswerQuestion, (!actor1.nil? ? actor1.id : nil), question.id, answer.id)
   end
 
   def self.send_suggestion(suggestion)

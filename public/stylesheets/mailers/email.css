@@ -1,21 +1,21 @@
 .email_body {
-  background-color: #FAF9F7;
-  font-size: 14px;
-  font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    background-color: #FAF9F7;
+    font-size: 14px;
+    font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
 }
 
 .email_tr {
-  padding: 0px;
+    padding: 0px;
 }
 
 .email_table {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 .email_right {
-   margin: 5px;
-   padding: 0px;
-   float: right;
+    margin: 5px;
+    padding: 0px;
+    float: right;
 }
 
 .table_style {
@@ -47,6 +47,11 @@
     font-size: 18px;
 }
 
+.highlight_link {
+    color: #E08574;
+    font-size: 22px;
+}
+
 .placename_link {
     color: #E08574;
     font-size: 14px;
@@ -76,7 +81,7 @@
 }
 
 .email_italics {
-  font-style:italic;
+    font-style: italic;
 }
 
 .username_email {
@@ -150,12 +155,12 @@
 }
 
 .email_profile_pic {
-  float:left;
+    float: left;
 }
 
 .email_username_and_description {
-  margin-left: 80px;
-  max-width: 350px;
+    margin-left: 80px;
+    max-width: 350px;
 }
 
 .email_profile_pic_large {
@@ -246,28 +251,28 @@
 }
 
 .email_place_pic {
-  max-height: 300px;
-  max-width: 210px;
+    max-height: 300px;
+    max-width: 210px;
 }
 
 .email_embiggen {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 .email_embiggen_more {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 .email_place_and_testimonial {
-  margin-left: 10px;
-  margin-top: 12px;
+    margin-left: 10px;
+    margin-top: 12px;
 }
 
 .email_memo {
-  font-family:Georgia,'Times New Roman',serif;
-  font-style:italic;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
 }
 
 .email_question_spacer {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }

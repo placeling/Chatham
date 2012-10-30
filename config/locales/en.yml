@@ -203,6 +203,8 @@ en:
     in: "in"
     comment: "Comment"
     commented: " commented on %{place} for "
+    answered_copy_user: "%{user} suggested %{place} for %{question}"
+    answered_copy: "%{place} was suggested for %{question}"
     type_comment: "Write a comment"
     place_tally: "%{tally} answers"
     place_tally_singular: "1 answer"
@@ -234,6 +236,7 @@ en:
     as_well_as: "+%{n} others"
     subscribe: "Follow Question"
     unsubscribe: "Unfollow Question"
+    subscription: "Subscription"
     followers: "follower"
     subscribe_copy: "Get new answers emailed to you"
 
