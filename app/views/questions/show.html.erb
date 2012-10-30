@@ -88,13 +88,14 @@
   </div>
   <div id="question_right_column">
 
-    <div class="right_info">
+    <div class="right_info" style="margin-bottom: 15px;">
 
       <% if current_user && @question.subscribers.include?(current_user.id) %>
           <%= button_to t("question.unsubscribe"), {:action => "unsubscribe", :id => @question.id}, :form_class => "button_form" %>
       <% else %>
           <%= button_to t("question.subscribe"), {:action => "subscribe", :id => @question.id}, :form_class => "button_form_green" %>
       <% end %>
+      <div class="address_text" style="padding-top:3px"><%= t("question.subscribe_copy") %></div>
     </div>
 
     <% if @other_questions.count > 0 %>
