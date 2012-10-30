@@ -5,7 +5,7 @@ class AnswerQuestion
 
     question = Question.find(question_id)
 
-    if actor1_id
+    if !actor1_id.nil?
       actor1 = User.find(actor1_id)
 
       activity = actor1.build_activity
@@ -21,8 +21,13 @@ class AnswerQuestion
     end
 
     question.subscribers.each do |subscriber_id|
-      mail = Notifier.question_answered(subscriber_id, question_id, answer_id, actor1_id)
-      mail.deliver
+      if !actor1_id.nil? && actor1 != subscriber_id
+        actor1 = User.find(actor1_id)
+        if actor1.confirmed?
+          mail = Notifier.question_answered(subscriber_id, question_id, answer_id, actor1_id)
+          mail.deliver
+        end
+      end
     end
 
   end
