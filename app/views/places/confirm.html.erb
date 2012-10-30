@@ -17,8 +17,8 @@
         </div>
       <% end %>
       
-      <input id="lat" name="place[location][]" type="hidden" value="<%= @place.location[0] %>">
-      <input id="lng" name="place[location][]" type="hidden" value="<%= @place.location[1] %>">
+      <input name="place[location][]" type="hidden" value="<%= @place.loc[0] %>">
+      <input name="place[location][]" type="hidden" value="<%= @place.loc[1] %>">
       
       <div class="standout">
         <p class="label emphasize"><%= t'place.name' %></p>
