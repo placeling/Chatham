@@ -110,16 +110,19 @@
       <a class="social_share" href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= u @question.title %>&url=' + encodeURIComponent(window.location); return false;"><%= image_tag asset_path("x.gif"), :alt => "submit to reddit", :class => "reddit_button" %></a>
     </div>
 
-    <div class="right_info" style="display:none;">
-      <div class="right_info_title"><%= t 'question.own_prompt' %></div>
-      <div id="ask_friends_button" class="all_places_holder right_info">
-        <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
-      </div>
-    </div>
-
     <div class="miranda_graphic right_info">
       <%= image_tag asset_path("Miranda-01.png") %>
     </div>
+
+    <div class="right_info">
+      <div class="right_info_title"><%= t 'question.own_prompt' %></div>
+      <div class="all_places_holder">
+        <% #link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path
+        %>
+        <%= link_to "ask your friends", new_question_path %>
+      </div>
+    </div>
+
   </div>
   <div class="question_clear"></div>
 </div>
