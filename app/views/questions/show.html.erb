@@ -29,13 +29,6 @@
         <div class="question_posted_at"><%= t('question.posted_at', :created_at => @question.created_at.strftime("%b %d, %Y")) %></div>
       </div>
     </div>
-
-    <div id="question_share">
-      <span class="user_asked"><%= t 'question.share' %></span><br>
-      <a class="social_share" href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>&text=<%= u @question.title + " Answer on @Placeling" %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag asset_path("x.gif"), :alt => "tweet", :class => "twitter_button" %></a>
-      <a class="social_share" href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag asset_path("x.gif"), :alt => "share on facebook", :class => "facebook_button" %></a>
-      <a class="social_share" href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= u @question.title %>&url=' + encodeURIComponent(window.location); return false;"><%= image_tag asset_path("x.gif"), :alt => "submit to reddit", :class => "reddit_button" %></a>
-    </div>
     <div class="question_clear"></div>
   </div>
 </div>
@@ -88,7 +81,7 @@
   </div>
   <div id="question_right_column">
 
-    <div class="right_info" style="margin-bottom: 15px;">
+    <div class="right_info">
 
       <% if current_user && @question.subscribers.include?(current_user.id) %>
           <%= button_to t("question.unsubscribe"), {:action => "unsubscribe", :id => @question.id}, :form_class => "button_form" %>
@@ -99,19 +92,29 @@
     </div>
 
     <% if @other_questions.count > 0 %>
-        <div id="other_questions_prompt" class="right_info"><%= t 'question.other_questions' %></div>
-        <div id="other_questions" class="right_info">
-          <% @other_questions.each do |question| %>
-              <%= link_to question.title, question, :class => "other_questions_detail" %>
-              <br>
-          <% end %>
-          <p class="more_questions_spacer"><%= link_to "#{ t 'question.see_more' }...", questions_path, :class => "other_questions_detail" %></p>
+        <div class="right_info">
+          <div class="right_info_title"><%= t 'question.other_questions' %></div>
+          <div id="other_questions" class="right_info">
+            <% @other_questions.each do |question| %>
+                <%= link_to question.title, question, :class => "other_questions_detail" %>
+                <br>
+            <% end %>
+            <p class="more_questions_spacer"><%= link_to "#{ t 'question.see_more' }...", questions_path, :class => "other_questions_detail" %></p>
+          </div>
         </div>
     <% end %>
+    <div class="right_info">
+      <div class="right_info_title"><%= t 'question.share' %></div>
+      <a class="social_share" href="https://twitter.com/share?url=https://www.placeling.com<%= question_path(@question) %>&text=<%= u @question.title + " Answer on @Placeling" %>" onclick="var D=550,A=450,C=screen.height,B=screen.width,H=Math.round((B/2)-(D/2)),G=0,F=document;window.open(this.href, '', 'left='+H+',top='+G+',width='+D+',height='+A+',personalbar=0,toolbar=0,scrollbars=1,resizable=1');return false;"><%= image_tag asset_path("x.gif"), :alt => "tweet", :class => "twitter_button" %></a>
+      <a class="social_share" href="" onclick="javascript:var d=document,f='https://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1323211438&u='+e('https://www.placeling.com<%= question_path(@question) %>')+'&t='+e('<%= u @question.title %>');1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=1,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0);return false"><%= image_tag asset_path("x.gif"), :alt => "share on facebook", :class => "facebook_button" %></a>
+      <a class="social_share" href="http://www.reddit.com/submit" onclick="window.location = 'http://www.reddit.com/submit?title=<%= u @question.title %>&url=' + encodeURIComponent(window.location); return false;"><%= image_tag asset_path("x.gif"), :alt => "submit to reddit", :class => "reddit_button" %></a>
+    </div>
 
-    <div id="create_own_prompt" class="right_info"><%= t 'question.own_prompt' %></div>
-    <div id="ask_friends_button" class="all_places_holder right_info">
-      <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
+    <div class="right_info">
+      <div class="right_info_title"><%= t 'question.own_prompt' %></div>
+      <div id="ask_friends_button" class="all_places_holder right_info">
+        <%= link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path %>
+      </div>
     </div>
 
     <div class="miranda_graphic right_info">
