@@ -69,10 +69,6 @@ class AnswersController < ApplicationController
 
     @mixpanel.track_event("upvote", {:qid => @question.id})
 
-    if current_user
-      ActivityFeed.answer_question(current_user, @question)
-    end
-
     respond_to do |format|
       if @answer.save && @question.save
         format.html { redirect_to @question, notice: 'Voted!' }
