@@ -23,9 +23,9 @@
             <div style="margin: 0px;padding: 0px;">
               <div class="username">
                 <% if !@user.nil? %>
-                    <%= raw t('question.answered_copy_user', :place => link_to(@answer.place.name, @answer.place, :class => "highlight_link"), :user => link_to(@user.username, @user, :class => "highlight_link")) %>
+                    <%= raw t('question.answered_copy_user', :place => link_to(@answer.place.name, place_path(@answer.place, :only_path => false), :class => "highlight_link"), :user => link_to(@user.username, user_path(@user, :only_path => false), :class => "highlight_link")) %>
                 <% else %>
-                    <%= raw t('question.answered_copy', :place => link_to(@answer.place.name, @answer.place, :class => "highlight_link")) %>
+                    <%= raw t('question.answered_copy', :place => link_to(@answer.place.name, place_path(@answer.place, :only_path => false), :class => "highlight_link")) %>
                 <% end %>
                 <a href="<%= question_url(@question) %>" class="highlight_link"><%= @question.title %> </a>
               </div>
