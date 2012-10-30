@@ -129,6 +129,7 @@ class QuestionsController < ApplicationController
 
     @question.title = "#{ @question.title } in #{ @question.city_name }?"
     @question.location = [0.0, 0.0] unless !@question.location.nil?
+    @question.subscribers << current_user.id
 
     respond_to do |format|
       if @question.safely.save
