@@ -23,7 +23,7 @@
             <div style="margin: 0px;padding: 0px;">
               <div class="username">
                 <% if !@user.nil? %>
-                    <%= raw t('question.answered_copy_user', :place => link_to(@answer.place.name, @answer.place, :class => "highlight_link"), :user => link_to(@user.username, @user, :class => "highlight_link"), :question => @question.title) %>
+                    <%= raw t('question.answered_copy_user', :place => link_to(@answer.place.name, @answer.place, :class => "highlight_link"), :user => link_to(@user.username, @user, :class => "highlight_link"), :question => link_to(@question.title, @question, :class => "highlight_link")) %>
                 <% else %>
                     <%= raw t('question.answered_copy', :place => link_to(@answer.place.name, @answer.place, :class => "highlight_link"), :question => link_to(@question.title, @question, :class => "highlight_link")) %>
                 <% end %>
@@ -38,25 +38,6 @@
             <div class="email_answer_comment">
               <div id="map">
                 <%= image_tag @answer.place.place_page_map_url, :alt => "map", :class => "styled_map" %>
-              </div>
-              <div id="summary">
-                <div class="placename_holder">
-                  <span class="placename"><%= @answer.place.name %></span>
-                </div>
-                <div class="address_plus_link">
-                  <% if @answer.place.street_address || @answer.place.city_data %>
-                      <div class="address"><%= @answer.place.street_address %>
-                        <% if @answer.place.city_data && @answer.place.street_address %>,
-                            <% end %>
-                        <% if @answer.place.city_data %><%= @answer.place.city_data %>
-                        <% end %></div>
-                  <% end %>
-                  <% if @answer.place.google_url %>
-                      <div>
-                        <a href="<%= @answer.place.google_url %>" class="google_url"><%= t('place.google_url') %></a>
-                      </div>
-                  <% end %>
-                </div>
               </div>
             </div>
           </td>

@@ -7,18 +7,9 @@
     <%= raw t('question.answered_copy', :place => @answer.place.name, :question => @question.title) %>
 <% end %>
 <br>
-<%= @answer.place.name %>
-<% if @answer.place.street_address || @answer.place.city_data %>
-    <%= @answer.place.street_address %>
-    <% if @answer.place.city_data && @answer.place.street_address %>,
-    <% end %>
-    <% if @answer.place.city_data %><%= @answer.place.city_data %>
-    <% end %>
-<% end %>
-
 <%= t('notify.sent') %> <%= @target.email %>
 
-<%= t('notify.no_more') %> <%= t('notify.change') %> <%= t('notify.settings') %>:
-<%= account_user_url(@target) %>
+<%= t('notify.no_more') %> <%= t('notify.change') %> <%= t('question.subscription') %>:
+<%= question_url(@question) %>
 
 <%= t('notify.address') %>
