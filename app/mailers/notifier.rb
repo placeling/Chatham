@@ -218,7 +218,10 @@ class Notifier < ActionMailer::Base
 
     @question = Question.find(question_id)
     @answer = @question.answers.where(:_id => answer_id).first
-    @user
+
+    if !user2_id.nil?
+      @user = User.find(user2_id)
+    end
 
     mail(:to => @target.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@answer.place.name} was suggested for #{@question.title}") do |format|
       format.text

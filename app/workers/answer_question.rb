@@ -22,7 +22,7 @@ class AnswerQuestion
 
     question.subscribers.each do |subscriber_id|
       mail = Notifier.question_answered(subscriber_id, question_id, answer_id, actor1_id)
-
+      mail.deliver
     end
 
   end

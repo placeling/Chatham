@@ -2,7 +2,7 @@
 
 
 <% if !@user.nil? %>
-    <%= raw t('question.answered_copy_user', :place => @answer_comment.answer.place.name, :user => @user.username, :question => @question.title) %>
+    <%= raw t('question.answered_copy_user', :place => @answer.place.name, :user => @user.username, :question => @question.title) %>
 <% else %>
     <%= raw t('question.answered_copy', :place => @answer.place.name, :question => @question.title) %>
 <% end %>
