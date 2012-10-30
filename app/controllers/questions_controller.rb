@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   include ApplicationHelper
-  before_filter :login_required, :only => [:new, :create, :destroy, :edit, :update]
+  before_filter :login_required, :only => [:new, :create, :destroy, :edit, :update, :subscribe, :unsubscribe]
   before_filter :admin_required, :only => [:admin]
 
   # GET /questions
@@ -33,6 +33,45 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def subscribe
+    if BSON::ObjectId.legal?(params[:id])
+      @question = Question.find(params[:id])
+    else
+      @question = Question.find_by_slug(params[:id])
+    end
+
+
+    if @question.subscribers.index(current_user.id).nil?
+      @question.subscribers << current_user.id
+    end
+
+    @question.save
+
+    respond_to do |format|
+      format.html { redirect_to :action => "show", :id => @question.id }
+      format.json { render :json => {:question => @question} }
+    end
+
+  end
+
+
+  def unsubscribe
+
+    if BSON::ObjectId.legal?(params[:id])
+      @question = Question.find(params[:id])
+    else
+      @question = Question.find_by_slug(params[:id])
+    end
+
+    @question.subscribers.delete(current_user.id)
+    @question.save
+
+    respond_to do |format|
+      format.html { redirect_to :action => "show", :id => @question.id }
+      format.json { render :json => {:question => @question} }
+    end
+
+  end
 
   # GET /questions/1
   # GET /questions/1.json
@@ -42,7 +81,6 @@ class QuestionsController < ApplicationController
     else
       @question = Question.find_by_slug(params[:id])
     end
-
 
     if @question.nil?
       raise ActionController::RoutingError.new('Not Found')

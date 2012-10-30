@@ -5,8 +5,8 @@
     <meta property="og:url" content="<%= @question.og_path %>"/>
     <meta property="og:type" content="placeling:question">
     <meta property="og:article" content="a">
-    <meta property="og:image" content="<%= ApplicationHelper.get_hostname + asset_path("Moustache.png") %>">
-    <link rel="image_src" href="<%= ApplicationHelper.get_hostname + asset_path("Moustache.png") %>">
+    <meta property="og:image" content="<%= asset_path("Moustache.png") %>">
+    <link rel="image_src" href="<%= asset_path("Moustache.png") %>">
     <META NAME="geo.position" content="<%= @question.location[0] %>;<%= @question.location[1] %>"/>
     <meta name=”ICBM” content=”<%= @question.location[0] %>,<%= @question.location[1] %>″>
 <% end %>
@@ -63,7 +63,7 @@
     <div id="tally_holder">
       <div id="suggestion_tally">
         <% if @question.answers.count == 1 %><%= t('question.place_tally_singular') %>
-        <% else %><%= t('question.place_tally', :tally => @question.answers.count) %>
+            <% else %><%= t('question.place_tally', :tally => @question.answers.count) %>
         <% end %></div>
       <div id="tally_clear"></div>
     </div>
@@ -87,6 +87,16 @@
     </ul>
   </div>
   <div id="question_right_column">
+
+    <div class="right_info">
+
+      <% if current_user && @question.subscribers.include?(current_user.id) %>
+          <%= button_to t("question.unsubscribe"), {:action => "unsubscribe", :id => @question.id}, :form_class => "button_form" %>
+      <% else %>
+          <%= button_to t("question.subscribe"), {:action => "subscribe", :id => @question.id}, :form_class => "button_form_green" %>
+      <% end %>
+    </div>
+
     <% if @other_questions.count > 0 %>
         <div id="other_questions_prompt" class="right_info"><%= t 'question.other_questions' %></div>
         <div id="other_questions" class="right_info">

@@ -232,6 +232,9 @@ en:
     ask_signup: "We can't show you your questions unless you're signed up for Placeling"
     pick_place: "Please start typing a city and select from drop-down"
     as_well_as: "+%{n} others"
+    subscribe: "Subscribe"
+    unsubscribe: "Unsubscribe"
+    followers: "follower"
 
   inprogress:
     start_submit: "Start Upload"

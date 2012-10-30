@@ -9,6 +9,7 @@ class Question
   field :country_code, :type => String
   field :loc, :as => :location, :type => Array
   field :score, :type => Integer, :default => 1
+  field :subs, :as => :subscribers, :type => Array, :default => []
 
   slug :title, :index => true, :permanent => true
 

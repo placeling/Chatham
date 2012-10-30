@@ -119,6 +119,8 @@ Chatham::Application.routes.draw do
     end
     member do
       get :share
+      post :subscribe
+      post :unsubscribe
     end
     collection do
       get :admin
