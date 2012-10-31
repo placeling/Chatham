@@ -53,6 +53,8 @@ Chatham::Application.routes.draw do
   match '/app', :to => "admin#app"
   post '/users/resend', :to => 'users#resend', :as => :resend_password
 
+  resources :publishers
+
   resources :users, :except => [:index] do
     resources :perspectives, :only => [:index]
     resources :suggestions, :only => [:create, :new, :index]
