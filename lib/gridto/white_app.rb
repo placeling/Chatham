@@ -36,21 +36,8 @@ class WhiteApp < Sinatra::Base
     end
 
     def category_to_tags(category)
-      if category =="eating"
-        return ["brunch", "pizza", "poutine", "cheap", "kidfriendly", "latenight",
-                "grilledcheese", "under10bucks", "worththewait", "barbecue", "cookies",
-                "sushi", "veganbrunch", "dimsum", "taketheparents"]
-      elsif category =="drinking"
-        return ["sportsbar", "caesar", "brownliquor", "cocktails"]
-      elsif category == "coffee"
-        return ["coffee"]
-      elsif category =="pizza"
-        return ["pizza"]
-      elsif category == "poutine"
-        return ["poutine"]
-      else
-        return []
-      end
+      pubcat = @publisher.category_for(category)
+      return pubcat.tags.split(",")
     end
 
     def get_perspectives(user, category)
@@ -70,6 +57,11 @@ class WhiteApp < Sinatra::Base
     before do
       @base_user = subdomain
       @user = User.find_by_username(subdomain)
+
+      if @user.publisher.nil?
+        throw :halt, [404, "Not found"]
+      end
+      @publisher = @user.publisher
 
       @lat = request.cookies["lat"]
       @lng = request.cookies["lng"]

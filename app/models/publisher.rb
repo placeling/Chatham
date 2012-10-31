@@ -10,5 +10,9 @@ class Publisher
 
   belongs_to :user
 
+  validates_presence_of :user
 
+  def category_for(category)
+    return self.publisher_categories.where(:slug => category).first
+  end
 end

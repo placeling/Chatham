@@ -1,47 +1,27 @@
 <div class="row-fluid">
   <div class='span3 hidden-phone'></div>
   <div class='span6' style="display: block;">
-    <a href="./category/eating" class="category eating">
-      <img src="/images/eating.png">
-    </a>
 
-    <a href="./category/drinking" class="category drinking" style="margin-left:2px;">
-      <img src="/images/drinking.png">
-    </a>
-  </div>
-  <div class='span3 hidden-phone'></div>
-</div>
+    <% @publisher.publisher_categories.each_with_index do |category, i| %>
+        <a href="./category/<%= category.slug %>" class="category">
+          <img src="/images/<%= category.filename %>">
+        </a>
 
-<br/>
+        <% if i %2 == 1 %>
+            </div>
+            <div class='span3 hidden-phone'></div>
+            </div>
 
-<div class="row-fluid">
-  <div class='span3 hidden-phone'></div>
-  <div class='span6' style="display: block;">
-    <a href="./category/sponsor" class="category sponsor">
-      <img src="/images/sponsor.png">
-    </a>
+            <br/>
 
-    <a href="./category/coffee" class="category coffee" style="margin-left:2px;">
-      <img src="/images/coffee.png">
-    </a>
-  </div>
-  <div class='span3 hidden-phone'></div>
-</div>
+            <div class="row-fluid">
+              <div class='span3 hidden-phone'></div>
+              <div class='span6' style="display: block;">
+        <% end %>
+    <% end %>
+    </div>
+    <div class='span3 hidden-phone'></div>
+    </div>
 
-<br/>
+    <br/>
 
-<div class="row-fluid">
-  <div class='span3 hidden-phone'></div>
-  <div class='span6' style="display: block;">
-    <a href="./category/pizza" class="category pizza">
-      <img src="/images/pizza.png">
-    </a>
-
-    <a href="./category/poutine" class="category poutine" style="margin-left:2px;">
-      <img src="/images/poutine.png">
-    </a>
-  </div>
-  <div class='span3 hidden-phone'></div>
-</div>
-
-<br/>

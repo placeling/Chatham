@@ -51,7 +51,9 @@
   </div>
 
   <div class="span4 hidden-phone">
-    <img src="/images/BigBox8_300x600.png"/>
+    <% if @publisher.wellpng %>
+        <img src="/images/<%= @publisher.wellpng %>"/>
+    <% end %>
   </div>
 </div>
 

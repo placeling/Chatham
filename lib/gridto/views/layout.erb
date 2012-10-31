@@ -67,6 +67,15 @@
 
   <div>
     <%= yield %>
+    <% if @publisher.footerpng %>
+        <div class="row-fluid visible-phone">
+          <div class="span12">
+            <div style="text-align: center;">
+              <img src="/images/<%= @publisher.footerpng %>"/>
+            </div>
+          </div>
+        </div>
+    <% end %>
   </div>
 </div>
 </body>
