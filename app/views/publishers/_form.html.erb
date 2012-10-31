@@ -11,16 +11,12 @@
         </div>
     <% end %>
 
-    <div class="field">
-      <%= f.label :username %>
-      <br/>
-      <%= f.text_field :username %>
-    </div>
-    <div class="field">
-      <%= f.label :categories %>
-      <br/>
-      <%= f.text_field :categories %>
-    </div>
+    <%= f.label :publisher_categories, "Categories" %>
+    <%= f.fields_for :publisher_categories do |builder| %>
+        <%= render 'publisher_category_fields', f: builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Category", f, :publisher_categories %>
+
     <div class="field">
       <%= f.label :css %>
       <br/>

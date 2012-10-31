@@ -15,8 +15,8 @@
 
   <% @publishers.each do |publisher| %>
       <tr>
-        <td><%= publisher.username %></td>
-        <td><%= publisher.categories %></td>
+        <td><%= publisher.user.username %></td>
+        <td><%= publisher.publisher_categories %></td>
         <td><%= publisher.css %></td>
         <td><%= publisher.footerpng %></td>
         <td><%= publisher.wellpng %></td>

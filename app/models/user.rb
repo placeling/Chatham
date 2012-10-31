@@ -79,6 +79,7 @@ class User
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
   has_many :questions
+  has_one :publisher
 
   mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 

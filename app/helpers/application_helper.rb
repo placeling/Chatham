@@ -6,6 +6,15 @@ module ApplicationHelper
   #  end
   #end
 
+  def link_to_add_fields(name, f, association)
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+  end
+
   def current_user_location(params)
     valid_latlng = false
     if params[:lat] && params[:lng]
@@ -65,7 +74,7 @@ module ApplicationHelper
     text.insert 0, start_tag
     text.html_safe.safe_concat("</p>")
   end
-  
+
   def label_value(index)
     if index < 9
       return index + 1
@@ -76,7 +85,7 @@ module ApplicationHelper
       return false
     end
   end
-  
+
   # haversine formula to compute the great circle distance between two points given their latitude and longitudes
   #
   # Copyright (C) 2008, 360VL, Inc

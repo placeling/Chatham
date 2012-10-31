@@ -7,7 +7,7 @@ gem 'rails', '3.2.2'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 
-gem "jquery-rails"
+gem "jquery-rails", "~> 2.1.3"
 
 gem "mongoid", "~> 2.4.8"
 gem "mongoid_rails_migrations", "~> 0.0.13"
