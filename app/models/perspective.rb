@@ -77,7 +77,7 @@ class Perspective
         limit(count)
   end
 
-  def self.query_near_for_user(user, loc, span, query)
+  def self.query_near_for_user(user, loc, query)
     selector = Perspective.where(:ploc => {"$near" => loc}).
         and(:uid => user.id)
 

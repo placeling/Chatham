@@ -44,9 +44,9 @@ class WhiteApp < Sinatra::Base
       tags = category_to_tags(category).join(" ")
 
       if @lat && @lng
-        return Perspective.query_near_for_user(user, [@lat, @lng], 180, tags)
+        return Perspective.query_near_for_user(user, [@lat, @lng], tags)
       else
-        return Perspective.query_near_for_user(user, [user.loc[0], user.loc[1]], 180, tags)
+        return Perspective.query_near_for_user(user, [user.loc[0], user.loc[1]], tags)
       end
     end
   end

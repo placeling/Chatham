@@ -27,16 +27,16 @@
         }
 
         var placemark = new google.maps.MarkerImage(
-                '/images/placemarker.png',
+                'https://www.placeling.com/images/placemarker.png',
                 new google.maps.Size(30, 32),
                 new google.maps.Point(0, 0),
                 new google.maps.Point(9, 32)
         );
 
         $('#map_canvas').gmap().bind('init', function (evt, map) {
-            $.getJSON('/users/gridto/bounds.json?top_lat=43.93349981056994&bottom_lat=43.386450345878536&right_lng=-79.1420351409912&left_lng=-79.63796485900878', function (data) {
+            $.getJSON('/users/<%= @publisher.user.username %>/bounds.json?top_lat=<%= (@lat.to_f) +1 %>&bottom_lat=<%= (@lat.to_f)-1 %>&right_lng=<%= (@lng.to_f) -1  %>&left_lng=-<%= (@lng.to_f)+1  %>', function (data) {
                 $.each(data.perspectives, function (i, m) {
-                    $('#map_canvas').gmap('addMarker', { 'position':new google.maps.LatLng(m.ploc[0], m.ploc[1]), icon:placemark }).click(function () {
+                    $('#map_canvas').gmap('addMarker', { 'position':new google.maps.LatLng(m.ploc[0], m.ploc[1]) }).click(function () {
                         $('#map_canvas').gmap('openInfoWindow', {'content':htmlForPerspective(m)}, this);
                     });
                 });
