@@ -78,15 +78,15 @@ class Perspective
   end
 
   def self.query_near_for_user(user, loc, query)
-    selector = Perspective.where(:ploc => {"$near" => loc}).
-        and(:uid => user.id)
-
     if query != nil and query.strip != ""
       tags = Perspective.extract_tag_array(query.downcase.strip)
-      selector = selector.any_in(:tags => tags)
     end
 
-    return selector
+    Perspective.where(:ploc => {"$near" => loc}).
+        and(:uid => user.id).
+        any_in(:tags => tags).
+        limit(20)
+
   end
 
   def short_memo

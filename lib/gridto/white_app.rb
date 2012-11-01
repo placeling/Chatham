@@ -63,8 +63,8 @@ class WhiteApp < Sinatra::Base
       end
       @publisher = @user.publisher
 
-      @lat = request.cookies["lat"]
-      @lng = request.cookies["lng"]
+      @lat = request.cookies["lat"].to_f
+      @lng = request.cookies["lng"].to_f
     end
 
     get "/" do
@@ -77,12 +77,12 @@ class WhiteApp < Sinatra::Base
 
     get "/category/:category/list" do
       @user = User.find_by_username(@base_user)
-      @perspectives = get_perspectives(@user, params[:category]).limit(20).entries
+      @perspectives = get_perspectives(@user, params[:category]).entries
 
       if @lat && @lng
         @perspectives.each do |perspective|
           #add distance to in meters
-          perspective.distance = Geocoder::Calculations.distance_between([@lat.to_f, @lng.to_f], [perspective.place.location[0], perspective.place.location[1]], :units => :km)
+          perspective.distance = Geocoder::Calculations.distance_between([@lat, @lng], [perspective.place.location[0], perspective.place.location[1]], :units => :km)
         end
         @perspectives = @perspectives.sort_by { |perspective| perspective.distance }
       end
