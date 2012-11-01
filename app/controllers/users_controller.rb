@@ -1101,6 +1101,7 @@ class UsersController < ApplicationController
     @user = User.find_by_crypto_key(params[:ck])
 
     @user.user_settings.weekly_email = false
+    @user.save
 
     respond_to do |format|
       format.html
@@ -1111,6 +1112,7 @@ class UsersController < ApplicationController
     @user = User.find_by_crypto_key(params[:ck])
 
     @user.user_settings.weekly_email = true
+    @user.save
 
     respond_to do |format|
       format.html { redirect_to "/" }
