@@ -36,7 +36,7 @@
         $('#map_canvas').gmap().bind('init', function (evt, map) {
             $.getJSON('/category/<%= params[:category] %>/mapdata', function (data) {
                 $.each(data.perspectives, function (i, m) {
-                    $('#map_canvas').gmap('addMarker', { 'position':new google.maps.LatLng(m.ploc[0], m.ploc[1]) }).click(function () {
+                    $('#map_canvas').gmap('addMarker', { 'position':new google.maps.LatLng(m.ploc[0], m.ploc[1]), 'icon':placemark }).click(function () {
                         $('#map_canvas').gmap('openInfoWindow', {'content':htmlForPerspective(m)}, this);
                     });
                 });
