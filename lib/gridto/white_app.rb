@@ -76,7 +76,6 @@ class WhiteApp < Sinatra::Base
     end
 
     get "/category/:category/list" do
-      @user = User.find_by_username(@base_user)
       @perspectives = get_perspectives(@user, params[:category]).entries
 
       if @lat && @lng
@@ -92,7 +91,6 @@ class WhiteApp < Sinatra::Base
 
 
     get "/category/:category/map" do
-      @user = User.find_by_username(@base_user)
 
       if @lat && @lng
         @display_lat = @lat
@@ -103,6 +101,14 @@ class WhiteApp < Sinatra::Base
       end
 
       erb :categorymap
+    end
+
+    get "/category/:category/mapdata" do
+      content_type :json
+
+      @perspectives = get_perspectives(@user, params[:category]).limit(0).entries
+
+      {:perspectives => @perspectives.as_json({:user_view => true, :bounds => true})}.to_json
     end
 
     get "/place/:id" do
