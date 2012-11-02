@@ -5,7 +5,7 @@ require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 require 'capybara/rspec'
 
 RSpec.configure do |config|
@@ -38,14 +38,15 @@ RSpec.configure do |config|
 
   config.before(:all) do
     # Get rid of the linked images
+    DeferredGarbageCollection.start
     if Rails.env.test?
       FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads/*"])
       #TODO:still need to account for cache directroy
     end
   end
 
-  config.after(:each) do
-
+  config.after(:all) do
+    DeferredGarbageCollection.reconsider
   end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
