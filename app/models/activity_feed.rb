@@ -11,7 +11,7 @@ class ActivityFeed
   end
 
   def self.comment_placemark(actor1, placemark_comment)
-    if actor1.id != placemark_comment.user.id
+    if actor1.id != placemark_comment.perspective.user.id
       Resque.enqueue(PlacemarkCommentActivity, actor1.id, placemark_comment.perspective.user.id, placemark_comment.perspective.id)
     end
   end
