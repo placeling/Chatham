@@ -8,7 +8,7 @@ class TwitterPost
 
     resp = actor1.tweet(tweet_status, lat, lng)
 
-    if resp.code != 200
+    if resp.code.to_i != 200
       raise "#{actor1.username} can't post twitter, #{resp.code}, #{resp.message}"
     end
   end
