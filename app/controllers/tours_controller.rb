@@ -3,6 +3,15 @@ require 'httparty'
 class ToursController < ApplicationController
   
   before_filter :login_required, :except => [:index, :render_preview, :show, :print, :purchase]
+  before_filter :admin_required, :only => [:admin]
+  
+  def admin
+    @tours = Tour.all
+
+    respond_to do |format|
+      format.html
+    end
+  end  
   
   def index
     @user = User.find_by_username(params[:user_id])

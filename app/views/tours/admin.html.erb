@@ -1,0 +1,19 @@
+<h1>All Tours</h1>
+<table>
+  <tr>
+    <th style="width:150px;border: 1px solid black;">Name</th>
+    <th style="width:100px;border: 1px solid black;">Date Created</th>
+    <th style="width:100px;border: 1px solid black;">Owner</th>
+    <th style="width:400px;border: 1px solid black;">Description</th>
+    <th style="width:20px;border: 1px solid black;">Number of Places</th>
+  </tr>
+  <% @tours.order(:created_at, :desc).each do |tour| %>
+    <tr>
+      <td style="width:20px;border: 1px solid black;"><%= link_to tour.name, user_tour_path(tour.user, tour) %></td>
+      <td style="width:20px;border: 1px solid black;"><%= tour.created_at.strftime("%d %b %y") %></td>
+      <td style="width:20px;border: 1px solid black;"><%= link_to tour.user.username, user_path(tour.user) %></td>
+      <td style="width:20px;border: 1px solid black;"><%= simple_format(tour.description) %></td>
+      <td style="width:20px;border: 1px solid black;"><% if tour.position %><%= tour.position.length %><% end %></td>
+    </tr>
+  <% end %>
+</table>
