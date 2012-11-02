@@ -84,7 +84,7 @@ gem 'sitemap_generator'
 gem 'mongoid_slug'
 
 group :test, :development do
-
+  gem "parallel_tests"
 end
 
 gem "twitter-bootstrap-rails"

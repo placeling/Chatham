@@ -9,7 +9,7 @@ development:
 
 test:
   host: localhost
-  database: chatham_test
+  database: chatham_test<%= ENV['TEST_ENV_NUMBER'] %>
   autocreate_indexes: true
   raise_not_found_error: false
   allow_dynamic_fields: false
