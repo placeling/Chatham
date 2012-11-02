@@ -94,7 +94,7 @@
     <% if @other_questions.count > 0 %>
         <div class="right_info">
           <div class="right_info_title"><%= t 'question.other_questions' %></div>
-          <div id="other_questions">
+          <div class="right_column_text">
             <% @other_questions.each do |question| %>
                 <%= link_to question.title, question, :class => "other_questions_detail" %>
                 <br>
@@ -117,9 +117,7 @@
     <div class="right_info">
       <div class="right_info_title"><%= t 'question.own_prompt' %></div>
       <div class="all_places_holder">
-        <% #link_to image_tag(asset_path("AskyourfriendsButton.png")), new_question_path
-        %>
-        <%= link_to "ask your friends", new_question_path %>
+        <span class="right_column_text"><%= link_to t('question.make_own'), new_question_path %></span>
       </div>
     </div>
 
