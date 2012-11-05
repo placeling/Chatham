@@ -68,7 +68,7 @@ class GooglePlaces
 
       ref = {:reference => place.google_ref}
 
-      result = mashup(self.class.post("/check-in/json",
+      result = mashup(self.class.post("/bump/json",
                                       :query => options.merge(self.default_options),
                                       :body => ref.to_json))
 
