@@ -1,3 +1,13 @@
+<% content_for :head do %>
+    <title><%= @tour.name %></title>
+    <meta name="description" content="<%= @tour.description %>"/>
+    <meta property="og:title" content="<%= @tour.name %>"/>
+    <meta property="og:url" content="<%= print_user_tour_url(@tour.user, @tour) %>"/>
+    <meta property="og:type" content="placeling:tour"/>
+    <meta property="og:image" content="<%= @tour.infographic_url(:open_graph) %>"/>
+    <meta property="og:description" content="<%= @tour.description %>"/>
+<% end %>
+
 <div id="tour_holder">
   <div id="tour_preview_name"><%= link_to @tour.name, user_tour_path(@tour.user, @tour) %>
 </div>

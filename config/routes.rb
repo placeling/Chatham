@@ -27,6 +27,7 @@ Chatham::Application.routes.draw do
   get "/admin/categories", :to => 'admin#categories', :as => :categories
   get "/admin/flagged_place", :to => 'admin#flagged_place', :as => :flagged_place
   post "/admin/flagged_place", :to => 'admin#update_place', :as => :flagged_place
+  get "/admin/tours", :to => 'tours#admin'
 
   get "/search", :to => 'search#search', :as => :search
 
@@ -127,7 +128,6 @@ Chatham::Application.routes.draw do
     collection do
       get :admin
     end
-
   end
 
   resources :potential_perspectives, :only => [:update, :edit, :destroy]
