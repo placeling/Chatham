@@ -100,15 +100,10 @@
     </div>
     <div id="main_copy">
       <div id="headline">Your Places</div>
-      <p class="copy">Where you've been.</p>
-
-      <p class="copy">Where you want to go.</p>
-
-      <p class="copy">With friends.</p>
-
+      <p class="copy">Create a shareable city guide</p>
       <div id="homepage_action">
         <div class="register"><span class="social_proof">Join thousands of locals</span>
-          <span id="homepage_register"><%= link_to "Create Your Own Map", new_user_registration_path(), :class => "submit sign_up" %></span>
+          <span id="homepage_register"><%= link_to "Create Your Own Guide", new_user_registration_path(), :class => "submit sign_up" %></span>
         </div>
       </div>
       <div id="homepage_people">
@@ -124,6 +119,11 @@
     </div>
   </div>
   <div id="homepage_more">
+    <div class="mini_headline">It's Easy</div>
+    <ol class="easy_style">
+      <li class="copy">Bookmark the places you love</li>
+      <li class="copy">Follow others to discover new places</li>
+    </ol>
     <div class="mini_headline">What Else Can You Do With Placeling?</div>
     <div class="feature_unit">
       <div class="feature_image">
@@ -132,9 +132,7 @@
       <div class="feature_description">
         <p class="feature_headline">Be The
           Guide <%= image_tag(asset_path("header/tour_compass.png"), :class => "watermark") %></p>
-
         <p class="feature_details">Turn the places on your map into shareable, printable tours.</p>
-
         <p class="learn_link"><%= link_to("Shareable Tours", tour_path, :class => "tour_link") %></p>
       </div>
     </div>
@@ -145,9 +143,7 @@
       <div class="feature_description">
         <p class="feature_headline">Find The Perfect
           Place <%= image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :class => "watermark") %></p>
-
         <p class="feature_details">Ask your friends for their favorite places - and add them to your map.</p>
-
         <p class="learn_link"><%= link_to("Ask A Question", questions_path, :class => "question_link") %></p>
       </div>
     </div>
@@ -157,9 +153,7 @@
       </div>
       <div class="feature_description">
         <p class="feature_headline">Get The Locals' Perspective</p>
-
         <p class="feature_details">We ask local experts for the best of their city - and you get it automatically.</p>
-
         <p class="learn_link"><%= link_to("City Guides", local_path, :class => "city_guide_link") %></p>
       </div>
     </div>
@@ -169,15 +163,13 @@
       </div>
       <div class="feature_description">
         <p class="feature_headline">Your Map In Your Blog</p>
-
-        <p class="feature_details">Embed your map in your blog and use our plugin to add pins to it.</p>
-
+        <p class="feature_details">The easiest way to put a map in your blog or website.</p>
         <p class="learn_link"><%= link_to("Blogging Tools", bloggers_path, :class => "blog_tools_link") %></p>
       </div>
     </div>
   </div>
   <div id="last_call">
-    Enough already - <%= link_to "Create Your Own Map", new_user_registration_path(), :class => "submit sign_up" %>
+    Enough already - <%= link_to "Create Your Own Guide", new_user_registration_path(), :class => "submit sign_up" %>
   </div>
 </div>
 <div id="homepage_finish">
