@@ -8,10 +8,7 @@ class PlacemarkActivity
     perspective = Perspective.find(perspective_id)
 
     if perspective.nil?
-      if Perspective.deleted.find(perspective_id)
-        #was deleted before this went, so all good
-        return
-      end
+      return
     end
 
     RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{actor1.username} placemarked #{perspective.place.name}, OG?: #{!actor1.facebook.nil?}"
