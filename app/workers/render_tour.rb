@@ -15,12 +15,12 @@ class RenderTour
 
     @tour.rendered = true
     @tour.save!
-    
-    if @tour.user.post_facebook? && (Rails.env.production? || Rails.env.staging?)
-      Resque.enqueue(FacebookPost, @tour.user.id, "placeling:create", {:tour => @tour.og_path})
-      #actor1.facebook.put_connections("me", "placeling:follow", :user => actor2.og_path)
+
+    if @tour.user.post_facebook? && Rails.env.production?
+      # Resque.enqueue(FacebookPost, @tour.user.id, "placeling:create", {:tour => @tour.og_path})
+      #commenting this out for now, was causing an error
     end
-    
+
     track! :tour_created
   end
 end
