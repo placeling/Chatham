@@ -318,18 +318,20 @@ class Place
     end
 
     clean_venues = []
-    raw_place.types.each do |venue|
-      # skip other as no value in showing "other" to user. WTF does "other" mean?
-      if venue != "other"
-        if friendly_mapping.has_key?(venue)
-          clean_venues.push(friendly_mapping[venue])
-        else
-          pieces = venue.split("_")
-          new_pieces = []
-          pieces.each do |piece|
-            new_pieces.push(piece.capitalize)
+    if !raw_place.types.nil?
+      raw_place.types.each do |venue|
+        # skip other as no value in showing "other" to user. WTF does "other" mean?
+        if venue != "other"
+          if friendly_mapping.has_key?(venue)
+            clean_venues.push(friendly_mapping[venue])
+          else
+            pieces = venue.split("_")
+            new_pieces = []
+            pieces.each do |piece|
+              new_pieces.push(piece.capitalize)
+            end
+            clean_venues.push(new_pieces.join(" "))
           end
-          clean_venues.push(new_pieces.join(" "))
         end
       end
     end
