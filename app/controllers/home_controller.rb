@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :login_required, :only => [:home_timeline]
+  before_filter :login_required, :only => [:home_timeline, :logged_in_home]
 
 
   def logged_in_home
