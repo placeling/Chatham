@@ -8,6 +8,7 @@ class AggregationController < ApplicationController
       @users = User.top_nearby(params[:lat], params[:lng], 6)
     end
 
+    @places = Place.top_nearby_places(@default_lat.to_f, @default_lng.to_f, 0.2, 16)
 
     respond_to do |format|
       format.html { render :layout => 'bootstrap' }

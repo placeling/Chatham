@@ -41,6 +41,7 @@ en:
     meet_guide: "Meet The Guides"
     places_here: "%{pc} places here"
     take_tour: "Take a Tour"
+    says: "%{name} says"
 
 
   download:

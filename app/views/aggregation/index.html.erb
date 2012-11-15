@@ -1,3 +1,48 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="span12">
+    <div class="row">
+      <div class="span10">
+        Explore Places Near
+      </div>
+      <div class="span2">
+        <%= image_tag "PlacemarkItButton_Static.png", :alt => "placemark", :class => "placemark_img" %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row aggregation_box">
+  <div class="span6">
+    <img src="https://maps.googleapis.com/maps/api/staticmap?center=<%= @default_lat %>,<%= @default_lng %>&zoom=14
+              <% @places.each_with_index do |place, i| %>&markers=%7Ccolor:0xdd5e50%7C<%= place.loc[0] %>,<%= place.loc[1] %>
+              <% end %>&size=500x400&maptype=roadmap&sensor=false" class="styled_map">
+  </div>
+  <div class="span5">
+    <% place = @places.first %>
+    <div class="place_title"><%= place.name %></div>
+    <p><%= place.street_address %> | <%= place.perspectives.count %>
+      <% if place.perspectives.count == 1 %>
+          <%= t('place.placemark') %>
+      <% else %>
+          <%= t('place.placemarks') %>
+      <% end %>
+    </p>
+
+    <div class="aggregation_perspective" style="overflow-y: scroll;">
+
+      <% if p = place.perspectives.first %>
+          <%= render :partial => "perp", :locals => {:perspective => p} %>
+      <% end %>
+      <% if p = place.perspectives.second %>
+          <%= render :partial => "perp", :locals => {:perspective => p} %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
 <div class="title">
   <%= t 'aggregation.meet_guide' %>
 </div>
@@ -17,4 +62,5 @@
 
   <div class="title">
     <%= t 'aggregation.take_tour' %>
+  </div>
   </div>
