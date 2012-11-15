@@ -32,7 +32,7 @@ task :staging do
 end
 
 default_run_options[:pty] = true # Must be set for the password prompt from git to work
-set :repository, "git@github.com:imackinn/Chatham.git" # Your clone URL
+set :repository, "git@github.com:placeling/Chatham.git" # Your clone URL
 set :scm, "git"
 
 set :deploy_to, "/var/www/apps/#{application}"
