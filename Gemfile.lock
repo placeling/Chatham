@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/imackinn/oauth-plugin.git
-  revision: d967f1dced19f5854664d7e15413a4f828768fc5
-  specs:
-    oauth-plugin (0.4.0.rc2)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2
-      rack
-
-GIT
   remote: git://github.com/jnicklas/capybara.git
   revision: d76987f1213dea6d9dca59f655479f931cac6b49
   specs:
@@ -19,6 +9,16 @@ GIT
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
+
+GIT
+  remote: git://github.com/placeling/oauth-plugin.git
+  revision: d967f1dced19f5854664d7e15413a4f828768fc5
+  specs:
+    oauth-plugin (0.4.0.rc2)
+      multi_json
+      oauth (~> 0.4.4)
+      oauth2
+      rack
 
 GIT
   remote: git://github.com/twitter/twitter-text-rb.git

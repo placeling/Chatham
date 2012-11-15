@@ -39,7 +39,7 @@ gem "geoip"
 gem "execjs"
 
 #gem "oauth-plugin", :path => "../oauth-plugin"
-gem "oauth-plugin", :git => "git://github.com/imackinn/oauth-plugin.git"
+gem "oauth-plugin", :git => "git://github.com/placeling/oauth-plugin.git"
 
 gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 
