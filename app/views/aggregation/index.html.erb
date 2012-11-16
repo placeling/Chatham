@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="span5">
-    <% place = @places.first %>
+    <% place = (@places.first.nil? ? Place.new : @places.first) %>
     <div class="place_title"><%= place.name %></div>
     <p><%= place.street_address %> | <%= place.perspectives.count %>
       <% if place.perspectives.count == 1 %>
