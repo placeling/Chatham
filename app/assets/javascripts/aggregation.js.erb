@@ -1,0 +1,33 @@
+$(document).ready(function () {
+    $("#leftbutton").mousedown(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/BackButton_Active.png") %>');
+            }
+    ).mouseup(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/BackButton_Static.png") %>');
+            }
+    );
+
+    $("#rightbutton").mousedown(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/ForwardButton_Active.png") %>');
+            }
+    ).mouseup(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/ForwardButton_Static.png") %>');
+            }
+    );
+
+    $("#pausebutton").mousedown(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/PauseButton_Active.png") %>');
+            }
+    ).mouseup(
+            function () {
+                $(this).attr("src", '<%= asset_path("explore/PauseButton_Static.png") %>');
+            }
+    );
+
+
+});
