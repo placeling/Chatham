@@ -19,6 +19,7 @@ class GooglePlacesAutocomplete
     options = {
         :location => location,
         :sensor => sensor,
+        :radius => 1000,
         :input => input
     }
 
