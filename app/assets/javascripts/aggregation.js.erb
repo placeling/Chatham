@@ -1,4 +1,33 @@
+var i = 0;
+
 $(document).ready(function () {
+
+    $("#divot_" + i).attr("src", '<%= asset_path("explore/SelectedDivot.png") %>');
+
+    $("#rightbutton").click(function () {
+        $("#divot_" + i).attr("src", '<%= asset_path("explore/UnselectedDivot.png") %>');
+        $("#place_" + i).hide();
+        i = i + 1;
+        if (i >= $(".slide_dot").size()) {
+            i = 0;
+        }
+
+        $("#divot_" + i).attr("src", '<%= asset_path("explore/SelectedDivot.png") %>');
+        $("#place_" + i).show();
+    });
+
+    $("#leftbutton").click(function () {
+        $("#divot_" + i).attr("src", '<%= asset_path("explore/UnselectedDivot.png") %>');
+        $("#place_" + i).hide();
+        i = i - 1;
+        if (i < 0) {
+            i = $(".slide_dot").size() - 1;
+        }
+
+        $("#divot_" + i).attr("src", '<%= asset_path("explore/SelectedDivot.png") %>');
+        $("#place_" + i).show();
+    });
+
     $("#leftbutton").mousedown(
             function () {
                 $(this).attr("src", '<%= asset_path("explore/BackButton_Active.png") %>');

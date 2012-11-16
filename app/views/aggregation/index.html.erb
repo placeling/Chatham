@@ -26,36 +26,36 @@
         <%= image_tag('explore/PauseButton_Static.png', :id => 'pausebutton') %>
         <%= image_tag('explore/ForwardButton_Static.png', :id => 'rightbutton') %>
         <% @places.each_with_index do |place, i| %>
-            <% if i ==0 %>
-                <%= image_tag("explore/SelectedDivot.png", :class => "slide_dot") %>
-            <% else %>
-                <%= image_tag("explore/UnselectedDivot.png", :class => "slide_dot") %>
-            <% end %>
+            <%= image_tag("explore/UnselectedDivot.png", :class => "slide_dot", :id => "divot_#{i}") %>
         <% end %>
       </div>
     </div>
   </div>
   <div class="span5">
-    <% place = (@places.first.nil? ? Place.new : @places.first) %>
-    <div class="place_title"><%= place.name %></div>
-    <p><%= place.street_address %> | <%= place.perspectives.count %>
-      <% if place.perspectives.count == 1 %>
-          <%= t('place.placemark') %>
-      <% else %>
-          <%= t('place.placemarks') %>
-      <% end %>
-    </p>
 
-    <div class="aggregation_perspective" style="overflow-y: scroll;">
+    <% @places.each_with_index do |place, i| %>
+        <div id="place_<%= i %>" style="<%= i==0 ? "" : "display:none" %>">
+          <div class="place_title"><%= place.name %></div>
+          <p><%= place.street_address %> | <%= place.perspectives.count %>
+            <% if place.perspectives.count == 1 %>
+                <%= t('place.placemark') %>
+            <% else %>
+                <%= t('place.placemarks') %>
+            <% end %>
+          </p>
 
-      <% if p = place.perspectives.first %>
-          <%= render :partial => "perp", :locals => {:perspective => p} %>
-      <% end %>
-      <% if p = place.perspectives.second %>
-          <%= render :partial => "perp", :locals => {:perspective => p} %>
-      <% end %>
+          <div class="aggregation_perspective" style="overflow-y: scroll;">
 
-    </div>
+            <% if p = place.perspectives.first %>
+                <%= render :partial => "perp", :locals => {:perspective => p} %>
+            <% end %>
+            <% if p = place.perspectives.second %>
+                <%= render :partial => "perp", :locals => {:perspective => p} %>
+            <% end %>
+
+          </div>
+        </div>
+    <% end %>
   </div>
 </div>
 
