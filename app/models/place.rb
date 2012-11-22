@@ -428,6 +428,7 @@ class Place
         :thumb_url => self.thumb_url,
         :highlight_url => self.highlight_url,
         :map_url => self.map_url,
+        :phone_number => self.phone_number,
         :venue_types => self.venue_types,
         :slug => self.slug,
         :html_attributions => self.html_attributions

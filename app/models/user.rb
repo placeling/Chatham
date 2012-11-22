@@ -758,6 +758,9 @@ class User
                   :following_count => following.count,
                   :fullname => self['fullname']
     }
+    if self.publisher
+      attributes = attributes.merge(:publisher_id => self.publisher.id)
+    end
 
     attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?
 

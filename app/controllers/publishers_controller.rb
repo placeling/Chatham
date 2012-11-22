@@ -1,7 +1,7 @@
 class PublishersController < ApplicationController
   # GET /publishers
   # GET /publishers.json
-  before_filter :admin_required
+  before_filter :admin_required, :except => [:show]
 
   def index
     @publishers = Publisher.all
