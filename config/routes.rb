@@ -54,7 +54,13 @@ Chatham::Application.routes.draw do
   match '/app', :to => "admin#app"
   post '/users/resend', :to => 'users#resend', :as => :resend_password
 
-  resources :publishers
+  resources :publishers do
+    resources :publisher_categories, :only => [] do
+      member do
+        get :perspectives
+      end
+    end
+  end
 
   resources :users, :except => [:index] do
     resources :perspectives, :only => [:index]
@@ -197,6 +203,10 @@ Chatham::Application.routes.draw do
     match '/auth/:provider/add' => 'authentications#add'
     match '/auth/:provider/login' => 'authentications#login'
     match '/auth/:provider/friends' => 'authentications#friends'
+
+    resources :publishers do
+      resources :publisher_categories, :only => [:nearby]
+    end
 
     resources :ios do
       collection do
