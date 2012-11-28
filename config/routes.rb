@@ -1,5 +1,4 @@
 require 'resque/server'
-require 'gridto/white_app'
 require 'subdomain'
 
 Chatham::Application.routes.draw do
@@ -299,11 +298,6 @@ Chatham::Application.routes.draw do
   end
 
   mount Resque::Server, :at => "/resque"
-  match "/whitelabel", :to => redirect("http://gridto.placeling.com")
-
-  constraints(Subdomain) do
-    mount WhiteApp, :at => "/"
-  end
 
   match "/me" => "users#me", :as => :my_profile
   match "/:id" => "users#show", :as => :profile
