@@ -27,4 +27,3 @@ file = File.open(Rails.root.join("config/trivia.json"), 'r')
 content = file.read()
 TRIVIA = JSON(content)
 
-require 'gridto/white_app'
