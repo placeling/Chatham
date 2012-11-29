@@ -65,7 +65,7 @@ gem 'fastercsv'
 
 gem "redis", "~> 2.2"
 gem "redis-namespace"
-#gem 'redis-store'
+gem 'redis-rails'
 
 gem "mixpanel"
 gem 'vanity'

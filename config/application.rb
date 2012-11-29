@@ -15,6 +15,8 @@ require 'rack/rewrite'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+REDIS_CONFIG = YAML.load_file(File.expand_path('../redis.yml', __FILE__))[Rails.env]
+
 module Chatham
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -60,6 +62,8 @@ module Chatham
 
     config.middleware.use OAuth::Rack::OAuthFilter
     config.middleware.insert_before ActionDispatch::Session::CookieStore, Rack::P3p
+
+    config.cache_store = :redis_store, REDIS_CONFIG['redis']
 
     config.generators do |g|
       g.orm :mongoid

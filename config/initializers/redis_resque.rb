@@ -2,7 +2,7 @@ require 'resque/failure/multiple'
 require 'resque/failure/airbrake'
 require 'resque/failure/redis'
 
-REDIS_CONFIG = YAML.load(File.open(Rails.root.join("config/redis.yml")))
+# REDIS_CONFIG = YAML.load(File.open(Rails.root.join("config/redis.yml"))) opened in application.rb
 
 redis_base = Redis.new(REDIS_CONFIG[::Rails.env].symbolize_keys!)
 
