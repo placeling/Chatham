@@ -81,7 +81,7 @@ namespace :ubuntu do
     run 'sudo apt-get update'
     run 'sudo apt-get install git-core ruby  ruby-dev rubygems libxslt-dev libxml2-dev libcurl4-openssl-dev imagemagick nodejs'
     run 'sudo apt-get install zlib1g-dev libssl-dev libyaml-dev libsqlite3-0  libsqlite3-dev sqlite3 libxml2-dev libxslt-dev  autoconf libc6-dev ncurses-dev'
-    run 'sudo apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl libtool libpcre3 libpcre3-dev'
+    run 'sudo apt-get install upstart build-essential bison openssl libreadline6 libreadline6-dev curl libtool libpcre3 libpcre3-dev'
   end
 
   task :service_gems, :roles => :app do
