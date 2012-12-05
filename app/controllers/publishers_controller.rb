@@ -7,7 +7,7 @@ class PublishersController < ApplicationController
     @publishers = Publisher.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render :index, :layout => 'bootstrap' }
       format.json { render json: @publishers }
     end
   end
