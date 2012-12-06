@@ -8,9 +8,9 @@
   <div id="box1" class="box box-100 span12"><!-- box full-width -->
     <div class="boxin">
       <div class="header">
-        <h3>Listing publishers</h3>
+        <h3>Publisher Apps</h3>
       </div>
-      <div id="box1-tabular" class="content"><!-- content box 1 for tab switching -->
+      <div id="box1-tabular" class="brownContent"><!-- content box 1 for tab switching -->
         <form class="plain" action="" method="post" enctype="multipart/form-data">
           <fieldset>
             <table cellspacing="0">
@@ -34,14 +34,11 @@
 
               <% @publishers.each_with_index do |publisher, i| %>
                   <tr <%= 'class="first"' if i==0 %> <%= 'class="even"' if i%2==0 %>>
-                    <td><%= link_to publisher.user.username, publisher %></td>
+                    <td style="text-align: center;"><%= link_to publisher.user.username, publisher %></td>
                     <td><%= link_to publisher.domain, publisher.domain %></td>
                     <td><%= publisher.publisher_categories.collect { |pub| pub.name }.join(",") %></td>
-                    <td class="tc last"><!-- action icons - feel free to add/modify your own - icons are located in "css/img/led-ico/*" -->
-                      <ul class="actions">
-                        <li><%= link_to image_tag('publishers/led-ico/magnifier.png'), publisher, :class => "ico" %>
-                        <li><%= link_to image_tag('publishers/led-ico/pencil.png'), edit_publisher_path(publisher), :class => "ico" %>
-                      </ul>
+                    <td class="tc last" style="text-align: center;"><!-- action icons - feel free to add/modify your own - icons are located in "css/img/led-ico/*" -->
+                      <%= link_to image_tag('publishers/led-ico/pencil.png'), edit_publisher_path(publisher), :class => "ico" %>
                     </td>
                   </tr>
               <% end %>

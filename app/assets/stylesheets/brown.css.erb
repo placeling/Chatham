@@ -34,9 +34,11 @@
     }
 
     blockquote:before, blockquote:after,
-    q:before, q:after {
-        content: "";
-    }
+    q:before, q:after .brownContent:
+
+    ""
+    ;
+        }
 
     blockquote, q {
         quotes: "" "";
@@ -66,14 +68,14 @@
     }
 
     a.alt,
-    .altbox .content a {
+    .altbox .brownContent a {
         border-color: #f3dece;
         color: #6a2f00;
     }
 
     a:hover, a:active, a:focus,
     a.alt:hover, a.alt:active, a.alt:focus,
-    .altbox .content a:hover, .altbox .content a:active, .altbox .content a:focus {
+    .altbox .brownContent a:hover, .altbox .brownContent a:active, .altbox .brownContent a:focus {
         border-color: #ebcbb2;
         color: #b1682e;
     }
@@ -115,13 +117,24 @@
     }
 
         /* safe cleaning, use eg. for parent of floated element */
-    .clearfix:after {
-        content: ".";
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
-    }
+    .clearfix:after .brownContent:
+
+    "."
+    ;
+    display: block
+
+    ;
+    height:
+
+    0
+    ;
+    clear: both
+
+    ;
+    visibility: hidden
+
+    ;
+        }
 
         /* image replacement (see <h1 id="logo"> section in index.html for example) */
     .ir {
@@ -474,7 +487,7 @@
         color: #555;
     }
 
-        /* content wrapper */
+        /*.brownContent wrapper */
     #container {
         background: url(<%= asset_path 'publishers/container.gif' %>) repeat-x;
     }
@@ -508,7 +521,7 @@
         border: none;
     }
 
-        /* content styling
+        /*.brownContent styling
         --------------------------------------*/
 
         /* stylish buttons with rounded corners */
@@ -579,7 +592,7 @@
         color: #fff;
     }
 
-        /* icons for content links etc. */
+        /* icons for.brownContent links etc. */
     .ico {
         border: 0 !important;
     }
@@ -785,7 +798,7 @@
         margin-right: 5px;
     }
 
-        /* content boxes */
+        /*.brownContent boxes */
     .box {
         float: left;
         width: 960px;
@@ -816,7 +829,7 @@
     }
 
         /* class for alternative (emphasized) boxes (blue headings and colors) */
-        /* wrap of box's content */
+        /* wrap of box's.brownContent */
     .boxin {
         box-shadow: #aaa 0 0 10px;
         -webkit-box-shadow: #aaa 0 0 10px;
@@ -909,162 +922,162 @@
         color: #6a2f00;
     }
 
-        /* boxes' content types – tabular */
-    .box .content {
+        /* boxes'.brownContent types – tabular */
+    .box .brownContent {
         margin-bottom: 5px;
     }
 
-    .box .content table {
+    .box .brownContent table {
         width: 100%;
     }
 
-    .box .content table th,
-    .box .content table td {
+    .box .brownContent table th,
+    .box .brownContent table td {
         padding: 10px 10px 8px 10px;
     }
 
-    .box .content table th {
+    .box .brownContent table th {
         text-align: left;
         font-weight: normal;
     }
 
-    .box .content table tr.even th,
-    .box .content table tr.even td {
+    .box .brownContent table tr.even th,
+    .box .brownContent table tr.even td {
         background: #f5f5f5;
     }
 
-    .altbox .content table tr.even th,
-    .altbox .content table tr.even td {
+    .altbox .brownContent table tr.even th,
+    .altbox .brownContent table tr.even td {
         background: #f8f2eb;
     }
 
-    .box .content table th.first,
-    .box .content table td.first {
+    .box .brownContent table th.first,
+    .box .brownContent table td.first {
         padding-left: 20px;
     }
 
-    .box .content table thead th,
-    .box .content table thead td {
+    .box .brownContent table thead th,
+    .box .brownContent table thead td {
         border-left: 1px solid #f2f2f2;
         border-right: 1px solid #d5d5d5;
         background: #ddd url(<%= asset_path 'publishers/thead.gif' %>) repeat-x;
         text-shadow: #fff 0 1px 0;
     }
 
-    .box .content table tbody tr.first th,
-    .box .content table tbody tr.first td {
+    .box .brownContent table tbody tr.first th,
+    .box .brownContent table tbody tr.first td {
         border-top: 1px solid #bbb;
     }
 
-    .altbox .content table tbody {
+    .altbox .brownContent table tbody {
         color: #572f00;
     }
 
-    .box .content table a.ico-comms {
+    .box .brownContent table a.ico-comms {
         border: 0;
         background: url(<%= asset_path 'publishers/brown/ico-tablecomms.gif' %>) 50% 60% no-repeat;
         padding: 10px;
         color: #fff !important;
     }
 
-    .box .content table tfoot th,
-    .box .content table tfoot td {
+    .box .brownContent table tfoot th,
+    .box .brownContent table tfoot td {
         border-top: 1px solid #ccc;
         background: #fff url(<%= asset_path 'publishers/tfoot.gif' %>) repeat-x;
     }
 
-        /* boxes' content types – simple list */
-    .box .content ul.simple li {
+        /* boxes'.brownContent types – simple list */
+    .box .brownContent ul.simple li {
         clear: both;
         padding: 10px 20px 8px 20px;
         overflow: hidden;
     }
 
-    .box .content table tr.even th,
-    .box .content ul.simple li.even {
+    .box .brownContent table tr.even th,
+    .box .brownContent ul.simple li.even {
         background: #f5f5f5;
     }
 
-    .altbox .content table tr.even th,
-    .altbox .content ul.simple li.even {
+    .altbox .brownContent table tr.even th,
+    .altbox .brownContent ul.simple li.even {
         background: #f8f2eb;
     }
 
-    .box .content ul.simple strong {
+    .box .brownContent ul.simple strong {
         float: left;
         font-weight: normal;
     }
 
-    .box .content ul.simple span {
+    .box .brownContent ul.simple span {
         float: right;
     }
 
-        /* boxes' content types – grid */
-    .box .content .grid {
+        /* boxes'.brownContent types – grid */
+    .box .brownContent .grid {
     }
 
-    .box .content .grid .line {
+    .box .brownContent .grid .line {
         border-bottom: 1px solid #ddd;
         width: 100%;
         overflow: hidden;
     }
 
-    .altbox .content .grid .line {
+    .altbox .brownContent .grid .line {
         border-bottom-color: #ebd6bd;
     }
 
-    .box .content .grid .even {
+    .box .brownContent .grid .even {
         background: #f5f5f5;
     }
 
-    .altbox .content .grid .even {
+    .altbox .brownContent .grid .even {
         background: #f8f2eb;
     }
 
-    .box .content .grid .item {
+    .box .brownContent .grid .item {
         float: left;
         width: 50%;
     }
 
-    .box .content .grid .item .inner {
+    .box .brownContent .grid .item .inner {
         padding: 17px 15px 12px 20px;
     }
 
-    .box .content .grid .firstline {
+    .box .brownContent .grid .firstline {
         border-top: 0 !important;
     }
 
-    .box .content .grid .lastline {
+    .box .brownContent .grid .lastline {
         border-bottom: 0 !important;
     }
 
-    .box .content .grid .item a.thumb {
+    .box .brownContent .grid .item a.thumb {
         border: 0;
         float: left;
     }
 
-    .box .content .grid .item .data {
+    .box .brownContent .grid .item .data {
         margin-left: 165px;
     }
 
-    .box .content .grid .item h4 {
+    .box .brownContent .grid .item h4 {
         margin: 0 0 10px 0;
         font-size: 110%;
         font-weight: bold;
     }
 
-    .box .content .grid .item h4 span {
+    .box .brownContent .grid .item h4 span {
         margin-right: 5px;
         font-weight: normal;
         font-size: 90%;
     }
 
-    .box .content .grid .item p {
+    .box .brownContent .grid .item p {
         margin: 0 0 5px 0;
         color: #666;
     }
 
-    .box .content .grid ul.actions {
+    .box .brownContent .grid ul.actions {
         margin-top: 8px;
     }
 
