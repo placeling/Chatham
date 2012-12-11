@@ -54,7 +54,7 @@ Chatham::Application.routes.draw do
   post '/users/resend', :to => 'users#resend', :as => :resend_password
 
   resources :publishers do
-    resources :publisher_categories, :only => [] do
+    resources :publisher_categories do
       member do
         get :perspectives
       end
@@ -204,7 +204,7 @@ Chatham::Application.routes.draw do
     match '/auth/:provider/friends' => 'authentications#friends'
 
     resources :publishers do
-      resources :publisher_categories, :only => [:nearby]
+      resources :publisher_category, :only => [:nearby]
     end
 
     resources :ios do

@@ -1,0 +1,46 @@
+<%= form_for [@publisher_category.publisher, @publisher_category], :html => {:multipart => true} do |f| %>
+    <% if @publisher_category.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@publisher_category.errors.count, "error") %> prohibited this publisher_category from being
+            saved:</h2>
+
+          <ul>
+            <% @publisher_category.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <dl>
+      <dt><%= f.label :name %></dt>
+      <dd>
+        <%= f.text_field :name, :class => "txt" %>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt><%= f.label :tags %></dt>
+      <dd>
+        <%= f.text_field :tags, :class => "txt" %>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt><%= f.label :image %></dt>
+      <dd>
+        <%= f.file_field :image %>
+      </dd>
+
+      <%= image_tag(@publisher_category.image_url) if @publisher_category.image? %>
+      <p>
+        <label>
+          <%= f.check_box :remove_image %>
+          Remove Image
+        </label>
+      </p>
+    </dl>
+
+    <%= f.submit :class => "button" %>
+
+<% end %>

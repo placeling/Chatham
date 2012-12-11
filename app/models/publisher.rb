@@ -6,7 +6,7 @@ class Publisher
   field :liquid, :type => String
   field :domain, :type => String, :default => ""
 
-  accepts_nested_attributes_for :publisher_categories, allow_destroy: true
+  accepts_nested_attributes_for :publisher_category, allow_destroy: true
   embeds_many :publisher_categories
 
   belongs_to :user

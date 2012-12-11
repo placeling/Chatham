@@ -1,12 +1,15 @@
-<fieldset>
-  <%= f.label :name, "Name" %>
-  <%= f.text_field :name %>
-  <%= f.label :tags, "Tags" %>
-  <%= f.text_field :tags %>
-  <br/>
-  <%= f.label :filename, "Image Name" %>
-  <%= f.text_field :filename %>
-  <br/>
-  <%= f.check_box :_destroy %>
-  <%= f.label :_destroy, "Remove Category" %>
-</fieldset>
+<div class="item">
+  <div class="inner">
+    <%= link_to image_tag(publisher_category.image_url(:thumb), :size => "150x100"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :class => "thumb" %></a>
+    <div class="data">
+      <h4><%= publisher_category.name %></h4>
+
+      <p><%= publisher_category.tags.split(",").collect { |tag| raw "##{tag}" }.join(",") %></p>
+      <ul class="actions">
+        <li><%= link_to image_tag("publishers/led-ico/pencil.png"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :class => "ico" %></a></li>
+        <li><%= link_to image_tag("publishers/led-ico/delete.png"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :method => "delete", :confirm => "Fo shizzle?", :class => "ico" %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+

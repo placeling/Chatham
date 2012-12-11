@@ -18,7 +18,7 @@ class PublishersController < ApplicationController
     @publisher = Publisher.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :edit, :layout => 'bootstrap' }
       format.json { render json: @publisher }
     end
   end
@@ -37,6 +37,12 @@ class PublishersController < ApplicationController
   # GET /publishers/1/edit
   def edit
     @publisher = Publisher.find(params[:id])
+
+    respond_to do |format|
+      format.html { render :edit, :layout => 'bootstrap' }
+      format.json { render json: @publisher }
+    end
+
   end
 
   # POST /publishers
@@ -46,7 +52,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.save
-        format.html { redirect_to @publisher, notice: 'Publisher was successfully created.' }
+        format.html { redirect_to :edit, :layout => 'bootstrap', notice: 'Publisher was successfully created.' }
         format.json { render json: @publisher, status: :created, location: @publisher }
       else
         format.html { render action: "new" }
@@ -62,10 +68,10 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
-        format.html { redirect_to @publisher, notice: 'Publisher was successfully updated.' }
+        format.html { redirect_to :edit, :layout => 'bootstrap', notice: 'Publisher was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render :edit, :layout => 'bootstrap' }
         format.json { render json: @publisher.errors, status: :unprocessable_entity }
       end
     end

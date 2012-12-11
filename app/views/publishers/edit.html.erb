@@ -1,6 +1,76 @@
 <h1>Editing publisher</h1>
 
-<%= render 'form' %>
+<% content_for :javascript_includes do %>
+    <%= stylesheet_link_tag 'brown' %>
+<% end %>
 
-<%= link_to 'Show', @publisher %> |
-<%= link_to 'Back', publishers_path %>
+
+<div class="row-fluid" style="margin: 75px 0 15px 0;">
+  <div class="box box-100">
+    <div class="boxin">
+      <div class="header">
+        <h3>Basics</h3>
+      </div>
+      <%= form_for(@publisher, :class => "basic") do |f| %>
+          <div class="inner-form">
+            <!-- error and information messages -->
+            <% if @publisher.errors.any? %>
+                <% @publisher.errors.full_messages.each do |msg| %>
+                    <div class="msg msg-error"><p><%= msg %></p></div>
+                <% end %>
+            <% end %>
+
+            <dl>
+              <dt><%= f.label :domain %></dt>
+              <dd>
+                <%= f.text_field :domain, :class => "txt" %>
+                <small>Domain that your app will be at ie. http://local.bigpublisher.com</small>
+              </dd>
+            </dl>
+
+
+            <dl>
+              <dd>
+                <%= f.submit :class => "button" %>
+              </dd>
+            </dl>
+          </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row-fluid" style="margin: 15px 0 15px 0;">
+  <div class="box box-100">
+    <div class="boxin">
+      <div class="header">
+        <h3>Modules</h3>
+        <a class="button" href="#" style="color:white;">Add&nbsp;»</a>
+      </div>
+
+      <%= form_for(@publisher, :class => "basic") do |f| %>
+          <div class="inner-form">
+            <div id="box1-grid" class="brownContent" style="display: block;"><!-- content box 2 for tabs switching (hidden by default) -->
+              <form class="plain" action="" method="post" enctype="multipart/form-data">
+                <fieldset>
+                  <div class="grid"><!-- grid view -->
+                    <div class="line even firstline">
+
+                      <% @publisher.publisher_categories.each do |pub_cat| %>
+                          <%= render :partial => 'publisher_category_fields', :locals => {publisher_category: pub_cat} %>
+                      <% end %>
+
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+
+      <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

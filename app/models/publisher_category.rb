@@ -3,8 +3,11 @@ class PublisherCategory
   include Mongoid::Slug
 
   field :name, :type => String
+
+  field :module_type, :type => Integer, :default => 0
   field :tags, :type => String
-  field :filename, :type => String
+
+  mount_uploader :image, CategoryUploader
 
   embedded_in :publisher
 
