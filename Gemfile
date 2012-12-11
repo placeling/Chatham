@@ -87,6 +87,11 @@ group :test, :development do
   gem "parallel_tests"
 end
 
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
 gem "twitter-bootstrap-rails"
 
 group :assets do
