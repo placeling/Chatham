@@ -27,7 +27,7 @@ class InitializePublishers < Mongoid::Migration
 
     publisher.publisher_categories.create(name: "Best of Vancouver, 2012", tags: "bestofvan2011", filename: "best_of_vancouver_2.jpg")
     publisher.publisher_categories.create(name: "Golden Plates 2012", tags: "goldenplates2012", filename: "golden_plates.jpg")
-    publisher.publisher_categories.create(name: "Molson Patio Finder", tags: "patio", filename: "patio_guide.jpg")
+    publisher.publisher_categories.create(name: "Molson Patio Finder", tags: "patio", filename: "category_default.jpg")
     publisher.publisher_categories.create(name: "Urban Living", tags: "urbanliving", filename: "urban_living.jpg")
 
     publisher.save
