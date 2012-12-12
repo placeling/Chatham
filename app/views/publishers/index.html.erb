@@ -8,7 +8,7 @@
   <div id="box1" class="box box-100 span12"><!-- box full-width -->
     <div class="boxin">
       <div class="header">
-        <h3>Publisher Apps</h3>
+        <h3><%= t 'publisher.index_title' %></h3>
       </div>
       <div id="box1-tabular" class="brownContent"><!-- content box 1 for tab switching -->
         <form class="plain" action="" method="post" enctype="multipart/form-data">
@@ -17,16 +17,16 @@
               <thead><!-- universal table heading -->
 
               <tr>
-                <td class="tc first">User</td>
-                <td>Domain</td>
-                <th>Categories</th>
-                <td class="tc last">Actions</td>
+                <td class="tc first"><%= t 'publisher.user' %></td>
+                <td><%= t 'publisher.domain' %></td>
+                <th><%= t 'publisher.categories' %></th>
+                <td class="tc last"><%= t 'publisher.actions' %></td>
               </tr>
               </thead>
               <tfoot><!-- table foot - what to do with selected items -->
               <tr>
                 <td colspan="6" class="first last"><!-- do not forget to set appropriate colspan if you will edit this table -->
-                  <%= link_to('New Publisher', new_publisher_path) if current_user.admin? %>
+                  <%= link_to(t('publisher.new_publisher'), new_publisher_path) if current_user.admin? %>
                 </td>
               </tr>
               </tfoot>

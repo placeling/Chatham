@@ -44,11 +44,11 @@ class PublisherCategoriesController < ApplicationController
   # GET /publishers/new
   # GET /publishers/new.json
   def new
-    @publisher = Publisher.find(param[:publisher_id])
+    @publisher = Publisher.find(params[:publisher_id])
     @publisher_category = @publisher.publisher_categories.build
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :new, :layout => 'bootstrap' }
       format.json { render json: @publisher_category }
     end
   end

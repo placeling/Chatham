@@ -1,5 +1,3 @@
-<h1>Editing publisher</h1>
-
 <% content_for :javascript_includes do %>
     <%= stylesheet_link_tag 'brown' %>
 <% end %>
@@ -9,7 +7,7 @@
   <div class="box box-100">
     <div class="boxin">
       <div class="header">
-        <h3>Basics</h3>
+        <h3><%= t 'publisher.basics' %></h3>
       </div>
       <%= form_for(@publisher, :class => "basic") do |f| %>
           <div class="inner-form">
@@ -24,7 +22,7 @@
               <dt><%= f.label :domain %></dt>
               <dd>
                 <%= f.text_field :domain, :class => "txt" %>
-                <small>Domain that your app will be at ie. http://local.bigpublisher.com</small>
+                <small><%= t 'publisher.domain_notes' %></small>
               </dd>
             </dl>
 
@@ -46,8 +44,9 @@
   <div class="box box-100">
     <div class="boxin">
       <div class="header">
-        <h3>Modules</h3>
-        <a class="button" href="#" style="color:white;">Add&nbsp;»</a>
+        <h3><%= t 'publisher.modules' %></h3>
+
+        <%= link_to(t('publisher.new_module'), new_publisher_publisher_category_path(@publisher), :style => "color:white;", :class => "button") %>
       </div>
 
       <%= form_for(@publisher, :class => "basic") do |f| %>
