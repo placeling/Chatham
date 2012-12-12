@@ -20,5 +20,5 @@ production:
   db: 0
   host: ip-10-91-3-30.ec2.internal
   port: 6379
-  namespace: chatham
-  redis: redis://localhost:6379/0/chatham
+  namespace: placeling_production
+  redis: redis://localhost:6379/0/placeling_production
