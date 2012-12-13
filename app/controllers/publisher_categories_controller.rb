@@ -67,12 +67,12 @@ class PublisherCategoriesController < ApplicationController
   # POST /publishers
   # POST /publishers.json
   def create
-    @publisher = Publisher.new(params[:publisher_id])
-    @publisher_category = @publisher.category_for(params['id'])
+    @publisher = Publisher.find(params[:publisher_id])
+    @publisher_category = @publisher.publisher_categories.build(params[:publisher_category])
 
     respond_to do |format|
       if @publisher_category.save
-        format.html { redirect_to :edit, :layout => 'bootstrap', notice: 'Publisher was successfully created.' }
+        format.html { redirect_to edit_publisher_path(@publisher), :layout => 'bootstrap', notice: 'Publisher was successfully created.' }
         format.json { render json: @publisher_category, status: :created, location: @publisher_category }
       else
         format.html { render action: "new" }

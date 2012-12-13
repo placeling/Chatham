@@ -8,6 +8,7 @@ gem 'rails', '3.2.2'
 
 
 gem "jquery-rails", "~> 2.1.3"
+gem "quiet_assets", ">= 1.0.1", :group => :development
 
 gem "mongoid", "~> 2.4.8"
 gem "mongoid_rails_migrations", "~> 0.0.13"
@@ -79,10 +80,6 @@ gem 'mongoid_slug'
 
 group :test, :development do
   gem "parallel_tests"
-end
-
-group :development do
-  gem "better_errors"
 end
 
 gem "twitter-bootstrap-rails"

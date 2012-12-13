@@ -1,6 +1,6 @@
 <div class="item">
   <div class="inner">
-    <%= link_to image_tag(publisher_category.image_url(:thumb), :size => "150x100"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :class => "thumb" %></a>
+    <%= link_to image_tag(publisher_category.thumb_url, :size => "150x100"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :class => "thumb" %></a>
     <div class="data">
       <h4><%= publisher_category.name %></h4>
 
