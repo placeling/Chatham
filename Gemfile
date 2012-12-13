@@ -70,12 +70,6 @@ gem 'redis-rails'
 gem "mixpanel"
 gem 'vanity'
 
-gem "sinatra"
-gem "sinatra-reloader"
-gem "sinatra-contrib"
-gem 'rack-ssl-enforcer'
-gem "sinatra-subdomain", "~> 0.1.2"
-
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 gem 'resque_mailer'
