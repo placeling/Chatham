@@ -6,9 +6,9 @@ class PictureUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   if Rails.env.test?
-      storage :file
+    storage :file
   else
-      storage :fog
+    storage :fog
   end
 
   # Override the directory where uploaded files will be stored.
@@ -17,19 +17,23 @@ class PictureUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{model.id}"
   end
 
+  def default_url
+    "#{ApplicationHelper.get_hostname}/images/default_profile.png"
+  end
+
   # Create different versions of your uploaded files:
   version :mosaic_3_3 do
     process :resize_to_fill => [432, 282]
   end
-  
+
   version :mosaic_3_2 do
     process :resize_to_fill => [282, 132]
   end
-  
+
   version :mosaic_3_1 do
     process :resize_to_fill => [132, 132]
   end
-  
+
   version :main do
     process :resize_to_fit => [960, 960]
   end
@@ -41,7 +45,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   version :thumb, :from_version => :iphone do
     process :resize_to_fit => [160, 160]
   end
-  
+
   # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
   def extension_white_list
     %w(jpg jpeg gif png bmp)

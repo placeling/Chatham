@@ -116,7 +116,6 @@ class User
   index :du
   index :ck
 
-  before_save :cache_urls
   before_save :get_city
   before_destroy :clear_user
 
@@ -251,41 +250,41 @@ class User
     return location
   end
 
+
+  def avatar=(obj)
+    super(obj)
+    # Put your callbacks here, e.g.
+    self.creation_environment = nil
+    self.main_cache_url = nil
+    self.thumb_cache_url = nil
+  end
+
   def cache_urls
-    if !self.creation_environment || Rails.env != self.creation_environment
-      self.creation_environment = Rails.env
-      self.thumb_cache_url = self.avatar_url(:thumb)
-      self.main_cache_url = self.avatar_url(:main)
-    end
+    self.creation_environment = Rails.env
+    self.thumb_cache_url = self.avatar_url(:thumb)
+    self.main_cache_url = self.avatar_url(:main)
+    self.save
   end
 
   def thumb_url
-    url = nil
     if Rails.env == self.creation_environment
-      url = self.avatar_url(:thumb)
+      self.avatar_url(:thumb)
     elsif thumb_cache_url
-      url = thumb_cache_url
-    end
-
-    if url
-      return url
+      thumb_cache_url
     else
-      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
+      self.cache_urls
+      self.avatar_url(:thumb)
     end
   end
 
   def main_url
-    url = nil
     if Rails.env == self.creation_environment
-      url = self.avatar_url(:main)
+      self.avatar_url(:main)
     elsif main_cache_url
-      url = main_cache_url
-    end
-
-    if url
-      return url
+      main_cache_url
     else
-      return "#{ApplicationHelper.get_hostname}/images/default_profile.png"
+      self.cache_urls
+      self.avatar_url(:main)
     end
   end
 

@@ -16,33 +16,37 @@ class AvatarUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{model.id}"
   end
 
-  # Create different versions of your uploaded files:
-   version :thumb do
-     process :manualcrop
-     process :resize_to_fill => [160, 160]
-   end
+  def default_url
+    "#{ApplicationHelper.get_hostname}/images/default_profile.png"
+  end
 
-   version :main do
-     process :manualcrop
-     process :resize_to_fill => [960, 960]
-   end
-   
-   process :resize_to_fit => [960, 960]
-   
-   def manualcrop
-     return unless model.cropping?
-     manipulate! do |img|
-       # This bizarre code is courtesy of Minimagick: https://github.com/jnicklas/carrierwave/issues/436
-       img.crop("#{model.w}x#{model.h}+#{model.x}+#{model.y}")
-       img = yield(img) if block_given?
-       img
-     end
-   end
-   
-   # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
-   def extension_white_list
-     %w(jpg jpeg gif png bmp)
-   end
+  # Create different versions of your uploaded files:
+  version :thumb do
+    process :manualcrop
+    process :resize_to_fill => [160, 160]
+  end
+
+  version :main do
+    process :manualcrop
+    process :resize_to_fill => [960, 960]
+  end
+
+  process :resize_to_fit => [960, 960]
+
+  def manualcrop
+    return unless model.cropping?
+    manipulate! do |img|
+      # This bizarre code is courtesy of Minimagick: https://github.com/jnicklas/carrierwave/issues/436
+      img.crop("#{model.w}x#{model.h}+#{model.x}+#{model.y}")
+      img = yield(img) if block_given?
+      img
+    end
+  end
+
+  # If don't include get strange things e.g., txt files can be uploaded and resize to > 1 GB. Kills server performance
+  def extension_white_list
+    %w(jpg jpeg gif png bmp)
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

@@ -19,6 +19,7 @@ describe Perspective do
     perspective.pictures.count.should be(1)
     pic = perspective.pictures.first
     pic.image.thumb.should be_no_larger_than(160, 160)
+    pic.main_url
     pic.creation_environment.should == Rails.env
   end
 
