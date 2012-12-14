@@ -1,5 +1,5 @@
 class PublisherCategoriesController < ApplicationController
-  before_filter :admin_required, :except => [:show]
+  before_filter :admin_required, :except => [:show, :perspectives]
 
   def perspectives
     #/publishers/:publisher_id/publisher_category/:id
