@@ -23,4 +23,9 @@ class Publisher
   def invalidate_cache
     $redis.publish "invalidations", {'model' => "publisher", "id" => self.id}.to_json
   end
+
+  def as_json(options={})
+    self.attributes.merge(:publisher_categories => self.publisher_categories.as_json(options))
+  end
+
 end

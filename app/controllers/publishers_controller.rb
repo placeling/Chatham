@@ -8,7 +8,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       format.html { render :index, :layout => 'bootstrap' }
-      format.json { render json: @publishers }
+      format.json { render json: {publishers: @publishers} }
     end
   end
 
@@ -19,7 +19,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       format.html { render :edit, :layout => 'bootstrap' }
-      format.json { render json: @publisher }
+      format.json { render json: {publisher: @publisher} }
     end
   end
 
@@ -30,7 +30,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @publisher }
+      format.json { render json: {publisher: @publisher} }
     end
   end
 
@@ -40,7 +40,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       format.html { render :edit, :layout => 'bootstrap' }
-      format.json { render json: @publisher }
+      format.json { render json: {publisher: @publisher} }
     end
 
   end
