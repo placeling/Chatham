@@ -681,6 +681,7 @@ en:
     module: "Module"
     basics: "Basics"
     remove_image: "Remove Image"
+    google_analytics_copy: "Enter your Google Analytics Code (ex. UA-xxxxxxxx-1)"
 
 
 

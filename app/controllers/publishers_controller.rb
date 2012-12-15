@@ -68,7 +68,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
-        format.html { redirect_to :edit, :layout => 'bootstrap', notice: 'Publisher was successfully updated.' }
+        format.html { redirect_to edit_publisher_path(@publisher), :layout => 'bootstrap', notice: 'Publisher was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :edit, :layout => 'bootstrap' }
