@@ -2,9 +2,58 @@
     <%= stylesheet_link_tag 'brown' %>
 <% end %>
 
+<% content_for :javascript do %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#add_user_button").click(function () {
+                $("#add_user_button").hide();
+                $("#add_user_box").show();
+                $("#user_username").focus();
+                return false;
+            });
+
+            $(".remove_user").click(function () {
+                $(this).parent().parent().remove();
+            });
+
+
+            $("#user_username").autocomplete({
+                minLength:2,
+                html:true,
+                select:function (e, ui) {
+                    var startText = '<div class="autocomplete_name">'
+                    var endText = '</div><div class="autocomplete_location">'
+                    var name = ui.item.value.substring(ui.item.value.indexOf(startText) + startText.length, ui.item.value.indexOf(endText));
+                    $("#user_username").val(name);
+                    return false;
+                },
+                source:function (req, add) {
+                    var url = "/search_users?input=" + encodeURIComponent(req["term"]);
+
+                    $.getJSON(url, function (data) {
+                        var results = data.results;
+                        var suggestions = [];
+
+                        $.each(results, function (i, val) {
+                            var text = "";
+                            if (val["pic"]) {
+                                text = '<div class="autocomplete_thumb"><img class="autocomplete_thumb_img" src="' + val["pic"] + '"/></div><div class="autocomplete_thumb_holder"><div class="autocomplete_name">' + val["name"] + '</div><div class="autocomplete_location">' + val["location"] + '</div></div><div class="hidden" id="url">' + val["url"] + '</div>';
+                            } else {
+                                text = '<div class="autocomplete_holder"><div class="autocomplete_name">' + val["name"] + '</div><div class="autocomplete_location">' + val["location"] + '</div></div><div class="hidden" id="url">' + val["url"] + '</div>';
+                            }
+                            suggestions.push(text);
+                        });
+
+                        add(suggestions);
+                    });
+                }
+            });
+        });
+    </script>
+<% end %>
 
 <div class="row-fluid" style="margin: 75px 0 15px 0;">
-  <div class="box box-100">
+  <div class="box box-100 span12">
     <div class="boxin">
       <div class="header">
         <h3><%= t 'publisher.basics' %></h3>
@@ -49,7 +98,7 @@
 
 
 <div class="row-fluid" style="margin: 15px 0 15px 0;">
-  <div class="box box-100">
+  <div class="box span12">
     <div class="boxin">
       <div class="header">
         <h3><%= t 'publisher.modules' %></h3>
@@ -81,3 +130,49 @@
 
   </div>
 </div>
+
+
+<% if current_user.admin? || current_user.id == @publisher.user.id %>
+    <div class="row-fluid" style="margin: 0 0 15px 0;">
+
+      <div id="box1" class="box box-50 span6"><!-- box full-width -->
+        <div class="boxin">
+          <div class="header">
+            <h3><%= t 'publisher.authorized_users' %></h3>
+            <%= link_to t('publisher.add_user'), nil, :class => "button", :id => "add_user_button", :style => "color:white;" %>
+            <span id="add_user_box" style="display: none;">
+              <%= form_for :user, :remote => true, :url => add_member_publisher_path(@publisher), :html => {:style => "display:inline"} do |f| %>
+                  <%= f.text_field :username %>
+                  <%= f.submit :class => "button" %>
+              <% end %>
+            </span>
+          </div>
+          <div id="box1-tabular" class="brownContent"><!-- content box 1 for tab switching -->
+            <form class="plain" action="" method="post" enctype="multipart/form-data">
+              <fieldset>
+                <table id="authorized_users" cellspacing="0">
+                  <thead><!-- universal table heading -->
+
+                  <tr>
+                    <td class="tc first"><%= t 'publisher.user' %></td>
+
+                    <td class="tc last"><%= t 'publisher.actions' %></td>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+                  <% @publisher.permitted_users.each_with_index do |user, i| %>
+                      <%= render :partial => "authorized_user", :locals => {:user => user, :i => i, :publisher => @publisher} %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </fieldset>
+            </form>
+          </div>
+          <!-- .content#box-1-holder -->
+        </div>
+      </div>
+
+    </div>
+
+<% end %>

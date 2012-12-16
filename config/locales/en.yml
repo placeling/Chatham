@@ -682,6 +682,8 @@ en:
     basics: "Basics"
     remove_image: "Remove Image"
     google_analytics_copy: "Enter your Google Analytics Code (ex. UA-xxxxxxxx-1)"
+    authorized_users: "Authorized Users"
+    add_user: "Add Authorized User"
 
 
 

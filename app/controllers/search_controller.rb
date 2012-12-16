@@ -1,23 +1,46 @@
 require 'google_places_autocomplete'
 
 class SearchController < ApplicationController
+
+  def users
+    @results = []
+
+    # people
+    raw_users = User.search_by_username(params[:input])
+
+    if !raw_users.nil?
+      raw_users.each do |user|
+        interstitial = {}
+        interstitial['name'] = user.username
+        interstitial['location'] = user.city
+        interstitial['url'] = user_path(user)
+        interstitial['pic'] = user.thumb_url
+        @results << interstitial
+      end
+    end
+
+    respond_to do |format|
+      format.json { render :json => {:results => @results} }
+    end
+  end
+
   def search
     @results = []
-    
+
     @valid_params = true
-    
+
     if params[:lat].nil? or params[:lng].nil? or params[:input].nil?
       @valid_params = false
     end
-    
+
     if params[:lat].to_f == 0.0 and params[:lat] != "0.0"
       @valid_params = false
     end
-    
+
     if params[:lng].to_f == 0.0 and params[:lng] != "0.0"
       @valid_params = false
     end
-    
+
     if @valid_params
       # places
       @lat = params[:lat].to_f
@@ -61,7 +84,7 @@ class SearchController < ApplicationController
         end
       end
     end
-    
+
     respond_to do |format|
       format.html { render :search }
       format.json { render :json => {:results => @results} }

@@ -1,11 +1,11 @@
 class Publisher
   include Mongoid::Document
   field :css, :type => String, :default => ""
-  field :footerpng, :type => String
-  field :wellpng, :type => String
   field :liquid, :type => String
   field :domain, :type => String, :default => ""
   field :google_analytics_code, :type => String, :default => ""
+
+  has_and_belongs_to_many :permitted_users, class_name: 'User', inverse_of: nil, autosave: true
 
   accepts_nested_attributes_for :publisher_category, allow_destroy: true
   embeds_many :publisher_categories

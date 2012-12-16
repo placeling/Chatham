@@ -1,0 +1,3 @@
+$('#authorized_users').append("<%= escape_javascript( render :partial => "authorized_user", :locals => {:user=>@user,:i=>@i,:publisher=>@publisher} ) %>");
+$("#add_user_button").show();
+$("#add_user_box").hide();

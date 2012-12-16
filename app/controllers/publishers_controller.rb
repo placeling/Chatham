@@ -45,6 +45,34 @@ class PublishersController < ApplicationController
 
   end
 
+  def add_member
+    @publisher = Publisher.find(params[:id])
+    @user = User.find_by_username(params[:user][:username])
+
+    @publisher.permitted_users.push(@user)
+    @i = @publisher.permitted_users.count
+
+    respond_to do |format|
+      format.html { render :edit, :layout => 'bootstrap' }
+      format.js
+      format.json { render json: {publisher: @publisher} }
+    end
+  end
+
+  def remove_member
+    @publisher = Publisher.find(params[:id])
+    @user = User.find_by_username(params[:username])
+
+    @publisher.permitted_users.delete(@user)
+
+    respond_to do |format|
+      format.html { render :edit, :layout => 'bootstrap' }
+      format.js { head :no_content }
+      format.json { render json: {publisher: @publisher} }
+    end
+  end
+
+
   # POST /publishers
   # POST /publishers.json
   def create
