@@ -20,13 +20,7 @@ class Publisher
 
   def self.available_for(current_user)
     return Publisher.all unless !current_user.is_admin?
-
-    publishers = Publisher.where('permitted_user_ids' => current_user.id)
-    if current_user.publisher
-      publishers.append(current_user.publisher)
-    end
-
-    return publishers
+    Publisher.any_of({'permitted_user_ids' => current_user.id}, {:user_id => current_user.id})
   end
 
   def category_for(category)
