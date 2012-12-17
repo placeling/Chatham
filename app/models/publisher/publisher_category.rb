@@ -5,12 +5,12 @@ class PublisherCategory
   field :name, :type => String
 
   field :module_type, :type => Integer, :default => 0
-  field :tags, :type => String
 
   field :creation_environment, :type => String
   field :main_cache_url, :type => String
   field :thumb_cache_url, :type => String
   field :file_size, :type => Integer
+  field :_type, type: String #makes an abstract class:  https://github.com/mongoid/mongoid/issues/2511
 
   mount_uploader :image, CategoryUploader
 
@@ -62,8 +62,7 @@ class PublisherCategory
   def as_json(options={})
     attributes = {:id => self['_id'],
                   :name => self.name,
-                  :slug => self.slug,
-                  :tags => self.tags
+                  :slug => self.slug
     }
 
     attributes.merge(:image_url => self.main_url).merge(:thumb_url => self.thumb_url)
