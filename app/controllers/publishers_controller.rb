@@ -1,10 +1,12 @@
 class PublishersController < ApplicationController
+
+  before_filter :login_required, :except => :show
+  before_filter :permitted_publisher, :except => [:show, :index]
+
   # GET /publishers
   # GET /publishers.json
-  before_filter :admin_required, :except => [:show]
-
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.available_for(current_user).entries
 
     respond_to do |format|
       format.html { render :index, :layout => 'bootstrap' }
@@ -18,7 +20,7 @@ class PublishersController < ApplicationController
     @publisher = Publisher.find(params[:id])
 
     respond_to do |format|
-      format.html { render :edit, :layout => 'bootstrap' }
+      format.html { redirect_to edit_publisher_path(@publisher) }
       format.json { render json: {publisher: @publisher} }
     end
   end
@@ -96,7 +98,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
-        format.html { redirect_to edit_publisher_path(@publisher), :layout => 'bootstrap', notice: 'Publisher was successfully updated.' }
+        format.html { redirect_to edit_publisher_path(@publisher), notice: 'Publisher was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :edit, :layout => 'bootstrap' }

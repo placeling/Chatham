@@ -134,6 +134,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def permitted_publisher
+    if params[:publisher_id] || params[:id]
+      @publisher = Publisher.find(params[:publisher_id] || params[:id])
+      unless Publisher.available_for(current_user).include?(@publisher)
+        redirect_to publishers_path
+      end
+    end
+  end
+
   def admin_user?
     if current_user
       return current_user.is_admin?

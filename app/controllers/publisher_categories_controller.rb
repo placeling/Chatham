@@ -1,5 +1,5 @@
 class PublisherCategoriesController < ApplicationController
-  before_filter :admin_required, :except => [:show, :perspectives]
+  before_filter :permitted_publisher, :except => [:show, :perspectives]
 
   def perspectives
     #/publishers/:publisher_id/publisher_category/:id
@@ -36,7 +36,7 @@ class PublisherCategoriesController < ApplicationController
     @publisher_category = @publisher.category_for(params['id'])
 
     respond_to do |format|
-      format.html { render :edit, :layout => 'bootstrap' }
+      format.html { edit_publisher_publisher_category_path(@publisher, @publisher_category) }
       format.json { render json: @publisher_category }
     end
   end
@@ -89,7 +89,7 @@ class PublisherCategoriesController < ApplicationController
 
     respond_to do |format|
       if @publisher_category.update_attributes(params[:publisher_category])
-        format.html { redirect_to publisher_publisher_category_path(@publisher, @publisher_category), notice: 'Publisher was successfully updated.' }
+        format.html { redirect_to edit_publisher_publisher_category_path(@publisher, @publisher_category), notice: 'Publisher was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :edit, :layout => 'bootstrap' }

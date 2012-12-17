@@ -13,10 +13,21 @@ class Publisher
   belongs_to :user
 
   validates_presence_of :user
-  validates_format_of :domain, :with => URI::regexp(%w(http)), :allow_nil => true, :allow_blank => true
+  validates_format_of :domain, :with => URI::regexp(%w(httdp)), :allow_nil => true, :allow_blank => true
   validates_format_of :google_analytics_code, :with => /\Aua-\d{4,9}-\d{1,4}$\Z/i, :allow_nil => true, :allow_blank => true
 
   after_save :invalidate_cache
+
+  def self.available_for(current_user)
+    return Publisher.all unless !current_user.is_admin?
+
+    publishers = Publisher.where('permitted_user_ids' => current_user.id)
+    if current_user.publisher
+      publishers.append(current_user.publisher)
+    end
+
+    return publishers
+  end
 
   def category_for(category)
     return self.publisher_categories.where(:slug => category).first
