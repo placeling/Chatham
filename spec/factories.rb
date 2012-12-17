@@ -198,6 +198,12 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
+  factory :publisher do
+    association :user, :factory => :user
+  end
+end
+
+FactoryGirl.define do
   factory :question do
     association :user, :factory => :user
     location { [49.261226, -123.1139268] }
