@@ -29,7 +29,6 @@ Chatham::Application.routes.draw do
   get "/admin/tours", :to => 'tours#admin'
 
   get "/search", :to => 'search#search', :as => :search
-  get "/search_users", :to => 'search#users', :as => :search_users
 
   devise_for :users, :controllers => {:sessions => 'sessions', :registrations => :registrations, :confirmations => :confirmations}
 

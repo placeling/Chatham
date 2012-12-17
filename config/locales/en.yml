@@ -67,6 +67,7 @@ en:
     users: "Users"
     top: "Top"
     saved: "Saved"
+    add: "Add"
     save: "Save"
     submit: "Submit"
     new: "New"
@@ -683,7 +684,6 @@ en:
     remove_image: "Remove Image"
     google_analytics_copy: "Enter your Google Analytics Code (ex. UA-xxxxxxxx-1)"
     authorized_users: "Authorized Users"
-    add_user: "Add Authorized User"
 
 
 

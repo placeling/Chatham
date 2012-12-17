@@ -740,55 +740,6 @@ class User
     end
   end
 
-  def as_json(options={})
-    #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
-    attributes = {:id => self['_id'],
-                  :username => self['username'],
-                  :picture => {
-                      :id => self['_id'],
-                      :thumb_url => thumb_url,
-                      :main_url => main_url},
-                  :perspectives_count => self['pc'],
-                  :url => self.url,
-                  :description => self.description,
-                  :main_url => main_url,
-                  :city => self.city,
-                  :follower_count => followers.count,
-                  :following_count => following.count,
-                  :fullname => self['fullname']
-    }
-    if self.publisher
-      attributes = attributes.merge(:publisher_id => self.publisher.id)
-    end
-
-    attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?
-
-    if options[:current_user]
-      current_user =options[:current_user]
-      #check against raw ids so it doesnt have to go back to db
-      following = self['follower_ids'].include?(options[:current_user].id) ||self.id == options[:current_user].id
-      follows_you = self['following_ids'].include?(options[:current_user].id)
-      attributes[:blocked] = current_user.blocked?(self)
-
-      attributes = attributes.merge(:following => following, :follows_you => follows_you)
-      if self.id == current_user.id
-        attributes = attributes.merge(:auths => self.authentications)
-        attributes = attributes.merge(:notification_count => self.notification_count)
-        attributes = attributes.merge(:highlighted_count => self.highlighted_places.count)
-      end
-    else
-      current_user = nil
-    end
-
-    if (options[:perspectives] == :location)
-      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location]).includes(:place).as_json({:user_view => true, :current_user => current_user}))
-    elsif (options[:perspectives] == :created_by)
-      attributes.merge(:perspectives => self.perspectives.descending(:modified_at).includes(:place).limit(10).as_json({:user_view => true, :current_user => current_user}))
-    else
-      attributes
-    end
-  end
-
   def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank?
 
@@ -1000,6 +951,55 @@ class User
     end
   end
 
+  def as_json(options={})
+    #these could eventually be paginated #person.posts.paginate(page: 2, per_page: 20)
+    attributes = {:id => self['_id'],
+                  :username => self['username'],
+                  :picture => {
+                      :id => self['_id'],
+                      :thumb_url => thumb_url,
+                      :main_url => main_url},
+                  :perspectives_count => self['pc'],
+                  :url => self.url,
+                  :description => self.description,
+                  :main_url => main_url,
+                  :city => self.city,
+                  :follower_count => followers.count,
+                  :following_count => following.count,
+                  :fullname => self['fullname']
+    }
+    if self.publisher
+      attributes = attributes.merge(:publisher_id => self.publisher.id)
+    end
+
+    attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?
+
+    if options[:current_user]
+      current_user =options[:current_user]
+      #check against raw ids so it doesnt have to go back to db
+      following = self['follower_ids'].include?(options[:current_user].id) ||self.id == options[:current_user].id
+      follows_you = self['following_ids'].include?(options[:current_user].id)
+      attributes[:blocked] = current_user.blocked?(self)
+
+      attributes = attributes.merge(:following => following, :follows_you => follows_you)
+      if self.id == current_user.id
+        attributes = attributes.merge(:auths => self.authentications)
+        attributes = attributes.merge(:notification_count => self.notification_count)
+        attributes = attributes.merge(:highlighted_count => self.highlighted_places.count)
+      end
+    else
+      current_user = nil
+    end
+
+    if (options[:perspectives] == :location)
+      attributes.merge(:perspectives => self.perspectives.near(:loc => options[:location]).includes(:place).as_json({:user_view => true, :current_user => current_user}))
+    elsif (options[:perspectives] == :created_by)
+      attributes.merge(:perspectives => self.perspectives.descending(:modified_at).includes(:place).limit(10).as_json({:user_view => true, :current_user => current_user}))
+    else
+      attributes
+    end
+  end
+
 
   protected
 
@@ -1031,4 +1031,5 @@ class User
     access_token = OAuth::AccessToken.from_hash(consumer, token_hash)
     return access_token
   end
+
 end

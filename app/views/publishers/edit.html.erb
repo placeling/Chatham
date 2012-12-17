@@ -28,18 +28,18 @@
                     return false;
                 },
                 source:function (req, add) {
-                    var url = "/search_users?input=" + encodeURIComponent(req["term"]);
+                    var url = "/users/search?q=" + encodeURIComponent(req["term"]);
 
                     $.getJSON(url, function (data) {
-                        var results = data.results;
+                        var users = data.users;
                         var suggestions = [];
 
-                        $.each(results, function (i, val) {
+                        $.each(users, function (i, val) {
                             var text = "";
-                            if (val["pic"]) {
-                                text = '<div class="autocomplete_thumb"><img class="autocomplete_thumb_img" src="' + val["pic"] + '"/></div><div class="autocomplete_thumb_holder"><div class="autocomplete_name">' + val["name"] + '</div><div class="autocomplete_location">' + val["location"] + '</div></div><div class="hidden" id="url">' + val["url"] + '</div>';
+                            if (val["picture"]["thumb_url"]) {
+                                text = '<div class="autocomplete_thumb"><img class="autocomplete_thumb_img" src="' + val["picture"]["thumb_url"] + '"/></div><div class="autocomplete_thumb_holder"><div class="autocomplete_name">' + val["username"] + '</div><div class="autocomplete_location">' + val["city"] + '</div></div>';
                             } else {
-                                text = '<div class="autocomplete_holder"><div class="autocomplete_name">' + val["name"] + '</div><div class="autocomplete_location">' + val["location"] + '</div></div><div class="hidden" id="url">' + val["url"] + '</div>';
+                                text = '<div class="autocomplete_holder"><div class="autocomplete_name">' + val["username"] + '</div><div class="autocomplete_location">' + val["city"] + '</div></div>';
                             }
                             suggestions.push(text);
                         });
@@ -139,7 +139,7 @@
         <div class="boxin">
           <div class="header">
             <h3><%= t 'publisher.authorized_users' %></h3>
-            <%= link_to t('publisher.add_user'), nil, :class => "button", :id => "add_user_button", :style => "color:white;" %>
+            <%= link_to t('basic.add'), nil, :class => "button", :id => "add_user_button", :style => "color:white;" %>
             <span id="add_user_box" style="display: none;">
               <%= form_for :user, :remote => true, :url => add_member_publisher_path(@publisher), :html => {:style => "display:inline"} do |f| %>
                   <%= f.text_field :username %>
