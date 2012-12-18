@@ -76,7 +76,8 @@ class PublisherCategory
   def as_json(options={})
     attributes = {:id => self['_id'],
                   :name => self.name,
-                  :slug => self.slug
+                  :slug => self.slug,
+                  :list_liquid_template => self.list_liquid_template
     }
 
     attributes.merge(:image_url => self.main_url).merge(:thumb_url => self.thumb_url)
