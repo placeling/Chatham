@@ -1,4 +1,4 @@
-<%= form_for @publisher_category, :html => {:multipart => true}, :url => publisher_publisher_category_path(@publisher_category.publisher, @publisher_category) do |f| %>
+<%= form_for @publisher_category, :as => :publisher_category, :html => {:multipart => true}, :url => publisher_publisher_category_path(@publisher_category.publisher, @publisher_category) do |f| %>
     <% if @publisher_category.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@publisher_category.errors.count, "error") %> prohibited this publisher_category from being
@@ -27,12 +27,20 @@
     </dl>
 
     <dl>
+      <dt><%= f.label :description %></dt>
+      <dd>
+        <%= f.text_area :description, :class => "txt", :style => "width:100%;height:100px" %>
+      </dd>
+    </dl>
+
+
+    <dl>
       <dt><%= f.label :image %></dt>
       <dd>
         <%= f.file_field :image %>
       </dd>
 
-      <%= image_tag(@publisher_category.main_url) if @publisher_category.image? %>
+      <%= image_tag(@publisher_category.thumb_url) if @publisher_category.image? %>
       <p>
         <label>
           <%= f.check_box :remove_image %>

@@ -208,7 +208,7 @@ Chatham::Application.routes.draw do
     match '/auth/:provider/friends' => 'authentications#friends'
 
     resources :publishers do
-      resources :publisher_category, :only => [:nearby]
+      resources :publisher_category, :only => [:perspectives]
     end
 
     resources :ios do

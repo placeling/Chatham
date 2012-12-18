@@ -3,6 +3,7 @@ class PublisherCategory
   include Mongoid::Slug
 
   field :name, :type => String
+  field :description, :type => String, :default => ""
 
   field :module_type, :type => Integer, :default => 0
 
