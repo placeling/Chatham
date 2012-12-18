@@ -59,6 +59,10 @@ class PublisherCategory
     end
   end
 
+  def perspectives;
+    raise "Abstract Method Called";
+  end
+
   def as_json(options={})
     attributes = {:id => self['_id'],
                   :name => self.name,

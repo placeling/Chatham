@@ -1,5 +1,5 @@
-class TagSearchModule < PublisherCategory
-  field :tags, :type => String
+class ToursModule < PublisherCategory
+  belongs_to :tour
 
   def perspectives(lat, lng)
     tags = self.tags.split(",").join(" ")
@@ -14,7 +14,7 @@ class TagSearchModule < PublisherCategory
   end
 
   def as_json(options={})
-    super.as_json(options).merge(:tags => self.tags)
+    super.as_json(options).merge(:tour => self.tour.as_json)
   end
 
 end

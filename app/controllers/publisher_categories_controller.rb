@@ -15,14 +15,7 @@ class PublisherCategoriesController < ApplicationController
     end
 
     @publisher_category = @publisher.category_for(params['id'])
-
-    tags = @publisher_category.tags.split(",").join(" ")
-
-    if @lat && @lng
-      @perspectives = Perspective.query_near_for_user(@publisher.user, [@lat, @lng], tags)
-    else
-      @perspectives = Perspective.query_near_for_user(@publisher.user, [@publisher.user.loc[0], @publisher.user.loc[1]], tags)
-    end
+    @perspectives = @publisher_category.perspectives(@lat, @lng)
 
     respond_to do |format|
       format.json { render json: {:perspectives => @perspectives.as_json(:detail_view => true)} }
@@ -36,7 +29,7 @@ class PublisherCategoriesController < ApplicationController
     @publisher_category = @publisher.category_for(params['id'])
 
     respond_to do |format|
-      format.html { edit_publisher_publisher_category_path(@publisher, @publisher_category) }
+      format.html { redirect_to edit_publisher_publisher_category_path(@publisher, @publisher_category) }
       format.json { render json: @publisher_category }
     end
   end
