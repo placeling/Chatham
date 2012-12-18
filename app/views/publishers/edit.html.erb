@@ -1,5 +1,6 @@
 <% content_for :javascript_includes do %>
     <%= stylesheet_link_tag 'brown' %>
+
 <% end %>
 
 <% content_for :javascript do %>
@@ -48,48 +49,79 @@
                     });
                 }
             });
+
+            // Handling with grid views (adding first and last classes for borders and adding alternate bgs)
+            $('.grid .line:even').addClass('even');
+            $('.grid .line:first-child').addClass('firstline');
+            $('.grid .line:last-child').addClass('lastline');
+            // Tabs switching
+            $('.content#box2-home').hide(); // hide content related to inactive tab by default
+            $('.header ul a').click(function () {
+                $('#box1 .header ul a').removeClass('active');
+                $(this).addClass('active'); // make clicked tab active
+                $('#box1 .content').hide(); // hide all content
+                $('#box1').find('#' + $(this).attr('rel')).show(); // and show content related to clicked tab
+                return false;
+            });
         });
     </script>
 <% end %>
 
 <div class="row-fluid" style="margin: 75px 0 15px 0;">
-  <div class="box box-100 span12">
+  <div id="box1" class="box box-100 span12">
     <div class="boxin">
       <div class="header">
         <h3><%= t 'publisher.basics' %></h3>
+
+        <ul>
+          <li><a rel="box1-basics" href="#" class="active"><%= t 'publisher.basics' %></a></li>
+          <li><a rel="box2-home" href="#" class=""><%= t 'publisher.home_template' %></a></li>
+        </ul>
       </div>
       <%= form_for(@publisher, :class => "basic") do |f| %>
-          <div class="inner-form">
-            <!-- error and information messages -->
-            <% if @publisher.errors.any? %>
-                <% @publisher.errors.full_messages.each do |msg| %>
-                    <div class="msg msg-error"><p><%= msg %></p></div>
-                <% end %>
-            <% end %>
+          <div id="box1-basics" class="content">
+            <div class="inner-form">
+              <!-- error and information messages -->
+              <% if @publisher.errors.any? %>
+                  <% @publisher.errors.full_messages.each do |msg| %>
+                      <div class="msg msg-error"><p><%= msg %></p></div>
+                  <% end %>
+              <% end %>
 
-            <dl>
-              <dt><%= f.label :domain %></dt>
-              <dd>
-                <%= f.text_field :domain, :class => "txt" %>
-                <small><%= t 'publisher.domain_notes' %></small>
-              </dd>
-            </dl>
+              <dl>
+                <dt><%= f.label :domain %></dt>
+                <dd>
+                  <%= f.text_field :domain, :class => "txt" %>
+                  <small><%= t 'publisher.domain_notes' %></small>
+                </dd>
+              </dl>
 
-            <dl>
-              <dt><%= f.label :google_analytics_code %></dt>
-              <dd>
-                <%= f.text_field :google_analytics_code, :class => "txt" %>
-                <small><%= t 'publisher.google_analytics_copy' %></small>
-              </dd>
-            </dl>
+              <dl>
+                <dt><%= f.label :google_analytics_code %></dt>
+                <dd>
+                  <%= f.text_field :google_analytics_code, :class => "txt" %>
+                  <small><%= t 'publisher.google_analytics_copy' %></small>
+                </dd>
+              </dl>
 
-
-            <dl>
-              <dd>
-                <%= f.submit :class => "button" %>
-              </dd>
-            </dl>
+            </div>
           </div>
+          <div id="box2-home" class="content">
+            <div class="inner-form">
+
+              <dl>
+                <dt><%= f.label :home_liquid %></dt>
+                <dd>
+                  <%= f.text_area :home_liquid, :class => "txt", :style => "width:90%;height:100px" %>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <dl>
+            <dd>
+              <%= f.submit :class => "button" %>
+            </dd>
+          </dl>
       <% end %>
     </div>
   </div>
@@ -135,7 +167,7 @@
 <% if current_user.admin? || current_user.id == @publisher.user.id %>
     <div class="row-fluid" style="margin: 0 0 15px 0;">
 
-      <div id="box1" class="box box-50 span6"><!-- box full-width -->
+      <div id="box2" class="box box-50 span6"><!-- box full-width -->
         <div class="boxin">
           <div class="header">
             <h3><%= t 'publisher.authorized_users' %></h3>
@@ -147,7 +179,7 @@
               <% end %>
             </span>
           </div>
-          <div id="box1-tabular" class="brownContent"><!-- content box 1 for tab switching -->
+          <div id="box2-tabular" class="brownContent"><!-- content box 1 for tab switching -->
             <form class="plain" action="" method="post" enctype="multipart/form-data">
               <fieldset>
                 <table id="authorized_users" cellspacing="0">

@@ -1,9 +1,9 @@
 class Publisher
   include Mongoid::Document
-  field :css, :type => String, :default => ""
-  field :liquid, :type => String
   field :domain, :type => String, :default => ""
   field :google_analytics_code, :type => String, :default => ""
+
+  field :home_liquid, :type => String
 
   has_and_belongs_to_many :permitted_users, class_name: 'User', inverse_of: nil, autosave: true
 

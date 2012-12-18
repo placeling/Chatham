@@ -11,6 +11,9 @@ class PublisherCategory
   field :main_cache_url, :type => String
   field :thumb_cache_url, :type => String
   field :file_size, :type => Integer
+
+  field :list_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/module_list.liquid")
+
   field :_type, type: String #makes an abstract class:  https://github.com/mongoid/mongoid/issues/2511
 
   mount_uploader :image, CategoryUploader

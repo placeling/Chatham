@@ -4,19 +4,7 @@
 
 <h1><%= t 'publisher.new_module' %></h1>
 
-<div class="row-fluid" style="margin: 75px 0 15px 0;">
-  <div class="box box-100">
-    <div class="boxin">
-      <div class="header">
-        <h3><%= t 'publisher.module' %></h3>
-      </div>
+<%= render 'form' %>
 
-
-      <%= render 'form' %>
-
-    </div>
-  </div>
-
-</div>
 
 <%= link_to t("basic.back"), @publisher %>

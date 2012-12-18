@@ -684,6 +684,11 @@ en:
     remove_image: "Remove Image"
     google_analytics_copy: "Enter your Google Analytics Code (ex. UA-xxxxxxxx-1)"
     authorized_users: "Authorized Users"
+    home_template: "Home template"
+    place_template: "Place template"
+    css_template: "CSS template"
+    list_template: "List Template"
+    map_template: "Map Template"
 
 
 
