@@ -20,6 +20,8 @@ class PublisherCategory
 
   embedded_in :publisher
 
+  after_save :invalidate_cache
+
   slug :name, :permanent => true, :scope => :publisher
 
   #url_cache [:main, :thumb]
@@ -31,6 +33,10 @@ class PublisherCategory
     self.creation_environment = nil
     self.main_cache_url = nil
     self.thumb_cache_url = nil
+  end
+
+  def invalidate_cache
+    self.publisher.invalidate_cache
   end
 
 
