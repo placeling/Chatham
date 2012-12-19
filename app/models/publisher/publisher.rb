@@ -3,7 +3,7 @@ class Publisher
   field :domain, :type => String, :default => ""
   field :google_analytics_code, :type => String, :default => ""
 
-  field :home_liquid, :type => String
+  field :home_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/home.liquid")
 
   has_and_belongs_to_many :permitted_users, class_name: 'User', inverse_of: nil, autosave: true
 
@@ -28,7 +28,7 @@ class Publisher
   end
 
   def invalidate_cache
-    $redis.publish "invalidations", {'model' => "publisher", "id" => self.id}.to_json
+    $redis.publish "invalidations", {'model' => "publisher", "id" => self.id, "publisher" => self}.to_json
   end
 
   def as_json(options={})
