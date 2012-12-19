@@ -77,6 +77,7 @@
           <li><a rel="box1-basics" href="#" class="active"><%= t 'publisher.basics' %></a></li>
           <li><a rel="box2-home" href="#" class=""><%= t 'publisher.home_template' %></a></li>
           <li><a rel="box3-css" href="#" class=""><%= t 'publisher.css_template' %></a></li>
+          <li><a rel="box4-place" href="#" class=""><%= t 'publisher.place_template' %></a></li>
         </ul>
       </div>
       <%= form_for(@publisher, :class => "basic") do |f| %>
@@ -118,13 +119,24 @@
               </dl>
             </div>
           </div>
-          <div id="box3-css" class="content">
+          <div id="box3-css" class="content" style="display: none;">
             <div class="inner-form">
 
               <dl>
                 <dt><%= f.label :css_liquid_template %></dt>
                 <dd>
                   <%= f.text_area :css_liquid_template, :class => "txt", :style => "width:90%;height:500px" %>
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <div id="box4-place" class="content" style="display: none;">
+            <div class="inner-form">
+
+              <dl>
+                <dt><%= f.label :place_liquid_template %></dt>
+                <dd>
+                  <%= f.text_area :place_liquid_template, :class => "txt", :style => "width:90%;height:500px" %>
                 </dd>
               </dl>
             </div>
