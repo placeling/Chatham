@@ -4,6 +4,8 @@ class Publisher
   field :google_analytics_code, :type => String, :default => ""
 
   field :home_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/home.liquid")
+  field :css_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/css.liquid")
+
 
   has_and_belongs_to_many :permitted_users, class_name: 'User', inverse_of: nil, autosave: true
 
