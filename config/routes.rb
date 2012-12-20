@@ -62,6 +62,7 @@ Chatham::Application.routes.draw do
     member do
       post :add_member
       post :remove_member
+      post :download_archive
     end
   end
 

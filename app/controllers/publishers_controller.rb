@@ -47,6 +47,18 @@ class PublishersController < ApplicationController
 
   end
 
+  def download_archive
+    @publisher = Publisher.find(params[:id])
+
+    Resque.
+
+
+        respond_to do |format|
+      format.html { redirect_to edit_publisher_path(@publisher) }
+    end
+  end
+
+
   def add_member
     @publisher = Publisher.find(params[:id])
     @user = User.find_by_username(params[:user][:username])

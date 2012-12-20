@@ -433,6 +433,7 @@ DEPENDENCIES
   resque-scheduler (= 2.0.0.h)
   resque_mailer
   rspec-rails (~> 2.8.1)
+  rubyzip
   rvm-capistrano
   sass-rails (~> 3.2.3)
   sitemap_generator

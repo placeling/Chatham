@@ -689,11 +689,9 @@ en:
     css_template: "CSS template"
     list_template: "List Template"
     map_template: "Map Template"
-
-
-
-
-
+    request_archive: "Download all Data"
+    request_confirm: "This will email all Placeling data for %{publisher} to %{email}. Please allow a few minutes for processing"
+    admin: "Admin"
 
 
 

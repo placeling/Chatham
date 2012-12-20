@@ -188,10 +188,11 @@
 </div>
 
 
-<% if current_user.admin? || current_user.id == @publisher.user.id %>
-    <div class="row-fluid" style="margin: 0 0 15px 0;">
+<div class="row-fluid" style="margin: 0 0 15px 0;">
+  <% if current_user.admin? || current_user.id == @publisher.user.id %>
 
-      <div id="box2" class="box box-50 span6"><!-- box full-width -->
+
+      <div id="box2" class="box span5"><!-- box full-width -->
         <div class="boxin">
           <div class="header">
             <h3><%= t 'publisher.authorized_users' %></h3>
@@ -228,7 +229,24 @@
           <!-- .content#box-1-holder -->
         </div>
       </div>
+  <% end %>
 
+  <div id="box2" class="box span5"><!-- box full-width -->
+    <div class="boxin">
+      <div class="header">
+        <h3><%= t 'publisher.admin' %></h3>
+      </div>
+      <div class="inner-form">
+
+        <dl>
+          <dd>
+            <%= button_to t('publisher.request_archive'), {:action => "download_archive"}, :confirm => t('publisher.request_confirm', :email => current_user.email, :publisher => @publisher.user.username), :class => "button" %>
+          </dd>
+        </dl>
+      </div>
+      <!-- .content#box-1-holder -->
     </div>
+  </div>
 
-<% end %>
+
+</div>
