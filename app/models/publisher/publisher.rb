@@ -20,6 +20,17 @@ class Publisher
 
   after_save :invalidate_cache
 
+  def self.forgiving_find(publisher_id)
+    if BSON::ObjectId.legal?(publisher_id)
+      publisher = Publisher.find(publisher_id)
+    else
+      user = User.find_by_username(publisher_id)
+      publisher = user.publisher
+    end
+    return publisher
+  end
+
+
   def self.available_for(current_user)
     return Publisher.all unless !current_user.is_admin?
     Publisher.any_of({'permitted_user_ids' => current_user.id}, {:user_id => current_user.id})

@@ -17,7 +17,7 @@ class PublishersController < ApplicationController
   # GET /publishers/1
   # GET /publishers/1.json
   def show
-    @publisher = Publisher.find(params[:id])
+    @publisher = Publisher.forgiving_find(params[:id])
 
     respond_to do |format|
       format.html { redirect_to edit_publisher_path(@publisher) }
@@ -50,10 +50,10 @@ class PublishersController < ApplicationController
   def download_archive
     @publisher = Publisher.find(params[:id])
 
-    Resque.
+    #Resque.
 
 
-        respond_to do |format|
+    respond_to do |format|
       format.html { redirect_to edit_publisher_path(@publisher) }
     end
   end

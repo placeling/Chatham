@@ -7,12 +7,7 @@ class PublisherCategoriesController < ApplicationController
     @lat = params[:lat].to_f
     @lng = params[:lng].to_f
 
-    if BSON::ObjectId.legal?(params['publisher_id'])
-      @publisher = Publisher.find(params['publisher_id'])
-    else
-      @user = User.find_by_username(params['publisher_id'])
-      @publisher = @user.publisher
-    end
+    @publisher = Publisher.forgiving_find(params['publisher_id'])
 
     @publisher_category = @publisher.category_for(params['id'])
     @perspectives = @publisher_category.perspectives(@lat, @lng)
@@ -25,7 +20,7 @@ class PublisherCategoriesController < ApplicationController
   # GET /publishers/1
   # GET /publishers/1.json
   def show
-    @publisher = Publisher.find(params[:publisher_id])
+    @publisher = Publisher.forgiving_find(params['publisher_id'])
     @publisher_category = @publisher.category_for(params['id'])
 
     respond_to do |format|
