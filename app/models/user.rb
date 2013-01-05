@@ -966,7 +966,8 @@ class User
                   :city => self.city,
                   :follower_count => followers.count,
                   :following_count => following.count,
-                  :fullname => self['fullname']
+                  :fullname => self['fullname'],
+                  :location => self.location
     }
     if self.publisher
       attributes = attributes.merge(:publisher_id => self.publisher.id)
