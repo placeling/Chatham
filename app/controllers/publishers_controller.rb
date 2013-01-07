@@ -14,6 +14,17 @@ class PublishersController < ApplicationController
     end
   end
 
+  # GET /publishers
+  # GET /publishers.json
+  def home
+    @publisher = Publisher.forgiving_find(params[:id])
+
+    respond_to do |format|
+      format.html { render :home, :layout => nil }
+    end
+  end
+
+
   # GET /publishers/1
   # GET /publishers/1.json
   def show

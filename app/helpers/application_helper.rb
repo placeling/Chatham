@@ -15,6 +15,10 @@ module ApplicationHelper
     link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
 
+  def liquidize(content, arguments)
+    Liquid::Template.parse(content).render(arguments)
+  end
+
   def current_user_location(params)
     valid_latlng = false
     if params[:lat] && params[:lng]
