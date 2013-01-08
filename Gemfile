@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.11'
 #TODO: unpackage this to not include active record
 
 # Bundle edge Rails instead:
