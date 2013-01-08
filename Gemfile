@@ -48,7 +48,7 @@ gem 'airbrake'
 
 gem 'rack-p3p'
 gem 'rack-rewrite', '~> 1.2.1'
-gem 'font_assets'
+gem 'font_assets', :git => "git://github.com/placeling/font_assets.git"
 
 gem "recaptcha", :require => "recaptcha/rails"
 
