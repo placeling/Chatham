@@ -1,7 +1,7 @@
 class PublishersController < ApplicationController
 
-  before_filter :login_required, :except => :show
-  before_filter :permitted_publisher, :except => [:show, :index]
+  before_filter :login_required, :except => [:show, :home]
+  before_filter :permitted_publisher, :except => [:show, :index, :home]
 
   # GET /publishers
   # GET /publishers.json

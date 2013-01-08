@@ -18,6 +18,8 @@ class Publisher
   validates_format_of :domain, :with => URI::regexp(%w(httdp)), :allow_nil => true, :allow_blank => true
   validates_format_of :google_analytics_code, :with => /\Aua-\d{4,9}-\d{1,4}$\Z/i, :allow_nil => true, :allow_blank => true
 
+  liquid_methods :publisher_categories
+
   after_save :invalidate_cache
 
   def self.forgiving_find(publisher_id)
