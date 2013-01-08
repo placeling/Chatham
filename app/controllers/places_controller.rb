@@ -463,7 +463,7 @@ class PlacesController < ApplicationController
       @perspective.save
 
       respond_to do |format|
-        format.html { redirect_to :action => "show", :id => @place.id }
+        format.html { redirect_to @place }
         format.json { render :json => {:place => @place.as_json({:current_user => current_user}), :status => "OK"} }
       end
     else
