@@ -61,11 +61,10 @@ class PublishersController < ApplicationController
   def download_archive
     @publisher = Publisher.find(params[:id])
 
-    #Resque.
-
+    Resque.enqueue(SendDataArchive, current_user.id, @publisher.id)
 
     respond_to do |format|
-      format.html { redirect_to edit_publisher_path(@publisher) }
+      format.html { redirect_to edit_publisher_path(@publisher), :notice => "Data Archive sent to #{current_user.email}" }
     end
   end
 
