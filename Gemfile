@@ -48,6 +48,7 @@ gem 'airbrake'
 
 gem 'rack-p3p'
 gem 'rack-rewrite', '~> 1.2.1'
+gem 'font_assets'
 
 gem "recaptcha", :require => "recaptcha/rails"
 
