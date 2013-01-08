@@ -24,7 +24,7 @@ class PublisherCategory
 
   slug :name, :permanent => true, :scope => :publisher
 
-  liquid_methods :name, :slug, :description, :image_url, :thumb_url
+  liquid_methods :name, :slug, :description, :main_url, :thumb_url
 
   #url_cache [:main, :thumb]
 
