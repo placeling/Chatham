@@ -16,7 +16,7 @@ describe GoogleReverseGeocode do
       end
     end
 
-    street_number.should == "309"
+    street_number.should == "320"
   end
 
   it "should not find a result here" do
