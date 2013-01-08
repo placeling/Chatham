@@ -35,8 +35,6 @@ Chatham::Application.configure do
   config.force_ssl = true
   config.action_controller.asset_host = "https://d25pi4g6kudmb8.cloudfront.net"
 
-  config.font_assets.origin = 'https://staging.placeling.com'
-
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 

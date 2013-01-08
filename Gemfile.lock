@@ -11,13 +11,6 @@ GIT
       xpath (~> 0.1.4)
 
 GIT
-  remote: git://github.com/placeling/font_assets.git
-  revision: ca1a1976659f3a35295ddb2a14f57c0dfb837dc4
-  specs:
-    font_assets (0.1.2)
-      rack
-
-GIT
   remote: git://github.com/placeling/oauth-plugin.git
   revision: d967f1dced19f5854664d7e15413a4f828768fc5
   specs:
@@ -407,7 +400,6 @@ DEPENDENCIES
   factory_girl_rails (~> 1.1.rc1)
   fastercsv
   fog
-  font_assets!
   geocoder
   geoip
   hashie

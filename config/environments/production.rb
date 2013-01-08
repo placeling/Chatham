@@ -36,7 +36,6 @@ Chatham::Application.configure do
   config.assets.digest = true
   config.action_controller.asset_host = "https://dmpcpg251rpg5.cloudfront.net"
 
-  config.font_assets.origin = 'https://www.placeling.com'
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "dmznjo0da80tm.cloudfront.net"
 
