@@ -79,9 +79,8 @@ class GooglePlaces
     return false
   end
 
-  def find_nearby(x, y, radius, query = nil, sensor = true, type_array =[], language ="en")
+  def find_nearby(x, y, radius = 4000, query = nil, sensor = true, type_array =[], language ="en")
     #radius is in meters
-
     location = [x.round(4), y.round(4)].join(',')
 
     options = {
@@ -92,15 +91,15 @@ class GooglePlaces
 
     if !query.nil?
       #override radius to something larger
-      options[:name] = query
-      options[:radius] = 4000
+      options[:keyword] = query
     else
       #TEST: cap radius at 100m
       radius = [50, [200, radius].min].max
-      options[:radius] = radius
     end
 
-    results = mashup(self.class.get("/search/json", :query => options.merge(self.default_options))).results
+    options[:radius] = radius
+
+    results = mashup(self.class.get("/nearbysearch/json", :query => options.merge(self.default_options))).results
 
     for place in results
       if place.types.include?("political") or place.types.include?("route")
