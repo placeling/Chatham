@@ -1,0 +1,40 @@
+<html>
+<head>
+  <style type="text/css">
+      body {
+          margin: 0;
+          background-color: red;
+      }
+  </style>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
+  </script>
+
+  <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "jquery.ui.map.full.min" %>
+
+</head>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#map_holder').width("100%");
+        //$('#map_holder').height("100%");
+        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= User.lindsay.location[1] %>', 'zoom':14 }).bind('init', function (ev, map) {
+
+            $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
+                $.each(data.perspectives, function (i, perspective) {
+                    $('#map_canvas').gmap('addMarker', {
+                        'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng)
+                    }).click(function () {
+                                $('#map_canvas').gmap('openInfoWindow', { 'content':"<a href='" + perspective.url + "'>" + perspective.place.name + "</a>" }, this);
+                            });
+                });
+            });
+
+        });
+    });
+</script>
+<body>
+<div id="map_holder" style="width:100%; height:100%">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+</div>
+</body>
+</html>

@@ -151,6 +151,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def pinta
+    @user = User.find_by_username(params[:id])
+
+    if params[:lat].nil?
+      @lat = DEFAULT_LAT
+    else
+      @lat = params[:lat].to_f
+      if @lat > 90 or @lat < -90
+        @lat = DEFAULT_LAT
+      end
+    end
+
+    if params[:lng].nil?
+      @lng = DEFAULT_LNG
+    else
+      @lng = params[:lng].to_f
+      if @lng > 180 or @lng < -180
+        @lng = DEFAULT_LNG
+      end
+    end
+
+    @zoom = DEFAULT_ZOOM
+
+    respond_to do |format|
+      format.html { render :layout => nil }
+    end
+  end
+
   def iframe
     @user = User.find_by_username(params[:id])
 

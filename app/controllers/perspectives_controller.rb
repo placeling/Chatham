@@ -245,7 +245,9 @@ class PerspectivesController < ApplicationController
 
     count = 20
 
-    if (params[:lat] && params[:lng])
+    if params[:source] == 'pinta'
+      @perspectives = Perspective.find_all_with_url_for(@user)
+    elsif (params[:lat] && params[:lng])
       span =1
       lat = params[:lat].to_f
       long = params[:lng].to_f

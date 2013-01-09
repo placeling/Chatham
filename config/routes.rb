@@ -93,6 +93,7 @@ Chatham::Application.routes.draw do
       post :follow
       post :unfollow
       get :activity
+      get :pinta
       get :iframe
       get :wimdu
       get :embed

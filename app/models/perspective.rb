@@ -77,6 +77,13 @@ class Perspective
         limit(count)
   end
 
+  def self.find_all_with_url_for(user)
+    Perspective.where(:uid => user.id).
+        and(:url.ne => "").
+        and(:url.ne => nil).
+        limit(0)
+  end
+
   def self.query_near_for_user(user, loc, query)
     if query != nil and query.strip != ""
       tags = Perspective.extract_tag_array(query.downcase.strip)
