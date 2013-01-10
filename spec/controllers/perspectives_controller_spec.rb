@@ -7,18 +7,31 @@ describe PerspectivesController do
     #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
     user = Factory.create(:user)
     place = Factory.create(:place)
-    perspective = Factory.create(:perspective, :user =>user, :place =>place)
+    perspective = Factory.create(:perspective, :user => user, :place => place)
 
     get :show, :user_id => user.id.to_s, :id => perspective.id, :format => :json
 
     response.status.should == 200
 
-    json_place = JSON.parse( response.body )
+    json_place = JSON.parse(response.body)
 
     json_place['referring_perspectives'].should_not be(nil)
-    json_place['id'].should ==  place.id.to_s
+    json_place['id'].should == place.id.to_s
   end
-  
+
+  it "should render show" do
+    #a perspective on its own is kind of useless, and perspective with a place isn't good for showing in controller
+    user = Factory.create(:user)
+    place = Factory.create(:place)
+    perspective = Factory.create(:perspective, :user => user, :place => place, :memo => "Deck Da club")
+
+    get :show, :id => perspective.id
+
+    response.status.should == 200
+
+    response.body.should include("Deck Da club")
+  end
+
   it "returns parent perspective after a starring" do
     user = Factory.create(:user)
     perspective = Factory.create(:perspective)
@@ -30,11 +43,11 @@ describe PerspectivesController do
 
     response.status.should == 200
 
-    json_perspective = JSON.parse( response.body )
+    json_perspective = JSON.parse(response.body)
 
     json_perspective['perspective'].should_not be(nil)
     json_perspective['perspective']['place']['id'].should == perspective.place.id.to_s
 
-   end
+  end
 
 end
