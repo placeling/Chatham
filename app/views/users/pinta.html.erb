@@ -1,5 +1,6 @@
 <html>
 <head>
+  <base target="_parent"/>
   <style type="text/css">
       body {
           margin: 0;
@@ -10,14 +11,14 @@
   </script>
 
   <%= javascript_include_tag "jquery" %>
-  <%= javascript_include_tag "jquery.ui.map.full.min" %>
+  <%= javascript_include_tag "iframe/jquery.ui.map.full.min" %>
 
 </head>
 <script type="text/javascript">
     $(document).ready(function () {
         //$('#map_holder').width("100%");
         //$('#map_holder').height("100%");
-        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= User.lindsay.location[1] %>', 'zoom':14 }).bind('init', function (ev, map) {
+        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14 }).bind('init', function (ev, map) {
 
             $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
                 $.each(data.perspectives, function (i, perspective) {
