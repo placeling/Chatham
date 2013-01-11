@@ -8,6 +8,9 @@ require 'rspec/rails'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 require 'capybara/rspec'
 
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist
+
 RSpec.configure do |config|
   # == Mock Framework
   #

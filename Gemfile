@@ -55,7 +55,6 @@ gem "rspec-rails", "~> 2.8.1" #needs these outside to prevent rake break
 gem 'ci_reporter'
 
 gem 'mocha'
-gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
 gem 'factory_girl_rails', "~> 1.1.rc1"
 gem "database_cleaner"
 
@@ -82,6 +81,8 @@ gem 'rubyzip'
 
 group :test, :development do
   gem "parallel_tests"
+  gem 'capybara'
+  gem 'poltergeist'
 end
 
 gem "twitter-bootstrap-rails"
