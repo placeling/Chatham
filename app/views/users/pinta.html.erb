@@ -1,16 +1,11 @@
 <html>
 <head>
   <base target="_parent"/>
-  <style type="text/css">
-      body {
-          margin: 0;
-          background-color: red;
-      }
-  </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtWBCKJwtHq7ME82vk3d7eUsRknvzgrAQ&sensor=false">
   </script>
 
   <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "iframe/jsrender" %>
   <%= javascript_include_tag "iframe/jquery.ui.map.full.min" %>
 
 </head>
@@ -25,7 +20,7 @@
                     $('#map_canvas').gmap('addMarker', {
                         'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng)
                     }).click(function () {
-                                $('#map_canvas').gmap('openInfoWindow', { 'content':"<a href='" + perspective.url + "'>" + perspective.place.name + "</a>" }, this);
+                                $('#map_canvas').gmap('openInfoWindow', { 'content':$("#calloutTemplate").render(perspective) }, this);
                             });
                 });
             });
@@ -33,7 +28,122 @@
         });
     });
 </script>
+<style type="text/css">
+
+    * {
+        margin: 0px;
+        padding: 0px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    }
+
+    body {
+        /* for Firefox */
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    a, a:link, a:visited {
+        color: #1271b0;
+        text-decoration: none;
+    }
+
+    a.no_highlight:focus, a.no_highlight:hover {
+        text-decoration: none;
+    }
+
+    a:focus, a:hover {
+        text-decoration: underline;
+    }
+
+    a img {
+        border: 0;
+    }
+
+    #placeling_iframe_logo {
+        float: left;
+        margin-top: 3px;
+        margin-left: 10px;
+    }
+
+    #placeling_iframe_spacer {
+        float: right;
+        margin-top: 3px;
+        margin-right: 10px;
+        width: 117px;
+    }
+
+    .filter_value a, a:link, a:hover, a:visited {
+        color: #36757c;
+    }
+
+    .info_window {
+        width: 300px;
+        background: #F9F7F5;
+        padding: 5px;
+    }
+
+    @media only screen
+    and (max-width : 480px) {
+        #placeling_iframe_logo, #placeling_iframe_spacer {
+            display: none;
+        }
+
+        .info_window {
+            width: 200px;
+        }
+    }
+
+    .info_name {
+        font-size: 18px;
+        color: #567E79;
+        font-weight: bold;
+        padding-left: 3px;
+    }
+
+    .info_memo {
+        max-height: 52px;
+        overflow-y: auto;
+        margin-top: -2px;
+        padding-left: 4px;
+        margin-bottom: 5px;
+    }
+
+    .info_memo p {
+        font-family: Georgia, "Times New Roman", Serif;
+        color: #6A6147;
+        padding-top: 5px;
+        font-size: 14px;
+        color: #666666;
+    }
+
+    a.tag_link {
+        text-decoration: none;
+    }
+
+    .highlighted_tag {
+        background: #CA3342;
+    }
+
+    @font-face {
+        font-family: MuseoSlab;
+        src: url(<%= asset_path 'MuseoSlab.otf' %>);
+    }
+
+
+</style>
 <body>
+<script id="calloutTemplate" type="text/x-jsrender">
+  <div class="info_window">
+    <div class="info_name">
+      <a href="{{>url}}">{{>place.name}}</a>
+    </div>
+    <div class="info_memo">
+      <p>{{>memo }}</p>
+    </div>
+  </div>
+
+</script>
+
 <div id="map_holder" style="width:100%; height:100%">
   <div id="map_canvas" style="width:100%; height:100%"></div>
 </div>
