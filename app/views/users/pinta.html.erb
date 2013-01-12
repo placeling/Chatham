@@ -13,12 +13,20 @@
     $(document).ready(function () {
         //$('#map_holder').width("100%");
         //$('#map_holder').height("100%");
+        var placemarker = new google.maps.MarkerImage(
+                'http://www.placeling.com/images/placemarker.png',
+                new google.maps.Size(30, 32),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(9, 32)
+        );
+
+
         $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14 }).bind('init', function (ev, map) {
 
             $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
                 $.each(data.perspectives, function (i, perspective) {
                     $('#map_canvas').gmap('addMarker', {
-                        'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng)
+                        'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng), 'icon':placemarker
                     }).click(function () {
                                 $('#map_canvas').gmap('openInfoWindow', { 'content':$("#calloutTemplate").render(perspective) }, this);
                             });
