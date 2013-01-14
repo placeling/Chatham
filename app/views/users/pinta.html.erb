@@ -6,7 +6,8 @@
 
   <%= javascript_include_tag "jquery" %>
   <%= javascript_include_tag "iframe/jsrender" %>
-  <%= javascript_include_tag "iframe/jquery.ui.map.full.min" %>
+  <%= javascript_include_tag "iframe/jquery.ui.map" %>
+  <%= javascript_include_tag "iframe/jquery.ui.map.extensions" %>
 
 </head>
 <script type="text/javascript">
@@ -20,19 +21,36 @@
                 new google.maps.Point(9, 32)
         );
 
+        var myloc = new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+                new google.maps.Size(22, 22),
+                new google.maps.Point(0, 18),
+                new google.maps.Point(11, 11));
 
-        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14 }).bind('init', function (ev, map) {
 
-            $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
-                $.each(data.perspectives, function (i, perspective) {
-                    $('#map_canvas').gmap('addMarker', {
-                        'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng), 'icon':placemarker
-                    }).click(function () {
-                                $('#map_canvas').gmap('openInfoWindow', { 'content':$("#calloutTemplate").render(perspective) }, this);
-                            });
+        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14, panControl:false,
+            zoomControl:true, mapTypeControl:false, scaleControl:true, streetViewControl:false,
+            overviewMapControl:true }).bind('init', function (ev, map) {
+
+                    $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
+                        $.each(data.perspectives, function (i, perspective) {
+                            $('#map_canvas').gmap('addMarker', {
+                                'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng), 'icon':placemarker
+                            }).click(function () {
+                                        $('#map_canvas').gmap('openInfoWindow', { 'content':$("#calloutTemplate").render(perspective) }, this);
+                                    });
+                        });
+                    });
+
                 });
-            });
 
+        $('#map_canvas').gmap().bind('init', function (evt, map) {
+            $('#map_canvas').gmap('getCurrentPosition', function (position, status) {
+                if (status === 'OK') {
+                    var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    $('#map_canvas').gmap('addMarker', {'position':clientPosition, clickable:false, 'icon':myloc});
+
+                }
+            });
         });
     });
 </script>
