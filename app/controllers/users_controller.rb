@@ -155,20 +155,20 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
 
     if params[:lat].nil?
-      @lat = DEFAULT_LAT
+      @lat = @user.location[0]
     else
       @lat = params[:lat].to_f
       if @lat > 90 or @lat < -90
-        @lat = DEFAULT_LAT
+        @lat = @user.location[0]
       end
     end
 
     if params[:lng].nil?
-      @lng = DEFAULT_LNG
+      @lng = @user.location[1]
     else
       @lng = params[:lng].to_f
       if @lng > 180 or @lng < -180
-        @lng = DEFAULT_LNG
+        @lng = @user.location[1]
       end
     end
 
