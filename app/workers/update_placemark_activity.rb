@@ -5,6 +5,8 @@ class UpdatePlacemarkActivity
 
     perspective = Perspective.find(perspective_id)
 
+    return unless !perspective.nil? #was probably deleted
+
     actor1 = User.find(actor_id)
     activity = actor1.build_activity
 
