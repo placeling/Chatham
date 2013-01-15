@@ -168,11 +168,26 @@ class AuthenticationsController < ApplicationController
       else
         $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.get_object("me")['id'], current_user.facebook.get_object("me")['name']].to_json)
 
-        current_user.facebook.get_connection("me", "friends").each do |friend|
-          if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
-            auth.user.fullname = friend['name']
-            @users << auth.user
-            $redis.sadd("facebook_friends_#{current_user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
+
+        begin
+          current_user.facebook.get_connection("me", "friends").each do |friend|
+            if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
+              auth.user.fullname = friend['name']
+              @users << auth.user
+              $redis.sadd("facebook_friends_#{current_user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
+            end
+          end
+        rescue Koala::Facebook::APIError => exc
+          if exc.fb_error_code == 190
+            fb_auth = current_user.authentications.where(:p => "facebook").first
+            fb_auth.expiry = 1.day.ago #no longer valid, so cancel out
+            fb_auth.save
+          elsif exc.fb_error_code == 200
+            RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{current_user.username} doesn't authorize publish actions for facebook"
+          elsif exc.fb_error_code == 3501
+            RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{current_user.username} already associated object-object"
+          else
+            raise exc
           end
         end
       end
