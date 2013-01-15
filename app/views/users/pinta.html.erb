@@ -34,7 +34,7 @@
             return false;
         });
 
-        $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14, panControl:false,
+        $('#map_canvas').gmap({ 'center':'<%= @lat %>, <%= @lng %>', 'zoom':14, panControl:false,
             zoomControl:true, mapTypeControl:false, scaleControl:true, streetViewControl:false,
             overviewMapControl:true }).bind('init', function (ev, map) {
 
@@ -165,7 +165,7 @@
 <script id="calloutTemplate" type="text/x-jsrender">
   <div class="info_window">
     <div class="info_name">
-      <a href="{{>url}}">{{>place.name}}</a>
+      <a <%= "target='_blank'" if @newwin %> href="{{>url}}">{{>place.name}}</a>
     </div>
     <div class="info_memo">
       <p>{{>memo }}</p>
