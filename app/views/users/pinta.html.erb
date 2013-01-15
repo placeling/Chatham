@@ -27,6 +27,16 @@
                 new google.maps.Point(11, 11));
 
 
+        $("#iframe_pan").click(function () {
+            $('#map_canvas').gmap('getCurrentPosition', function (position, status) {
+                if (status === 'OK') {
+                    var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    $('#map_canvas').gmap('get', 'map').setOptions({'center':clientPosition});
+                }
+            });
+            return false;
+        });
+
         $('#map_canvas').gmap({ 'center':'<%= @user.location[0] %>, <%= @user.location[1] %>', 'zoom':14, panControl:false,
             zoomControl:true, mapTypeControl:false, scaleControl:true, streetViewControl:false,
             overviewMapControl:true }).bind('init', function (ev, map) {
@@ -66,6 +76,13 @@
         /* for Firefox */
         overflow-x: hidden;
         overflow-y: hidden;
+    }
+
+    #iframe_pan {
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        z-index: 1;
     }
 
     a, a:link, a:visited {
@@ -171,6 +188,9 @@
 </script>
 
 <div id="map_holder" style="width:100%; height:100%">
+  <div id="iframe_pan">
+    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("pan.png") %></a>
+  </div>
   <div id="map_canvas" style="width:100%; height:100%"></div>
 </div>
 </body>
