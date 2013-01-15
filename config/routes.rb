@@ -16,6 +16,7 @@ Chatham::Application.routes.draw do
   get "/locals", :to => 'admin#local', :as => :local
   get "/tour", :to => 'admin#tour', :as => :tour
   get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
+  get "/bloggers/plans", :to => 'admin#blogger_plans', :as => :blogger_plans
   get "/admin/investors", :to => 'admin#investors', :as => :investors
   get "/explore", :to => 'aggregation#index', :as => :aggregation
 
