@@ -55,11 +55,11 @@
             $('.grid .line:first-child').addClass('firstline');
             $('.grid .line:last-child').addClass('lastline');
             // Tabs switching
-            $('.content#box2-home').hide(); // hide content related to inactive tab by default
+            $('.brownContent#box2-home').hide(); // hide content related to inactive tab by default
             $('.header ul a').click(function () {
                 $('#box1 .header ul a').removeClass('active');
                 $(this).addClass('active'); // make clicked tab active
-                $('#box1 .content').hide(); // hide all content
+                $('#box1 .brownContent').hide(); // hide all content
                 $('#box1').find('#' + $(this).attr('rel')).show(); // and show content related to clicked tab
                 return false;
             });
@@ -81,7 +81,7 @@
         </ul>
       </div>
       <%= form_for(@publisher, :class => "basic") do |f| %>
-          <div id="box1-basics" class="content">
+          <div id="box1-basics" class="brownContent">
             <div class="inner-form">
               <!-- error and information messages -->
               <% if @publisher.errors.any? %>
@@ -108,7 +108,7 @@
 
             </div>
           </div>
-          <div id="box2-home" class="content">
+          <div id="box2-home" class="brownContent">
             <div class="inner-form">
 
               <dl>
@@ -119,7 +119,7 @@
               </dl>
             </div>
           </div>
-          <div id="box3-css" class="content" style="display: none;">
+          <div id="box3-css" class="brownContent" style="display: none;">
             <div class="inner-form">
 
               <dl>
@@ -130,7 +130,7 @@
               </dl>
             </div>
           </div>
-          <div id="box4-place" class="content" style="display: none;">
+          <div id="box4-place" class="brownContent" style="display: none;">
             <div class="inner-form">
 
               <dl>
