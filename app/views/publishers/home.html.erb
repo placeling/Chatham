@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
   <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
   <title><%= @publisher.user.username %></title>
 
   <script type="text/javascript">
@@ -27,21 +29,8 @@
 </head>
 <body>
 <div class='container' style="width:100%">
-  <div class="navbar">
-    <div class="navbar-inner">
-
-      <a class="brand" href="/" style="padding: 5px 20px 5px 20px;">
-        <img width="44" src="<%= @publisher.user.thumb_url %>">
-      </a>
-
-      <div class="brand" href="/" style="padding: 18px 20px 5px 20px;">
-        <%= @publisher.user.username %>
-      </div>
-    </div>
-  </div>
+  <%= raw liquidize @publisher.home_liquid_template, 'publisher' => @publisher %>
 </div>
-
-<%= raw liquidize @publisher.home_liquid_template, 'publisher' => @publisher %>
 </body>
 </html>
 
