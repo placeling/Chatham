@@ -121,9 +121,11 @@ class PublishersController < ApplicationController
     respond_to do |format|
       if @publisher.update_attributes(params[:publisher])
         format.html { redirect_to edit_publisher_path(@publisher), notice: 'Publisher was successfully updated.' }
+        format.js
         format.json { head :no_content }
       else
         format.html { render :edit, :layout => 'bootstrap' }
+        format.js
         format.json { render json: @publisher.errors, status: :unprocessable_entity }
       end
     end

@@ -17,6 +17,14 @@
                 $(this).parent().parent().remove();
             });
 
+            $("#publisher_form_submit").attr('disabled', 'disabled');
+            $("#publisher_form_submit").css("color", "grey");
+
+            $('textarea').keypress(function () {
+                $("#publisher_form_submit").removeAttr("disabled");
+                $("#publisher_form_submit").css("color", "white");
+            });
+
 
             $("#user_username").autocomplete({
                 minLength:2,
@@ -80,7 +88,7 @@
           <li><a rel="box4-place" href="#" class=""><%= t 'publisher.place_template' %></a></li>
         </ul>
       </div>
-      <%= form_for(@publisher, :class => "basic") do |f| %>
+      <%= form_for(@publisher, :remote => true) do |f| %>
           <div id="box1-basics" class="brownContent" style="display: none;">
             <div class="inner-form">
               <!-- error and information messages -->
@@ -146,7 +154,7 @@
           </div>
           <dl>
             <dd>
-              <%= f.submit :class => "button" %>
+              <%= f.submit :class => "button", :value => "Save", :id => "publisher_form_submit" %>
             </dd>
           </dl>
       <% end %>
