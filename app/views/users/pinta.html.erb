@@ -73,6 +73,12 @@
                 });
               });
         });
+        
+        /*$('#map_canvas').gmap('get', 'map').click(function(){
+          if (infobox.getVisible()) {
+            infobox.close();
+          }
+        });*/
     });
 </script>
 <style type="text/css">
@@ -186,6 +192,8 @@
     
     .place_name {
       overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
       max-height: 24px;
       max-width: 200px;
       position:relative;
