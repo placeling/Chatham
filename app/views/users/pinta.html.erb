@@ -74,11 +74,12 @@
               });
         });
         
-        /*$('#map_canvas').gmap('get', 'map').click(function(){
+        var map = $('#map_canvas').gmap('get', 'map');
+        $(map).addEventListener('click', function() {
           if (infobox.getVisible()) {
             infobox.close();
           }
-        });*/
+        });
     });
 </script>
 <style type="text/css">
@@ -225,9 +226,9 @@
 <script id="calloutTemplate" type="text/x-jsrender">
   <div id="infobox">
     <div class="right">
-      <a <%= "onclick='{{>url}}'" if @newwin %> <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class=>"mini_marker" %></a>
+      <a <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class=>"mini_marker" %></a>
     </div>
-    <a class="out_link" <%= "onclick='{{>url}}'" if @newwin %> <%= "target='_blank'" if @newwin %> href="{{>url}}"><div class="place_name">{{>place.name}}</div></a>
+    <a class="out_link" <%= "target='_blank'" if @newwin %> href="{{>url}}"><div class="place_name">{{>place.name}}</div></a>
   </div>
 </script>
 
