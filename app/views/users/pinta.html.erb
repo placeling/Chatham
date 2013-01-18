@@ -30,11 +30,29 @@
           infoBoxClearance: new google.maps.Size(1, 1)
         });
         
+        var currentPosition = new InfoBox({
+          content: "<div id='advanced'>",
+          boxStyle: {
+            width: "8px",
+            height: "8px",
+            textAlign: "center",
+            fontSize: "8pt",
+          },
+          disableAutoPan: true,
+          pixelOffset: new google.maps.Size(-25, 0),
+          closeBoxURL: "",
+          isHidden: false,
+          pane: "mapPane",
+          enableEventPropagation: true
+        });
+        
         $("#iframe_pan").click(function () {
             $('#map_canvas').gmap('getCurrentPosition', function (position, status) {
                 if (status === 'OK') {
                     var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     $('#map_canvas').gmap('get', 'map').setOptions({'center':clientPosition});
+                    currentPosition.setPosition(clientPosition);
+                    currentPosition.open($('#map_canvas').gmap('get', 'map'));
                 }
             });
             return false;
@@ -90,10 +108,6 @@
         margin-right: 10px;
         width: 117px;
     }
-    
-    /*#infobox {
-      position: relative;
-    }*/
     
     #infobox {
         background:#333;
@@ -179,6 +193,18 @@
       color:#FFF;
       font-size:18px;
       font-weight: 800;
+    }
+    
+    #advanced {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+
+      background-image: -moz-radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+      background-image: -webkit-radial-gradient(3px 3px, circle cover, #DBE5FF, #00C3FF);
+      background-image: radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+      -webkit-box-shadow: 0px 0px 1px 1px #3168F5;
+      box-shadow: 0px 0px 1px 1px #3168F5;
     }
 </style>
 <body>
