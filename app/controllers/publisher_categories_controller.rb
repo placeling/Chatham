@@ -9,8 +9,13 @@ class PublisherCategoriesController < ApplicationController
 
     @publisher = Publisher.forgiving_find(params['publisher_id'])
 
-    @publisher_category = @publisher.category_for(params['id'])
-    @perspectives = @publisher_category.perspectives(@lat, @lng)
+    if params['id'] == "all"
+      @perspectives = Perspective.near_for_user(@publisher.user, [@lat, @lng])
+    else
+      @publisher_category = @publisher.category_for(params['id'])
+      @perspectives = @publisher_category.perspectives(@lat, @lng)
+    end
+
 
     respond_to do |format|
       format.json { render json: {:perspectives => @perspectives.as_json(:detail_view => true)} }

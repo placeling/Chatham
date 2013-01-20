@@ -84,6 +84,12 @@ class Perspective
         limit(0)
   end
 
+  def self.near_for_user(user, loc)
+    Perspective.where(:ploc => {"$near" => loc}).
+        and(:uid => user.id).
+        limit(20)
+  end
+
   def self.query_near_for_user(user, loc, query)
     if query != nil and query.strip != ""
       tags = Perspective.extract_tag_array(query.downcase.strip)
