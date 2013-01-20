@@ -11,6 +11,7 @@ class PublisherCategoriesController < ApplicationController
 
     if params['id'] == "all"
       @perspectives = Perspective.near_for_user(@publisher.user, [@lat, @lng])
+      @publisher_category = nil
     else
       @publisher_category = @publisher.category_for(params['id'])
       @perspectives = @publisher_category.perspectives(@lat, @lng)
@@ -18,7 +19,7 @@ class PublisherCategoriesController < ApplicationController
 
 
     respond_to do |format|
-      format.json { render json: {:perspectives => @perspectives.as_json(:detail_view => true)} }
+      format.json { render json: {:perspectives => @perspectives.as_json(:detail_view => true), :publisher_category => @publisher_category} }
     end
   end
 
