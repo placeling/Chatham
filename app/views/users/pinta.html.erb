@@ -30,11 +30,29 @@
           infoBoxClearance: new google.maps.Size(1, 1)
         });
         
+        var currentPosition = new InfoBox({
+          content: "<div id='advanced'>",
+          boxStyle: {
+            width: "8px",
+            height: "8px",
+            textAlign: "center",
+            fontSize: "8pt",
+          },
+          disableAutoPan: true,
+          pixelOffset: new google.maps.Size(-25, 0),
+          closeBoxURL: "",
+          isHidden: false,
+          pane: "mapPane",
+          enableEventPropagation: true
+        });
+        
         $("#iframe_pan").click(function () {
             $('#map_canvas').gmap('getCurrentPosition', function (position, status) {
                 if (status === 'OK') {
                     var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     $('#map_canvas').gmap('get', 'map').setOptions({'center':clientPosition});
+                    currentPosition.setPosition(clientPosition);
+                    currentPosition.open($('#map_canvas').gmap('get', 'map'));
                 }
             });
             return false;
@@ -54,6 +72,13 @@
                   });
                 });
               });
+        });
+        
+        var map = $('#map_canvas').gmap('get', 'map');
+        $(map).addEventListener('click', function() {
+          if (infobox.getVisible()) {
+            infobox.close();
+          }
         });
     });
 </script>
@@ -91,10 +116,6 @@
         width: 117px;
     }
     
-    /*#infobox {
-      position: relative;
-    }*/
-    
     #infobox {
         background:#333;
         padding:8px 16px;
@@ -102,7 +123,7 @@
         border-radius:4px;
         position:relative;
         float: left;
-        box-shadow: 0 0 8px #000;
+        box-shadow: 0 0 5px #000;
         font-family:Arial, Helvetica, sans-serif;
     }
     #infobox:after {
@@ -120,7 +141,7 @@
         display:block;
         width: 24px;
         height: 24px;
-        box-shadow: 0 0 8px #000;
+        box-shadow: 0 0 5px #000;
         z-index:-10;
     }
     #infobox:before {
@@ -155,10 +176,7 @@
         padding-left: 3px;
     }
     
-    .out_link a, a:link, a:hover, a:visited, a:active {
-      color:#FFF;
-      font-size:18px;
-      font-weight: 800;
+    a.out_link {
       text-decoration: none;
     }
     
@@ -175,25 +193,48 @@
     
     .place_name {
       overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
       max-height: 24px;
       max-width: 200px;
       position:relative;
       z-index:11;
+      color:#FFF;
+      font-size:18px;
+      font-weight: 800;
+    }
+    
+    #advanced {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+
+      background-image: -moz-radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+      background-image: -webkit-radial-gradient(3px 3px, circle cover, #DBE5FF, #00C3FF);
+      background-image: radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+      -webkit-box-shadow: 0px 0px 1px 1px #3168F5;
+      box-shadow: 0px 0px 1px 1px #3168F5;
+    }
+    
+    .pan {
+      /*border: 0.5px solid #988F79;*/
+      border-radius: 4px;
+      box-shadow: 0px 0px 2px 0px #988F79;
     }
 </style>
 <body>
 <script id="calloutTemplate" type="text/x-jsrender">
   <div id="infobox">
     <div class="right">
-      <a <%= "onclick='{{>url}}'" if @newwin %> <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class=>"mini_marker" %></a>
+      <a <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class=>"mini_marker" %></a>
     </div>
-    <a class="out_link" <%= "onclick='{{>url}}'" if @newwin %> <%= "target='_blank'" if @newwin %> href="{{>url}}"><div class="place_name">{{>place.name}}</div></a>
+    <a class="out_link" <%= "target='_blank'" if @newwin %> href="{{>url}}"><div class="place_name">{{>place.name}}</div></a>
   </div>
 </script>
 
 <div id="map_holder" style="width:100%; height:100%">
   <div id="iframe_pan">
-    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("pan.png") %></a>
+    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("pan.png"), :class=>"pan" %></a>
   </div>
   <div id="map_canvas" style="width:100%; height:100%"></div>
 </div>
