@@ -35,7 +35,7 @@
 
 <% content_for :css do %>
     @media only screen and (max-width: 960px) {
-    #header, #footerbottom, #download_container, #user_and_map  {
+    #header, #footerbottom, #user_and_map  {
     display: none;
     }
 
@@ -1480,12 +1480,6 @@
 
             $(window).resize();
         });
-
-        $(window).load(function () {
-            if ($(window).width() > iPadWidth) {
-                callToDownload(5000);
-            }
-        });
     </script>
 <% end %>
 
@@ -1546,4 +1540,3 @@
     <div id="main_map"></div>
   </div>
 </div>
-<%= render :partial => "layouts/download", :locals => {:user => @user} %>

@@ -174,9 +174,6 @@
         $.cookie('page_state', JSON.stringify(loadState), {path:'/'});
       });
     });
-    $(window).load(function(){
-      callToDownload(2000);
-    });
   </script>
 <% end %>
 
@@ -223,4 +220,3 @@
     <% end %>
   </div>
 </div>
-<%= render :partial => "layouts/download", :locals => {:user => @user} %>
