@@ -11,11 +11,6 @@
     <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
         <script type="text/javascript">
             $(document).ready(function () {
-                mpmetrics.track_links('.tour_link', 'tour_link');
-                mpmetrics.track_links('.question_link', 'question_link');
-                mpmetrics.track_links('.city_guide_link', 'city_guide_link');
-                mpmetrics.track_links('.blog_tools_link', 'blog_tools_link');
-                mpmetrics.track_links('.sign_up', 'signup_link');
                 mpmetrics.track('index_view');
             });
         </script>
@@ -48,133 +43,46 @@
                     }
             );
         });
-        $(window).load(function () {
-            var $slide = $("#slideshow");
-
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/home_view.jpg") %>" id="photo0" class="slideshow" />');
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/my_map.jpg") %>" id="photo1" class="slideshow" />');
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/my_map_named.jpg") %>" id="photo2" class="slideshow" />');
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/la_taqueria.jpg") %>" id="photo3" class="slideshow" />');
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/lindsay.jpg") %>" id="photo4" class="slideshow" />');
-            $('#slide_anchor').append('<img src="<%= asset_path("home/screens/clear.png") %>" id="photo5" class="slideshow" />');
-
-            $('#photo1').css('display', 'none');
-            $('#photo2').css('display', 'none');
-            $('#photo3').css('display', 'none');
-            $('#photo4').css('display', 'none');
-            $('#photo5').css('display', 'none');
-
-            var photoCount = 5;
-            var $fade_time = 250;
-            var $timeout = '';
-
-            function slideshow(slideNumber) {
-                slideNumber = (slideNumber > photoCount ? 0 : slideNumber);
-                nextSlide = (slideNumber == photoCount ? 0 : slideNumber + 1);
-
-                $('#photo' + slideNumber).fadeOut($fade_time, function () {
-                    $('#photo' + nextSlide).fadeIn($fade_time);
-                    var timeoutCount = 6500;
-                    if (slideNumber == photoCount - 1) {
-                        timeoutCount = 2000;
-                    }
-                    $timeout = setTimeout(function () {
-                        slideshow(slideNumber + 1);
-                    }, timeoutCount);
-                });
-            }
-
-            $('#slide_anchor').css('background-image', 'url(<%= asset_path("home/screens/clear.png") %>)')
-
-            setTimeout(function () {
-                slideshow(0)
-            }, 6500);
-        });
     </script>
 <% end %>
 
-<div id="main_well">
-  <div id="marketing_main">
-    <div id="iphone">
-      <div id="slide_anchor"></div>
+<div id="admin_header">
+  <div class="component_holder">
+    <div class="header_component right_spacer">
+      <div><%= image_tag "home/glyphs/content.png", :alt=>"Content", :class=>"image_button" %></div>
+      <div class="component">content</div>
     </div>
-    <div id="main_copy">
-      <div id="headline">Your Places</div>
-      <p class="copy">Create a shareable city guide</p>
-      <div id="homepage_action">
-        <div class="register"><span class="social_proof">Join thousands of locals</span>
-          <span id="homepage_register"><%= link_to "Create Your Own Guide", new_user_registration_path(), :class => "submit sign_up" %></span>
-        </div>
-      </div>
-      <div id="homepage_people">
-        <% cache do %>
-            <% @candidates.each do |candidate|
-              user = User.find_by_username(candidate)
-              if !user.nil? %>
-                    <div class="homepage_photo_holder"><%= image_tag(user.thumb_cache_url, :class => "homepage_photo") %></div>
-                <% end
-                   end %>
-        <% end %>
-      </div>
+    <div class="header_component right_spacer">
+      <div><%= image_tag "home/glyphs/pin.png", :alt=>"Location", :class=>"image_button" %></div>
+      <div class="component">location</div>
+    </div>
+    <div class="header_component">
+      <div><%= image_tag "home/glyphs/iphone.png", :alt=>"Mobile", :class=>"image_button" %></div>
+      <div class="component">mobile</div>
     </div>
   </div>
-  <div id="homepage_more">
-    <div class="mini_headline">It's Easy</div>
-    <ol class="easy_style">
-      <li class="copy">Bookmark the places you love</li>
-      <li class="copy">Follow others to discover new places</li>
-    </ol>
-    <div class="mini_headline">What Else Can You Do With Placeling?</div>
-    <div class="feature_unit">
-      <div class="feature_image">
-        <%= image_tag(asset_path("home/features/tour.jpg")) %>
-      </div>
-      <div class="feature_description">
-        <p class="feature_headline">Be The
-          Guide <%= image_tag(asset_path("header/tour_compass.png"), :class => "watermark") %></p>
-        <p class="feature_details">Turn the places on your map into shareable, printable tours.</p>
-        <p class="learn_link"><%= link_to("Shareable Tours", tour_path, :class => "tour_link") %></p>
-      </div>
-    </div>
-    <div class="feature_unit">
-      <div class="feature_image">
-        <%= image_tag(asset_path("home/features/questions.jpg")) %>
-      </div>
-      <div class="feature_description">
-        <p class="feature_headline">Find The Perfect
-          Place <%= image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :class => "watermark") %></p>
-        <p class="feature_details">Ask your friends for their favorite places - and add them to your map.</p>
-        <p class="learn_link"><%= link_to("Ask A Question", questions_path, :class => "question_link") %></p>
-      </div>
-    </div>
-    <div class="feature_unit">
-      <div class="feature_image">
-        <%= image_tag(asset_path("home/features/infographic.jpg")) %>
-      </div>
-      <div class="feature_description">
-        <p class="feature_headline">Get The Locals' Perspective</p>
-        <p class="feature_details">We ask local experts for the best of their city - and you get it automatically.</p>
-        <p class="learn_link"><%= link_to("City Guides", local_path, :class => "city_guide_link") %></p>
-      </div>
-    </div>
-    <div class="feature_unit">
-      <div class="feature_image">
-        <%= image_tag(asset_path("home/features/wordpress.png")) %>
-      </div>
-      <div class="feature_description">
-        <p class="feature_headline">Your Map In Your Blog</p>
-        <p class="feature_details">The easiest way to put a map in your blog or website.</p>
-        <p class="learn_link"><%= link_to("Blogging Tools", bloggers_path, :class => "blog_tools_link") %></p>
-      </div>
-    </div>
-  </div>
-  <div id="last_call">
-    Enough already - <%= link_to "Create Your Own Guide", new_user_registration_path(), :class => "submit sign_up" %>
+  <div class="header_tagline">
+    Mobilize &amp; Monetize
   </div>
 </div>
+<div class="promise">
+  Location-enable your content to win mobile readers and monetize better
+</div>
+<div id="main_content" class="main_spacer">
+  <div id="wordpress_options">
+    <div class="center_image"><a href="<%= bloggers_path %>"><%= image_tag "home/features/wordpress_iphone.png", :alt=>"Wordpress" %></a></div>
+    <div class="option_detail"><%= link_to 'Extend Wordpress To Guide Readers To Nearby Places', bloggers_path, :class=>"option_link" %></div>
+  </div>
+  <div id="publishing_options">
+    <div class="center_image bottom_padder"><%= image_tag "home/features/iphone_indie.png", :alt=>"Publishers" %></div>
+    <div class="option_detail">Coming Soon: Turn Your Content Into A Sponsored Local Guide</div>
+  </div>
+</div>
+
+
 <div id="homepage_finish">
   <div id="finish_options">
-    Need more info? <%= mail_to "contact@placeling.com", "Email us", :encode => "javascript" %>
+    We'd Like To Help: <%= mail_to "contact@placeling.com", "Email us", :encode => "javascript" %>
     <span id="stay_in_touch">Stay in touch:</span>
     <span class="social_connect"><a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt => "FB", :id => "facebook" %></a></span>
     <span class="social_connect"><a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt => "Twitter", :id => "twitter" %></span>
