@@ -4,7 +4,8 @@ require 'google_places_autocomplete'
 
 class PlacesController < ApplicationController
   before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]
-
+  before_filter :admin_required, :only => [:edit]
+  
   def reference
     if params[:ref].nil?
       raise ActionController::RoutingError.new('Not Found')
@@ -582,8 +583,9 @@ class PlacesController < ApplicationController
   def edit
     @place = Place.forgiving_find(params[:id])
   end
-
+  
   def update
+    @place = Place.forgiving_find(params[:id])
     if @place.update_attributes(params[:place])
       flash[:notice] = t "place.updated_place"
       redirect_to :action => "show", :id => @place.id

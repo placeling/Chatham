@@ -488,6 +488,11 @@ en:
     no_following: "No one you follow has a placemark here"
     recent_places: "Recent Places"
     add_notes: "Add some notes & photos"
+    phone: "Phone number"
+    url: "URL"
+    twitter: "Twitter"
+    edit_place: "Update This Place"
+    updated_place: "Place updated"
 
   perspective:
     fav_places: "%{user}'s favorite places"
