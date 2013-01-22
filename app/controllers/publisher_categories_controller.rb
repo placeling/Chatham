@@ -39,7 +39,7 @@ class PublisherCategoriesController < ApplicationController
   # GET /publishers/new.json
   def new
     @publisher = Publisher.find(params[:publisher_id])
-    @publisher_category = @publisher.publisher_categories.build
+    @publisher_category = TagSearchModule.new(:publisher => @publisher)
 
     respond_to do |format|
       format.html { render :new, :layout => 'bootstrap' }
