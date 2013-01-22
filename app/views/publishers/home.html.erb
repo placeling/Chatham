@@ -10,6 +10,10 @@
 
   <title><%= @publisher.user.username %></title>
 
+  <style type="text/css">
+      <%= raw liquidize @publisher.css_liquid_template, nil %>
+  </style>
+
   <script type="text/javascript">
       $(document).ready(function () {
           $('a').each(function () {
