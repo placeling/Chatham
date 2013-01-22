@@ -72,14 +72,15 @@ class PublisherCategory
   end
 
   def perspectives;
-    raise "Abstract Method Called";
+    raise "Abstract Method Called"
   end
 
   def as_json(options={})
     attributes = {:id => self['_id'],
                   :name => self.name,
                   :slug => self.slug,
-                  :list_liquid_template => self.list_liquid_template
+                  :list_liquid_template => self.list_liquid_template,
+                  :list_liquid_html => Liquid::Template.parse(self.list_liquid_template).render(nil)
     }
 
     attributes.merge(:image_url => self.main_url).merge(:thumb_url => self.thumb_url)
