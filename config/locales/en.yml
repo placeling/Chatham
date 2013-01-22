@@ -21,7 +21,7 @@ en:
     contact_us: "Contact"
     about_us: "About Us"
     marketing: "Placeling :: Be The Guide"
-    description: "Location-based mobile publishing for Wordpress, newspapers and magazines"
+    description: "Location-based mobile publishing for WordPress, newspapers and magazines"
     blog: "Blog"
     investors: "Investors"
     create: "Use our iPhone app, blog tools and website to create a map of your world."
@@ -109,7 +109,7 @@ en:
     marketing_text_3: "Explore with the experts"
     learn: "Learn more"
     blogger: "Blogger"
-    tool: "Turn your Wordpress blog into an iPhone-enabled city guide"
+    tool: "Turn your WordPress blog into an iPhone-enabled city guide"
   
   applications:
     all_applications: "All Applications"
@@ -565,7 +565,7 @@ en:
     map: "and you'll see a map of all your places"
     recommendations: "If anyone ever wants recommendations, send them here!"
     more: "More things you can only do with Placeling"
-    wordpress: "Do you have a Wordpress blog? Get our"
+    wordpress: "Do you have a WordPress blog? Get our"
     plugin: "plugin"
     more_wordpress: "to turn your posts about places into pins on your map"
     embed_1: "If you've a blog or website, you can"
