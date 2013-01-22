@@ -44,19 +44,19 @@ class PublisherCategory
 
   def cache_urls
     self.creation_environment = Rails.env
-    self.main_cache_url = self.image_url(:main)
+    self.main_cache_url = self.image_url
     self.thumb_cache_url = self.image_url(:thumb)
     self.save
   end
 
   def main_url
     if Rails.env == self.creation_environment
-      self.image_url(:main)
+      self.image_url
     elsif main_cache_url
       main_cache_url
     else
       self.cache_urls
-      self.image_url(:main)
+      self.image_url
     end
   end
 

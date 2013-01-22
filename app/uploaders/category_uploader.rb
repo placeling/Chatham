@@ -15,11 +15,7 @@ class CategoryUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
 
-  version :main do
-    process :resize_to_fit => [960, 960]
-  end
-
-  version :thumb, :from_version => :main do
+  version :thumb do
     process :resize_to_fit => [150, 100]
   end
 
