@@ -31,7 +31,8 @@
         </ul>
       </div>
 
-      <%= form_for @publisher_category, :as => :publisher_category, :html => {:multipart => true}, :url => publisher_publisher_category_path(@publisher_category.publisher, @publisher_category) do |f| %>
+      <%= form_for [@publisher_category.publisher, @publisher_category.becomes(PublisherCategory)], :as => :publisher_category, :html => {:multipart => true} do |f| %>
+          <% f.object = @publisher_category.becomes(@publisher_category.class) %>
           <div id="box1-basics" class="content">
             <% if @publisher_category.errors.any? %>
                 <div id="error_explanation">

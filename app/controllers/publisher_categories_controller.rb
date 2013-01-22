@@ -39,7 +39,7 @@ class PublisherCategoriesController < ApplicationController
   # GET /publishers/new.json
   def new
     @publisher = Publisher.find(params[:publisher_id])
-    @publisher_category = TagSearchModule.new(:publisher => @publisher)
+    @publisher_category = @publisher.publisher_categories.new({}, TagSearchModule)
 
     respond_to do |format|
       format.html { render :new, :layout => 'bootstrap' }
@@ -62,7 +62,7 @@ class PublisherCategoriesController < ApplicationController
   # POST /publishers.json
   def create
     @publisher = Publisher.find(params[:publisher_id])
-    @publisher_category = @publisher.publisher_categories.build(params[:publisher_category])
+    @publisher_category = @publisher.publisher_categories.build(params[:publisher_category], TagSearchModule)
 
     respond_to do |format|
       if @publisher_category.save
