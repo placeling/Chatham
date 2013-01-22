@@ -115,7 +115,7 @@ class AuthenticationsController < ApplicationController
         end
 
         @user.confirm!
-        Notifier.welcome(@user.id).deliver!
+        #Notifier.welcome(@user.id).deliver!
 
         @user.save!
         @user.authentications.create!(:provider => omniauth['provider'], :uid => omniauth['uid'], :token => omniauth['credentials']['token']) do |a|
