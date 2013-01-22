@@ -98,7 +98,6 @@ Chatham::Application.routes.draw do
       get :activity
       get :pinta
       get :iframe
-      get :wimdu
       get :embed
       get :account
       get :confirm_destroy

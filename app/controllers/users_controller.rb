@@ -71,7 +71,7 @@ class UsersController < ApplicationController
         #these trigger an implicit save that seems to override validations
         user.confirm! #indicates that it doesn't need a confirmation, since we got email from Facebook
         auth = user.authentications.build(:expiry => params[:facebook_expiry_date], :provider => "facebook", :uid => params[:facebook_id], :token => params[:facebook_access_token])
-        Notifier.welcome(user.id).deliver!
+        #Notifier.welcome(user.id).deliver!
       end
     else
       user = User.new(:username => params[:username].strip,
@@ -135,19 +135,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render :json => {:status => "success", :users => @users.as_json({:current_user => current_user})} }
-    end
-  end
-
-  def wimdu
-    @user = User.find_by_username('lindsayrgwatt')
-    @zoom = 13
-    @lat = 52.50198
-    @lng = 13.41770
-    @width = 700
-    @height = 488
-
-    respond_to do |format|
-      format.html { render :layout => 'blank' }
     end
   end
 

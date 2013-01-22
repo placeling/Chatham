@@ -76,9 +76,6 @@
                 });
             });
         });
-        $(window).load(function () {
-            callToDownload(2000);
-        });
     </script>
 <% end %>
 
@@ -271,4 +268,3 @@
     </div>
   </div>
 </div>
-<%= render :partial => "layouts/download", :locals => {:user => @perspective.user} %>

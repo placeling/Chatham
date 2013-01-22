@@ -1,149 +1,286 @@
 <% content_for :head do %>
   <title>Placeling for Bloggers: Wordpress Plugin</title>
-  <meta name="description" content="The details behind the Placeling Wordpress plugin for bloggers. Turn your blog into an interactive, map-based, iPhone-enabled guide" />
+  <meta name="description" content="Location-based publishing comes to Wordpress. Tag anything with a location and see it on a map-including on your phone." />
   <meta property="og:title" content="Placeling for Bloggers: Wordpress Plugin" />
 <% end %>
 
-
-<div id="content_holder">
-  <div class="promo"><a href="#faq">Skip to FAQ</a></div>
-  <div class="blog_content big_script">The Easiest Way to Put a Map in your Blog</div>
-  <div class="blog_content">
-    <div class="promo">
-      <p>You can embed your Placeling map in your blog or website.</p>
-      <p>It's <a href="#embed">one line of code</a>.</p>
-      <p>See it in action <a href="http://fidoloves.com/dog-friendly-map/">here</a> and <a href="http://leaveyourdailyhell.com/map-of-the-world/">here</a>.</p>
-      <p>But there's more:</p>
-      <ul class="blog_benefits">
-        <li>You can use our <a href="http://wordpress.org/extend/plugins/placeling/">Wordpress plugin</a> to turn a blog post into a map pin. Clicking on the pin opens the corresponding post.</li>
-        <li>Readers can filter the map for #hashtags in your descriptions.</li>
-        <li>Readers can follow you in Placeling and see the same map on their iPhone.</li>
-        <li>You can change your map at Placeling.com or via our iPhone app and the results will automatically appear on your embedded map.</li>
+<div id="admin_header">
+  <div class="component_holder">
+    <div class="header_component right_spacer">
+      <div><%= image_tag "home/glyphs/wordpress.png", :alt=>"Wordpress", :class=>"image_button" %></div>
+      <div class="component">wordpress</div>
+    </div>
+    <div class="header_component right_spacer">
+      <div><%= image_tag "home/glyphs/pin.png", :alt=>"Location", :class=>"image_button" %></div>
+      <div class="component">location</div>
+    </div>
+    <div class="header_component">
+      <div><%= image_tag "home/glyphs/iphone.png", :alt=>"Mobile", :class=>"image_button" %></div>
+      <div class="component">mobile</div>
+    </div>
+  </div>
+  <div class="header_tagline">
+    Use Wordpress to be the Guide
+  </div>
+</div>
+<div class="promise">
+  Placeling brings effortless, location-based, mobile publishing to Wordpress
+</div>
+<div id="main_content">
+  <div id="blog_screenshots">
+    <div id="leftcolumn">
+      <%= image_tag "home/bloggers/footer.png", :alt=>"Footer", :class=>"screenshot" %>
+      <div class="blog_explanation">
+        <div><%= image_tag "home/glyphs/pin_full.png", :alt=>"Location", :class=>"blog_glyph" %></div>
+        <div class="feature_text">Easily tag any post or page with a location</div>
+      </div>
+    </div>
+    <div id="rightcolumn">
+      <%= image_tag "home/bloggers/iphone.png", :alt=>"Mobile", :class=>"screenshot" %>
+      <div class="blog_explanation">
+        <div><%= image_tag "home/glyphs/iphone_full.png", :alt=>"Location", :class=>"blog_glyph" %></div>
+        <div class="feature_text">Use your phone to see nearby places</div>
+      </div>
+    </div>
+    <div id="contentcolumn">
+      <%= image_tag "home/bloggers/map.png", :alt=>"Map", :class=>"screenshot" %>
+      <div class="blog_explanation">
+        <div><%= image_tag "home/glyphs/map.png", :alt=>"Location", :class=>"blog_glyph" %></div>
+        <div class="feature_text">See your places on an automatically created map</div>
+      </div>
+    </div>
+  </div>
+  <div id="blog_call_to_action">
+    <%= link_to "Download the Plugin", "http://wordpress.org/extend/plugins/placeling/", :class => "submit sign_up", :id=>"plugin_link" %>
+  </div>
+  <div id="blog_use_cases">
+    <div id="blogger_use_cases">
+      <span class="title_highlight">Bloggers:</span> Show your readers nearby places you recommend
+      <ul>
+        <li>Restaurant Reviews</li>
+        <li>Travel Suggestions</li>
+        <li>Family Activities</li>
+        <li>Where To Get A Deal</li>
+        <li>Memorable Moments</li>
       </ul>
-      <p>Sound good? Let's get started.</p>
-      <p class="heading"><a name="faq">FAQ</a></p>
-      <p><a href="#requirements">What do I need to use the plugin?</a></p>
-      <p><a href="#install">How do I install the plugin?</a></p>
-      <p><a href="#tag">How I do I tag my post with a location?</a></p>
-      <p><a href="#new">How do I add a place that's not in Placeling's database?</a></p>
-      <p><a href="#summary">Why do I need a summary?</a></p>
-      <p><a href="#footer">What is the footer for?</a></p>
-      <p><a href="#embed">How do I embed my map in my blog?</a></p>
-      <p><a href="#more">How do I get more help?</a></p>
-      <p class="heading"><a name="requirements">What do I need to use the plugin?</a></p>
-      <p>You'll need:
-        <ul class="specific">
-          <li>A <a href="http://wordpress.org/">Wordpress</a>-based blog that you can install plugins on</li>
-          <li>A <%= link_to "Placeling account", new_user_registration_path %></li>
-        </ul>
-      </p>
-      <p class="heading"><a name="install">How do I install the plugin?</a></p>
+    </div>
+    <div id="dev_use_cases">
+      <span class="title_highlight">Developers:</span> Win mobile projects that previously weren't possible
+      <ul>
+        <li>Store Locator</li>
+        <li>Tourism Guide</li>
+        <li>Venue Finder For Events</li>
+        <li>Real Estate Listings</li>
+        <li>City Services Directory</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div id="faq">
+    <p class="heading">FAQ</p>
+    <ul>
+      <li class="faq_question"><a href="#what" class="faq_link">What does the plugin do?</a></li>
+      <li class="faq_question"><a href="#where" class="faq_link">Where can I see someone using the plugin?</a></li>
+      <li class="faq_question"><a href="#premium" class="faq_link">Why do you offer a premium version?</a></li>
+      <li class="faq_question"><a href="#requirements" class="faq_link">What do I need to use the plugin?</a></li>
+      <li class="faq_question"><a href="#install" class="faq_link">How do I install the plugin?</a></li>
+      <li class="faq_question"><a href="#tag" class="faq_link">How I do I tag my post with a location?</a></li>
+      <li class="faq_question"><a href="#new" class="faq_link">How do I add a place that's not in Placeling's database?</a></li>
+      <li class="faq_question"><a href="#map" class="faq_link">How can I customize the map?</a></li>
+      <li class="faq_question"><a href="#list" class="faq_link">How can I see a list of nearby places instead of a map?</a></li>
+      <li class="faq_question"><a href="#footer" class="faq_link">What is the footer for?</a></li>
+      <li class="faq_question"><a href="#more" class="faq_link">How do I get more help?</a></li>
+    </ul>
+    
+    <p class="heading_space"><a name="what" class="heading" id="deadlink">What does the plugin do?</a></p>
+    <p>The Placeling plugin does the following:</p>
+    <ul class="specific">
+      <li class="specific">Allows you to tag a Wordpress post or page with a location</li>
+      <li class="specific">Creates a new page on your blog (url: /placeling-map/) and inserts a map of your locations</li>
+      <li class="specific">Clicking on the map pins opens the corresponding post or page</li>
+      <li class="specific">On a phone, the map can show nearby locations</li>
+    </ul>
+    
+    <p class="heading_space"><a name="where" class="heading" id="deadlink">Where can I see someone using the plugin?</a></p>
+    <p><a href="http://lindsayrgwatt.com/blog/placeling-map/" class="specific_link">Here's</a> an example.</p>
+    <p>More coming.</p>
+    <p>If you're using the plugin, <%= mail_to "contact@placeling.com", "email us", :encode => "javascript", :class=>"specific_link" %> and we'll add you here.</p>
+    
+    <p class="heading_space"><a name="premium" class="heading" id="deadlink">Why do you offer a premium version?</a></p>
+    <p>We think every blogger should have a map showing the places they recommend.</p>
+    <p>For bloggers with high traffic (more than 1,000 map views per day) or who need advanced features or customization, we offer a premium version, starting at $20/month.</p>
+    <table>
+      <tr>
+        <th class="noborder"></th>
+        <th class="center title feature_grid">Basic</th>
+        <th class="center title feature_grid">Pro</th>
+        <th class="center title feature_grid">Enterprise</th>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Tag any post or page with a place</td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Mobile optimized</td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">View nearby places as:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="noborder feature">
+          <ul>
+            <li class="specific">Map</li>
+          </ul>
+        </td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature">
+          <ul>
+            <li class="specific">List</li>
+          </ul>
+        </td>
+        <td></td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature">
+          <ul>
+            <li class="specific">Photos</li>
+          </ul>
+        </td>
+        <td></td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Daily nearby places views</td>
+        <td class="center feature_grid">1,000</td>
+        <td class="center feature_grid">10,000</td>
+        <td class="center feature_grid">Unlimited</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Full CSS control</td>
+        <td></td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Custom map pins</td>
+        <td></td>
+        <td class="center feature_grid">&#10003;</td>
+        <td class="center feature_grid">&#10003;</td>
+      </tr>
+      <tr>
+        <td class="noborder feature feature_grid">Price</td>
+        <td class="center feature_grid">Free</td>
+        <td class="center feature_grid">$20/month</td>
+        <td class="center feature_grid">Contact Us</td>
+      </tr>
+      <tr>
+        <td class="noborder"></td>
+        <td class="noborder"></td>
+        <td class="noborder center upgrade"><%= link_to 'upgrade', blogger_plans_path, :class=>"feature_grid" %></td>
+        <td class="noborder center upgrade"><%= mail_to 'sales@placeling.com', 'sales@placeling.com', :class=>"feature_grid" %></td>
+      </tr>
+    </table>
+    
+    <p class="heading_space"><a name="requirements" class="heading" id="deadlink">What do I need to use the plugin?</a></p>
+    <p>You'll need:</p>
+    <ul class="specific">
+      <li class="specific">A self-hosted <a href="http://wordpress.org/" class="specific_link">Wordpress</a> blog. Placeling doesn't yet work on Wordpress.com (If you're a Wordpress.com blogger, please take a moment to <a href="http://en.support.wordpress.com/plugins/" class="specific_link">request that they add us</a>)</li>
+      <li class="specific">A <%= link_to "Placeling account", new_user_registration_path, :class=>"specific_link" %></li>
+    </ul>
+    
+    <p class="heading_space"><a name="install" class="heading" id="deadlink">How do I install the plugin?</a></p>
+    <ul class="specific">
+      <li class="specific">Log into your blog</li>
+      <li class="specific">Go to the "Plugins" tab</li>
+      <li class="specific">Select the "Add New" option</li>
+      <li class="specific">Search for the term "Placeling"</li>
+      <li class="specific">Click the link to install and then activate the Placeling plugin</li>
+    </ul>
+    
+    <p class="heading_space"><a name="tag" class="heading" id="deadlink">How I do I tag my post with a location?</a></p>
+    <p>After you install the Placeling plugin, you'll notice a new box at the bottom of the compose screen:</p>
+    <p>
+      <%= image_tag "home/bloggers/new_post.png", :alt=>"Untagged post", :class=>"blog_image" %>
+    </p>
+      <p>Click "Add Place" and a pop-up window will appear.</p>
+      <p>The first time you do this, you'll be asked to log in to Placeling (remember - you must have an account). If you've any issues doing this, <a href="mailto:support@placeling.com" class="specific_link">drop us a line</a>.</p>
+      <p>When you're logged in, the pop-up will contain a search box plus any recent locations.</p>
       <p>
-        <ul class="specific">
-          <li>Log into your blog</li>
-          <li>Go to the "Plugins" tab</li>
-          <li>Select the "Add New" option</li>
-          <li>Search for the term "Placeling"</li>
-          <li>Click the link to install and then activate the Placeling plugin</li>
-        </ul>
-      </p> 
-      <p class="heading"><a name="tag">How I do I tag my post with a location?</a></p>
-      <p>After you install the Placeling plugin, you'll notice two new things when you go to write a post:</p>
-      <p>
-        <ul class="specific">
-          <li>A little place marker next to the upload photo button</li>
-          <li>A new box called "Placeling" below the main editor</li>
-        </ul>
-      </p>
-      <p>
-        <%= image_tag "admin/bloggers/untagged.png", :alt=>"Untagged post", :class=>"blog_image blog_2" %>
-      </p>
-      <p>Click either.</p>
-      <p>A pop-up window will appear.</p>
-      <p>The first time you do this, you'll be asked to log in to Placeling (remember - you must have an account). If you've any issues doing this, <a href="mailto:support@placeling.com">drop us a line</a>.</p>
-      <p>When you're logged in, the pop-up will contain a search box plus any recent locations you've placemarked via Placeling.</p>
-      <p>
-        <%= image_tag "admin/bloggers/recent_places.png", :alt=>"Recent Places", :class=>"blog_image blog_3" %>
+        <%= image_tag "home/bloggers/choose_place.png", :alt=>"Recent Places", :class=>"blog_image" %>
       </p>
       <p>If your blog post is about a recent location, simply click the one you want. Otherwise, type the name of the location your blog post is about. As you type, you'll see the list of locations update.</p>
       <p>Tips:
         <ul class="specific">
-          <li>If you're typing a name like "Starbucks" with multiple locations, include a city or street name e.g., "Starbucks Robson"</li>
-          <li>If you don't see any locations that match your term, make sure your spelling is correct</li>
+          <li class="specific">If you're typing a name like "Starbucks" with multiple locations, include a city or street name e.g., "Starbucks Robson"</li>
+          <li class="specific">If you don't see any locations that match your term, make sure your spelling is correct</li>
         </ul>
       </p>
-      <p>If you don't still don't see the place you're looking for just hit the "enter" or "return" key while typing and you'll be able to add a new place. <a href="#new">More below</a>.</p>
+      <p>If you don't still don't see the place you're looking for just hit the "enter" or "return" key while typing and you'll be able to add a new place. <a href="#new" class="specific_link">More below</a>.</p>
       <p>Once you see your location, click it and you'll see a footer appear, with a map. If this is the right place, click "Save".</p>
-      <p>Note: if you're using IE8, you might see a blue border around some of the images: these won't appear when you publish your post.</p>
       <p>
-        <%= image_tag "admin/bloggers/footer_preview.png", :alt=>"Footer Preview", :class=>"blog_image blog_4" %>
+        <%= image_tag "home/bloggers/chosen_place.png", :alt=>"Footer Preview", :class=>"blog_image" %>
       </p>
       <p>The name of the location you tagged will appear above the main editor. The Placeling plugin box contains a map of the location plus its name and address.</p>
-      <p>Write your blog post and add a summary, then publish it. If you try to publish without adding a summary, an error will appear.</p>
-      <p>
-        <%= image_tag "admin/bloggers/add_summary.png", :alt=>"Add Summary", :class=>"blog_image blog_5" %>
-      </p>
+      <p>Write your blog post and publish it.</p>
       <p>When you publish the following will happen:</p>
-      <p>
-        <ul class="specific">
-          <li>The location you selected will be added to your Placeling map, if it's not already there</li>
-          <li>The summary, a link to this blog post and any photos in the post (if you selected the option) will be used to describe this location on your Placeling map</li>
-        </ul>
-      </p>
-      <p>You can now see your post on a map via the <a href="/app">Placeling iPhone app</a> or <a href="#embed">a map embedded on your site</a>.</p>
-      <p class="heading"><a name="new">How do I add a place that's not in Placeling's database?</a></p>
+      <ul class="specific">
+        <li class="specific">The location you selected will be added to your map, if it's not already there</li>
+        <li class="specific">The excerpt, tags, photos (optional) and URL to Placeling's servers so that we show the place on the map</li>
+      </ul>
+      
+      <p class="heading_space"><a name="new" class="heading" id="deadlink">How do I add a place that's not in Placeling's database?</a></p>
       <p>If you type in the name of a location and it doesn't appear, just hit the "enter" or "return" key and you'll see an option to add it:</p>
       <p>
-        <%= image_tag "admin/bloggers/search_post_enter.png", :alt=>"Add New Place Link", :class=>"blog_image blog_6" %>
+        <%= image_tag "home/bloggers/brand_new_place.png", :alt=>"Add New Place Link", :class=>"blog_image" %>
       </p>
       <p>When you click the link, a new tab will open up and send you to Placeling.com (you may need to log in). You'll be asked to fill out the details of the place. You can type an address and the map will update for you (or vice versa):</p>
       <p>
-        <%= image_tag "admin/bloggers/create_new_place_with_details.png", :alt=>"Create New Place", :class=>"blog_image blog_7" %>
+        <%= image_tag "home/bloggers/create_new_place_with_details.png", :alt=>"Create New Place", :class=>"blog_image" %>
       </p>
-      <p>You'll then need to confirm the details of the location...</p>
+      <p>You'll then need to confirm the details of the location:</p>
       <p>
-        <%= image_tag "admin/bloggers/create_new_place_confirm.png", :alt=>"Confirm New Place Details", :class=>"blog_image blog_8" %>
+        <%= image_tag "home/bloggers/create_new_place_confirm.png", :alt=>"Confirm New Place Details", :class=>"blog_image" %>
       </p>
-      <p>...and it's added to your map:</p>
-      <p>
-        <%= image_tag "admin/bloggers/placemarked_new_place.png", :alt=>"New Place On Your Map", :class=>"blog_image blog_9" %>
-      </p>
-      <p>At this point you can close Placeling and go back to your blog. From the admin page, close the Placeling window and re-open it. You should see your newly added place there, at the top of this list:</p>
-      <p>
-        <%= image_tag "admin/bloggers/newly_added_place.png", :alt=>"New Place On Your Map", :class=>"blog_image blog_10" %>
-      </p>
-      <p class="heading"><a name="summary">Why do I need a summary?</a></p>
-      <p>In order to link your blog post to Placeling, we require you to write a brief summary. This is so that when someone looks at a location you've added on Placeling, they can see why you think it's interesting.</p>
-      <p>A good summary is a sentence or two that outlines what you liked about a location and encourages the user to click through to your blog for more.</p>
-      <p class="heading"><a name="footer">What is the footer for?</a></p>
+      <p>After confirming the details, you can close Placeling and go back to your blog. When you click "Add Place" in the Placeling plugin you'll see the new place at the top of the list.</p>
+      
+      <p class="heading_space"><a name="map" class="heading" id="deadlink">How can I customize the map?</a></p>
+      <p>If you open up the page holding your map, you'll see there's a tag called "placeling_map" with two attributes:</p>
+      <ul class="specific">
+        <li class="specific">
+          height - change this to make the map taller/shorter. It will automatically fill the entire width of the page
+        </li>
+        <li class="specific">
+          mobile_auto_scroll - on mobile, this scrolls the page to the top of the map so that the map occupies as much of the page as possible
+        </li>
+      </ul>
+      <p>If you open up Placeling's settings, you can change the "home location" - where the map is centered. This will send you over to Placeling.com and you'll need to refresh the page to see the updated location.</p>
+      
+      <p class="heading_space"><a name="list" class="heading" id="deadlink">How can I see a list of nearby places instead of a map?</a></p>
+      <p>You can easily do this, just <%= link_to 'upgrade', blogger_plans_path, :class=>"feature_grid" %> to our premium plugin.</p>
+      
+      <p class="heading_space"><a name="footer" class="heading" id="deadlink">What is the footer for?</a></p>
       <p>The Placeling plugin puts a little footer at the bottom of each blog post where you tag a location.</p>
-      <p>The footer contains a link to your map on Placeling, so that your readers can explore all the locations you've placemarked. It also contains a link where readers can get more info about each location.</p>
-      <p>
-        <%= image_tag "admin/bloggers/footer.png", :alt=>"Untagged post", :class=>"blog_image blog_11" %>
-      </p>
+      <p>The footer contains a link to your map, so that your readers can explore all the locations you've placemarked.</p>
       <p>The footer only appears in actual posts: it won't appear on the front page of your blog.</p>
       <p>If you ever uninstall the Placeling plugin, the footer will be removed from all posts.</p>
-      <p><a name="embed">How do I embed my map in my blog?</a></p>
-      <p>We strongly recommend creating a new page on your blog to hold your map (e.g., myblog.com/my_map).</p>
-      <p>Some bloggers have tried putting a map in a sidebar on every page, but this is a really bad user experience. It's too small to be useful and leads to readers abandoning your site.</p>
-      <p>Now, the instructions:</p>
-      <p>
-        <ul class="specific">
-          <li>Go to Placeling.com and log in</li>
-          <li>Click the "Account" link in the upper right corner of the screen</li>
-          <p><%= image_tag "admin/bloggers/my_account_link.jpg", :alt=>"iPhone example", :class=>"blog_image" %></p>
-          <li>Click on the link "Embed a copy of your map on your website or blog"</li>
-        </ul>
-        <p>This brings you to a page where you can configure how you want your embedded map to look:</p>
-        <p>
-          <%= image_tag "admin/bloggers/embed_screen.png", :alt=>"Create embed code", :class=>"blog_image blog_12" %>
-        </p>
-        <p>First, set the dimension of the map you want on your page. Note that the map on this screen will not change sizes based on this.</p>
-        <p>Pan and zoom the map to the location you want your map to be centered on.</p>
-        <p>Copy and paste the code from the right into the page where you want your map to appear.</p>
-      </p>
-      <p><a name="more">Unanswered questions? Need more help?</a></p>
-      <p class="last"><a href="mailto:support@placeling.com">Drop us a line</a>. We try to answer every question within one business day.</p>
-    </div>
+      <p>If you don't want the footer to appear at all, <%= link_to 'upgrade', blogger_plans_path, :class=>"feature_grid" %> to our premium plugin.</p>
+
+      <p class="heading_space"><a name="more" class="heading" id="deadlink">Unanswered questions? Need more help?</a></p>
+      <p class="last"><%= mail_to "support@placeling.com", "Drop us a line", :encode => "javascript", :class=>"specific_link" %>. We try to answer every question within one business day.</p>
   </div>
 </div>

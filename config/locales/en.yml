@@ -21,7 +21,7 @@ en:
     contact_us: "Contact"
     about_us: "About Us"
     marketing: "Placeling :: Be The Guide"
-    description: "Sign up for Placeling to bookmark your world, effortlessly share it with others and explore with the experts. On your iPhone and on the web. If you're a Wordpress blogger, use Placeling to turn your blog into an iPhone-enabled city guide"
+    description: "Location-based mobile publishing for Wordpress, newspapers and magazines"
     blog: "Blog"
     investors: "Investors"
     create: "Use our iPhone app, blog tools and website to create a map of your world."
@@ -30,7 +30,7 @@ en:
     more: "See more"
   
   header:
-    call_to_action: "Find places to explore and people to guide you"
+    call_to_action: "Find places"
     my_account: "My Account"
     my_map: "My Map"
     my_tours: "My Tours"
@@ -488,6 +488,11 @@ en:
     no_following: "No one you follow has a placemark here"
     recent_places: "Recent Places"
     add_notes: "Add some notes & photos"
+    phone: "Phone number"
+    url: "URL"
+    twitter: "Twitter"
+    edit_place: "Update This Place"
+    updated_place: "Place updated"
 
   perspective:
     fav_places: "%{user}'s favorite places"

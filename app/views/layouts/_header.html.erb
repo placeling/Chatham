@@ -26,10 +26,14 @@
 <div id="header">
   <div id="search">
     <form accept-charset="UTF-8">
-      <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+      <% if current_user %>
+        <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+      <% end %>
       <a href="/" id="logo"><%= image_tag "logo.png" %></a>
-      <input id="term" type="text" class="search_box">
-      <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
+      <% if current_user %>
+        <input id="term" type="text" class="search_box">
+        <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
+      <% end %>
     </form>
   </div>
   <div id="user_controls">
@@ -56,10 +60,6 @@
             <p class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
           </li>
       <% else %>
-          <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("header.questions"), :class => "header_icon", :title=>t('header.questions')), questions_path %></p>
-          </li>
-          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li><p class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li><p class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p></li>

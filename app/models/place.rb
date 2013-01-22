@@ -22,6 +22,7 @@ class Place
   field :google_url, :type => String
   field :place_type, :type => String
   field :venue_url, :type => String
+  field :twitter, :type => String
   field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top places
 
   field :google_ref, :type => String # may need this later, makes easier
