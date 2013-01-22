@@ -5,7 +5,6 @@ class Publisher
 
   field :home_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/home.liquid")
   field :css_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/css.liquid")
-  field :place_liquid_template, :type => String, :default => File.read("#{::Rails.root.to_s}/config/templates/place.liquid")
 
   has_and_belongs_to_many :permitted_users, class_name: 'User', inverse_of: nil, autosave: true
 

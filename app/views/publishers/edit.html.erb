@@ -4,6 +4,7 @@
 <% end %>
 
 <% content_for :javascript do %>
+    <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#add_user_button").click(function () {
@@ -85,7 +86,6 @@
           <li><a rel="box1-basics" href="#" class=""><%= t 'publisher.basics' %></a></li>
           <li><a rel="box2-home" href="#" class="active"><%= t 'publisher.home_template' %></a></li>
           <li><a rel="box3-css" href="#" class=""><%= t 'publisher.css_template' %></a></li>
-          <li><a rel="box4-place" href="#" class=""><%= t 'publisher.place_template' %></a></li>
         </ul>
       </div>
       <%= form_for(@publisher, :remote => true) do |f| %>
@@ -126,6 +126,7 @@
                 <dt><%= f.label :home_liquid_template %></dt>
                 <dd>
                   <%= f.text_area :home_liquid_template, :class => "txt", :style => "width:100%;height:500px" %>
+                  <div id="ace_editor" style="height:500px;width:400px;"/>
                 </dd>
               </dl>
             </div>
@@ -137,17 +138,6 @@
                 <dt><%= f.label :css_liquid_template %></dt>
                 <dd>
                   <%= f.text_area :css_liquid_template, :class => "txt", :style => "width:100%;height:500px" %>
-                </dd>
-              </dl>
-            </div>
-          </div>
-          <div id="box4-place" class="brownContent" style="display: none;">
-            <div class="inner-form">
-
-              <dl>
-                <dt><%= f.label :place_liquid_template %></dt>
-                <dd>
-                  <%= f.text_area :place_liquid_template, :class => "txt", :style => "width:100%;height:500px" %>
                 </dd>
               </dl>
             </div>
