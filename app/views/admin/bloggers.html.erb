@@ -80,6 +80,7 @@
     <p class="heading">FAQ</p>
     <ul>
       <li class="faq_question"><a href="#what" class="faq_link">What does the plugin do?</a></li>
+      <li class="faq_question"><a href="#where" class="faq_link">Where can I see someone using the plugin?</a></li>
       <li class="faq_question"><a href="#premium" class="faq_link">Why do you offer a premium version?</a></li>
       <li class="faq_question"><a href="#requirements" class="faq_link">What do I need to use the plugin?</a></li>
       <li class="faq_question"><a href="#install" class="faq_link">How do I install the plugin?</a></li>
@@ -99,6 +100,11 @@
       <li class="specific">Clicking on the map pins opens the corresponding post or page</li>
       <li class="specific">On a phone, the map can show nearby locations</li>
     </ul>
+    
+    <p class="heading_space"><a name="where" class="heading" id="deadlink">Where can I see someone using the plugin?</a></p>
+    <p><a href="http://lindsayrgwatt.com/blog/placeling-map/" class="specific_link">Here's</a> an example.</p>
+    <p>More coming.</p>
+    <p>If you're using the plugin, <%= mail_to "contact@placeling.com", "email us", :encode => "javascript", :class=>"specific_link" %> and we'll add you here.</p>
     
     <p class="heading_space"><a name="premium" class="heading" id="deadlink">Why do you offer a premium version?</a></p>
     <p>We think every blogger should have a map showing the places they recommend.</p>
@@ -275,14 +281,6 @@
       <p>If you don't want the footer to appear at all, <%= link_to 'upgrade', blogger_plans_path, :class=>"feature_grid" %> to our premium plugin.</p>
 
       <p class="heading_space"><a name="more" class="heading" id="deadlink">Unanswered questions? Need more help?</a></p>
-      <p class="last"><a href="mailto:support@placeling.com" class="feature_grid">Drop us a line</a>. We try to answer every question within one business day.</p>
-  </div>
-</div>
-
-
-
-<div id="content_holder">
-
-
+      <p class="last"><%= mail_to "support@placeling.com", "Drop us a line", :encode => "javascript", :class=>"specific_link" %>. We try to answer every question within one business day.</p>
   </div>
 </div>
