@@ -138,19 +138,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def wimdu
-    @user = User.find_by_username('lindsayrgwatt')
-    @zoom = 13
-    @lat = 52.50198
-    @lng = 13.41770
-    @width = 700
-    @height = 488
-
-    respond_to do |format|
-      format.html { render :layout => 'blank' }
-    end
-  end
-
   def pinta
     @user = User.find_by_username(params[:id])
     @newwin = params['newwin'] =="1"
