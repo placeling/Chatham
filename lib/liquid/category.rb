@@ -12,6 +12,6 @@ class Category < Liquid::Block
 
     pubcat = publisher.category_for(@slug)
 
-    "<a href='/category/#{pubcat.slug}' #{('id="'+@html_id.strip+'"') unless @html_id.nil?} #{('class="'+@html_class.strip+'"') unless @html_class.nil?} />"
+    "<a href='/category/#{pubcat.slug}' #{('id="'+@html_id.strip+'"') unless @html_id.nil?} #{('class="'+@html_class.strip+'"') unless @html_class.nil?} />" + super + "</a>"
   end
 end
