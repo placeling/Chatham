@@ -1,4 +1,5 @@
-class Category < Liquid::Block
+class CategoryImage < Liquid::Tag
+
   def initialize(tag_name, markup, tokens)
     super
     markup_array = markup.split(",")
@@ -12,6 +13,6 @@ class Category < Liquid::Block
 
     pubcat = publisher.category_for(@slug)
 
-    "<a href='/category/#{pubcat.slug}' #{('id="'+@html_id.strip+'"') unless @html_id.nil?} #{('class="'+@html_class.strip+'"') unless @html_class.nil?} />"
+    "<img src='#{ pubcat.main_url }' #{('id="'+@html_id.strip+'"') unless @html_id.nil?} #{('class="'+@html_class.strip+'"') unless @html_class.nil?} />"
   end
 end
