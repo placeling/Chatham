@@ -111,7 +111,9 @@ class Picture
                   :thumb_url => self.thumb_url,
                   :iphone_url => self.iphone_url,
                   :main_url => self.main_url,
-                  :square_url => self.mosaic_3_1_url}
+                  :square_url => self.mosaic_3_1_url,
+                  :wide_url => self.mosaic_3_2_cache_url
+    }
 
     if options && options[:bounds]
       attributes.delete(:id)
