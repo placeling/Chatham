@@ -2,7 +2,7 @@
   <div class="inner">
     <%= link_to image_tag(publisher_category.thumb_url, :size => "150x100"), publisher_publisher_category_path(publisher_category.publisher, publisher_category), :class => "thumb" %></a>
     <div class="data">
-      <h4><%= publisher_category.name %></h4>
+      <h4><%= publisher_category.name %> (<%= publisher_category.name %>)</h4>
 
       <p><%= publisher_category.tags.split(",").collect { |tag| raw "##{tag}" }.join(",") %></p>
       <ul class="actions">
