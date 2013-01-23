@@ -5,7 +5,7 @@ require 'google_places_autocomplete'
 class PlacesController < ApplicationController
   before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]
   before_filter :admin_required, :only => [:edit]
-  
+
   def reference
     if params[:ref].nil?
       raise ActionController::RoutingError.new('Not Found')
@@ -574,16 +574,23 @@ class PlacesController < ApplicationController
       @referring_user = nil
     end
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user => @referring_user}), :callback => params[:callback] }
+    if params['newcall'].nil?
+      respond_to do |format|
+        format.html
+        format.json { render :json => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user => @referring_user}), :callback => params[:callback] }
+      end
+    else
+      respond_to do |format|
+        format.html
+        format.json { render :json => {:place => @place.as_json({:detail_view => true, :current_user => current_user, :referring_user => @referring_user})} }
+      end
     end
   end
 
   def edit
     @place = Place.forgiving_find(params[:id])
   end
-  
+
   def update
     @place = Place.forgiving_find(params[:id])
     if @place.update_attributes(params[:place])
