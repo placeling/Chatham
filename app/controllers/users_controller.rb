@@ -142,7 +142,7 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:id])
     @newwin = params['newwin'] =="1"
     if params['zoom']
-      @zoon = params['zoom'].to_i
+      @zoom = params['zoom'].to_i
     else
       @zoom = DEFAULT_USER_ZOOM
     end
