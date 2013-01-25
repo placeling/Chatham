@@ -141,6 +141,11 @@ class UsersController < ApplicationController
   def pinta
     @user = User.find_by_username(params[:id])
     @newwin = params['newwin'] =="1"
+    if params['zoom']
+      @zoon = params['zoom'].to_i
+    else
+      @zoom = DEFAULT_USER_ZOOM
+    end
 
     if params['lat'].nil?
       @lat = @user.location[0]
@@ -159,8 +164,6 @@ class UsersController < ApplicationController
         @lng = @user.location[1]
       end
     end
-
-    @zoom = DEFAULT_ZOOM
 
     respond_to do |format|
       format.html { render :layout => nil }

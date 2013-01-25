@@ -9,43 +9,43 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var placemarker = new google.maps.MarkerImage(
-          'http://www.placeling.com/images/placemarker.png',
-          new google.maps.Size(30, 32),
-          new google.maps.Point(0, 0),
-          new google.maps.Point(9, 32)
+                'http://www.placeling.com/images/placemarker.png',
+                new google.maps.Size(30, 32),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(9, 32)
         );
-        
+
         var infobox = new InfoBox({
-          alignBottom: true,
-          content: "",
-          disableAutoPan: false,
-          maxWidth: 150,
-          pixelOffset: new google.maps.Size(-125, -47),
-          zIndex: null,
-          boxStyle: {
-            opacity: 0.85,
-            width: "280px",
-          },
-          closeBoxURL: "",
-          infoBoxClearance: new google.maps.Size(1, 1)
+            alignBottom:true,
+            content:"",
+            disableAutoPan:false,
+            maxWidth:150,
+            pixelOffset:new google.maps.Size(-125, -47),
+            zIndex:null,
+            boxStyle:{
+                opacity:0.85,
+                width:"280px",
+            },
+            closeBoxURL:"",
+            infoBoxClearance:new google.maps.Size(1, 1)
         });
-        
+
         var currentPosition = new InfoBox({
-          content: "<div id='advanced'>",
-          boxStyle: {
-            width: "8px",
-            height: "8px",
-            textAlign: "center",
-            fontSize: "8pt",
-          },
-          disableAutoPan: true,
-          pixelOffset: new google.maps.Size(-25, 0),
-          closeBoxURL: "",
-          isHidden: false,
-          pane: "mapPane",
-          enableEventPropagation: true
+            content:"<div id='advanced'>",
+            boxStyle:{
+                width:"8px",
+                height:"8px",
+                textAlign:"center",
+                fontSize:"8pt",
+            },
+            disableAutoPan:true,
+            pixelOffset:new google.maps.Size(-25, 0),
+            closeBoxURL:"",
+            isHidden:false,
+            pane:"mapPane",
+            enableEventPropagation:true
         });
-        
+
         $("#iframe_pan").click(function () {
             $('#map_canvas').gmap('getCurrentPosition', function (position, status) {
                 if (status === 'OK') {
@@ -57,28 +57,28 @@
             });
             return false;
         });
-        
-        $('#map_canvas').gmap({ 'center':'<%= @lat %>, <%= @lng %>', 'zoom':14, panControl:false,
+
+        $('#map_canvas').gmap({ 'center':'<%= @lat %>, <%= @lng %>', 'zoom':<%= @zoom %>, panControl:false,
             zoomControl:true, mapTypeControl:false, scaleControl:true, streetViewControl:false,
             overviewMapControl:true }).bind('init', function (ev, map) {
-              $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
-                $.each(data.perspectives, function (i, perspective) {
-                  $('#map_canvas').gmap('addMarker', {
-                    'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng), 'icon':placemarker
-                  }).click(function () {
-                    infobox.setPosition(this.getPosition());
-                    infobox.setContent($("#calloutTemplate").render(perspective));
-                    infobox.open(this.map, this);
-                  });
+                    $.getJSON('<%= user_perspectives_path(@user, :source=>"pinta") %>', function (data) {
+                        $.each(data.perspectives, function (i, perspective) {
+                            $('#map_canvas').gmap('addMarker', {
+                                'position':new google.maps.LatLng(perspective.place.lat, perspective.place.lng), 'icon':placemarker
+                            }).click(function () {
+                                        infobox.setPosition(this.getPosition());
+                                        infobox.setContent($("#calloutTemplate").render(perspective));
+                                        infobox.open(this.map, this);
+                                    });
+                        });
+                    });
                 });
-              });
-        });
-        
+
         var map = $('#map_canvas').gmap('get', 'map');
-        $(map).addEventListener('click', function() {
-          if (infobox.getVisible()) {
-            infobox.close();
-          }
+        $(map).addEventListener('click', function () {
+            if (infobox.getVisible()) {
+                infobox.close();
+            }
         });
     });
 </script>
@@ -115,20 +115,21 @@
         margin-right: 10px;
         width: 117px;
     }
-    
+
     #infobox {
-        background:#333;
-        padding:8px 16px;
+        background: #333;
+        padding: 8px 16px;
         width: 222px;
-        border-radius:4px;
-        position:relative;
+        border-radius: 4px;
+        position: relative;
         float: left;
         box-shadow: 0 0 5px #000;
-        font-family:Arial, Helvetica, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
     }
+
     #infobox:after {
-        content:"";
-        position:absolute;
+        content: "";
+        position: absolute;
         bottom: -10px;
         left: 45%;
         background: #333;
@@ -136,17 +137,18 @@
         -moz-transform: rotate(45deg);
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
-        -ms-transform:rotate(45deg);
+        -ms-transform: rotate(45deg);
         /* reduce the damage in FF3.0 */
-        display:block;
+        display: block;
         width: 24px;
         height: 24px;
         box-shadow: 0 0 5px #000;
-        z-index:-10;
+        z-index: -10;
     }
+
     #infobox:before {
-        content:"";
-        position:absolute;
+        content: "";
+        position: absolute;
         bottom: -10px;
         left: 45%;
         background: #333;
@@ -154,14 +156,14 @@
         -moz-transform: rotate(45deg);
         -o-transform: rotate(45deg);
         transform: rotate(45deg);
-        -ms-transform:rotate(45deg);
+        -ms-transform: rotate(45deg);
         /* reduce the damage in FF3.0 */
-        display:block;
+        display: block;
         width: 24px;
         height: 24px;
-        z-index:10;
+        z-index: 10;
     }
-    
+
     @media only screen
     and (max-width : 480px) {
         #placeling_iframe_logo, #placeling_iframe_spacer {
@@ -175,66 +177,68 @@
         font-weight: bold;
         padding-left: 3px;
     }
-    
-    a.out_link {
-      text-decoration: none;
-    }
-    
-    .mini_marker {
-      border: 2px solid white;
-      border-radius: 50%;
-      float: right;
-      margin-top: 2px;
-    }
-    
-    .right {
-      float:right;
-    }
-    
-    .place_name {
-      overflow:hidden;
-      white-space:nowrap;
-      text-overflow:ellipsis;
-      max-height: 24px;
-      max-width: 200px;
-      position:relative;
-      z-index:11;
-      color:#FFF;
-      font-size:18px;
-      font-weight: 800;
-    }
-    
-    #advanced {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
 
-      background-image: -moz-radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
-      background-image: -webkit-radial-gradient(3px 3px, circle cover, #DBE5FF, #00C3FF);
-      background-image: radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
-      -webkit-box-shadow: 0px 0px 1px 1px #3168F5;
-      box-shadow: 0px 0px 1px 1px #3168F5;
+    a.out_link {
+        text-decoration: none;
     }
-    
+
+    .mini_marker {
+        border: 2px solid white;
+        border-radius: 50%;
+        float: right;
+        margin-top: 2px;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .place_name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-height: 24px;
+        max-width: 200px;
+        position: relative;
+        z-index: 11;
+        color: #FFF;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    #advanced {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+
+        background-image: -moz-radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+        background-image: -webkit-radial-gradient(3px 3px, circle cover, #DBE5FF, #00C3FF);
+        background-image: radial-gradient(3px 3px 45deg, circle cover, #DBE5FF, #00C3FF);
+        -webkit-box-shadow: 0px 0px 1px 1px #3168F5;
+        box-shadow: 0px 0px 1px 1px #3168F5;
+    }
+
     .pan {
-      /*border: 0.5px solid #988F79;*/
-      border-radius: 4px;
-      box-shadow: 0px 0px 2px 0px #988F79;
+        /*border: 0.5px solid #988F79;*/
+        border-radius: 4px;
+        box-shadow: 0px 0px 2px 0px #988F79;
     }
 </style>
 <body>
 <script id="calloutTemplate" type="text/x-jsrender">
   <div id="infobox">
     <div class="right">
-      <a <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class=>"mini_marker" %></a>
+      <a <%= "target='_blank'" if @newwin %> href="{{>url}}"><%= image_tag asset_path("mini_marker.png"), :class => "mini_marker" %></a>
     </div>
-    <a class="out_link" <%= "target='_blank'" if @newwin %> href="{{>url}}"><div class="place_name">{{>place.name}}</div></a>
+    <a class="out_link" <%= "target='_blank'" if @newwin %> href="{{>url}}">
+      <div class="place_name">{{>place.name}}</div>
+    </a>
   </div>
 </script>
 
 <div id="map_holder" style="width:100%; height:100%">
   <div id="iframe_pan">
-    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("pan.png"), :class=>"pan" %></a>
+    <a href="#" id="iframe_tag_filter_link"><%= image_tag asset_path("pan.png"), :class => "pan" %></a>
   </div>
   <div id="map_canvas" style="width:100%; height:100%"></div>
 </div>
