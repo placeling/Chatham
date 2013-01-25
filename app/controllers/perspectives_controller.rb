@@ -246,7 +246,8 @@ class PerspectivesController < ApplicationController
     count = 20
 
     if params[:source] == 'pinta'
-      @perspectives = Perspective.find_all_with_url_for(@user)
+      @perspectives = Perspective.find_all_with_url_for(@user).
+          and(:client_application_id => '4f298a1057b4e33324000003') #restricts to pinta posts
     elsif (params[:lat] && params[:lng])
       span =1
       lat = params[:lat].to_f
