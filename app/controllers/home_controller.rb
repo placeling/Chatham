@@ -1,58 +1,7 @@
 class HomeController < ApplicationController
   before_filter :login_required, :only => [:home_timeline, :logged_in_home]
 
-
-  def logged_in_home
-
-    start_pos = params[:start].to_i
-    count = 20
-
-    @activities = current_user.feed(start_pos, count)
-    @notifications = current_user.notifications(0, 20)
-
-    #hack for gettign data in development mode
-    if Rails.env.development?
-      @activities = current_user.old_feed
-    end
-
-    respond_to do |format|
-      format.html { render :action => "timeline", :layout => "bootstrap" }
-    end
-  end
-
   def logged_out_home
-    @candidates = [
-        "caryblack",
-        "ConstanceLiu",
-        "lisamcgran",
-        "willowlangille",
-        "meg",
-        "quynhnguyendang",
-        "krisbraun",
-        "DanaStasyk",
-        "alaaai",
-        "aliciafashionista",
-        "lapintutu",
-        "Perolion",
-        "ktstc",
-        "ibanesve",
-        "hannahrsyang",
-        "FlandersLaw",
-        "fbiza365",
-        "jesseanger",
-        "anderkonzen",
-        "amjoconn",
-        "CarrieBrown",
-        "pilgrim",
-        "honeysuckle",
-        "Nostradamion",
-        "beans90",
-        "itsaulgood",
-        "evetteshe",
-        "Heartlight"
-    ]
-
-    @candidates.shuffle!
 
     respond_to do |format|
       format.html
@@ -60,11 +9,7 @@ class HomeController < ApplicationController
   end
 
   def index
-    if current_user && Rails.env.development?
-      logged_in_home
-    else
-      logged_out_home
-    end
+    logged_out_home
   end
 
   def home_timeline
