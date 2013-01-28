@@ -78,6 +78,7 @@ gem 'sitemap_generator'
 gem 'mongoid_slug'
 
 gem 'rubyzip'
+gem 'feedzirra'
 
 group :test, :development do
   gem "parallel_tests"
