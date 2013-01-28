@@ -18,7 +18,6 @@ class UsersController < ApplicationController
   include ApplicationHelper
 
   before_filter :login_required, :only => [:me, :update, :follow, :unfollow, :add_facebook, :update, :account, :download, :block, :unblock, :pic, :update_pic, :location, :update_location, :notifications]
-  before_filter :download_app, :only => [:show]
 
   def me
     @user = current_user
@@ -100,10 +99,6 @@ class UsersController < ApplicationController
         request_token.authorize!(user)
         request_token.provided_oauth_verifier = request_token.verifier
         access_token = request_token.exchange!
-
-        user.first_run.dismiss_app_ad = true
-        user.first_run.downloaded_app = true
-        user.save
 
         respond_to do |format|
           format.json { render :json => {:status => "success", :token => access_token.to_query, :user => user.as_json({:current_user => current_user, :perspectives => :created_by})} }
@@ -1021,10 +1016,6 @@ class UsersController < ApplicationController
       current_user.follow(@user)
       @user.save!
     end
-
-    current_user.first_run.dismiss_app_ad = true
-
-    current_user.save!
 
     if current_user != @user
       ActivityFeed.add_follow(current_user, @user)

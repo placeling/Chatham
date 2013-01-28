@@ -6,75 +6,13 @@ class ApplicationController < ActionController::Base
   use_vanity nil
 
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_location, :first_run_app
+  before_filter :api_check, :set_location
   before_filter :initialize_mixpanel
 
   helper_method :user_location
   helper_method :return_to_link
-  helper_method :first_run_app
-  helper_method :download_app
 
   alias :logged_in? :user_signed_in?
-
-
-  def first_run_app
-    if !cookies[:first_run] && current_user
-      if current_user.first_run.search == false
-        cookies[:first_run] = {:value => {:value => "search", :modified => false}.to_json}
-      elsif current_user.first_run.placemark == false
-        cookies[:first_run] = {:value => {:value => "placemark", :modified => false}.to_json}
-      elsif current_user.first_run.map == false
-        cookies[:first_run] = {:value => {:value => "map", :modified => false}.to_json}
-      else
-        cookies[:first_run] = {:value => {:value => "none", :modified => false}.to_json}
-      end
-    elsif current_user
-      first_run_status = JSON.parse(cookies[:first_run])
-
-      if first_run_status.has_key?("value") && first_run_status.has_key?("modified")
-        if first_run_status["value"] == "search" && first_run_status["modified"] == true
-          current_user.first_run.search = true
-          current_user.save
-          cookies[:first_run] = {:value => {:value => "placemark", :modified => false}.to_json}
-        elsif first_run_status["value"] == "placemark" && first_run_status["modified"] == true
-          current_user.first_run.placemark = true
-          current_user.save
-          cookies[:first_run] = {:value => {:value => "map", :modified => false}.to_json}
-        elsif first_run_status["value"] == "map" && first_run_status["modified"] == true
-          current_user.first_run.map = true
-          current_user.save
-          cookies[:first_run] = {:value => {:value => "none", :modified => false}.to_json}
-        end
-      end
-    end
-  end
-
-  def download_app
-    if current_user
-      if cookies[:download]
-        if cookies[:download] == "false"
-          if current_user.first_run.downloaded_app
-            current_user.first_run.dismiss_app_ad = true
-            current_user.save
-            cookies[:download] = {:value => true}
-          elsif current_user.first_run.dismiss_app_ad
-            cookies[:download] = {:value => true}
-          end
-        else
-          if !current_user.first_run.dismiss_app_ad
-            current_user.first_run.dismiss_app_ad = true
-            current_user.save
-          end
-        end
-      else
-        cookies[:download] = {:value => current_user.first_run.dismiss_app_ad}
-      end
-    else
-      if !cookies[:download]
-        cookies[:download] = {:value => false}
-      end
-    end
-  end
 
   def return_to_link
     if session[:"user_return_to"]

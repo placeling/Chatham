@@ -22,19 +22,6 @@
             <p class="content" style="margin: 0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;"><%= t('welcome.thanks') %></p>
           </td>
         </tr>
-        <% if !@user.first_run.downloaded_app %>
-            <tr style="padding: 0px;">
-              <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
-                <div class="email_spacer">
-                  <p class="email_emphasize"><%= t('welcome.iphone') %></p>
-
-                  <p class="content" style="margin: 0px;padding: 0px;font-family: Georgia,&quot;Times New Roman&quot;, serif;">
-                    <a href="<%= app_url() %>" class="email_link"><%= t('welcome.download_app') %></a> <%= t('welcome.pocket') %>
-                    .</p>
-                </div>
-              </td>
-            </tr>
-        <% end %>
         <% if @guides.length > 1 %>
             <tr style="padding: 0px;">
               <td width="100%" colspan="3" style="background-color: #FAF9F7;font-size: 14px;font-family: Helvetica,Arial,sans-serif;">
