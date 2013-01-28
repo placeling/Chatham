@@ -133,17 +133,6 @@ class AdminController < ApplicationController
         @updatedPlace = nil
       end
 
-      questions = Question.any_of({'answers.place_id' => @merge_place.id})
-
-      questions.each do |question|
-        question.answers.each do |answer|
-          if answer.place.id == @merge_place.id
-            answer.place = @place
-            answer.save
-          end
-        end
-      end
-
       @merge_place.perspectives.each do |perspective|
         perspective.place = @place
         @place.perspective_count += 1

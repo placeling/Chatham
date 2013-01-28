@@ -13,7 +13,7 @@ class GooglePlaceUpdate
 
     places.each do |place|
       RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - updating #{place.name} - #{place.id}"
-      if place.perspective_count == 0 && Question.any_of({'answers.place_id' => place.id}).count == 0
+      if place.perspective_count == 0
         place.destroy #not placemarked or answered, so delete
       elsif place.google_ref
         updatedPlace = gp.get_place(place.google_ref, false)

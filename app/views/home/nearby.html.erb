@@ -25,15 +25,6 @@
     <% end %>
 <% end %>
 
-<%= javascript_include_tag "questions/question" %>
-
-<div id="question_header">
-  <div id="header_content">
-    <div id="question_index_header">
-
-    </div>
-  </div>
-</div>
 
 <div id="question_index">
   <% @places.each_with_index do |place, i| %>
@@ -42,17 +33,6 @@
         <%= place.name %>
       </li>
   <% end %>
-  <ul id="nearby_question_list">
-    <div class="question_section_title"><%= t 'question.nearby_questions' %></div>
-    <% @questions.each_with_index do |question, i| %>
-        <hr class="questions">
-        <li id="<%= question.id %>" class="place_answer <%= i %2==1 ? "" : "colored_place_row" %>">
-          <%= render :partial => "../questions/question", :locals => {:question => question} %>
-        </li>
-    <% end %>
-
-    <hr class="questions">
-  </ul>
 
   <div class="question_clear"></div>
 </div>

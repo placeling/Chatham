@@ -15,7 +15,7 @@ class UserSetting
   field :weekly_email, :type => Boolean, :default => true
   field :week_in_review_email, :type => Boolean, :default => true
 
-  field :question_updates_email, :type => Boolean, :default => true
+  field :question_updates_email, :type => Boolean, :default => false
 
   field :suggested_place_notify, :type => Boolean, :default => true
   field :comment_notify, :type => Boolean, :default => true

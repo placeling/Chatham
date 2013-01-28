@@ -51,10 +51,8 @@
               <a href="<%= (account_user_path :id => current_user) %>"><%= image_tag current_user.thumb_url, :class => "you", :alt => t("user.your_account") %></a>
             </li>
             <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("user.you"), :class => "header_icon"), user_path(current_user) %></li>
-            <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></li>
             <li class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></li>
         <% else %>
-            <li class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("question.title"), :class => "header_icon"), questions_path %></li>
             <li class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></li>
             <li class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></li>
         <% end %>

@@ -61,10 +61,6 @@ class Notifier < ActionMailer::Base
         score += 1
       end
 
-      if @recos['questions'] && @recos['questions'].length > 0
-        score += 1
-      end
-
       if @recos['places'] && @recos['places'].length > 0
         score += 1
       end
@@ -77,22 +73,9 @@ class Notifier < ActionMailer::Base
     if score >= 2
       track! :email_sent
 
-      if @recos['questions'].length > 0
-        if ab_test(:question_as_subject)
-          subject = @recos['questions'].first.title
-        else
-          subject = "#{@user.username}, it's almost the weekend"
-        end
-
-        mail(:from => "\"Placeling\" <contact@placeling.com>", :to => @user.email, :subject => subject) do |format|
-          format.text
-          format.html
-        end
-      else
-        mail(:from => "\"Placeling\" <contact@placeling.com>", :to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
-          format.text
-          format.html
-        end
+      mail(:from => "\"Placeling\" <contact@placeling.com>", :to => @user.email, :subject => "#{@user.username}, it's almost the weekend") do |format|
+        format.text
+        format.html
       end
     end
   end
@@ -198,49 +181,12 @@ class Notifier < ActionMailer::Base
 
     @guides_filler = Array.new(size=(3-@guides.length))
 
-    # Questions
-    @questions = potential[3]
-    if @questions.length > 3
-      @questions.shuffle!
-      @questions = @questions[0, 3]
-    end
 
     # Only send if new places to show
     if @top3.length > 0
       mail(:to => @user.email, :subject => "#{@user.username}, happy Monday", :from => "\"Placeling\" <contact@placeling.com>") do |format|
         format.html
       end
-    end
-  end
-
-  def question_answered(user1_id, question_id, answer_id, user2_id)
-    @target = User.find(user1_id)
-
-    @question = Question.find(question_id)
-    @answer = @question.answers.where(:_id => answer_id).first
-
-    if !user2_id.nil?
-      @user = User.find(user2_id)
-    end
-
-    mail(:to => @target.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@answer.place.name} was suggested for #{@question.title}") do |format|
-      format.text
-      format.html
-    end
-  end
-
-  def answer_commented(user1_id, question_id, answer_id, answer_comment_id)
-    @target = User.find(user1_id)
-
-    @question = Question.find(question_id)
-    @answer = @question.answers.where(:_id => answer_id).first
-
-    @answer_comment = @answer.answer_comments.where(:_id => answer_comment_id).first
-    @user = @answer_comment.user
-
-    mail(:to => @target.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@user.username} commented on #{@answer_comment.answer.question.title}") do |format|
-      format.text
-      format.html
     end
   end
 
@@ -267,25 +213,6 @@ class Notifier < ActionMailer::Base
       user2 = User.find_by_username("imack")
 
       Notifier.follow(user1.id, user2.id)
-    end
-
-    def answer_commented
-      user1 = User.find_by_username("imack")
-
-      @question = Question.find_by_slug("wheres-the-best-brunch")
-      @answer = @question.answers.where(:_id => '4ff7725a0f677376a3000004').first
-      @answer_comment = @answer.answer_comments.where(:_id => "5009cead67e6e22360000520").first
-
-      Notifier.answer_commented(user1.id, @question.id, @answer.id, @answer_comment.id)
-    end
-
-    def question_answered
-      user1 = User.find_by_username("imack")
-
-      @question = Question.find_by_slug("wheres-the-best-brunch")
-      @answer = @question.answers.where(:_id => '4ff7725a0f677376a3000004').first
-
-      Notifier.question_answered(user1.id, @question.id, @answer.id, nil)
     end
 
 

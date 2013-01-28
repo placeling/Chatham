@@ -580,7 +580,7 @@ class User
     end
 
     # Questions
-    q = Question.where(:user_id => {'$in' => self.following_ids}, :created_at => {"$gte" => weekago})
+    q =[]
 
     return scored, guides, activity, q
   end

@@ -127,23 +127,6 @@ Chatham::Application.routes.draw do
     end
   end
 
-  resources :questions do
-    resources :answers, :only => [:create, :destroy] do
-      member do
-        post :upvote
-        post :comment
-      end
-    end
-    member do
-      get :share
-      post :subscribe
-      post :unsubscribe
-    end
-    collection do
-      get :admin
-    end
-  end
-
   resources :potential_perspectives, :only => [:update, :edit, :destroy]
 
   resources :ios do
@@ -248,19 +231,6 @@ Chatham::Application.routes.draw do
       collection do
         get :user_search
       end
-    end
-
-    resources :questions do
-      resources :answers, :only => [:create, :destroy] do
-        member do
-          post :upvote
-          post :comment
-        end
-      end
-      member do
-        get :share
-      end
-
     end
 
     resources :perspectives, :only => [:show] do

@@ -27,12 +27,12 @@
   <div id="search">
     <form accept-charset="UTF-8">
       <% if current_user %>
-        <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+          <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
       <% end %>
       <a href="/" id="logo"><%= image_tag "logo.png" %></a>
       <% if current_user %>
-        <input id="term" type="text" class="search_box">
-        <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
+          <input id="term" type="text" class="search_box">
+          <input type="image" src="<%= asset_path "header/searchGlyph.png" %>" class="header_icon" value="submit" id="search_submit">
       <% end %>
     </form>
   </div>
@@ -45,24 +45,24 @@
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("header.my_map"), :class => "header_icon", :title=>t('header.my_map')), user_path(current_user) %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/mapGlyph.png"), :alt => t("header.my_map"), :class => "header_icon", :title => t('header.my_map')), user_path(current_user) %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/tour_compass.png"), :alt => t("header.my_tours"), :class => "header_icon", :title=>t('header.my_tours')), user_tours_path(current_user) %></p>
+            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/tour_compass.png"), :alt => t("header.my_tours"), :class => "header_icon", :title => t('header.my_tours')), user_tours_path(current_user) %></p>
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/AnswersGlyph_lightbulb.png"), :alt => t("header.my_questions"), :class => "header_icon", :title=>t('header.my_questions')), questions_path %></p>
-          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
             <p class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
           </li>
       <% else %>
-          <li><p class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p></li>
+          <li><p class="holder pad_top"><%= link_to t("user.sign_in"), new_user_session_path, :class => "users" %></p>
+          </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p></li>
+          <li>
+            <p class="holder pad_top"><%= link_to t("user.sign_up"), new_user_registration_path, :class => "users" %></p>
+          </li>
       <% end %>
     </ul>
   </div>

@@ -115,7 +115,6 @@ class HomeController < ApplicationController
       end
     end
 
-    @questions = Question.nearby_questions(loc['lat'].to_f, loc['lng'].to_f).limit(7).entries.shuffle
     @places = Place.top_nearby_places(loc['lat'].to_f, loc['lng'].to_f, 1, 10)
     @users = User.top_nearby(loc['lat'].to_f, loc['lng'].to_f, 100)
 
