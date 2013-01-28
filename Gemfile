@@ -77,7 +77,6 @@ gem 'resque_mailer'
 gem 'sitemap_generator'
 gem 'mongoid_slug'
 
-gem 'rubyzip'
 gem 'feedzirra'
 
 group :test, :development do
@@ -97,8 +96,6 @@ group :assets do
 end
 
 gem 'dynamic_form'
-
-gem 'high_voltage'
 
 # Deploy with Capistrano
 gem 'capistrano'
