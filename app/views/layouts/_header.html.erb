@@ -49,11 +49,6 @@
           </li>
           <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
           <li>
-            <p class="holder light_pad_top"><%= link_to image_tag(asset_path("header/tour_compass.png"), :alt => t("header.my_tours"), :class => "header_icon", :title => t('header.my_tours')), user_tours_path(current_user) %></p>
-          </li>
-          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li><p class="mini_holder"><%= image_tag 'divider.png' %></p></li>
-          <li>
             <p class="holder pad_top"><%= link_to t("user.log_out"), destroy_user_session_path, :method => :delete, :class => "users" %></p>
           </li>
       <% else %>

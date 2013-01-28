@@ -682,28 +682,10 @@ class User
         self.user_recommendation.recommended_ids << place.place.id
       end
 
-      # Tours
-      tours = []
-      candidate_tours = Tour.top_nearby(self.loc[0], self.loc[1], 0.3).entries
-
-      clean_tours = []
-
-      candidate_tours.each do |tour|
-        if !self.user_tour.subscribed_tour_ids.include?(tour.id) && !previous.include?(tour.id) && tour.user != self
-          clean_tours << tour
-        end
-      end
-
-      tours = candidate_tours[0, 1]
-
-      tours.each do |tour|
-        self.user_recommendation.recommended_ids << tour.id
-      end
-
       self.save
 
-      if candidates.length > 0 || places.length >0 || tours.length > 0
-        return {"guides" => candidates, "places" => places, "tours" => tours}
+      if candidates.length > 0 || places.length >0
+        return {"guides" => candidates, "places" => places}
       else
         return nil
       end

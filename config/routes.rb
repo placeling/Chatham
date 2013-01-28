@@ -27,7 +27,6 @@ Chatham::Application.routes.draw do
   get "/admin/categories", :to => 'admin#categories', :as => :categories
   get "/admin/flagged_place", :to => 'admin#flagged_place', :as => :flagged_place
   post "/admin/flagged_place", :to => 'admin#update_place', :as => :flagged_place
-  get "/admin/tours", :to => 'tours#admin'
 
   get "/search", :to => 'search#search', :as => :search
 
@@ -48,7 +47,6 @@ Chatham::Application.routes.draw do
   match '/bulkupload/new', :to => 'potential_perspectives#new', :via => :get
   match '/bulkupload/new', :to => 'potential_perspectives#create', :via => :post
   match '/users/:user_id/potential_perspectives/process', :to => 'potential_perspectives#potential_to_real', :via => :post
-  match '/:user_id/tours', :to => "tours#index", :as => :tour_list
 
   post 'oauth/revoke', :to => 'oauth#revoke', :as => :oauth
 
@@ -73,19 +71,6 @@ Chatham::Application.routes.draw do
     resources :perspectives, :only => [:index]
     resources :suggestions, :only => [:create, :new, :index]
     resources :potential_perspectives, :only => [:index, :potential_to_real]
-    resources :tours do
-      member do
-        get :places
-        put :update_places
-        get :preview
-        put :publish
-        get :poll
-        get :render_preview
-        post :like_all
-        get :print
-        post :purchase
-      end
-    end
     member do
       get :bounds
       get :nearby
