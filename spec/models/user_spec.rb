@@ -92,7 +92,6 @@ describe User do
     user = Factory.create(:user)
     user2 = Factory.create(:user)
     ca = Factory.create(:client_application, :name => "Agree2")
-    question = Factory.create(:question, :user => user)
 
     request_token = ca.create_request_token
     request_token.authorize!(user)
@@ -121,7 +120,6 @@ describe User do
 
     user.followers.count.should == 1
     user2.followers.count.should == 1
-    Question.count.should == 1
 
     @placemark_comment = perspective3.placemark_comments.build({:comment => "blah blah blah"})
     @placemark_comment.user = user
@@ -135,8 +133,6 @@ describe User do
 
     Perspective.count.should == 1
     User.count.should == 2
-    Question.count.should == 1
-    Question.first.user.username.should == ruser.username
     user2.followers.count.should == 0
     perspective3.placemark_comments.count.should == 0
 

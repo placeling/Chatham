@@ -78,7 +78,6 @@ class User
   has_many :perspectives, :foreign_key => 'uid', :dependent => :destroy
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
-  has_many :questions
   has_one :publisher
 
   mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
@@ -209,16 +208,6 @@ class User
       perspective.placemark_comments.destroy_all(:user_id => self.id)
     end
 
-    self.questions.each do |question|
-      question.user = replacement_user
-      question.save!
-    end
-
-    Question.any_of({'answers.answer_comments.user_id' => self.id}).each do |question|
-      question.answers.any_of({'answer_comments.user_id' => self.id}).each do |answer|
-        answer.answer_comments.destroy_all(:user_id => self.id)
-      end
-    end
   end
 
   def fix_location
@@ -622,23 +611,6 @@ class User
     if self.has_location?
       previous = self.user_recommendation.recommended_ids
 
-      # Question
-      questions = Question.nearby_questions(self.loc[0], self.loc[1]).shuffle # Want randomly organized
-
-      clean_questions = []
-
-      questions.each do |question|
-        if question.user != self && !previous.include?(question.id)
-          clean_questions << question
-        end
-      end
-
-      questions = clean_questions[0, 1]
-
-      questions.each do |question|
-        self.user_recommendation.recommended_ids << question.id
-      end
-
       # Guide
       candidates = User.top_nearby(self.loc[0], self.loc[1], 100, true)
 
@@ -730,8 +702,8 @@ class User
 
       self.save
 
-      if candidates.length > 0 || questions.length > 0 || places.length >0 || tours.length > 0
-        return {"guides" => candidates, "questions" => questions, "places" => places, "tours" => tours}
+      if candidates.length > 0 || places.length >0 || tours.length > 0
+        return {"guides" => candidates, "places" => places, "tours" => tours}
       else
         return nil
       end
@@ -795,10 +767,6 @@ class User
 
   def weekly_email?
     self.confirmed? && self.user_settings.weekly_email
-  end
-
-  def question_email?
-    self.confirmed? && self.user_settings.question_updates_email
   end
 
   def ios_notification_token

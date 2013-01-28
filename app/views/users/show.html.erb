@@ -1000,17 +1000,13 @@
                                 $('#nearby_users').fadeIn("fast");
                             } else {
                                 var placemark_count = data["popular"].length;
-                                var question_count = 0;
 
                                 if ("following" in data) {
                                     placemark_count += data["following"].length;
                                 }
 
-                                if ("questions" in data) {
-                                    question_count += data["questions"]["count"];
-                                }
 
-                                if (question_count == 0 && placemark_count == 0 && data['owner'] == false) {
+                                if (placemark_count == 0 && data['owner'] == false) {
                                     html += '<div id="no_data"><%= t('user.nothing_yet') %></div>';
                                 } else {
                                     if (placemark_count == 0 && data['owner'] == true) {
@@ -1039,20 +1035,6 @@
                                         } else {
                                             html = html + '<a href="#" id="nearby_popular">' + data["popular"].length + " <%= t('user.locals') %></a>";
                                         }
-                                    }
-                                    if (question_count > 0) {
-                                        html += '<div id="nearby_questions"'
-                                        if (placemark_count > 0) {
-                                            html += 'class="question_spacer"'
-                                        }
-                                        html += '><a href="<%= questions_path %>' + "?lat=" + data["questions"]["lat"] + "&lng=" + data["questions"]["lng"] + '">';
-                                        if (question_count == 1) {
-                                            var string = "1 <%= t('user.question') %>";
-                                        } else {
-                                            var string = question_count + " <%= t('user.questions') %>";
-                                        }
-                                        html += string;
-                                        html += '</a></div>'
                                     }
                                 }
 

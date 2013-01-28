@@ -1,51 +1,39 @@
 <%= t('weekly.intro') %>
 <%= t('weekly.weekend') %>
 <% if @recos['guides'].length > 0 %>
-  
-  
-<%= t('weekly.guides') %>
-<%= t('weekly.guides_why') %>
-  
-<% @recos['guides'].each do |guide| %>
-<%= guide.username %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
+
+
+    <%= t('weekly.guides') %>
+    <%= t('weekly.guides_why') %>
+
+    <% @recos['guides'].each do |guide| %>
+        <%= guide.username %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "users", :action => "show", :id => guide.username, :host => ActionMailer::Base.default_url_options[:host]) %>
+    <% end %>
 <% end %>
-<% end%>
 <% if @recos['places'].length > 0 %>
 
 
-<%= t('weekly.explore') %>
-<%= t('weekly.explore_why') %>
+    <%= t('weekly.explore') %>
+    <%= t('weekly.explore_why') %>
 
-<% @recos['places'].each do |place| %>
-<%= place.place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
-<% end %>
-<% end %>
-
-
-<%= t('weekly.answers')%>
-<% if @recos['questions'].length > 0 %>
-<%= t('weekly.answers_why') %>
-<% @recos['questions'].each do |question| %>
-<%= question.title %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "questions", :action => "show", :id => question.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
-<% end %>
+    <% @recos['places'].each do |place| %>
+        <%= place.place.name %> :: <%= vanity_track_url_for(Vanity.context.vanity_identity, :click_place, :controller => "places", :action => "show", :id => place.place.slug, :host => ActionMailer::Base.default_url_options[:host]) %>
+    <% end %>
 <% end %>
 
-<%= t('weekly.ask')%> <%= t('weekly.get_answer') %>
-<%= url_for(:controller => "questions", :action => "index", :host => ActionMailer::Base.default_url_options[:host])%>
 
-
-<%= t('weekly.all')%>
-<%= t('welcome.support')%>: support@placeling.com.
-<%= t('weekly.team')%>
+<%= t('weekly.all') %>
+<%= t('welcome.support') %>: support@placeling.com.
+<%= t('weekly.team') %>
 
 
 
 
 
 <% if @user.city && @user.city.length > 0 %>
-<%= t('weekly.reco_info') %> <%= @user.city %>. <%= t('change_city')%>:
+    <%= t('weekly.reco_info') %> <%= @user.city %>. <%= t('change_city') %>:
 <% else %>
-<%= t('weekly.reco_wrong') %> <%= t('weekly.change_your_city') %>:
+    <%= t('weekly.reco_wrong') %> <%= t('weekly.change_your_city') %>:
 <% end %>
 <%= location_user_url(@user) %>
 

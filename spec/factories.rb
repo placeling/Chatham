@@ -202,17 +202,3 @@ FactoryGirl.define do
     association :user, :factory => :user
   end
 end
-
-FactoryGirl.define do
-  factory :question do
-    association :user, :factory => :user
-    location { [49.261226, -123.1139268] }
-
-    title "What is the best dive bar in Vancouver?"
-    description "I'm going here next month and wondering...'"
-    city_name "Vancouver"
-    country_code "ca"
-  end
-
-
-end
