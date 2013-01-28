@@ -67,7 +67,6 @@ gem "redis", "~> 2.2"
 gem "redis-namespace"
 gem 'redis-rails'
 
-gem "mixpanel"
 gem 'vanity'
 
 gem 'resque', :require => 'resque/server'

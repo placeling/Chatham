@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
 
   # protect_from_forgery TODO: might want this back
   before_filter :api_check, :set_location, :first_run_app
-  before_filter :initialize_mixpanel
 
   helper_method :user_location
   helper_method :return_to_link
@@ -240,15 +239,6 @@ class ApplicationController < ActionController::Base
   #oauth-plugin needs this
   def current_user=(user)
     @current_user = user
-  end
-
-
-  def initialize_mixpanel
-    if defined?(MIXPANEL_TOKEN)
-      @mixpanel = Mixpanel::Tracker.new(MIXPANEL_TOKEN, request.env)
-    else
-      @mixpanel = DummyMixpanel.new
-    end
   end
 
 end
