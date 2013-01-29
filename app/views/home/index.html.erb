@@ -42,15 +42,15 @@
 <div id="admin_header">
   <div class="component_holder">
     <div class="header_component right_spacer">
-      <div><%= image_tag "home/glyphs/content.png", :alt => "Content", :class => "image_button" %></div>
+      <div><%= image_tag "home/glyphs/content.png", :alt=>"Content", :class=>"image_button" %></div>
       <div class="component">content</div>
     </div>
     <div class="header_component right_spacer">
-      <div><%= image_tag "home/glyphs/pin.png", :alt => "Location", :class => "image_button" %></div>
+      <div><%= image_tag "home/glyphs/pin.png", :alt=>"Location", :class=>"image_button" %></div>
       <div class="component">location</div>
     </div>
     <div class="header_component">
-      <div><%= image_tag "home/glyphs/iphone.png", :alt => "Mobile", :class => "image_button" %></div>
+      <div><%= image_tag "home/glyphs/iphone.png", :alt=>"Mobile", :class=>"image_button" %></div>
       <div class="component">mobile</div>
     </div>
   </div>
@@ -63,14 +63,12 @@
 </div>
 <div id="main_content" class="main_spacer">
   <div id="wordpress_options">
-    <div class="center_image">
-      <a href="<%= bloggers_path %>"><%= image_tag "home/features/wordpress_iphone.png", :alt => "WordPress" %></a>
-    </div>
-    <div class="option_detail"><%= link_to 'Extend WordPress To Guide Readers To Nearby Places', bloggers_path, :class => "option_link" %></div>
+    <div class="center_image"><a href="<%= bloggers_path %>"><%= image_tag "home/features/wordpress_iphone.png", :alt=>"WordPress" %></a></div>
+    <div class="option_detail"><%= link_to 'Extend WordPress To Guide Readers To Nearby Places', bloggers_path, :class=>"option_link" %></div>
   </div>
   <div id="publishing_options">
-    <div class="center_image bottom_padder"><%= image_tag "home/features/iphone_indie.png", :alt => "Publishers" %></div>
-    <div class="option_detail"><%= link_to 'Turn Your Local Content Into A Sponsored Guide', publisher_path, :class => "option_link" %></div>
+    <div class="center_image bottom_padder"><%= image_tag "home/features/iphone_indie.png", :alt=>"Publishers" %></div>
+    <div class="option_detail"><%= link_to 'Publishers: Turn Your Local Content Into A Sponsored Guide', publisher_path, :class=>"option_link" %></div>
   </div>
 </div>
 
