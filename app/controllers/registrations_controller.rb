@@ -20,9 +20,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def track_signup
-    if current_user
-      @mixpanel.track_event("Sign Up", {:username => current_user.username})
-    end
+
   end
 
   protected
