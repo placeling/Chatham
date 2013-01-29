@@ -965,7 +965,6 @@ class UsersController < ApplicationController
     @user.save!
     current_user.save!
 
-    track! :follow
     ActivityFeed.add_follow(current_user, @user)
 
     respond_to do |format|
