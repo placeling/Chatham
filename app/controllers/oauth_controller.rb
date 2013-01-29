@@ -69,10 +69,6 @@ class OauthController < ApplicationController
       request_token.provided_oauth_verifier = request_token.verifier
       access_token = request_token.exchange!
 
-      user.first_run.dismiss_app_ad = true
-      user.first_run.downloaded_app = true
-      user.save
-
       if send_json
         render :json => {:status => "success", :token => access_token.to_query, :user => user.as_json({:current_user => user, :perspectives => :created_by})}
       else

@@ -2,11 +2,6 @@
 
 <%= t('welcome.text_web')%>
 <%= user_url(@user) %>
-<% if !@user.first_run.downloaded_app %>
-
-<%= t('welcome.text_download')%>
-<%= app_url() %>
-<% end %>
 
 <%= t('welcome.text_feedback')%>
 

@@ -43,13 +43,6 @@ en:
     take_tour: "Take a Tour"
     says: "%{name} says"
 
-
-  download:
-    get: "Get"
-    map: "map"
-    platform: "on your iPhone"
-    your: "your"
-    
   iframe:
     slogan: "Another Beautiful Placeling Map"
     explore: "Explore more of "

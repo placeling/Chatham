@@ -51,7 +51,13 @@ class AdminController < ApplicationController
       format.html { render :layout => false }
     end
   end
-
+  
+  def publisher
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def categories
     respond_to do |format|
       format.json { render "#{Rails.root}/config/google_place_mapping", :formats => [:json], :status => 200, :layout => false }
