@@ -54,21 +54,9 @@
 
 
 <% content_for :javascript do %>
-
-    <% if Rails.env.production? && (current_user.nil? || !current_user.is_admin?) %>
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-                $('.first_field').focus();
-
-                $("#ask_friends_button a").click(function () {
-                    // This sends us an event every time a user clicks the button
-                    mpmetrics.track("ask_friends_click");
-                });
-
-                mpmetrics.track('signup_view');
-            });
-        </script>
-    <% end %>
-
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.first_field').focus();
+        });
+    </script>
 <% end %>
