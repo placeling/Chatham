@@ -1,27 +1,50 @@
-
 <h1>Pinta Stats</h1>
-
 <b>Pinta Placemarks:</b> <%= @perspectives.count %>
+<div class="row">
+  <div class="span6">
+    <h2>Activated Blogs</h2>
+    <table border="1">
+      <thead>
+      <tr>
+      <th>title</th>
+      <th>url</th>
+      <th>Created_at</th>
+      </thead>
+
+      <% for blogger in @bloggers %>
+          <tr>
+            <td><%= blogger.title %></td>
+            <td><%= link_to blogger.base_url, blogger.base_url, :target => "_blank" %></td>
+            <td><%= blogger[:created_at] %></td>
+          </tr>
+      <% end %>
+
+    </table>
 
 
-<table border="1">
-    <thead>
+  </div>
+
+  <div class="span6">
+    <h2>Recent Posts</h2>
+    <table border="1">
+      <thead>
       <tr>
       <th>Username</th>
       <th>Place</th>
-      <th>Memo</th>
-      <th>Url</th>
       <th>Created_at</th>
-    </thead>
+      </thead>
 
-  <% for perspective in @perspectives %>
-    <tr>
-      <td><%= link_to perspective.user.username,  user_path( perspective.user ), :target =>"_blank"%></td>
-      <td><%= link_to perspective.place.name,  place_path( perspective.place ), :target =>"_blank" %></td>
-      <td><%= perspective.memo[0..200] %></td>
-      <td><%= link_to perspective.url,  perspective.url, :target =>"_blank" %></td>
-      <td><%= perspective[:created_at] %></td>
-    </tr>
-  <% end %>
+      <% for perspective in @perspectives %>
+          <tr>
+            <td><%= link_to perspective.user.username, user_path(perspective.user), :target => "_blank" %></td>
+            <td><%= link_to perspective.place.name, perspective.url, :target => "_blank" %></td>
+            <td><%= perspective[:created_at] %></td>
+          </tr>
+      <% end %>
 
-</table>
+    </table>
+
+
+  </div>
+
+</div>

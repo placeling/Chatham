@@ -26,8 +26,8 @@ class AdminController < ApplicationController
   end
 
   def about_us
-    @ian = User.where(:username => "imack").first()
-    @lindsay = User.where(:username => "lindsayrgwatt").first()
+    @ian = User.ian
+    @lindsay = User.lindsay
     @about_us = t("about_us")
     respond_to do |format|
       format.html
@@ -51,13 +51,13 @@ class AdminController < ApplicationController
       format.html { render :layout => false }
     end
   end
-  
+
   def publisher
     respond_to do |format|
       format.html
     end
   end
-  
+
   def categories
     respond_to do |format|
       format.json { render "#{Rails.root}/config/google_place_mapping", :formats => [:json], :status => 200, :layout => false }
@@ -165,6 +165,11 @@ class AdminController < ApplicationController
 
     ca = ClientApplication.find('4f298a1057b4e33324000003')
     @perspectives = ca.perspectives.descending(:created_at).limit(200)
+    @bloggers = Blogger.where(:activated => true).limit(100)
+
+    respond_to do |format|
+      format.html { render :blog_stats, :layout => 'bootstrap' }
+    end
 
   end
 
