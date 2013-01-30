@@ -117,7 +117,6 @@ Chatham::Application.routes.draw do
   resources :ios do
     collection do
       post :update_token
-      post :update_location
     end
   end
 
@@ -187,7 +186,6 @@ Chatham::Application.routes.draw do
     resources :ios do
       collection do
         post :update_token
-        post :update_location
       end
     end
 
