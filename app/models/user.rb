@@ -91,7 +91,7 @@ class User
   embeds_one :activity_feed
   embeds_one :user_setting
   embeds_one :user_tour
-  embeds_one :user_recommendation
+
   embeds_one :first_run
   accepts_nested_attributes_for :user_setting
   accepts_nested_attributes_for :user_tour
@@ -154,10 +154,6 @@ class User
 
     if !self.first_run
       self.create_first_run
-    end
-
-    if !self.user_recommendation
-      self.create_user_recommendation
     end
 
     if !self.user_tour
@@ -490,101 +486,6 @@ class User
     end
   end
 
-  def week_in_review
-    scored = {}
-    guides = []
-
-    weekago = Time.now - (24*60*60*7)
-
-    # User's activity that week
-    activity = {}
-
-    last_week = Perspective.where(:uid => self.id, :created_at => {'$gte' => weekago})
-
-    activity['count'] = last_week.length
-    activity['photos'] = []
-
-    last_week.each do |perp|
-      perp.pictures.each do |pic|
-        activity['photos'] << {'perp' => perp, 'pic' => pic}
-      end
-    end
-
-    # Activity by guides the user follows
-    self.following.each do |following|
-      # Guides
-      actions = ActivityFeedChunk.where("activities.user1" => following.id, "activities.created_at" => {'$gte' => weekago}, "activities.activity_type" => "FOLLOW")
-
-      actions.each do |chunk|
-        chunk.activities.each do |activity|
-          if activity.activity_type == "FOLLOW"
-            actor = User.find_by_username(activity.username2)
-            if !self.following.include?(actor) && actor != self
-              if !guides.include?(actor)
-                guides << actor
-              end
-            end
-          end
-        end
-      end
-
-      if guides.length > 0
-        guides.sort! { |a, b| a.followers.length <=> b.followers.length }
-        guides.reverse!
-      end
-
-      #Places
-      recent = Perspective.where(:uid => following.id, :created_at => {"$gte" => weekago})
-      if recent.length > 0
-        recent.each do |perp|
-          if (perp.memo && perp.memo.length >0) || perp.pictures.length > 0
-            temp = {}
-            temp["perp"] = perp
-
-            score = 0
-
-            if !following.thumb_cache_url.nil?
-              score += 2 # 2 points for a profile picture
-            end
-
-            if perp.pictures.length > 0
-              temp["pictures"] = true
-              score += 2 # 2 points for at least one photo
-            else
-              temp["pictures"] = false
-            end
-
-            if perp.memo && perp.memo.length > 0
-              temp["memo"] = true
-              score += 1 # 1 point for a memo
-            else
-              temp["memo"] = false
-            end
-
-            my_perspective = Perspective.where(:uid => self.id, :plid => perp.place.id)
-            if my_perspective.length > 0
-              temp["mine"] = true
-              if score > 0
-                score = 1 # Low score for places already on my map
-              end
-            else
-              temp["mine"] = false
-            end
-
-            temp["score"] = score
-
-            scored[perp] = score
-          end
-        end
-      end
-    end
-
-    # Questions
-    q =[]
-
-    return scored, guides, activity, q
-  end
-
   def described?
     if self.description && self.description != ""
       return true
@@ -604,93 +505,6 @@ class User
       else
         return true
       end
-    end
-  end
-
-  def get_recommendations
-    if self.has_location?
-      previous = self.user_recommendation.recommended_ids
-
-      # Guide
-      candidates = User.top_nearby(self.loc[0], self.loc[1], 100, true)
-
-      clean_candidates = []
-
-      candidates.each do |candidate|
-        if !self.following_ids.include?(candidate.id) && !previous.include?(candidate.id)
-          clean_candidates << candidate
-        end
-      end
-
-      if clean_candidates.include?(self)
-        clean_candidates.delete(self)
-      end
-
-      city_snapshots = User.find_by_username('citysnapshots')
-      if clean_candidates.include?(city_snapshots)
-        clean_candidates.delete(city_snapshots)
-      end
-
-      tyler = User.find_by_username('tyler')
-      if clean_candidates.include?(tyler)
-        clean_candidates.delete(tyler)
-      end
-
-      candidates = clean_candidates[0, 1]
-
-      candidates.each do |candidate|
-        self.user_recommendation.recommended_ids << candidate.id
-      end
-
-      # Place
-      # Technically return a perspective because we want to show a testimonial
-      candidate_places = Place.top_nearby_places(self.loc[0], self.loc[1], 0.3, 100).entries
-
-      my_places = []
-      self.perspectives.each do |perspective|
-        my_places << perspective.place
-      end
-
-      clean_places = []
-
-      candidate_places.each do |place|
-        if !my_places.include?(place) && !previous.include?(place.id) && !place.venue_types.include?("Political")
-          clean_places << place
-        end
-      end
-
-      growlab = Place.where('name' => 'Growlab').first()
-      if clean_places.include?(growlab)
-        clean_places.delete(growlab)
-      end
-
-      # Convert places to high quality perspectives
-      candidate_place_to_perspectives = []
-      clean_places.each do |place|
-        place.perspectives.each do |perp|
-          if perp.high_value?
-            candidate_place_to_perspectives << perp
-          end
-        end
-      end
-
-      candidate_place_to_perspectives.shuffle! # Randomize so don't always get 1st perspective on a place
-
-      places = candidate_place_to_perspectives[0, 1]
-
-      places.each do |place|
-        self.user_recommendation.recommended_ids << place.place.id
-      end
-
-      self.save
-
-      if candidates.length > 0 || places.length >0
-        return {"guides" => candidates, "places" => places}
-      else
-        return nil
-      end
-    else
-      return nil
     end
   end
 
