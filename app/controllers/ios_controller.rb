@@ -16,8 +16,6 @@ class IosController < ApplicationController
     lat = params[:lat].to_f
     lng = params[:lng].to_f
     accuracy = params[:accuracy].to_f
-
-    Resque.enqueue( CheckLocationHighlights, current_user.id, lat, lng, accuracy, Time.now.to_i)
     Rails.logger.info "Got a location for #{current_user.username}: #{lat}, #{lng} with accuracy #{accuracy}"
 
     respond_to do |format|
