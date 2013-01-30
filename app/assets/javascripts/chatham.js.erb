@@ -8,36 +8,6 @@ $.ajaxSetup({
     }
 });
 
-
-$(document).ready(function () {
-    preload([
-        '<%= asset_path("reddit/reddit_hover.png") %>',
-        '<%= asset_path("facebook/facebook_Hover.png") %>',
-        '<%= asset_path("twitter/twitter_hover.png") %>'
-    ]);
-
-    $(".reddit_button").mouseenter(
-            function () {
-                $(this).addClass("reddit_button_hover");
-            }).mouseleave(function () {
-                $(this).removeClass("reddit_button_hover")
-            });
-
-    $(".twitter_button").mouseenter(
-            function () {
-                $(this).addClass("twitter_button_hover");
-            }).mouseleave(function () {
-                $(this).removeClass("twitter_button_hover")
-            });
-
-    $(".facebook_button").mouseenter(
-            function () {
-                $(this).addClass("facebook_button_hover");
-            }).mouseleave(function () {
-                $(this).removeClass("facebook_button_hover")
-            });
-});
-
 function fadeArrow() {
     $('#arrow_box').fadeOut(100);
     $(window).unbind('click', fadeArrow);
