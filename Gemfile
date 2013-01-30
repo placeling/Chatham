@@ -6,10 +6,7 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-
 gem "jquery-rails", "~> 2.1.3"
-gem "quiet_assets", ">= 1.0.1", :group => :development
-
 gem "mongoid", "~> 2.4.8"
 gem "mongoid_rails_migrations", "~> 0.0.13"
 
@@ -37,7 +34,6 @@ gem 'carrierwave-mongoid', "~> 0.1.1", :require => 'carrierwave/mongoid'
 
 gem "geocoder"
 gem "geoip"
-gem "execjs"
 
 #gem "oauth-plugin", :path => "../oauth-plugin"
 gem "oauth-plugin", :git => "git://github.com/placeling/oauth-plugin.git"
@@ -53,10 +49,6 @@ gem "recaptcha", :require => "recaptcha/rails"
 
 gem "rspec-rails", "~> 2.8.1" #needs these outside to prevent rake break
 gem 'ci_reporter'
-
-gem 'mocha'
-gem 'factory_girl_rails', "~> 1.1.rc1"
-gem "database_cleaner"
 
 gem 'mail_view', :git => 'https://github.com/37signals/mail_view.git'
 
@@ -82,6 +74,10 @@ group :test, :development do
   gem "parallel_tests"
   gem 'capybara'
   gem 'poltergeist'
+  gem 'mocha'
+  gem 'factory_girl_rails', "~> 1.1.rc1"
+  gem "database_cleaner"
+  gem "quiet_assets", ">= 1.0.1"
 end
 
 gem "twitter-bootstrap-rails"
@@ -103,12 +99,4 @@ gem "rvm-capistrano", :require => false
 
 gem "actionmailer_inline_css"
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-# gem 'ruby-debug'
-# gem 'ruby-debug19'
 
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
