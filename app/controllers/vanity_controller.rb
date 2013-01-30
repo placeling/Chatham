@@ -15,7 +15,7 @@ class VanityController < ApplicationController
         end
       else
         track! :pinta_activation
-        Blogger.create(:title => params["blog_title"], :base_url => params["blog_url"], :wordpress => true, :activated => true)
+        Blogger.create(:title => params["blog_name"], :base_url => params["blog_url"], :wordpress => true, :activated => true)
       end
     end
 
