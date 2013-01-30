@@ -165,7 +165,7 @@ class AdminController < ApplicationController
 
     ca = ClientApplication.find('4f298a1057b4e33324000003')
     @perspectives = ca.perspectives.descending(:created_at).limit(200)
-    @bloggers = Blogger.where(:activated => true).limit(100)
+    @bloggers = Blogger.where(:activated => true).descending(:created_at).limit(100)
 
     respond_to do |format|
       format.html { render :blog_stats, :layout => 'bootstrap' }
