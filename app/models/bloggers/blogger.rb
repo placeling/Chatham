@@ -5,7 +5,7 @@ class Blogger
 
   field :title, :type => String
   field :city_name, :type => String
-  field :base_url, :type => String
+  field :url, :type => String
   field :hostname, :type => String
 
   field :wordpress, :type => Boolean, :default => false
@@ -13,16 +13,23 @@ class Blogger
 
   field :places_count, :type => Integer, :default => 0
 
+  field :last_updated, :type => DateTime
+
   field :location, :type => Array
   slug :title, :index => true, :permanent => true
 
-  #embeds_many :entries
+  embeds_many :entries
 
-  index :base_url
+  index :url
   index :hostname
 
   def self.find_by_url(url)
-    Blogger.where(:base_url => url).first
+    Blogger.where(:url => url).first
+  end
+
+  def update_from_feedrizza(feed)
+    self.title = feed.title
+    self.wordpress = feed.generator.include? "wordpress"
   end
 
 end
