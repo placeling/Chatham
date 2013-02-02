@@ -13,3 +13,9 @@ google_places_update:
   description: "Update n google places that haven't been updated in a month"
 
 
+trigger_blog_crawl:
+  cron: "0 * * * *"
+  class: TriggerCrawl
+  queue: high
+  args:
+  description: "Initiate update of n blog feeds that need updating"
