@@ -19,3 +19,10 @@ trigger_blog_crawl:
   queue: high
   args:
   description: "Initiate update of n blog feeds that need updating"
+
+check_plugin_download:
+  cron: "0 0 * * *"
+  class: PintaDownloads
+  queue: high
+  args:
+  description: "Grab the cumulative downloads from the wordpress page"
