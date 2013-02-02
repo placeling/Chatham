@@ -27,9 +27,19 @@ class Blogger
     Blogger.where(:url => url).first
   end
 
+  def place_count
+    tally = 0
+    self.entries.each do |entry|
+      if entry.places.count > 0
+        tally +=1
+      end
+    end
+    return tally
+  end
+
   def update_from_feedrizza(feed)
     self.title = feed.title
-    if feed.generator
+    if defined?(feed.generator) && !feed.generator.nil?
       self.wordpress = feed.generator.include? "wordpress"
     else
       self.wordpress = false

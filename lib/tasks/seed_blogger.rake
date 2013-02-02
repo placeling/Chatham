@@ -9,6 +9,36 @@ class MediaEntry
   value :value
 end
 
+def grabUrbanspoonId(summary)
+  doc = Nokogiri::HTML(summary)
+
+  urbanspoon_count = 0
+  urban_id =nil
+  place_name = nil
+
+  doc.css('img').each do |image|
+    begin
+      uri = URI.parse(image['src'])
+    rescue Exception => e
+      puts e
+      next
+    end
+
+    if uri.host == "www.urbanspoon.com"
+      urbanspoon_count += 1
+      urban_id = uri.path.split("/")[3]
+      place_name = image['alt'].gsub(" on Urbanspoon", "").strip
+    end
+  end
+
+  if urbanspoon_count == 1
+    return urban_id, place_name
+  else
+    return nil, nil
+  end
+
+end
+
 
 def getUrbanspoonPlaceCoordinates(urbanspoon_id)
   page = CrawledPage.find_by_qualified_id(urbanspoon_id)
@@ -102,15 +132,17 @@ namespace "blogger" do
 
     Blogger.where(:activated => false).and(:last_updated.lt => 1.day.ago).limit(100).each do |blogger|
       puts blogger.url
-      feed = Feedzirra::Feed.fetch_and_parse(blogger.url + "feed/")
+      feed = Feedzirra::Feed.fetch_and_parse(blogger.url + "feed/", {:max_redirects => 3, :timeout => 10})
 
-      if feed.nil? || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
-        blogger.last_updated = DateTime.new
+      if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
+        blogger.last_updated = 1.second.ago
         blogger.save
         next
       end
 
       blogger.update_from_feedrizza(feed)
+
+      next unless blogger.wordpress
 
       feed.entries.each do |entry|
 
@@ -118,37 +150,52 @@ namespace "blogger" do
         puts "Looking at entry: #{entry.url}"
 
         nearby = nil
-        urbanspoonCount = 0
-        entry.media_contents.each do |media|
-          if media.url
-            begin
-              uri = URI.parse(media.url)
-            rescue Exception => e
-              next
-            end
+        urbanspoon_id = nil
 
-            if uri.host == "www.urbanspoon.com"
-              place_name = media.value.gsub(" on Urbanspoon", "").strip
-              puts place_name
-              urbanspoon_id = uri.path.split("/")[3]
 
-              if blogger.location.nil?
-                loc = getUrbanspoonPlaceCoordinates(urbanspoon_id)
-                blogger.location = loc
+        if defined? entry.media_contents #might not exist for atom
+          urbanspoonCount = 0
+          entry.media_contents.each do |media|
+            if media.url
+              begin
+                uri = URI.parse(media.url)
+              rescue Exception => e
+                puts e
+                next
               end
 
-              nearby = gpa.suggest(blogger.location[0], blogger.location[1], place_name)
-              sleep 1
-
-              urbanspoonCount += 1
+              if uri.host == "www.urbanspoon.com"
+                place_name = media.value.gsub(" on Urbanspoon", "").strip
+                puts place_name
+                urbanspoonCount += 1
+              end
             end
           end
+          if urbanspoonCount == 1
+            urbanspoon_id = uri.path.split("/")[3]
+          end
         end
-        if nearby && urbanspoonCount == 1
-          blogger.entries.create(:url => entry.url, :title => entry.title, :description => entry.summary, :places => nearby, :slug => entry.entry_id)
-        else
-          blogger.entries.create(:url => entry.url, :title => entry.title, :description => entry.summary, :places => [], :slug => entry.entry_id)
+
+        if urbanspoon_id.nil?
+          urbanspoon_id, place_name = grabUrbanspoonId(entry.content)
         end
+
+        if blogger.location.nil? && urbanspoon_id
+          loc = getUrbanspoonPlaceCoordinates(urbanspoon_id)
+          sleep 1
+          blogger.location = loc
+        end
+
+        if blogger.location && place_name
+          nearby = gpa.suggest(blogger.location[0], blogger.location[1], place_name)
+
+          if nearby
+            blogger.entries.create(:url => entry.url, :title => entry.title, :content => entry.content, :places => nearby, :slug => entry.entry_id)
+          else
+            blogger.entries.create(:url => entry.url, :title => entry.title, :content => entry.content, :places => [], :slug => entry.entry_id)
+          end
+        end
+
       end
 
       blogger.last_updated = 1.second.ago

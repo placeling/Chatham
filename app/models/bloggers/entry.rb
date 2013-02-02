@@ -4,7 +4,7 @@ class Entry
 
   field :url, :type => String
   field :title, :type => String
-  field :description, :type => String
+  field :content, :type => String
   field :slug
 
   field :places, :type => Array, :default => []
