@@ -32,7 +32,7 @@ namespace "blogger" do
   desc "Parse a remote feed looking for places that are blogged about"
   task :parse => :environment do
 
-    Blogger.where(:activated => false).and(:last_updated.lt => 1.day.ago).limit(100).each do |blogger|
+    Blogger.where(:activated => false).and(:last_updated.lt => 1.day.ago).limit(300).each do |blogger|
       puts "Enqueueing #{blogger.url}"
       Resque.enqueue(CrawlBlog, blogger.id)
     end
