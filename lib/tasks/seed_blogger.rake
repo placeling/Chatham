@@ -75,7 +75,7 @@ namespace "blogger" do
     text=File.open(filename).read
     text.each_line do |line|
       line = line.strip
-      if line[-1] !="/"
+      if line[-1] != "/"
         line = line + "/"
       end
 
@@ -100,21 +100,25 @@ namespace "blogger" do
     Feedzirra::Parser::RSSEntry.elements "media:content", :as => :media_contents, :class => MediaEntry
     Feedzirra::Parser::RSS.element "generator"
 
-    Blogger.where(:activated => false).each do |blogger|
+    Blogger.where(:activated => false).and(:last_updated.lt => 1.day.ago).limit(100).each do |blogger|
       puts blogger.url
-      feed = Feedzirra::Feed.fetch_and_parse(blogger.url)
-
-      blogger.update_from_feedrizza(feed)
+      feed = Feedzirra::Feed.fetch_and_parse(blogger.url + "feed/")
 
       if feed.nil? || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
+        blogger.last_updated = DateTime.new
+        blogger.save
         next
       end
+
+      blogger.update_from_feedrizza(feed)
 
       feed.entries.each do |entry|
 
         next unless blogger.entries.where(:url => entry.url).count == 0
         puts "Looking at entry: #{entry.url}"
 
+        nearby = nil
+        urbanspoonCount = 0
         entry.media_contents.each do |media|
           if media.url
             begin
@@ -125,7 +129,7 @@ namespace "blogger" do
 
             if uri.host == "www.urbanspoon.com"
               place_name = media.value.gsub(" on Urbanspoon", "").strip
-
+              puts place_name
               urbanspoon_id = uri.path.split("/")[3]
 
               if blogger.location.nil?
@@ -136,13 +140,18 @@ namespace "blogger" do
               nearby = gpa.suggest(blogger.location[0], blogger.location[1], place_name)
               sleep 1
 
-              blogger.entries.create(:url => entry.url, :title => entry.title, :description => entry.summary, :places => nearby, :slug => entry.entry_id)
+              urbanspoonCount += 1
             end
           end
         end
+        if nearby && urbanspoonCount == 1
+          blogger.entries.create(:url => entry.url, :title => entry.title, :description => entry.summary, :places => nearby, :slug => entry.entry_id)
+        else
+          blogger.entries.create(:url => entry.url, :title => entry.title, :description => entry.summary, :places => [], :slug => entry.entry_id)
+        end
       end
 
-      blogger.last_updated = DateTime.new
+      blogger.last_updated = 1.second.ago
       blogger.save
 
     end

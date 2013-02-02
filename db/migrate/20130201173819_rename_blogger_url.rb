@@ -4,6 +4,7 @@ class RenameBloggerUrl < Mongoid::Migration
       blogger.url = blogger.base_url
       blogger.save
     end
+    Rake::Task['db:mongoid:create_indexes'].invoke
   end
 
   def self.down

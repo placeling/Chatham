@@ -13,7 +13,7 @@ class Blogger
 
   field :places_count, :type => Integer, :default => 0
 
-  field :last_updated, :type => DateTime
+  field :last_updated, :type => DateTime, :default => 2.days.ago
 
   field :location, :type => Array
   slug :title, :index => true, :permanent => true
@@ -29,7 +29,11 @@ class Blogger
 
   def update_from_feedrizza(feed)
     self.title = feed.title
-    self.wordpress = feed.generator.include? "wordpress"
+    if feed.generator
+      self.wordpress = feed.generator.include? "wordpress"
+    else
+      self.wordpress = false
+    end
   end
 
 end
