@@ -14,7 +14,7 @@
       <% for blogger in @bloggers %>
           <tr>
             <td><%= blogger.title %></td>
-            <td><%= link_to blogger.base_url, blogger.base_url, :target => "_blank" %></td>
+            <td><%= link_to blogger.url, blogger.url, :target => "_blank" %></td>
             <td><%= blogger[:created_at] %></td>
           </tr>
       <% end %>
