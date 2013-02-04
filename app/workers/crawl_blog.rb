@@ -140,10 +140,11 @@ class CrawlBlog
               RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - Parsing place: #{place_name}"
               urbanspoonCount += 1
             end
+
+            if urbanspoonCount == 1
+              urbanspoon_id = uri.path.split("/")[3]
+            end
           end
-        end
-        if urbanspoonCount == 1
-          urbanspoon_id = uri.path.split("/")[3]
         end
       end
 
