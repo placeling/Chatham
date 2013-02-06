@@ -9,6 +9,39 @@ class MediaEntry
   value :value
 end
 
+
+def findRssFeed(blogger)
+
+  response = Net::HTTP.get_response(URI.parse(blogger.url))
+
+  if response.code == "200"
+    doc = Nokogiri::HTML(response.body)
+    alternates = []
+
+    doc.css('link').each do |link|
+      if link['rel'] == "alternate"
+        begin
+          uri = URI.parse(link['href'])
+        rescue Exception => e
+          next
+        end
+
+        if !link['title'].include?("Comments Feed")
+          alternates << link
+        end
+      end
+    end
+
+    if alternates.count > 0
+      RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - Adding feed url of #{alternates[0]['href']}"
+      blogger.feed_url = alternates[0]['href']
+      blogger.save
+      Resque.enqueue(CrawlBlog, blogger.id) #put back in for crawling
+    end
+  end
+end
+
+
 def grabUrbanspoonId(summary)
   doc = Nokogiri::HTML(summary)
 
@@ -104,10 +137,27 @@ class CrawlBlog
     Feedzirra::Parser::RSSEntry.elements "media:content", :as => :media_contents, :class => MediaEntry
     Feedzirra::Parser::RSS.element "generator"
 
-    feed = Feedzirra::Feed.fetch_and_parse(blogger.url + "feed/", {:max_redirects => 3, :timeout => 10})
+    if blogger.feed_url.nil?
+      check_url = blogger.url + "feed/"
+    else
+      check_url = blogger.feed_url
+    end
 
-    if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
+    feed = Feedzirra::Feed.fetch_and_parse(check_url, {:max_redirects => 3, :timeout => 10})
+
+    if feed.nil? && blogger.feed_url.nil?
+      findRssFeed(blogger)
+      return
+    elsif feed.nil?
       blogger.last_updated = 1.second.ago
+      blogger.save
+      return
+    elsif !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil?
+      blogger.last_updated = 1.second.ago
+      blogger.save
+      return
+    elsif feed.entries.first.published < 3.months.ago
+      blogger.auto_crawl = false
       blogger.save
       return
     end
@@ -115,6 +165,8 @@ class CrawlBlog
     blogger.update_from_feedrizza(feed)
 
     return unless blogger.wordpress
+
+    blogger.feed_url = check_url
 
     feed.entries.each do |entry|
 
