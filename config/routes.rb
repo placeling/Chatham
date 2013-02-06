@@ -132,7 +132,19 @@ Chatham::Application.routes.draw do
     end
     resources :placemark_comments, :only => [:create, :index, :destroy]
   end
-
+  
+  resources :blogs do
+    member do
+      post :update_feed
+    end
+    resources :entries, :only => [] do
+      member do
+        get :place
+        post :update_place
+      end
+    end
+  end
+  
   resources :places, :except => [:index] do
     collection do
       get :nearby

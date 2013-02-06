@@ -1,0 +1,10 @@
+<div class="entry_spacer">
+  <h2><%= link_to(entry.title, entry.url, :target => :blank) %></h2>
+  <p class="entry_date_time"><%= entry.published.strftime("%d %b %y %H:%M") %></p>
+  <div class="entry_content">
+    <%= entry.content.html_safe %>
+  </div>
+  <% if entry.places.length == 0 %>
+    <p>No location tagged <%= link_to("Add one", place_blog_entry_path(entry._parent._id, entry.id))%></p>
+  <% end %>
+</div>

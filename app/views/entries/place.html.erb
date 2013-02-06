@@ -1,0 +1,22 @@
+<div class="blog_wrapper">
+  <h2>Add a place to <%= @entry.title %></h2>
+  
+  <%= form_tag(place_blog_entry_path(@entry._parent._id, @entry.id), :method=>'post') do %>
+    <div class="standout">
+      <p class="label emphasize">Place Name</p>
+      <%= text_field_tag :name, "", :class => "entry_field" %>
+    </div>
+    
+    <div class="field">
+      <%= hidden_field_tag :reference, :value => "" %>
+    </div>
+    
+    <div id="create_or_cancel">
+      <span class="cancel">
+        <a href="<%= blog_path(@entry._parent) %>">Cancel</a>
+      </span>
+      <%= submit_tag "Save", :class=>"submit" %>
+    </div>
+  <% end %>
+  
+</div>
