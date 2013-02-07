@@ -152,6 +152,9 @@ class CrawlBlog
       blogger.last_updated = 1.second.ago
       blogger.save
       return
+    elsif (!defined?(feed.entries) || feed.entries.nil?) && blogger.feed_url.nil?
+      findRssFeed(blogger)
+      return
     elsif !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published.nil?
       blogger.last_updated = 1.second.ago
       blogger.save
