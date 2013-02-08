@@ -26,7 +26,7 @@ def findRssFeed(blogger)
           next
         end
 
-        if !link['title'].include?("Comments Feed")
+        if link['title'] && !link['title'].include?("Comments Feed")
           alternates << link
         end
       end
@@ -152,7 +152,10 @@ class CrawlBlog
       blogger.last_updated = 1.second.ago
       blogger.save
       return
-    elsif !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil?
+    elsif (!defined?(feed.entries) || feed.entries.nil?) && blogger.feed_url.nil?
+      findRssFeed(blogger)
+      return
+    elsif !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published.nil?
       blogger.last_updated = 1.second.ago
       blogger.save
       return
