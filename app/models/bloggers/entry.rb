@@ -10,6 +10,7 @@ class Entry
   field :slug
 
   field :places, :type => Array, :default => []
+  belongs_to :place
 
   embedded_in :bloggers_blogger, :class_name => 'Bloggers::Blogger'
 end
