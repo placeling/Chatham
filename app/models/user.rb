@@ -533,10 +533,6 @@ class User
 
   end
 
-  def suggestion_notification?
-    !ios_notification_token.nil? && self.user_settings.suggested_place_notify
-  end
-
   def remark_notification?
     !ios_notification_token.nil? && self.user_settings.remark_notify
   end
