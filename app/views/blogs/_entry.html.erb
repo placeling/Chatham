@@ -4,7 +4,9 @@
   <div class="entry_content">
     <%= entry.content.html_safe %>
   </div>
-  <% if entry.places.length == 0 %>
+  <% if entry.place %>
+    <p>Place: <%= entry.place.name %>. <%= link_to("Change", place_blog_entry_path(entry._parent._id, entry.id))%> <%= link_to("Remove", remove_blog_entry_path(entry._parent._id, entry.id), :method=>'post')%></p>
+  <% else %>
     <p>No location tagged <%= link_to("Add one", place_blog_entry_path(entry._parent._id, entry.id))%></p>
   <% end %>
 </div>

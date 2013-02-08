@@ -140,7 +140,8 @@ Chatham::Application.routes.draw do
     resources :entries, :only => [] do
       member do
         get :place
-        post :update_place
+        post :place, :to => :update_place
+        post :remove, :to => :remove_place
       end
     end
   end
