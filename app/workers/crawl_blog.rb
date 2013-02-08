@@ -12,7 +12,14 @@ end
 
 def findRssFeed(blogger)
 
-  response = Net::HTTP.get_response(URI.parse(blogger.url))
+  begin
+    response = Net::HTTP.get_response(URI.parse(blogger.url))
+  rescue Exception => e
+    puts "Failed crawl for #{blogger.url}"
+    blogger.auto_crawl = false
+    blogger.save
+    return
+  end
 
   if response.code == "200"
     doc = Nokogiri::HTML(response.body)
