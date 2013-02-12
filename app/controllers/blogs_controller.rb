@@ -53,7 +53,11 @@ class BlogsController < ApplicationController
   end
   
   def index
-    @blogs = Blogger.where(:auto_crawl => false) #Blogger.all()
+    if params[:all]
+      @blogs = Blogger.all().order_by(:created_at => :desc)
+    else
+      @blogs = Blogger.where(:auto_crawl => false).order_by(:created_at => :desc)
+    end
   end
   
   def show
