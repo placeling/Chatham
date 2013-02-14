@@ -70,10 +70,19 @@ class BlogsController < ApplicationController
   
   def update_feed
     blogger = Blogger.find_by_slug(params[:id])
+    
+    last_date = blogger.last_entry_date
+    
     blogger.update_rss_feed
     
+    new_last_date = blogger.last_entry_date
+    
     respond_to do |format|
-      format.html { redirect_to blog_path(blogger), notice: "RSS feed updated"}
+      if new_last_date == last_date
+        format.html { redirect_to blogs_path, notice: "No new feeds"}
+      else
+        format.html { redirect_to blog_path(blogger), notice: "RSS feed updated"}
+      end
     end
   end
 end

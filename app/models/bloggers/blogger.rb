@@ -53,6 +53,20 @@ class Blogger
     end
   end
   
+  def last_entry_date
+    if self.entries.length == 0
+      return false
+    else
+      last_update = self.entries[0].published
+      self.entries.each do |entry|
+        if entry.published > last_update
+          last_update = entry.published
+        end
+      end
+      return last_update
+    end
+  end
+  
   def update_rss_feed
     feed = Feedzirra::Feed.fetch_and_parse(self.feed_url, {:max_redirects => 3, :timeout => 10})
     
