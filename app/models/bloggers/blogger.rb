@@ -80,11 +80,21 @@ class Blogger
       exists = Blogger.where("entries.guid" => entry.id).first()
       
       if !exists
-        self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.content, :slug => entry.entry_id, :published => entry.published)
+        if entry.content.nil?
+          self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.summary, :slug => entry.entry_id, :published => entry.published)          
+        else
+          self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.content, :slug => entry.entry_id, :published => entry.published)
+        end
       end
     end
 
     self.last_updated = 1.second.ago
+    self.save
+  end
+  
+  def empty_feed
+    self.entries = []
+    self.last_updated = 2.days.ago
     self.save
   end
 end

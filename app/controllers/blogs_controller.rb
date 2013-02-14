@@ -85,4 +85,14 @@ class BlogsController < ApplicationController
       end
     end
   end
+  
+  def empty_feed
+    blogger = Blogger.find_by_slug(params[:id])
+    
+    blogger.empty_feed
+    
+    respond_to do |format|
+      format.html {redirect_to blogs_path, notice: "Feed emptied"}
+    end
+  end
 end
