@@ -120,6 +120,12 @@ Chatham::Application.routes.draw do
     end
   end
 
+  resources :recommendations, :only => [] do
+    collection do
+      get :nearby
+    end
+  end
+
   resources :perspectives, :only => [:show, :edit, :update, :destroy] do
     member do
       post :star
@@ -132,7 +138,7 @@ Chatham::Application.routes.draw do
     end
     resources :placemark_comments, :only => [:create, :index, :destroy]
   end
-  
+
   resources :blogs do
     member do
       post :update_feed
@@ -146,7 +152,7 @@ Chatham::Application.routes.draw do
       end
     end
   end
-  
+
   resources :places, :except => [:index] do
     collection do
       get :nearby
