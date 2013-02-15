@@ -61,7 +61,7 @@ class Blogger
     else
       last_update = self.entries[0].published
       self.entries.each do |entry|
-        if entry.published > last_update
+        if entry.published and entry.published > last_update
           last_update = entry.published
         end
       end
