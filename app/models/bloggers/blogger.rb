@@ -81,7 +81,7 @@ class Blogger
     feed.entries.each do |entry|
       exists = Blogger.where("entries.guid" => entry.id).first()
 
-      if !exists
+      if !exists and !entry.published.nil?
         if entry.content.nil?
           self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.summary, :slug => entry.entry_id, :published => entry.published)
         else
