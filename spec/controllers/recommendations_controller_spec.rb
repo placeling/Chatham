@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RecommendationController do
+describe RecommendationsController do
 
   render_views
 
