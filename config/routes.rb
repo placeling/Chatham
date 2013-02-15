@@ -136,6 +136,7 @@ Chatham::Application.routes.draw do
   resources :blogs do
     member do
       post :update_feed
+      post :empty_feed
     end
     resources :entries, :only => [] do
       member do

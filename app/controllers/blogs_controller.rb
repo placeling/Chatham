@@ -53,7 +53,11 @@ class BlogsController < ApplicationController
   end
   
   def index
-    @blogs = Blogger.where(:auto_crawl => false) #Blogger.all()
+    if params[:all]
+      @blogs = Blogger.all().order_by(:created_at => :desc)
+    else
+      @blogs = Blogger.where(:auto_crawl => false).order_by(:created_at => :desc)
+    end
   end
   
   def show
@@ -66,10 +70,29 @@ class BlogsController < ApplicationController
   
   def update_feed
     blogger = Blogger.find_by_slug(params[:id])
+    
+    last_date = blogger.last_entry_date
+    
     blogger.update_rss_feed
     
+    new_last_date = blogger.last_entry_date
+    
     respond_to do |format|
-      format.html { redirect_to blog_path(blogger), notice: "RSS feed updated"}
+      if new_last_date == last_date
+        format.html { redirect_to blogs_path, notice: "No new feeds"}
+      else
+        format.html { redirect_to blog_path(blogger), notice: "RSS feed updated"}
+      end
+    end
+  end
+  
+  def empty_feed
+    blogger = Blogger.find_by_slug(params[:id])
+    
+    blogger.empty_feed
+    
+    respond_to do |format|
+      format.html {redirect_to blogs_path, notice: "Feed emptied"}
     end
   end
 end

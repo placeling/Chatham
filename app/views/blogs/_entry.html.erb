@@ -6,7 +6,9 @@
   <% else %>
     <p class="tagged_place">No location tagged <%= link_to("Add one", place_blog_entry_path(entry._parent._id, entry.id), :class=>"tagged_place")%></p>
   <% end %>
+  <% if entry.content %>
   <div class="entry_content">
     <%= entry.content.html_safe %>
   </div>
+  <% end %>
 </div>
