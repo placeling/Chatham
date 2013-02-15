@@ -10,10 +10,10 @@ class Blogger
   field :url, :type => String
   field :feed_url, :type => String
   field :hostname, :type => String
-  
+
   field :twitter, :type => String
   field :email, :type => String
-  
+
   field :wordpress, :type => Boolean, :default => false
   field :activated, :type => Boolean, :default => false
   field :auto_crawl, :type => Boolean, :default => true
@@ -29,6 +29,8 @@ class Blogger
 
   index :url
   index :hostname
+
+  index [["entries.location", Mongo::GEO2D]], :min => -180, :max => 180
 
   def self.find_by_url(url)
     Blogger.where(:url => url).first
@@ -52,7 +54,7 @@ class Blogger
       self.wordpress = false
     end
   end
-  
+
   def last_entry_date
     if self.entries.length == 0
       return false
@@ -66,22 +68,22 @@ class Blogger
       return last_update
     end
   end
-  
+
   def update_rss_feed
     feed = Feedzirra::Feed.fetch_and_parse(self.feed_url, {:max_redirects => 3, :timeout => 10})
-    
+
     if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
       self.last_updated = 1.second.ago
       self.save
       return
     end
-    
+
     feed.entries.each do |entry|
       exists = Blogger.where("entries.guid" => entry.id).first()
-      
+
       if !exists
         if entry.content.nil?
-          self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.summary, :slug => entry.entry_id, :published => entry.published)          
+          self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.summary, :slug => entry.entry_id, :published => entry.published)
         else
           self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.content, :slug => entry.entry_id, :published => entry.published)
         end
@@ -91,7 +93,7 @@ class Blogger
     self.last_updated = 1.second.ago
     self.save
   end
-  
+
   def empty_feed
     self.entries = []
     self.last_updated = 2.days.ago
