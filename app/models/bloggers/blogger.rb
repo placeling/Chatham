@@ -72,7 +72,7 @@ class Blogger
   def update_rss_feed
     feed = Feedzirra::Feed.fetch_and_parse(self.feed_url, {:max_redirects => 3, :timeout => 10})
 
-    if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
+    if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || (feed.entries.first.published && feed.entries.first.published < 3.months.ago)
       self.last_updated = 1.second.ago
       self.save
       return
