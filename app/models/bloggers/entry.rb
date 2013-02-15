@@ -9,6 +9,8 @@ class Entry
   field :published, :type => DateTime
   field :slug
 
+  field :location, :type => Array
+
   field :places, :type => Array, :default => []
   belongs_to :place
 
