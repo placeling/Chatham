@@ -49,6 +49,12 @@
       </span>
       <%= submit_tag "Save", :class=>"submit" %>
     </div>
+    
+    <div>Is it one of these recent places?</div>
+    <div>Click name and then submit form</div>
+    <% @recent.each do |place| %>
+    <div><a href="#" gid="<%= place.gid %>" class="recent_place"><%= place.name %></a></div>
+    <% end %>
   <% end %>
   
 </div>
@@ -117,6 +123,12 @@
   }
   
   $(document).ready(function(){
+    $('.recent_place').click(function(e) {
+      e.preventDefault();
+      document.getElementById("gid").value = $(this).attr('gid');
+      return false;
+    });
+    
     $('#no_find').click(function(e){
       e.preventDefault();
       $('#no_match').hide();
