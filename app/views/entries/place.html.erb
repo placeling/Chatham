@@ -123,6 +123,12 @@
   }
   
   $(document).ready(function(){
+    $('#name').keypress(function(e) {
+        if (e.which == 13) {
+            return false;
+        }
+    });
+    
     $('.recent_place').click(function(e) {
       e.preventDefault();
       document.getElementById("gid").value = $(this).attr('gid');

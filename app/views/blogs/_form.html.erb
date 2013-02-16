@@ -86,5 +86,13 @@
         document.getElementById("blogger_lat").value = place.geometry.location.lat();
         document.getElementById("blogger_lng").value = place.geometry.location.lng();
     });
+    
+    $(document).ready(function(){
+      $('#blogger_city_name').keypress(function(e) {
+          if (e.which == 13) {
+              return false;
+          }
+      });
+    })
   </script>
 <% end %>
