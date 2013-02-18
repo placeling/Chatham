@@ -99,4 +99,9 @@ class Blogger
     self.last_updated = 2.days.ago
     self.save
   end
+
+  def as_json(options={})
+    self.attributes.delete('entries')
+    self.attributes
+  end
 end

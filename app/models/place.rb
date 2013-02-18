@@ -42,6 +42,7 @@ class Place
   attr_accessor :users_bookmarking #transient property, shows people following
   attr_accessor :distance #transient property, shows distance to current location
   attr_accessor :placemarks #perspectives we want to attach to the return value
+  attr_accessor :entries #blog entries attached to this places, transient
 
   validates_uniqueness_of :google_id, :allow_nil => true
   validates_presence_of :name
@@ -437,6 +438,11 @@ class Place
 
     attributes = attributes.merge(:users_bookmarking => self.users_bookmarking) unless self.users_bookmarking.nil?
     attributes = attributes.merge(:placemarks => self.placemarks.as_json({:current_user => options[:current_user], :place_view => true}))
+
+    if self.entries
+      attributes = attributes.merge(:entries => self.entries)
+      attributes.delete(:placemarks)
+    end
 
     if options[:bounds]
       attributes.delete(:lat)

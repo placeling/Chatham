@@ -1,7 +1,7 @@
 class Entry
   include Mongoid::Document
   include Mongoid::Timestamps
-  
+
   field :guid, :type => String
   field :url, :type => String
   field :title, :type => String
@@ -15,4 +15,9 @@ class Entry
   belongs_to :place
 
   embedded_in :bloggers_blogger, :class_name => 'Bloggers::Blogger'
+
+
+  def as_json(options={})
+    self.attributes.merge(:blogger => self._parent)
+  end
 end
