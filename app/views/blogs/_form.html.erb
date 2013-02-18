@@ -51,6 +51,12 @@
   </div>
   
   <div class="standout">
+    <p class="label emphasize">Interesting?</p>
+    <%= f.radio_button :featured, "false" %><%= f.label :featured, 'No', :value => 'false' %>
+    <%= f.radio_button :featured, "true" %><%= f.label :featured, 'Yes', :value => 'true' %>
+  </div>
+  
+  <div class="standout">
     <p class="label emphasize">Auto Crawl?</p>
     <%= f.radio_button :auto_crawl, "false" %><%= f.label :auto_crawl, 'No', :value => 'false' %>
     <%= f.radio_button :auto_crawl, "true" %><%= f.label :auto_crawl, 'Yes', :value => 'true' %>
@@ -86,5 +92,13 @@
         document.getElementById("blogger_lat").value = place.geometry.location.lat();
         document.getElementById("blogger_lng").value = place.geometry.location.lng();
     });
+    
+    $(document).ready(function(){
+      $('#blogger_city_name').keypress(function(e) {
+          if (e.which == 13) {
+              return false;
+          }
+      });
+    })
   </script>
 <% end %>

@@ -17,7 +17,9 @@ class Blogger
   field :wordpress, :type => Boolean, :default => false
   field :activated, :type => Boolean, :default => false
   field :auto_crawl, :type => Boolean, :default => true
-
+  
+  field :featured, :type => Boolean, :default => false # Editorial flag
+  
   field :places_count, :type => Integer, :default => 0
 
   field :last_updated, :type => DateTime, :default => 2.days.ago
@@ -61,7 +63,7 @@ class Blogger
     else
       last_update = self.entries[0].published
       self.entries.each do |entry|
-        if entry.published > last_update
+        if entry.published and entry.published > last_update
           last_update = entry.published
         end
       end
@@ -72,7 +74,7 @@ class Blogger
   def update_rss_feed
     feed = Feedzirra::Feed.fetch_and_parse(self.feed_url, {:max_redirects => 3, :timeout => 10})
 
-    if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || feed.entries.first.published < 3.months.ago
+    if feed.nil? || !defined?(feed.entries) || feed.entries.nil? || feed.entries.first.nil? || (feed.entries.first.published && feed.entries.first.published < 3.months.ago)
       self.last_updated = 1.second.ago
       self.save
       return
@@ -81,7 +83,7 @@ class Blogger
     feed.entries.each do |entry|
       exists = Blogger.where("entries.guid" => entry.id).first()
 
-      if !exists
+      if !exists and !entry.published.nil?
         if entry.content.nil?
           self.entries.create(:guid => entry.id, :url => entry.url, :title => entry.title, :content => entry.summary, :slug => entry.entry_id, :published => entry.published)
         else

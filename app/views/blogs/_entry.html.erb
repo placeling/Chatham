@@ -1,6 +1,8 @@
 <div class="entry_spacer">
   <h2><%= link_to(entry.title, entry.url, :target => :blank) %></h2>
-  <p class="entry_date_time"><%= entry.published.strftime("%d %b %y %H:%M") %></p>
+  <% if entry.published %>
+    <p class="entry_date_time"><%= entry.published.strftime("%d %b %y %H:%M") %></p>
+  <% end %>
   <% if entry.place %>
     <p class="tagged_place">Place: <%= entry.place.name %>. <%= link_to("Change", place_blog_entry_path(entry._parent._id, entry.id), :class=>"tagged_place")%> <%= link_to("Remove", remove_blog_entry_path(entry._parent._id, entry.id), :method=>'post', :confirm=>"Remove place?")%></p>
   <% else %>

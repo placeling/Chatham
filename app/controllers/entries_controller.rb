@@ -12,7 +12,9 @@ class EntriesController < ApplicationController
         break
       end
     end
-
+    
+    @recent = Place.where({'place_type'=>'USER_CREATED'}).order_by(:created_at => :desc).limit(50)
+    
     file = File.open(Rails.root.join("config/google_place_mapping.json"), 'r')
     content = file.read()
     @categories = JSON(content)
@@ -39,7 +41,7 @@ class EntriesController < ApplicationController
     end
 
     valid_place = false
-    if params[:reference] and params[:reference].length > 1 and params[:gid] and params[:gid].length > 1
+    if params[:gid] and params[:gid].length > 1
       valid_place = true
     end
 
