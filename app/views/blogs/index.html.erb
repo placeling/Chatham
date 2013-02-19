@@ -7,8 +7,8 @@
         <a href="<%= blogs_place_path(city["place"]) %>"><%= city["place"].name %> (<%= city["count"] %>)</a>
       </p>
     <% end %>
-    <p><%= link_to("All blogs", all_blogs_path) %></p>
   <% else %>
-    <p>No blogs yet. <%= link_to("Add one", new_blog_path) %></p>
+    <p>No location-tagged blogs. <%= link_to("Add one", new_blog_path) %></p>
   <% end %>
+  <p><%= link_to("All blogs", all_blogs_path) %></p>
 </div>
