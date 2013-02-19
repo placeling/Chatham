@@ -18,6 +18,7 @@ class Entry
 
 
   def as_json(options={})
-    self.attributes.merge(:blogger => self._parent)
+    self.place.entries = nil
+    self.attributes.merge(:blogger => self._parent).merge(:place => self.place)
   end
 end
