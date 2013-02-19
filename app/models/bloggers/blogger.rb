@@ -17,9 +17,9 @@ class Blogger
   field :wordpress, :type => Boolean, :default => false
   field :activated, :type => Boolean, :default => false
   field :auto_crawl, :type => Boolean, :default => true
-  
+
   field :featured, :type => Boolean, :default => false # Editorial flag
-  
+
   field :places_count, :type => Integer, :default => 0
 
   field :last_updated, :type => DateTime, :default => 2.days.ago
@@ -106,7 +106,7 @@ class Blogger
   end
 
   def as_json(options={})
-    self.attributes.delete('entries')
+    self.attributes.delete('entries') unless !options[:detail_view].nil?
     self.attributes
   end
   
