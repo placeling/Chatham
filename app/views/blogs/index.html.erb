@@ -1,12 +1,14 @@
 <div class="blog_wrapper">
-  <% if @blogs.length > 0 %>
+  <% if @cities.length > 0 %>
     <h2><%= link_to("Add a blog", new_blog_path) %></h2>
     <h1>Blogs</h1>
-    <h3><%= link_to("Show all", blogs_path(:all => true))%></h3>
-    <% @blogs.each do |blog| %>
-      <p class="blog_listing"><%= link_to(blog.title, blog_path(blog)) %> <%= link_to("Edit", edit_blog_path(blog), :class=>"blog_action") %> <%= link_to("Delete", blog_path(blog), :method=>:delete, :confirm=>"Delete this blog?", :class=>"blog_action") %> <%= link_to("Reset RSS Feed", empty_feed_blog_path(blog), :method=> :post, :class=> "blog_action", :confirm=>"Delete all feed entries?", :remote=>"true")%>  <%= link_to("Update RSS Feed", update_feed_blog_path(blog), :method => :post, :class=>"blog_action", :remote=>"true") %></p>
+    <% @cities.each do |city| %>
+      <p class="blog_listing">
+        <a href="<%= blogs_place_path(city["place"]) %>"><%= city["place"].name %> (<%= city["count"] %>)</a>
+      </p>
     <% end %>
   <% else %>
-    <p>No blogs yet. <%= link_to("Add one", new_blog_path) %></p>
+    <p>No location-tagged blogs. <%= link_to("Add one", new_blog_path) %></p>
   <% end %>
+  <p><%= link_to("All blogs", all_blogs_path) %></p>
 </div>

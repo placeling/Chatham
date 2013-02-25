@@ -13,6 +13,18 @@ class BlogsController < ApplicationController
   def create
     @blog = Blogger.new(params[:blogger])
     
+    place = Place.find_by_google_id(params[:gid])
+    if place.nil?
+      gp = GooglePlaces.new
+      place = gp.get_place(params[:reference])
+      place = Place.new_from_google_place(place)
+      place.save
+    end
+    
+    @blog.place = place
+    @blog.pid = place.id.to_s
+    @blog.save
+    
     respond_to do |format|
       if @blog.save
         format.html { redirect_to blogs_path, notice: 'Blog was successfully created.' }
@@ -35,6 +47,20 @@ class BlogsController < ApplicationController
     @blog = Blogger.find_by_slug(params[:id])
     @blog.update_attributes(params[:blogger])
     
+    if params[:gid]
+      place = Place.find_by_google_id(params[:gid])
+      if place.nil?
+        gp = GooglePlaces.new
+        place = gp.get_place(params[:reference])
+        place = Place.new_from_google_place(place)
+        place.save
+      end
+    
+      @blog.place = place
+      @blog.pid = place.id.to_s
+      @blog.save
+    end
+    
     respond_to do |format|
       if @blog.save
         format.html { redirect_to blogs_path, notice: 'Blog was successfully updated.' }
@@ -53,11 +79,23 @@ class BlogsController < ApplicationController
   end
   
   def index
-    if params[:all]
-      @blogs = Blogger.all().order_by(:created_at => :desc)
-    else
-      @blogs = Blogger.where(:auto_crawl => false).order_by(:created_at => :desc)
+    grouped = Blogger.group_by_place
+    @cities = []
+    
+    grouped.each do |city|
+      if city["pid"] and !city["pid"].nil?
+        place = Place.find(city["pid"])
+        @cities << {"place"=>place, "count"=>city["count"].to_i}
+      end
     end
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def all
+    @blogs = Blogger.all().order_by(:created_at => :desc)
   end
   
   def show

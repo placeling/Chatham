@@ -4,7 +4,7 @@ require 'google_places_autocomplete'
 
 class PlacesController < ApplicationController
   before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]
-  before_filter :admin_required, :only => [:edit]
+  before_filter :admin_required, :only => [:edit, :blogs]
 
   def reference
     if params[:ref].nil?
@@ -251,7 +251,19 @@ class PlacesController < ApplicationController
       render :action => :new
     end
   end
-
+  
+  def blogs
+    place = Place.forgiving_find(params[:id])
+    
+    raise ActionController::RoutingError.new('Not Found') unless !place.nil?
+    
+    @blogs = Blogger.where(:pid => place.id.to_s).order_by(:created_at => :desc)
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def quickpick
     #doesn't actually return perspectives, just places for given perspectives
     lat = params[:lat].to_f

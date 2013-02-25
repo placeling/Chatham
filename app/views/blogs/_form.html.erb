@@ -51,7 +51,7 @@
   </div>
   
   <div class="standout">
-    <p class="label emphasize">Interesting?</p>
+    <p class="label emphasize">Feature?</p>
     <%= f.radio_button :featured, "false" %><%= f.label :featured, 'No', :value => 'false' %>
     <%= f.radio_button :featured, "true" %><%= f.label :featured, 'Yes', :value => 'true' %>
   </div>
@@ -70,6 +70,11 @@
       <input id="blogger_lat" name="blogger[location][]" type="hidden" value="" />
       <input id="blogger_lng" name="blogger[location][]" type="hidden" value="" />
     <% end %>
+  </div>
+  
+  <div class="field">
+    <%= hidden_field_tag :reference, "" %>
+    <%= hidden_field_tag :gid, "" %>
   </div>
   
   <div id="create_or_cancel">
@@ -91,6 +96,8 @@
         var place = autocomplete.getPlace();
         document.getElementById("blogger_lat").value = place.geometry.location.lat();
         document.getElementById("blogger_lng").value = place.geometry.location.lng();
+        document.getElementById("reference").value = place.reference;
+        document.getElementById("gid").value = place.id;
     });
     
     $(document).ready(function(){

@@ -144,6 +144,9 @@ Chatham::Application.routes.draw do
       post :update_feed
       post :empty_feed
     end
+    collection do
+      get :all
+    end
     resources :entries, :only => [] do
       member do
         get :place
@@ -166,6 +169,7 @@ Chatham::Application.routes.draw do
     member do
       post :highlight
       post :unhighlight
+      get :blogs
     end
     resources :users
     resources :perspectives, :except => [:show, :index] do
