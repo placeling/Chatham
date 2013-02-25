@@ -70,12 +70,6 @@ class AdminController < ApplicationController
     end
   end
 
-  def tour
-    respond_to do |format|
-      format.html
-    end
-  end
-
   def investors
 
   end
