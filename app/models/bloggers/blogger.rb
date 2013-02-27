@@ -30,7 +30,7 @@ class Blogger
   embeds_many :entries
   belongs_to :place
   field :pid, :type => String
-  
+
   index :url
   index :hostname
   index :place
@@ -106,18 +106,24 @@ class Blogger
   end
 
   def as_json(options={})
-    self.attributes.delete('entries') unless !options[:detail_view].nil?
-    self.attributes
+    self.attributes.delete('entries')
+    attributes = self.attributes
+
+    if options[:detail_view] == true
+      attributes = attributes.merge(:entries => self.entries)
+    end
+
+    attributes
   end
-  
+
   def self.group_by_place
     place_counts = Blogger.collection.group(
-      :cond => {:auto_crawl => false},
-      :key => 'pid',
-      :initial => {count: 0},
-      :reduce => "function(obj,prev) {prev.count++}"
+        :cond => {:auto_crawl => false},
+        :key => 'pid',
+        :initial => {count: 0},
+        :reduce => "function(obj,prev) {prev.count++}"
     )
-    
+
     return place_counts
   end
 end
