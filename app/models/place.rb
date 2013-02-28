@@ -423,6 +423,7 @@ class Place
         :city_data => self.city_data,
         :location => self.location,
         :tags => self.tags,
+        :place_type => self.place_type,
         :google_id => self['gid'],
         :google_ref => self.google_ref,
         :google_url => self.google_url,
