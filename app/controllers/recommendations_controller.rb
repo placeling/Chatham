@@ -23,7 +23,7 @@ class RecommendationsController < ApplicationController
     placed_bloggers = []
     @bloggers.each do |blogger|
       blogger.entries.delete_if { |entry| entry.created_at < 1.week.ago || entry.place_id.nil? }
-      placed_bloggers << blogger unless blogger.entries.count == 0
+      placed_bloggers << blogger unless blogger.entries.count == 0 || placed_bloggers.include?(blogger)
     end
 
     respond_to do |format|
