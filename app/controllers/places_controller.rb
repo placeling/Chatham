@@ -4,7 +4,7 @@ require 'google_places_autocomplete'
 
 class PlacesController < ApplicationController
   before_filter :login_required, :only => [:new, :confirm, :create, :new, :update, :destroy, :highlight, :unhighlight]
-  before_filter :admin_required, :only => [:edit, :blogs]
+  before_filter :admin_required, :only => [:edit, :blogs, :edit_twitter, :update_twitter]
 
   def reference
     if params[:ref].nil?
@@ -601,15 +601,43 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
+    
+    respond_to do |format|
+      format.html
+    end
   end
 
   def update
     @place = Place.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
+    
     if @place.update_attributes(params[:place])
       flash[:notice] = t "place.updated_place"
-      redirect_to :action => "show", :id => @place.id
+      redirect_to :action => "show", :id => @place.slug
     else
       render :action => "edit"
+    end
+  end
+  
+  def edit_twitter
+    @place = Place.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
+    
+    respond_to do |format|
+      format.html {render :template => "places/twitter"}
+    end
+  end
+  
+  def update_twitter
+    @place = Place.forgiving_find(params[:id])
+    raise ActionController::RoutingError.new('Not Found') unless !@place.nil?
+    
+    if @place.update_attributes(params[:place])
+      flash[:notice] = t "place.updated_place"
+      redirect_to :action => "show", :id => @place.slug
+    else
+      render :action => "places/twitter"
     end
   end
 
