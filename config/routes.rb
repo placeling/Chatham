@@ -170,6 +170,8 @@ Chatham::Application.routes.draw do
       post :highlight
       post :unhighlight
       get :blogs
+      get :twitter, :to => :edit_twitter
+      post :twitter, :to => :update_twitter
     end
     resources :users
     resources :perspectives, :except => [:show, :index] do
