@@ -16,7 +16,7 @@ class RecommendationsController < ApplicationController
     lng = params[:lng].to_f
 
     if params[:since]
-      since = params[:since].to_f
+      since = Time.at(params[:since].to_i)
     else
       since = 1.week.ago
     end
