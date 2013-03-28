@@ -78,7 +78,6 @@ class User
   has_many :perspectives, :foreign_key => 'uid', :dependent => :destroy
   has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
-  has_one :publisher
 
   mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 
@@ -729,9 +728,6 @@ class User
                   :fullname => self['fullname'],
                   :location => self.location
     }
-    if self.publisher
-      attributes = attributes.merge(:publisher_id => self.publisher.id)
-    end
 
     attributes = attributes.merge(:lat => self.location[0], :lng => self.location[1]) unless self.location.nil?
 

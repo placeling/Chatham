@@ -1,6 +1,0 @@
-<tr <%= 'class="first"' if i==0 %> <%= 'class="even"' if i%2==0 %> id="user_<%= user.username %>">
-  <td style="text-align: center;"><%= link_to user.username, user %></td>
-  <td class="tc last" style="text-align: center;"><!-- action icons - feel free to add/modify your own - icons are located in "css/img/led-ico/*" -->
-    <%= link_to image_tag('publishers/led-ico/delete.png'), remove_member_publisher_path(publisher, :username => user.username), :method => :post, :class => "ico remove_user", :remote => true %>
-  </td>
-</tr>
