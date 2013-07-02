@@ -65,7 +65,6 @@ gem 'resque_mailer'
 
 gem 'mongoid_slug'
 
-
 group :test, :development do
   gem "parallel_tests"
   gem 'capybara'
@@ -77,8 +76,6 @@ group :test, :development do
 end
 
 gem "twitter-bootstrap-rails"
-
-gem 'liquid'
 
 group :assets do
   gem 'sass-rails', '~> 3.2.3'
