@@ -14,22 +14,12 @@ after "deploy:create_symlink", "deploy:restart_workers"
 after "deploy:create_symlink", "deploy:restart_scheduler"
 
 task :production do
-  set :gateway, 'beagle.placeling.com:11235'
+  set :gateway, '50.19.236.56:11235'
   server '10.91.3.30', :app, :web, :db, :scheduler, :primary => true
   ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
   set :user, 'ubuntu'
   set :use_sudo, false
   set :rails_env, "production"
-end
-
-task :staging do
-  server 'staging.placeling.com', :app, :web, :db, :scheduler, :primary => true
-  ssh_options[:forward_agent] = true
-  set :deploy_via, :remote_cache
-  set :user, 'ubuntu'
-  set :port, '11235'
-  set :use_sudo, false
-  set :rails_env, "staging"
 end
 
 default_run_options[:pty] = true # Must be set for the password prompt from git to work
