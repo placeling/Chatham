@@ -87,5 +87,4 @@ namespace :db do
   end
 end
 
-require 'airbrake/capistrano'
 require './config/boot'
