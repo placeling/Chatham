@@ -1,24 +1,3 @@
-generate_sitemap:
-  cron: "0 */4 * * *"
-  class: RegenerateSiteMap
-  queue: high
-  args:
-  description: "This job rebuilds the site map a 4 times a day"
-
-google_places_update:
-  cron: "0 10 * * *"
-  class: GooglePlaceUpdate
-  queue: high
-  args:
-  description: "Update n google places that haven't been updated in a month"
-
-
-trigger_blog_crawl:
-  cron: "0 * * * *"
-  class: TriggerCrawl
-  queue: high
-  args:
-  description: "Initiate update of n blog feeds that need updating"
 
 check_plugin_download:
   cron: "0 0 * * *"
