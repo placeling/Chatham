@@ -10,7 +10,6 @@ Chatham::Application.routes.draw do
   get "/about", :to => 'admin#about_us', :as => :about_us
   get "/contact_us", :to => 'admin#contact_us', :as => :contact_us
 
-  match '/vanity(/:action(/:id(.:format)))', :controller => :vanity
 
   # Marketing
   get "/locals", :to => 'admin#local', :as => :local

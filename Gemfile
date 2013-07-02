@@ -54,8 +54,6 @@ gem "redis", "~> 2.2"
 gem "redis-namespace"
 gem 'redis-rails'
 
-gem 'vanity'
-
 gem 'resque', :require => 'resque/server'
 gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 gem 'resque_mailer'
