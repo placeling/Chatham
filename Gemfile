@@ -65,15 +65,6 @@ gem 'resque_mailer'
 
 gem 'mongoid_slug'
 
-group :test, :development do
-  gem "parallel_tests"
-  gem 'capybara'
-  gem 'poltergeist'
-  gem 'mocha'
-  gem 'factory_girl_rails', "~> 1.1.rc1"
-  gem "database_cleaner"
-  gem "quiet_assets", ">= 1.0.1"
-end
 
 gem "twitter-bootstrap-rails"
 
