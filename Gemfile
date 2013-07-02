@@ -40,8 +40,6 @@ gem "oauth-plugin", :git => "git://github.com/placeling/oauth-plugin.git"
 
 gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 
-gem 'airbrake'
-
 gem 'rack-p3p'
 gem 'rack-rewrite', '~> 1.2.1'
 

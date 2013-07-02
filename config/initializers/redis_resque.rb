@@ -1,5 +1,4 @@
 require 'resque/failure/multiple'
-require 'resque/failure/airbrake'
 require 'resque/failure/redis'
 
 # REDIS_CONFIG = YAML.load(File.open(Rails.root.join("config/redis.yml"))) opened in application.rb
@@ -9,11 +8,7 @@ redis_base = Redis.new(REDIS_CONFIG.symbolize_keys!)
 Resque.redis = redis_base
 Resque.redis.namespace = "resque:placeling"
 
-Resque::Failure::Airbrake.configure do |config|
-  config.api_key = '6cdd0c13c32d9b5cbd3ab510033319af'
-end
-
-Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Airbrake]
+Resque::Failure::Multiple.classes = [Resque::Failure::Redis]
 Resque::Failure.backend = Resque::Failure::Multiple
 
 unless defined?(RESQUE_LOGGER)
