@@ -14,7 +14,7 @@ class ZipFile
 
     zipfile_name = "public/uploads/#{user.username}_placeling.zip"
 
-    if File.exists?( "public/uploads/#{user.username}_placeling.zip")
+    if File.exists?( "public/uploads/#{user.username}_placeling.zip") && user.escape_pod
       return
     end
 
@@ -59,7 +59,7 @@ class ZipFile
       zipfile.put_next_entry("#{user.username}_data.xml")
       zipfile.print( builder.to_xml )
 
-      if user.main_url
+      if user.avatar
         zipfile.put_next_entry("profile.png")
         zipfile.print( URI.parse( user.main_url ).read )
       end
