@@ -1,5 +1,4 @@
 require 'resque/server'
-require 'subdomain'
 
 Chatham::Application.routes.draw do
   post '/escape_pod', to: 'home#escape_pod', as: :escape_pod
