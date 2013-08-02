@@ -14,6 +14,10 @@ class ZipFile
 
     zipfile_name = "#{Rails.root}/public/uploads/#{user.username}_placeling.zip"
 
+    if user.escape_pod
+      return
+    end
+
     Zip::ZipOutputStream.open(zipfile_name) do |zipfile|
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.root {
@@ -62,12 +66,21 @@ class ZipFile
         p.pictures.each_with_index do |photo, i|
           puts photo.main_url
 
+          begin
+          photofile = URI.parse( photo.main_url ).read
           #zipfile.add("#{photo.id}.jpg", photo.main_url)
           zipfile.put_next_entry("#{p.place.slug}_#{i}.jpg")
-          zipfile.print( URI.parse( photo.main_url ).read )
+
+          zipfile.print( photofile )
+          rescue
+          end
+
 
         end
       end
     end
+
+    user.escape_pod = true
+    user.save
   end
 end
