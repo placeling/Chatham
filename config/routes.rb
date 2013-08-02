@@ -11,6 +11,8 @@ Chatham::Application.routes.draw do
   get "/contact_us", :to => 'admin#contact_us', :as => :contact_us
 
 
+  get '/escape_pod', to: 'home#escape_pod', as: :escape_pod
+
   # Marketing
   get "/locals", :to => 'admin#local', :as => :local
   get "/tour", :to => 'admin#tour', :as => :tour

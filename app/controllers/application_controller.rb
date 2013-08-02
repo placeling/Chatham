@@ -3,8 +3,6 @@ require 'json'
 class ApplicationController < ActionController::Base
   include HTTParty
 
-  use_vanity nil
-
   # protect_from_forgery TODO: might want this back
   before_filter :api_check, :set_location
 

@@ -71,6 +71,8 @@ end
 
 gem 'dynamic_form'
 
+gem "rubyzip", "~> 0.9.9"
+
 # Deploy with Capistrano
 gem 'capistrano'
 gem "capistrano-ext"

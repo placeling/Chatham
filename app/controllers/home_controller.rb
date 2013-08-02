@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :login_required, :only => [:home_timeline, :logged_in_home]
+  before_filter :login_required, :only => [:home_timeline, :logged_in_home, :escape_pod]
 
   def logged_out_home
 
@@ -24,4 +24,11 @@ class HomeController < ApplicationController
     end
 
   end
+
+  def escape_pod
+
+
+  end
+
+
 end
