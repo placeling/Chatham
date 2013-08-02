@@ -148,62 +148,6 @@ class AuthenticationsController < ApplicationController
     end
   end
 
-  def friends
-
-    provider = params['provider']
-    @users = []
-
-    if provider == "facebook" && current_user.facebook
-
-      friends_json = $redis.smembers("facebook_friends_#{current_user.id}")
-      @users = []
-      if false #friends_json.count > 0 #friend self to differentiate empty from null
-        friends_json.each do |friend_json|
-          friend = JSON.parse(friend_json)
-          user = User.find(friend[0])
-          user.fullname = friend[2]
-          @users << user
-        end
-      else
-        $redis.sadd("facebook_friends_#{current_user.id}", [current_user.id, current_user.facebook.get_object("me")['id'], current_user.facebook.get_object("me")['name']].to_json)
-
-
-        begin
-          current_user.facebook.get_connection("me", "friends").each do |friend|
-            if auth = Authentication.find_by_provider_and_uid(provider, friend['id'])
-              auth.user.fullname = friend['name']
-              @users << auth.user
-              $redis.sadd("facebook_friends_#{current_user.id}", [auth.user.id, friend['id'], friend['name']].to_json)
-            end
-          end
-        rescue Koala::Facebook::APIError => exc
-          if exc.fb_error_code == 190
-            fb_auth = current_user.authentications.where(:p => "facebook").first
-            fb_auth.expiry = 1.day.ago #no longer valid, so cancel out
-            fb_auth.save
-          elsif exc.fb_error_code == 200
-            RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{current_user.username} doesn't authorize publish actions for facebook"
-          elsif exc.fb_error_code == 3501
-            RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - #{current_user.username} already associated object-object"
-          else
-            raise exc
-          end
-        end
-      end
-
-      if !current_user.user_settings.facebook_friend_check
-        current_user.user_settings.facebook_friend_check = true
-        current_user.save
-      end
-    end
-
-    @users.sort! { |x, y| x.fullname <=> y.fullname }
-
-    respond_to do |format|
-      format.json { render :json => {:users => @users.as_json({:current_user => current_user})} }
-    end
-
-  end
 
 
   def destroy

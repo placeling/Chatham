@@ -4,7 +4,7 @@ require 'subdomain'
 Chatham::Application.routes.draw do
   post '/escape_pod', to: 'home#escape_pod', as: :escape_pod
 
-  devise_for :users, :controllers => {:sessions => 'sessions'}
+  devise_for :users
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/login' => 'authentications#login'

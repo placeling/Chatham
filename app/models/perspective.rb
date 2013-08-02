@@ -29,15 +29,12 @@ class Perspective
   embeds_many :pictures
   embeds_many :placemark_comments, :cascade_callbacks => true
   accepts_nested_attributes_for :placemark_comments
-  embeds_one :place_stub
 
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => lambda { |a| a[:content].blank? }
 
-  index [["place_stub.loc", Mongo::GEO2D]], :min => -180, :max => 180
   index [[:ploc, Mongo::GEO2D]], :min => -180, :max => 180
   index [[:loc, Mongo::GEO2D]], :min => -180, :max => 180
-  index "place_stub.venue_types"
-  index "place_stub.ptg"
+
   index :tags, :background => true
 
   validates_associated :place
@@ -49,7 +46,6 @@ class Perspective
   before_validation :fix_location
   before_create :notify_modified
   before_save :set_empty_status
-  before_save :get_place_data
   before_save :parse_tags
   after_save :reset_user_and_place_perspective_count
   after_destroy :reset_user_and_place_perspective_count
@@ -119,26 +115,6 @@ class Perspective
     else
       return false
     end
-  end
-
-  def self.query_near(loc, span, query, category)
-    geonear = BSON::OrderedHash.new()
-    geonear["$near"] = loc
-    geonear["$maxDistance"] = span
-
-    selector = Perspective.where(:ploc => geonear)
-
-    if category != nil and category.strip != ""
-      categories_array = CATEGORIES[category].keys + CATEGORIES[category].values
-      selector = selector.any_in("place_stub.venue_types" => categories_array)
-    end
-
-    if query != nil and query.strip != ""
-      tags = Perspective.extract_tag_array(query.downcase.strip)
-      selector = selector.any_in(:tags => tags)
-    end
-
-    return selector
   end
 
   def check_in
@@ -266,12 +242,6 @@ class Perspective
     end
   end
 
-  def get_place_data
-    self.place_location = self.place.location
-    self.place_stub = PlaceStub.new
-    place_attributes = self.place.attributes.except('address_components', 'cid', 'user_id', 'slug', 'html_attributions', "update_flag")
-    self.place_stub.attributes = place_attributes
-  end
 
   def fix_location
     if self.location
