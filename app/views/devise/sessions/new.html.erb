@@ -13,7 +13,6 @@
 <div class="auth_block" style="width:355px; float:left;">
   <div class="auth_header">
     <div class="auth_header_callout"><%= t('user.sign_in') %></div>
-    <div><%= t('user.register_prompt') %> <%= link_to t('user.sign_up'), new_user_registration_path, :class => "register_link" %></div>
   </div>
   <div id="auth_form">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>

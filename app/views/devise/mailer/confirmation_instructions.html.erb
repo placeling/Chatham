@@ -1,8 +1,0 @@
-<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px">
-<p><span style="font-weight:bold"><%= @resource.username %></span> - you're one step away from being signed up for Placeling.</p>
-
-<p>Please confirm your email address by clicking the link below:</p>
-
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
-
-</div>
