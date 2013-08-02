@@ -1,5 +1,3 @@
-require 'google_places'
-require 'google_reverse_geocode'
 
 class Place
   include Mongoid::Document

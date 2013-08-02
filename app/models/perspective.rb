@@ -1,4 +1,3 @@
-require 'google_places'
 
 class Perspective
   MAX_LENGTH = 130
