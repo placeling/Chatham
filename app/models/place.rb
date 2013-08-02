@@ -5,8 +5,6 @@ class Place
   include Mongoid::Slug
   include ApplicationHelper
 
-  before_validation :fix_location, :remove_blank_categories, :parse_address
-
   field :loc, :as => :location, :type => Array
   field :name, :type => String
   field :gid, :as => :google_id, :type => String
@@ -255,96 +253,6 @@ class Place
 
   def self.find_by_google_id(google_id)
     Place.where(:gid => google_id).first
-  end
-
-  def parse_address
-    if self.address_components && !self.street_address && !self.city_data
-      if self.address_components.is_a?(Hash)
-        components_mash = Hashie::Mash.new(response)
-      else
-        if self.address_components.first.is_a?(Hash)
-          components_mash = self.address_components.map { |item| Hashie::Mash.new(item) }
-        else
-          components_mash = {}
-        end
-      end
-
-      address_dict = GooglePlaces.getAddressDict(components_mash)
-
-      if address_dict['number'] and address_dict['street']
-        self.street_address = address_dict['number'] + " " + address_dict['street']
-      elsif address_dict['street']
-        self.street_address = address_dict['street']
-      end
-
-      if address_dict['city'] and address_dict['province']
-        self.city_data = address_dict['city'] + ", " + address_dict['province']
-      end
-
-    end
-  end
-
-  def self.new_from_google_place(raw_place)
-    place = Place.new
-    place.update_from_google_place(raw_place)
-    return place
-  end
-
-
-  def update_from_google_place(raw_place)
-
-    self.name = raw_place.name
-    self.google_id = raw_place.id
-    self.google_url = raw_place.url
-    self.vicinity = raw_place.vicinity
-    self.location = [raw_place.geometry.location.lat, raw_place.geometry.location.lng]
-    self.address_components = raw_place.address_components unless raw_place.address_components.nil?
-    self.phone_number = raw_place.formatted_phone_number unless raw_place.formatted_phone_number.nil?
-    self.google_ref = raw_place.reference
-    self.venue_url = raw_place.website unless raw_place.website.nil?
-    self.html_attributions = raw_place.html_attributions
-
-    # TODO This is hacky and ignores i18n
-    @categories = CATEGORIES
-
-    friendly_mapping = {}
-    @categories.each do |category, components|
-      components.each do |key, value|
-        # multiple items map to "other" so skip it
-        if value != "other"
-          friendly_mapping[value] = key
-        end
-      end
-    end
-
-    clean_venues = []
-    if !raw_place.types.nil?
-      raw_place.types.each do |venue|
-        # skip other as no value in showing "other" to user. WTF does "other" mean?
-        if venue != "other"
-          if friendly_mapping.has_key?(venue)
-            clean_venues.push(friendly_mapping[venue])
-          else
-            pieces = venue.split("_")
-            new_pieces = []
-            pieces.each do |piece|
-              new_pieces.push(piece.capitalize)
-            end
-            clean_venues.push(new_pieces.join(" "))
-          end
-        end
-      end
-    end
-
-    if clean_venues.length ==0
-      clean_venues = ["other"] #best example of this are bridges, must have one
-    end
-
-    self.venue_types = clean_venues
-
-    self.place_type = "GOOGLE_PLACE"
-
-    return self
   end
 
 
