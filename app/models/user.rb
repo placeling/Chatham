@@ -24,6 +24,8 @@ class User
 
   field :notification_count, :type => Integer, :default => 0
 
+  field :escape_pod, :type => Boolean, :default => false
+
   ## Database authenticatable
   field :email, :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
