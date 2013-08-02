@@ -85,9 +85,6 @@ class User
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
-  has_many :client_applications, :foreign_key => 'uid'
-  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :foreign_key => 'uid', :dependent => :delete
-
   validate :acceptable_name, :on => :create
   validate :acceptable_password
   validates_presence_of :username
@@ -338,10 +335,6 @@ class User
 
   def self.find_by_crypto_key(key)
     self.where(:ck => key).first
-  end
-
-  def remove_tokens_for(client_application)
-    self.tokens.where(:cid => client_application.id).delete_all
   end
 
   def perspective_for_place(place)
