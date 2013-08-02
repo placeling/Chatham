@@ -33,7 +33,6 @@ Chatham::Application.configure do
   config.assets.initialize_on_precompile = false
   config.assets.compress = true
   config.assets.digest = true
-  config.action_controller.asset_host = "https://dmpcpg251rpg5.cloudfront.net"
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "dmznjo0da80tm.cloudfront.net"
