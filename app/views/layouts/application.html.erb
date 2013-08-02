@@ -4,7 +4,6 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <meta property="og:site_name" content="Placeling"/>
 
-  <%= yield :head %>
   <%= favicon_link_tag %>
   <%= csrf_meta_tag %>
 
@@ -20,7 +19,7 @@
                   text:'<%= notice unless notice.blank? %>',
                   layout:'topRight',
                   type:"information",
-                  timeout:5000
+                  timeout:15000
               });
           });
       </script>
@@ -58,7 +57,18 @@
 }</script><![endif]-->
 <div id="container">
   <div id="wrapper">
-    <%= render :partial => 'layouts/header' %>
+    <div id="header">
+      <div id="search">
+        <form accept-charset="UTF-8">
+          <% if current_user %>
+              <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/></div>
+          <% end %>
+          <a href="/" id="logo"><%= image_tag "logo.png" %></a>
+        </form>
+      </div>
+      <div id="user_controls">
+      </div>
+    </div>
     <div id="content">
       <div id="maincontent">
         <%= yield %>
@@ -66,11 +76,10 @@
     </div>
   </div>
 </div>
-<%= render :partial => 'layouts/footer' %>
+<div id="footerbottom">
+  <p>&copy; 2011 - 2013 Placeling (Internet Services) Inc.</p>
+</div>
 <script type="text/javascript">
-
-    var default_lat = $("#default_lat").val();
-    var default_lng = $("#default_lng").val();
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25331124-1']);
@@ -97,6 +106,5 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 </script>
-<%= yield :javascript %>
 </body>
 </html>
