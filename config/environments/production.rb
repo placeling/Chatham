@@ -63,8 +63,3 @@ Chatham::Application.configure do
 
 
 end
-
-APNS.pem = "#{Rails.root}/config/certs/apns-prod-cert.pem"
-APNS.host = "gateway.push.apple.com"
-APNS.feedback_host = 'feedback.push.apple.com'
-APNS.cache_connections = true
