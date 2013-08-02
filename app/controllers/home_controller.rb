@@ -15,9 +15,7 @@ class HomeController < ApplicationController
     else
       current_user.want_email = true
       current_user.save
-      if !current_user.escape_pod
-        Resque.enqueue(ZipFile, current_user.id)
-      end
+      Resque.enqueue(ZipFile, current_user.id)
 
       redirect_to '/',  notice: "Your data is still processing, we'll email you when its ready"
     end
