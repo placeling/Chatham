@@ -2,12 +2,11 @@ require 'resque/server'
 require 'subdomain'
 
 Chatham::Application.routes.draw do
-  get '/escape_pod', to: 'home#escape_pod', as: :escape_pod
+  post '/escape_pod', to: 'home#escape_pod', as: :escape_pod
 
-  devise_for :users, :controllers => {:sessions => 'sessions', :registrations => :registrations, :confirmations => :confirmations}
+  devise_for :users, :controllers => {:sessions => 'sessions'}
 
   match '/auth/:provider/callback' => 'authentications#create'
-  match '/auth/:provider/add' => 'authentications#add'
   match '/auth/:provider/login' => 'authentications#login'
 
   #setting up the api routes
