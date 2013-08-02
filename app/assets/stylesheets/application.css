@@ -1,6 +1,6 @@
 /* ...
-*= require_self
 *= require chatham
 *= require application_trans
+ *= require_directory .
 */
 
