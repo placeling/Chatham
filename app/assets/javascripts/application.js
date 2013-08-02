@@ -1,5 +1,6 @@
 /* ...
- *= require_self
- *= require chatham
- *= require header
+ //= require jquery
+ //= require jquery_ujs
+ //= require jquery-ui
+ //= require_directory .
  */
