@@ -2,42 +2,7 @@ class Notifier < ActionMailer::Base
   default :from => "contact@placeling.com"
   include Resque::Mailer
 
-  def welcome(user_id)
-    @user = User.find(user_id)
-
-    if @user.loc.nil?
-      @guides = []
-      @guides << User.find_by_username('topspotter')
-    else
-      @guides = User.top_nearby(@user.loc[0], @user.loc[1], 4)
-    end
-
-    citysnapshots = User.find_by_username('citysnapshots')
-    @guides.delete(citysnapshots)
-    @guides.delete(@user)
-
-    @guides = @guides[0, 3]
-
-    @guides_filler = Array.new(size=(3-@guides.length))
-
-    mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@user.username}, welcome to Placeling") do |format|
-      format.text
-      format.html
-    end
-  end
-
-  def follow(owner_id, new_follow_id)
-    @user = User.find(owner_id)
-    @target = User.find(new_follow_id)
-    @type = "follow"
-
-    mail(:to => @user.email, :from => "\"Placeling\" <contact@placeling.com>", :subject => "#{@target.username} is now following you") do |format|
-      format.text { render 'notification' }
-      format.html { render 'notification' }
-    end
-  end
-
-  def remark(owner_id, remarker_id, perspective_id)
+  def remark(user_id)
     @user = User.find(owner_id)
     @target = User.find(remarker_id)
     @perspective = Perspective.find(perspective_id)

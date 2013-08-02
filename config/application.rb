@@ -8,9 +8,6 @@ require "active_resource/railtie"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
-require 'oauth/rack/oauth_filter'
-require 'rack/rewrite'
-
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -61,7 +58,6 @@ module Chatham
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    config.middleware.use OAuth::Rack::OAuthFilter
     config.middleware.insert_before ActionDispatch::Session::CookieStore, Rack::P3p
 
     config.cache_store = :redis_store, REDIS_CONFIG['redis']
@@ -76,8 +72,4 @@ module Chatham
 
   end
 end
-
-require "apns"
-
-APNS.pem = "#{Rails.root}/config/certs/apns-dev-cert.pem"
 

@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/placeling/oauth-plugin.git
-  revision: d967f1dced19f5854664d7e15413a4f828768fc5
-  specs:
-    oauth-plugin (0.4.0.rc2)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2
-      rack
-
-GIT
   remote: git://github.com/twitter/twitter-text-rb.git
   revision: 4865e3f2ea2b16c5b3f1a67d5aed768ab9aaa564
   specs:
@@ -271,7 +261,7 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    simple_oauth (0.1.9)
+    simple_oauth (0.2.0)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -290,10 +280,10 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    twitter (3.7.0)
+    twitter (4.4.1)
       faraday (~> 0.8)
       multi_json (~> 1.3)
-      simple_oauth (~> 0.1.6)
+      simple_oauth (~> 0.2)
     twitter-bootstrap-rails (2.1.3)
       actionpack (>= 3.1)
       less-rails (~> 2.2.3)
@@ -339,7 +329,6 @@ DEPENDENCIES
   mongoid_slug
   nested_form
   oauth (= 0.4.4)
-  oauth-plugin!
   omniauth-facebook
   omniauth-twitter
   rack-p3p

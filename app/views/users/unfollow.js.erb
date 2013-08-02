@@ -1,6 +1,0 @@
-$('#follow_status').fadeOut(100);
-$('#follow_status').html('<a class="follow_link" rel="nofollow" data-remote="true" data-method="post" href="<%= follow_user_path(@user) %>" class="no_highlight"><%= image_tag "follow.png", :alt=>"Unfollow" %></a>');
-$('#follow_status').fadeIn(100);
-var followers = parseInt($('#follower_count').text());
-followers -= 1;
-$('#follower_count').text(followers);

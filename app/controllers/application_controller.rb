@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include HTTParty
 
   # protect_from_forgery TODO: might want this back
-  before_filter :api_check, :set_location
+  before_filter :set_location
 
   helper_method :user_location
   helper_method :return_to_link
@@ -28,18 +28,6 @@ class ApplicationController < ActionController::Base
       return request.referer
     else
       return "/"
-    end
-  end
-
-  def api_check
-    if params[:api_call] && !Rails.env.test?
-      if params[:key] && request.get?
-        if ClientApplication.find_by_key(params[:key]).nil?
-          oauth_app_required
-        end
-      else
-        oauth_app_required
-      end
     end
   end
 

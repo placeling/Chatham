@@ -1,4 +1,3 @@
-require 'cityname_finder'
 require 'redis_helper'
 
 class User

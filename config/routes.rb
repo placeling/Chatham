@@ -2,266 +2,21 @@ require 'resque/server'
 require 'subdomain'
 
 Chatham::Application.routes.draw do
-
-  get "/feeds/home_timeline", :to => "home#home_timeline", :as => :home_feed
-  get '/feed', :to => "home#logged_in_home"
-  get "/terms_of_service", :to => 'admin#terms_of_service', :as => :terms_of_service
-  get "/privacy_policy", :to => 'admin#privacy_policy', :as => :privacy_policy
-  get "/about", :to => 'admin#about_us', :as => :about_us
-  get "/contact_us", :to => 'admin#contact_us', :as => :contact_us
-
-
   get '/escape_pod', to: 'home#escape_pod', as: :escape_pod
-
-  # Marketing
-  get "/locals", :to => 'admin#local', :as => :local
-  get "/tour", :to => 'admin#tour', :as => :tour
-  get "/bloggers", :to => 'admin#bloggers', :as => :bloggers
-  get "/publisher", :to => 'admin#publisher', :as => :publisher
-  get "/bloggers/plans", :to => 'admin#blogger_plans', :as => :blogger_plans
-  get "/bloggers/matrix", :to => 'admin#blogger_matrix', :as => :blogger_matrix
-  get "/admin/investors", :to => 'admin#investors', :as => :investors
-
-  get "/admin/status", :to => 'admin#heartbeat', :as => :status
-  get "/admin/dashboard", :to => 'admin#dashboard', :as => :dashboard
-  get "/admin/blog_stats", :to => 'admin#blog_stats', :as => :blog_stats
-  get "/admin/firehose", :to => 'admin#firehose', :as => :firehose
-  get "/admin/categories", :to => 'admin#categories', :as => :categories
-  get "/admin/flagged_place", :to => 'admin#flagged_place', :as => :flagged_place
-  post "/admin/flagged_place", :to => 'admin#update_place', :as => :flagged_place
-
-  get "/search", :to => 'search#search', :as => :search
 
   devise_for :users, :controllers => {:sessions => 'sessions', :registrations => :registrations, :confirmations => :confirmations}
 
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:provider/add' => 'authentications#add'
   match '/auth/:provider/login' => 'authentications#login'
-  match '/auth/:provider/friends' => 'authentications#friends'
-
-  match '/oauth/test_request', :to => 'oauth#test_request', :as => :test_request
-  match '/oauth/token', :to => 'oauth#token', :as => :token
-  match '/oauth/access_token', :to => 'oauth#access_token_with_xauth_test', :as => :access_token
-  match '/oauth/access_token_new', :to => 'oauth#access_token_with_xauth_test', :newlogin => true
-  match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
-  match '/oauth/authorize', :to => 'oauth#authorize', :as => :authorize
-  match '/oauth', :to => 'oauth#index', :as => :oauth
-  match '/bulkupload/new', :to => 'potential_perspectives#new', :via => :get
-  match '/bulkupload/new', :to => 'potential_perspectives#create', :via => :post
-  match '/users/:user_id/potential_perspectives/process', :to => 'potential_perspectives#potential_to_real', :via => :post
-
-  post 'oauth/revoke', :to => 'oauth#revoke', :as => :oauth
-
-  match '/app', :to => "admin#app"
-  post '/users/resend', :to => 'users#resend', :as => :resend_password
-
-  resources :users, :except => [:index] do
-    resources :perspectives, :only => [:index]
-    resources :suggestions, :only => [:create, :new, :index]
-    resources :potential_perspectives, :only => [:index, :potential_to_real]
-    member do
-      get :bounds
-      get :nearby
-      get :magazine
-      get :followers
-      get :following
-      post :follow
-      post :unfollow
-      get :activity
-      get :pinta
-      get :iframe
-      get :embed
-      get :account
-      get :confirm_destroy
-      post :block
-      post :unblock
-      get :pic, :as => :pic
-      put :update_pic, :as => :update_pic
-      get :location, :to => :current_location, :as => :location
-      put :update_location
-      get :username, :to => :confirm_username, :as => :confirm_username
-      put :username, :to => :update_username, :as => :update_username
-      post :download
-    end
-    collection do
-      get :suggested
-      get :search
-      get :me
-      get :notifications
-      get :unsubscribe
-      get :resubscribe
-    end
-  end
-
-  resources :suggestions, :only => [:show, :destroy] do
-    collection do
-      get :user_search
-    end
-  end
-
-  resources :potential_perspectives, :only => [:update, :edit, :destroy]
-
-  resources :ios do
-    collection do
-      post :update_token
-    end
-  end
-
-  resources :recommendations, :only => [] do
-    collection do
-      get :nearby
-    end
-  end
-
-  resources :perspectives, :only => [:show, :edit, :update, :destroy] do
-    member do
-      post :star
-      post :unstar
-      post :flag
-      get :likers
-    end
-    collection do
-      get :nearby
-    end
-    resources :placemark_comments, :only => [:create, :index, :destroy]
-  end
-
-  resources :blogs do
-    member do
-      post :update_feed
-      post :empty_feed
-    end
-    collection do
-      get :all
-    end
-    resources :entries, :only => [] do
-      member do
-        get :place
-        post :place, :to => :update_place
-        post :remove, :to => :remove_place
-      end
-    end
-  end
-
-  resources :places, :except => [:index] do
-    collection do
-      get :nearby
-      get :random
-      get :search
-      get :suggested
-      get :quickpick
-      get :reference
-      post :confirm
-    end
-    member do
-      post :highlight
-      post :unhighlight
-      get :blogs
-      get :twitter, :to => :edit_twitter
-      post :twitter, :to => :update_twitter
-    end
-    resources :users
-    resources :perspectives, :except => [:show, :index] do
-      collection do
-        resources :photos
-        post :update
-        post :admin_create
-        delete :destroy
-        get :following
-        get :all
-      end
-    end
-  end
-
-  resources :oauth_clients do
-    member do
-      post :access_token, :format => :html
-    end
-  end
-
 
   #setting up the api routes
-  scope 'v1', :api_call => true, :format => :json do
-    get "/feeds/home_timeline", :to => "home#home_timeline"
-    get "/admin/terms_of_service", :to => 'admin#terms_of_service'
-    get "/admin/privacy_policy", :to => 'admin#privacy_policy'
-    post '/oauth/login_fb', :to => 'oauth#login_fb', :as => :login_fb
-    post '/users/resend', :to => 'users#resend'
-    match '/auth/:provider/callback' => 'authentications#create'
-    match '/auth/:provider/add' => 'authentications#add'
-    match '/auth/:provider/login' => 'authentications#login'
-    match '/auth/:provider/friends' => 'authentications#friends'
+  scope 'v1', :format => "html"  do
+    match "*path" => "home#error503"
+  end
 
-    resources :ios do
-      collection do
-        post :update_token
-      end
-    end
-
-    resources :users do
-      resources :perspectives, :only => [:index]
-      resources :suggestions, :only => [:create, :new, :index]
-      member do
-        get :followers
-        get :following
-        post :follow
-        post :unfollow
-        get :activity
-        post :block
-        post :unblock
-      end
-      collection do
-        get :suggested
-        get :search
-        get :add_facebook
-        get :me
-        get :notifications
-      end
-    end
-
-    resources :suggestions, :only => [:show, :destroy] do
-      collection do
-        get :user_search
-      end
-    end
-
-    resources :perspectives, :only => [:show] do
-      member do
-        post :star
-        post :unstar
-        post :flag
-        get :likers
-      end
-      collection do
-        get :nearby
-      end
-      resources :placemark_comments, :only => [:create, :index, :destroy]
-    end
-
-    resources :places, :except => [:index] do
-      collection do
-        get :nearby
-        get :random
-        get :search
-        get :suggested
-        get :reference
-        get :quickpick
-      end
-      member do
-        post :highlight
-        post :unhighlight
-      end
-      resources :users, :only => [:index]
-      resources :perspectives, :except => [:show] do
-        collection do
-          resources :photos
-          post :update
-          delete :destroy
-          get :following
-          get :all
-        end
-      end
-    end
+  scope 'oauth', :format => "html"  do
+    match "*path" => "home#error503"
   end
 
   if Rails.env.development?
@@ -270,24 +25,9 @@ Chatham::Application.routes.draw do
 
   mount Resque::Server, :at => "/resque"
 
-  match "/me" => "users#me", :as => :my_profile
-  match "/:id" => "users#show", :as => :profile
-
+  match '/503', :to => "home#error503"
   root :to => "home#index"
+  match "*path" => redirect("/")
 
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
 end

@@ -7,37 +7,6 @@
     <meta property="og:image" content="<%= asset_path("screenshot.png") %>"/>
 <% end %>
 
-<% content_for :javascript do %>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#facebook").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/facebook_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/facebook.png") %>');
-                    }
-            );
-            $("#twitter").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/twitter_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/twitter.png") %>');
-                    }
-            );
-            $("#blog").hover(
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/tumblr_hover.png") %>');
-                    },
-                    function () {
-                        $(this).attr("src", '<%= path_to_image("home/tumblr.png") %>');
-                    }
-            );
-        });
-    </script>
-<% end %>
 
 <div id="admin_header">
   <div class="component_holder">
@@ -59,26 +28,15 @@
   </div>
 </div>
 <div class="promise">
-  Location-enable your content to win mobile readers and monetize better
+  Thanks Everyone!
 </div>
 <div id="main_content" class="main_spacer">
-  <div id="wordpress_options">
-    <div class="center_image"><a href="<%= bloggers_path %>"><%= image_tag "home/features/wordpress_iphone.png", :alt=>"WordPress" %></a></div>
-    <div class="option_detail"><%= link_to 'Extend WordPress To Guide Readers To Nearby Places', bloggers_path, :class=>"option_link" %></div>
-  </div>
-  <div id="publishing_options">
-    <div class="center_image bottom_padder"><a href="<%= publisher_path %>"><%= image_tag "home/features/iphone_indie.png", :alt=>"Publishers" %></a></div>
-    <div class="option_detail"><%= link_to 'Publishers: Turn Your Local Content Into A Sponsored Guide', publisher_path, :class=>"option_link" %></div>
-  </div>
+  We out!
 </div>
 
 
 <div id="homepage_finish">
   <div id="finish_options">
-    We'd Like To Help: <%= mail_to "contact@placeling.com", "Email us", :encode => "javascript" %>
-    <span id="stay_in_touch">Stay in touch:</span>
-    <span class="social_connect"><a href="http://www.facebook.com/placeling"><%= image_tag "home/facebook.png", :alt => "FB", :id => "facebook" %></a></span>
-    <span class="social_connect"><a href="https://www.twitter.com/placeling"><%= image_tag "home/twitter.png", :alt => "Twitter", :id => "twitter" %></span>
-    <span class="social_connect"><a href="http://blog.placeling.com"><%= image_tag "home/tumblr.png", :alt => "Blog", :id => "blog" %></a></span>
+    You can get your shit out here:
   </div>
 </div>
