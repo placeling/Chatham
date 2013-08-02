@@ -15,7 +15,7 @@ class HomeController < ApplicationController
 
   def error503
 
-    render file: "#{Rails.root}/public.503.html", status: 503, :format => :html
+    render file: "#{Rails.root}/public/503.html", status: 503, :format => :html
 
   end
 
