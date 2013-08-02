@@ -38,8 +38,8 @@ class ZipFile
                   xml.url perspective.url
                 end
                 xml.pictures {
-                  perspective.pictures.each do |pic|
-                    xml.filename "#{pic.id}.jpg"
+                  perspective.pictures.each_with_index do |pic,i|
+                    xml.filename "#{perspective.place.slug}_#{i}.jpg"
                   end
                 }
 
@@ -58,19 +58,16 @@ class ZipFile
       zipfile.put_next_entry("profile.png")
       zipfile.print( URI.parse( user.main_url ).read )
 
-      user.perspectives.limit(1).each do |p|
-        p.pictures.each do |photo|
+      user.perspectives.each do |p|
+        p.pictures.each_with_index do |photo, i|
           puts photo.main_url
 
           #zipfile.add("#{photo.id}.jpg", photo.main_url)
-          zipfile.put_next_entry("#{photo.id}.jpg")
+          zipfile.put_next_entry("#{p.place.slug}_#{i}.jpg")
           zipfile.print( URI.parse( photo.main_url ).read )
 
         end
       end
     end
-
-
-
   end
 end
