@@ -59,8 +59,11 @@ class ZipFile
       zipfile.put_next_entry("#{user.username}_data.xml")
       zipfile.print( builder.to_xml )
 
-      zipfile.put_next_entry("profile.png")
-      zipfile.print( URI.parse( user.main_url ).read )
+      if user.main_url
+        zipfile.put_next_entry("profile.png")
+        zipfile.print( URI.parse( user.main_url ).read )
+      end
+
 
       user.perspectives.each do |p|
         p.pictures.each_with_index do |photo, i|
