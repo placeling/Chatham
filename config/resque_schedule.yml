@@ -1,7 +1,0 @@
-
-check_plugin_download:
-  cron: "0 0 * * *"
-  class: PintaDownloads
-  queue: high
-  args:
-  description: "Grab the cumulative downloads from the wordpress page"

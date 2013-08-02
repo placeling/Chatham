@@ -40,10 +40,6 @@ gem "twitter-text", :git => "git://github.com/twitter/twitter-text-rb.git"
 gem 'rack-p3p'
 gem 'rack-rewrite', '~> 1.2.1'
 
-gem "recaptcha", :require => "recaptcha/rails"
-
-gem 'mail_view', :git => 'https://github.com/37signals/mail_view.git'
-
 gem 'nested_form'
 gem 'fastercsv'
 
@@ -52,7 +48,6 @@ gem "redis-namespace"
 gem 'redis-rails'
 
 gem 'resque', :require => 'resque/server'
-gem 'resque-scheduler', "2.0.0.h", :require => 'resque_scheduler'
 gem 'resque_mailer'
 
 gem 'mongoid_slug'

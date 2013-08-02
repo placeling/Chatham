@@ -17,7 +17,6 @@ unless defined?(RESQUE_LOGGER)
   RESQUE_LOGGER = ActiveSupport::BufferedLogger.new f
 end
 
-Resque.schedule = YAML.load_file(File.join(Rails.root, 'config/resque_schedule.yml'))
 
 $redis = Redis::Namespace.new(REDIS_CONFIG[:namespace], :redis => redis_base)
 $redis.flushdb if Rails.env.test?

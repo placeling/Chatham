@@ -81,6 +81,10 @@ class ZipFile
     end
 
     user.escape_pod = true
+    if user.want_email
+      Notifier.ready(user.id).deliver
+    end
+
     user.save
   end
 end

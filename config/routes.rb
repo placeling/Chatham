@@ -18,10 +18,6 @@ Chatham::Application.routes.draw do
     match "*path" => "home#error503"
   end
 
-  if Rails.env.development?
-    mount Notifier::Preview => 'mail_view'
-  end
-
   mount Resque::Server, :at => "/resque"
 
   match '/503', :to => "home#error503"
