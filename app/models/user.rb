@@ -88,14 +88,6 @@ class User
   has_many :client_applications, :foreign_key => 'uid'
   has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :foreign_key => 'uid', :dependent => :delete
 
-  embeds_one :activity_feed
-  embeds_one :user_setting
-  embeds_one :user_tour
-
-  embeds_one :first_run
-  accepts_nested_attributes_for :user_setting
-  accepts_nested_attributes_for :user_tour
-
   validate :acceptable_name, :on => :create
   validate :acceptable_password
   validates_presence_of :username
@@ -140,33 +132,6 @@ class User
   def get_city
     if self.location != nil && self.location != [0, 0] && self.city == ""
       self.city = CitynameFinder.getCity(self.location[0], self.location[1])
-    end
-  end
-
-  def attach_subdocs
-    if !self.activity_feed
-      self.create_activity_feed
-    end
-
-    if !self.user_setting
-      self.create_user_setting
-    end
-
-    if !self.first_run
-      self.create_first_run
-    end
-
-    if !self.user_tour
-      self.create_user_tour
-    end
-
-    track! :signup
-
-  end
-
-  def attach_first_run
-    if !self.first_run
-      self.create_first_run
     end
   end
 
@@ -449,21 +414,6 @@ class User
   def unfollow(user)
     self.following.to_a #hack to ensure in memory, not a problem for mongodb 2.0  https://github.com/mongoid/mongoid/issues/1369
     self.following.delete(user)
-  end
-
-  def build_activity
-    if !self.activity_feed
-      self.create_activity_feed
-    end
-
-    chunk = self.activity_feed.head_chunk
-
-    activity = chunk.activities.build
-    activity.actor1 = self.id
-    activity.username1 = self.username
-    activity.thumb1 = self.thumb_url
-
-    return activity
   end
 
   def user_settings

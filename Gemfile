@@ -57,6 +57,7 @@ gem 'resque_mailer'
 
 gem 'mongoid_slug'
 
+gem 'quiet_assets'
 
 gem "twitter-bootstrap-rails"
 

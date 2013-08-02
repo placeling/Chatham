@@ -189,6 +189,8 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.4.3)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -331,6 +333,7 @@ DEPENDENCIES
   oauth (= 0.4.4)
   omniauth-facebook
   omniauth-twitter
+  quiet_assets
   rack-p3p
   rack-rewrite (~> 1.2.1)
   rails (= 3.2.11)

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :login_required, :only => [:escape_pod]
+  before_filter :login_required, :only => [:escape_pod, :download]
 
   def index
     respond_to do |format|
@@ -9,6 +9,14 @@ class HomeController < ApplicationController
 
 
   def escape_pod
+
+
+  end
+
+  def download
+
+
+
 
 
   end
