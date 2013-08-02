@@ -10,8 +10,8 @@ class HomeController < ApplicationController
 
   def escape_pod
 
-    if current_user.escape_pod && File.exists?( "#{Rails.root}/public/uploads/#{current_user.username}_placeling.zip")
-      send_file "#{Rails.root}/public/uploads/#{current_user.username}_placeling.zip"
+    if current_user.escape_pod && File.exists?( "public/uploads/#{current_user.username}_placeling.zip")
+      send_file "public/uploads/#{current_user.username}_placeling.zip"
     else
       current_user.want_email = true
       current_user.save

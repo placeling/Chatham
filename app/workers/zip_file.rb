@@ -12,9 +12,9 @@ class ZipFile
     user = User.find(user_id)
     RESQUE_LOGGER.info "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')} - Outputting user #{user.username}, #{user.id}"
 
-    zipfile_name = "#{Rails.root}/public/uploads/#{user.username}_placeling.zip"
+    zipfile_name = "public/uploads/#{user.username}_placeling.zip"
 
-    if File.exists?( "#{Rails.root}/public/uploads/#{user.username}_placeling.zip")
+    if File.exists?( "public/uploads/#{user.username}_placeling.zip")
       return
     end
 
