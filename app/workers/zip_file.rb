@@ -14,7 +14,7 @@ class ZipFile
 
     zipfile_name = "#{Rails.root}/public/uploads/#{user.username}_placeling.zip"
 
-    if user.escape_pod
+    if File.exists?( "#{Rails.root}/public/uploads/#{user.username}_placeling.zip")
       return
     end
 
