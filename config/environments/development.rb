@@ -50,3 +50,5 @@ Chatham::Application.configure do
   config.action_mailer.default_url_options = {:host => 'dev.placeling.com', :port => 3000, :protocol => 'http'}
 
 end
+
+Resque.inline = true
