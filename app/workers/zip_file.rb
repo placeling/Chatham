@@ -59,10 +59,10 @@ class ZipFile
       zipfile.put_next_entry("#{user.username}_data.xml")
       zipfile.print( builder.to_xml )
 
-      if user.avatar
-        RESQUE_LOGGER.info user.main_url
+      if !user.avatar_url(:main).nil?
+        RESQUE_LOGGER.info user.avatar_url(:main)
         zipfile.put_next_entry("profile.png")
-        zipfile.print( URI.parse( user.avatar(:main) ).read )
+        zipfile.print( URI.parse( user.avatar_url(:main) ).read )
       end
 
 
