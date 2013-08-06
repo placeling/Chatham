@@ -10,14 +10,13 @@ before 'deploy:setup', 'rvm:install_ruby'
 
 after "deploy:create_symlink", "deploy:restart_workers"
 
-task :production do
-  set :gateway, '50.19.236.56:11235'
-  server '10.120.174.90', :app, :web, :db, :scheduler, :primary => true
-  ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
-  set :user, 'ubuntu'
-  set :use_sudo, false
-  set :rails_env, "production"
-end
+
+set :gateway, '50.19.236.56:11235'
+server '10.120.174.90', :app, :web, :db, :scheduler, :primary => true
+ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
+set :user, 'ubuntu'
+set :use_sudo, false
+set :rails_env, "production"
 
 default_run_options[:pty] = true # Must be set for the password prompt from git to work
 set :repository, "git@github.com:placeling/Chatham.git" # Your clone URL
@@ -36,6 +35,9 @@ def run_remote_rake(rake_cmd)
   set :rakefile, nil if exists?(:rakefile)
 end
 
+task :after_symlink do
+  run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
+end
 
 namespace :deploy do
   task :start, :roles => :app do
