@@ -60,7 +60,7 @@ class ZipFile
       zipfile.print( builder.to_xml )
 
       if user.avatar
-        puts user.main_url
+        RESQUE_LOGGER.info user.main_url
         zipfile.put_next_entry("profile.png")
         zipfile.print( URI.parse( user.main_url ).read )
       end
