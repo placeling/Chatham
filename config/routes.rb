@@ -1,4 +1,3 @@
-require 'resque/server'
 
 Chatham::Application.routes.draw do
   post '/escape_pod', to: 'home#escape_pod', as: :escape_pod
@@ -16,8 +15,6 @@ Chatham::Application.routes.draw do
   scope 'oauth', :format => "html"  do
     match "*path" => "home#error503"
   end
-
-  mount Resque::Server, :at => "/resque"
 
   match '/503', :to => "home#error503"
   root :to => "home#index"

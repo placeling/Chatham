@@ -8,7 +8,6 @@ require "rvm/capistrano" # Load RVM's capistrano plugin.
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
-after "deploy:create_symlink", "deploy:restart_workers"
 after "deploy:create_symlink", "make_upload_dir"
 
 server 'beagle.placeling.com', :app, :web, :db, :scheduler, :primary => true
@@ -25,14 +24,6 @@ set :deploy_to, "/var/www/apps/#{application}"
 set :shared_directory, "#{deploy_to}/shared"
 set :deploy_via, :remote_cache
 
-
-def run_remote_rake(rake_cmd)
-  rake_args = ENV['RAKE_ARGS'].to_s.split(',')
-  cmd = "cd #{fetch(:latest_release)} && #{fetch(:rake, "rake")} RAILS_ENV=#{fetch(:rails_env, "production")} #{rake_cmd}"
-  cmd += "['#{rake_args.join("','")}']" unless rake_args.empty?
-  run cmd
-  set :rakefile, nil if exists?(:rakefile)
-end
 
 task :make_upload_dir do
   run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
@@ -51,12 +42,6 @@ namespace :deploy do
   task :restart, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
-
-  desc "Restart Resque Workers"
-  task :restart_workers, :roles => :app do
-    run_remote_rake "resque:restart_workers"
-  end
-
 
 end
 

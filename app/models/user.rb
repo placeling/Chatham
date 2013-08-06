@@ -18,7 +18,6 @@ class User
   field :du, :as => :downcase_username, :type => String
   field :fullname, :type => String
   alias :login :username
-  field :pc, :as => :perspective_count, :type => Integer, :default => 0 #property for easier lookup of of top users
   field :creation_environment, :type => String, :default => "production"
   field :ck, :type => String
 
@@ -77,11 +76,8 @@ class User
   field :w, :type => Float
   field :h, :type => Float
 
-  has_many :perspectives, :foreign_key => 'uid', :dependent => :destroy
-  has_many :places #ones they created
   has_many :authentications, :dependent => :destroy
 
-  mount_uploader :avatar, AvatarUploader, mount_on: :avatar_filename
 
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
@@ -190,25 +186,11 @@ class User
   end
 
   def thumb_url
-    if Rails.env == self.creation_environment
-      self.avatar_url(:thumb)
-    elsif thumb_cache_url
       thumb_cache_url
-    else
-      self.cache_urls
-      self.avatar_url(:thumb)
-    end
   end
 
   def main_url
-    if Rails.env == self.creation_environment
-      self.avatar_url(:main)
-    elsif main_cache_url
       main_cache_url
-    else
-      self.cache_urls
-      self.avatar_url(:main)
-    end
   end
 
   def self.ian

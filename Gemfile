@@ -27,11 +27,6 @@ gem "httparty", "~> 0.9.0"
 gem "hashie"
 gem 'uuidtools'
 
-gem 'mini_magick'
-gem 'carrierwave', "~> 0.6.2"
-gem 'fog'
-gem 'carrierwave-mongoid', "~> 0.1.1", :require => 'carrierwave/mongoid'
-
 gem "geocoder"
 gem "geoip"
 
@@ -46,9 +41,6 @@ gem 'fastercsv'
 gem "redis", "~> 2.2"
 gem "redis-namespace"
 gem 'redis-rails'
-
-gem 'resque', :require => 'resque/server'
-gem 'resque_mailer'
 
 gem 'mongoid_slug'
 

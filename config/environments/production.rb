@@ -49,11 +49,6 @@ Chatham::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-
-  config.action_mailer.delivery_method = :ses
-
-  config.action_mailer.raise_delivery_errors = false
-
   # Only use best-standards-support built into browsers
 
   config.action_mailer.default_url_options = {:host => 'www.placeling.com', :protocol => 'https'}
