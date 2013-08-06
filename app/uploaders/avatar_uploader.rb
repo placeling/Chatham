@@ -16,9 +16,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{model.id}"
   end
 
-  def default_url
-    "#{ApplicationHelper.get_hostname}/images/default_profile.png"
-  end
 
   # Create different versions of your uploaded files:
   version :thumb do
