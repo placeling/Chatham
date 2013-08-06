@@ -11,15 +11,14 @@ before 'deploy:setup', 'rvm:install_ruby'
 after "deploy:create_symlink", "deploy:restart_workers"
 after "deploy:create_symlink", "make_upload_dir"
 
-set :gateway, '50.19.236.56:11235'
-server '10.120.174.90', :app, :web, :db, :scheduler, :primary => true
-ssh_options[:forward_agent] = true #forwards local-localhost keys through gateway
+server 'beagle.placeling.com', :app, :web, :db, :scheduler, :primary => true
 set :user, 'ubuntu'
 set :use_sudo, false
 set :rails_env, "production"
+set :port, 11235
 
 default_run_options[:pty] = true # Must be set for the password prompt from git to work
-set :repository, "git@github.com:placeling/Chatham.git" # Your clone URL
+set :repository, "git@github.com:imackinn/Chatham.git" # Your clone URL
 set :scm, "git"
 
 set :deploy_to, "/var/www/apps/#{application}"
