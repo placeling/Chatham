@@ -86,8 +86,6 @@ class User
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers, autosave: true
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
-  validate :acceptable_name, :on => :create
-  validate :acceptable_password
   validates_presence_of :username
   validates_presence_of :email
   validates_format_of :username, :with => /\A[a-zA-Z0-9_]+\Z/, :message => "may only contain letters, numbers and underscores"
@@ -142,22 +140,6 @@ class User
 
   def set_downcase_username
     self.downcase_username = self.username.downcase
-  end
-
-  def acceptable_name
-    if NAUGHTY_WORDS.include? self.username
-      errors.add :username, I18n.t('user.reserved_username')
-    end
-
-    if RESERVED_USERNAMES.include? self.username
-      errors.add :username, I18n.t('user.reserved_username')
-    end
-  end
-
-  def acceptable_password
-    if SHITTY_PASSWORDS.include? @password
-      errors.add :password, I18n.t('user.shitty_password')
-    end
   end
 
   def clear_user
