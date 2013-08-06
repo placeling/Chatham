@@ -62,7 +62,7 @@ class ZipFile
       if user.avatar
         RESQUE_LOGGER.info user.main_url
         zipfile.put_next_entry("profile.png")
-        zipfile.print( URI.parse( user.main_url ).read )
+        zipfile.print( URI.parse( user.avatar(:main) ).read )
       end
 
 
