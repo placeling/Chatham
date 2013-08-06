@@ -103,7 +103,6 @@ class User
   index :du
   index :ck
 
-  before_save :get_city
   before_destroy :clear_user
 
   #before_validation :fix_location
@@ -123,12 +122,6 @@ class User
     self.w = nil
     self.h = nil
     self.save
-  end
-
-  def get_city
-    if self.location != nil && self.location != [0, 0] && self.city == ""
-      self.city = CitynameFinder.getCity(self.location[0], self.location[1])
-    end
   end
 
   def follow_defaults
