@@ -1,4 +1,9 @@
 
+require 'rubygems'
+require 'zip/zip'
+
+require 'open-uri'
+
 namespace "db" do
 
   task :reload => [:drop, :download_and_install]
@@ -41,4 +46,28 @@ namespace "db" do
     puts `mongorestore -h #{db.connection.host} -d chatham_#{Rails.env} /tmp/MONGOBACKUP/*/chatham_production/`
     Rake::Task["db:mongoid:create_indexes"].invoke
   end
+end
+
+
+desc "Grabs all the 'main' images from S3 and zips them up"
+task :grab_s3 => :environment do
+
+  zipfile_name = "public/uploads/s3backup_#{Time.now.to_i}.zip"
+  Zip::ZipOutputStream.open(zipfile_name) do |zipfile|
+
+    Perspective.all.each_with_index do |p, i|
+      puts "Perspective #{i}"
+      p.pictures.each do |photo|
+        puts photo.main_url
+
+        begin
+          photofile = URI.parse( photo.main_url ).read
+          zipfile.put_next_entry("#{photo.id}.jpg")
+          zipfile.print( photofile )
+        rescue
+        end
+      end
+    end
+  end
+
 end
