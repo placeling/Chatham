@@ -3714,3 +3714,31 @@
 .tagged_place {
     font-size: 10px;
 }
+
+    #container {
+        min-height: 100%;
+        background-image: url(<%= asset_path 'background_pattern.png' %>);
+        width: 100%;
+    }
+
+    #wrapper {
+        height: 100%;
+        overflow: auto;
+        padding-bottom: 30px;
+    }
+
+    #header {
+        height: 62px;
+        width: 100%;
+        background: #fff url(<%= asset_path 'header_bg.png' %>) repeat-x;
+    }
+
+    #search {
+        float: left;
+        height: 62px;
+    }
+
+    html, body {
+        height: 100%;
+        min-width: 1020px;
+    }
