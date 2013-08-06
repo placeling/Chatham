@@ -9,7 +9,7 @@ before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 
 after "deploy:create_symlink", "deploy:restart_workers"
-
+after "deploy:create_symlink", "make_upload_dir"
 
 set :gateway, '50.19.236.56:11235'
 server '10.120.174.90', :app, :web, :db, :scheduler, :primary => true
@@ -35,7 +35,7 @@ def run_remote_rake(rake_cmd)
   set :rakefile, nil if exists?(:rakefile)
 end
 
-task :after_symlink do
+task :make_upload_dir do
   run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
 end
 
