@@ -31,24 +31,27 @@ class ZipFile
 
           xml.placemarks {
             user.perspectives.each do |perspective|
-              xml.place {
-                xml.name perspective.place.name
-                xml.city perspective.place.city_data
-                xml.location perspective.place.loc
-                xml.google_id perspective.place.google_id
-                xml.google_place_url perspective.place.google_url
-                xml.notes perspective.memo
-                if perspective.url
-                  xml.url perspective.url
-                end
-                xml.pictures {
-                  perspective.pictures.each_with_index do |pic,i|
-                    xml.filename "#{perspective.place.slug}_#{i}.jpg"
+              if !perspective.place.nil?
+                xml.place {
+                  xml.name perspective.place.name
+                  xml.city perspective.place.city_data
+                  xml.location perspective.place.loc
+                  xml.google_id perspective.place.google_id
+                  xml.google_place_url perspective.place.google_url
+                  xml.notes perspective.memo
+                  if perspective.url
+                    xml.url perspective.url
                   end
-                }
+                  xml.pictures {
+                    perspective.pictures.each_with_index do |pic,i|
+                      xml.filename "#{perspective.place.slug}_#{i}.jpg"
+                    end
+                  }
 
-                xml.datetime perspective.created_at
-              }
+                  xml.datetime perspective.created_at
+                }
+              end
+
             end
           }
 
